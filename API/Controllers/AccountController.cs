@@ -7,39 +7,57 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using API.Data;
 using API.Entities;
+using System.Security.Cryptography;
+using System.Text;
+using API.DTOs;
 
 namespace API.Controllers
 {
-    public class UsersController : BaseApiController
+    public class AccountController : BaseApiController
     {
         private readonly DataContext _context;
 
-        public UsersController(DataContext context)
+        public AccountController(DataContext context)
         {
             _context = context;
         }
 
-        // GET: api/AppUsers
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<User>>> GetUsers()
+        [HttpPost("register")]
+        public async Task<ActionResult<User>> Register(RegisterDto registerDto)
         {
-            return await _context.Users.ToListAsync();
-        }
+            if(await UserExists(registerDto.UserName)) return BadRequest("Username is taken");
 
-        // GET: api/AppUsers/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<User>> GetUser(int id)
-        {
-            var appUser = await _context.Users.FindAsync(id);
 
-            if (appUser == null)
+            using var hmac = new HMACSHA512(); // why use using keyword?
+            var user = new User
             {
-                return NotFound();
-            }
+                UserName = registerDto.UserName.ToLower(),
+                PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(registerDto.Password)),
+                PasswordSalt = hmac.Key 
+            };
 
-            return appUser;
+            _context.Users.Add(user);
+            await _context.SaveChangesAsync();
+            return user;
+        }
+        private async Task<bool> UserExists(string username)
+        {
+            return await _context.Users.AnyAsync(x=> x.UserName == username.ToLower());
         }
 
+        [HttpPost("login")]
+        public async Task<ActionResult<User>> Login(LoginDto loginDto)    
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(x=> x.UserName == loginDto.UserName);
+            if(user == null) return Unauthorized("Invalid Username");
+            using var hmac = new HMACSHA512(user.PasswordSalt); 
+            var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(loginDto.Password));
+            
+            for(int i = 0; i<computedHash.Length; i++){
+                if(computedHash[i] != user.PasswordHash[i]) return Unauthorized("Invalid Password.");
+            }
+            return user;
+        }
         // PUT: api/AppUsers/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
