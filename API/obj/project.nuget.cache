@@ -1,12 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "rEhT7ONcu2R0UdoElk4mDoiNYPovGksdq1QA1Adz+ahGCeleDd238vfW2jF+M4MVn0vcMWSxkbttm55nlLcmPA==",
+  "dgSpecHash": "iM+PvKMEZLoLchHgDI3Dksq4D9xzoU3u+826KKYJCN/2Z5/R2zb+e/BW+mcmx8FToVMEoFDOiqZmbMlJ+w5rBg==",
   "success": true,
   "projectFilePath": "c:\\Users\\Hyunbin\\Desktop\\AngularDotnet\\API\\API.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Hyunbin\\.nuget\\packages\\azure.core\\1.24.0\\azure.core.1.24.0.nupkg.sha512",
     "C:\\Users\\Hyunbin\\.nuget\\packages\\azure.identity\\1.6.0\\azure.identity.1.6.0.nupkg.sha512",
     "C:\\Users\\Hyunbin\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
+    "C:\\Users\\Hyunbin\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\7.0.4\\microsoft.aspnetcore.authentication.jwtbearer.7.0.4.nupkg.sha512",
     "C:\\Users\\Hyunbin\\.nuget\\packages\\microsoft.aspnetcore.razor.language\\6.0.11\\microsoft.aspnetcore.razor.language.6.0.11.nupkg.sha512",
     "C:\\Users\\Hyunbin\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\6.0.0\\microsoft.bcl.asyncinterfaces.6.0.0.nupkg.sha512",
     "C:\\Users\\Hyunbin\\.nuget\\packages\\microsoft.build\\17.3.2\\microsoft.build.17.3.2.nupkg.sha512",
