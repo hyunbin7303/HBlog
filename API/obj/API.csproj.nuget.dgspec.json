@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Hyunbin\\Desktop\\AngularDotnet\\API\\API.csproj": {}
+    "c:\\Users\\Hyunbin\\Desktop\\AngularDotnet\\API\\API.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Hyunbin\\Desktop\\AngularDotnet\\API\\API.csproj": {
+    "c:\\Users\\Hyunbin\\Desktop\\AngularDotnet\\API\\API.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Hyunbin\\Desktop\\AngularDotnet\\API\\API.csproj",
+        "projectUniqueName": "c:\\Users\\Hyunbin\\Desktop\\AngularDotnet\\API\\API.csproj",
         "projectName": "API",
-        "projectPath": "C:\\Users\\Hyunbin\\Desktop\\AngularDotnet\\API\\API.csproj",
+        "projectPath": "c:\\Users\\Hyunbin\\Desktop\\AngularDotnet\\API\\API.csproj",
         "packagesPath": "C:\\Users\\Hyunbin\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Hyunbin\\Desktop\\AngularDotnet\\API\\obj\\",
+        "outputPath": "c:\\Users\\Hyunbin\\Desktop\\AngularDotnet\\API\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
@@ -26,7 +26,6 @@
           "net7.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -72,6 +71,10 @@
             "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
               "target": "Package",
               "version": "[7.0.5, )"
+            },
+            "System.IdentityModel.Tokens.Jwt": {
+              "target": "Package",
+              "version": "[6.27.0, )"
             }
           },
           "imports": [
