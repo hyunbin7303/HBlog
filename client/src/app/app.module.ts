@@ -15,7 +15,7 @@ import { ListsComponent } from './lists/lists.component';
 import { MessagesComponent } from './messages/messages.component';
 import { InterviewQuestionsComponent } from './programming/interview-questions/interview-questions.component';
 import { BusinessesComponent } from './businesses/businesses.component';
-import { ToastrModule } from 'ngx-toastr';
+import { SharedModule } from './_modules/shared.module';
 
 @NgModule({
   declarations: [
@@ -36,11 +36,8 @@ import { ToastrModule } from 'ngx-toastr';
     AppRoutingModule,
     HttpClientModule,
     FormsModule, // gives power for Two-way binding
-    BsDropdownModule.forRoot(),
-    ToastrModule.forRoot({
-      positionClass: 'toast-bottom-right'
-    }),
-    BrowserAnimationsModule, BsDropdownModule.forRoot()
+    BrowserAnimationsModule, BsDropdownModule.forRoot(),
+    SharedModule
   ],
   providers: [],
   bootstrap: [AppComponent]

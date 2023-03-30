@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-primary">
     <div class="container">
         <a class="navbar-brand" routerLink="/" routerLinkActive="active">Chatting Application</a>
         
@@ -22,8 +22,8 @@
             </li>
         </ul>
 
-        <div class="dropdown" *ngIf="accountService.currentUser$ | async" dropdown>
-            <a class="dropdown-toggle text-light text-decoration-none" dropdownToggle>Welcome user</a>
+        <div class="dropdown" *ngIf="accountService.currentUser$ | async as user" dropdown>
+            <a class="dropdown-toggle text-light text-decoration-none" dropdownToggle>Welcome, {{user.username | titlecase}}</a>
             <div class="dropdown-menu mt-3" *dropdownMenu>
                 <a class="dropdown-item">Edit Profile</a>
                 <a class="dropdown-item" (click) ="logout()">Logout</a>
@@ -42,7 +42,7 @@
                 class="form-control me-2" 
                 type="password" 
                 placeholder="password">
-            <button class="btn btn-outline-success" type="submit">Login</button>
+            <button class="btn btn-success" type="submit">Login</button>
         </form>
     </div>
 </nav>
