@@ -7,13 +7,20 @@ import { MemberDetailComponent } from './members/member-detail/member-detail.com
 import { MemberListComponent } from './members/member-list/member-list.component';
 import { MessagesComponent } from './messages/messages.component';
 import { InterviewQuestionsComponent } from './programming/interview-questions/interview-questions.component';
+import { AuthGuard } from './_guards/auth.guard';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
-  { path: 'members',  component: MemberListComponent},
-  { path: 'members/:id',  component: MemberDetailComponent},
-  { path: 'lists', component: ListsComponent },
-  { path: 'messages', component: MessagesComponent },
+  { path: '', 
+    runGuardsAndResolvers: 'always',
+    canActivate: [AuthGuard],
+    children: [
+      { path: 'members', component: MemberListComponent },
+      { path: 'members/:id', component: MemberDetailComponent },
+      { path: 'lists', component: ListsComponent },
+      { path: 'messages', component: MessagesComponent },
+    ]
+  },
   { path: 'businesses', component: BusinessesComponent },
   { path: 'interview-Questions', component: InterviewQuestionsComponent },
   { path: '**', component: HomeComponent, pathMatch: 'full' },
