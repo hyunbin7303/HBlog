@@ -8,6 +8,7 @@ import { MemberListComponent } from './members/member-list/member-list.component
 import { MessagesComponent } from './messages/messages.component';
 import { InterviewQuestionsComponent } from './programming/interview-questions/interview-questions.component';
 import { AuthGuard } from './_guards/auth.guard';
+import { TestErrorComponent } from './errors/test-error/test-error.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -23,6 +24,7 @@ const routes: Routes = [
   },
   { path: 'businesses', component: BusinessesComponent },
   { path: 'interview-Questions', component: InterviewQuestionsComponent },
+  { path: 'errors', component: TestErrorComponent },
   { path: '**', component: HomeComponent, pathMatch: 'full' },
 ];
 
