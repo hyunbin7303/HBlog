@@ -1,0 +1,14 @@
+namespace API.Entities
+{
+    public class CliCommand 
+    {
+        public int Id { get; set; }
+        public string Title { get; set; }
+        public string Command { get; set; }
+        public string AppName { get; set; }
+        public string Type { get; set; }
+        public string Usage { get; set; }
+        public int ApplicationId { get; set; }
+        public Application Application {get; set; }
+    }
+}
