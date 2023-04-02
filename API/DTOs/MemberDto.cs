@@ -1,14 +1,11 @@
-using API.Extensions;
-
-namespace API.Entities
+namespace API.DTOs
 {
-    public class User
+    public class MemberDto
     {
         public int Id { get; set; }
-        public string UserName {get; set;}
-        public byte[] PasswordHash { get; set; }
-        public byte[] PasswordSalt  {get; set; }
-        public DateTime DateOfBirth { get; set; }
+        public string UserName { get; set; }
+        public string PhotoUrl { get; set; }
+        public int Age { get; set; }
         public string KnownAs { get; set; }
         public DateTime Created { get; set; } = DateTime.UtcNow;
         public DateTime LastActive { get; set; } = DateTime.UtcNow;
@@ -17,7 +14,6 @@ namespace API.Entities
         public string Interests { get; set; }
         public string City { get; set; }
         public string Country { get; set; }
-        public List<Photo> Photos { get; set; } = new List<Photo>();
-        public List<Post> Posts { get; set; } = new List<Post>();
+        public List<PhotoDto> Photos { get; set; }
     }
 }

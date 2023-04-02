@@ -1,9 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "5rFfEh30xAqYJ97xvh36XspPMSCQU4gAyItAdpBJL17TzRldSLD2vIJYnE+qtEAovs0MvLTGbiiRrwy/9Uz8JA==",
+  "dgSpecHash": "xnR7LppMZVmKoXPKNX2cQ5EN7pK4FwQ8t5r9cQU/O3u/jnH6w0iymN3fL1jFSO6IqvUZWkQL5oNhiIqAP8nrww==",
   "success": true,
   "projectFilePath": "C:\\Users\\Hyunbin\\Desktop\\AngularDotnet\\API\\API.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\Hyunbin\\.nuget\\packages\\automapper\\12.0.0\\automapper.12.0.0.nupkg.sha512",
+    "C:\\Users\\Hyunbin\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.0\\automapper.extensions.microsoft.dependencyinjection.12.0.0.nupkg.sha512",
     "C:\\Users\\Hyunbin\\.nuget\\packages\\azure.core\\1.24.0\\azure.core.1.24.0.nupkg.sha512",
     "C:\\Users\\Hyunbin\\.nuget\\packages\\azure.identity\\1.6.0\\azure.identity.1.6.0.nupkg.sha512",
     "C:\\Users\\Hyunbin\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",

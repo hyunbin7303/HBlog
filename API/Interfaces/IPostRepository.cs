@@ -3,9 +3,9 @@ namespace API.Interfaces
 {
     public interface IPostRepository
     {
-        void Update(User user);
+        void Update(Post user);
         Task<bool> SaveAllAsync();
         Task<IEnumerable<Post>> GetPostsAsync();
-        Task<User> GetPostByUsername(string username);
+        Task<Post> GetPostByUsername(string username);
     }
 }

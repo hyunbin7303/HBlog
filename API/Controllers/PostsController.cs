@@ -2,38 +2,35 @@
 using API.Entities;
 using Microsoft.AspNetCore.Authorization;
 using API.Interfaces;
-using AutoMapper;
-using API.DTOs;
 
 namespace API.Controllers
 {
     [Authorize]
-    public class UsersController : BaseApiController
+    public class PostsController : BaseApiController
     {
-        private readonly IUserRepository _userRepository;
-        private readonly IMapper _mapper;
+        private readonly IPostRepository _postRepository;
 
-        public UsersController(IUserRepository userRepository, IMapper mapper)
+        public PostsController(IPostRepository postRepository)
         {
-            this._mapper = mapper;
-            this._userRepository = userRepository;
+            this._postRepository = postRepository;
         }
 
 
         [AllowAnonymous]
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsers()
+        public async Task<ActionResult<IEnumerable<Post>>> GetPosts()
         {
-            var users = await _userRepository.GetMembersAsync();
-            return Ok(users);
+            return Ok(await _postRepository.GetPostsAsync());
         }
 
 
         [HttpGet("{username}")]
-        public async Task<ActionResult<MemberDto>> GetUser(string username)
+        public async Task<ActionResult<Post>> GetUser(string username)
         {
-            return await _userRepository.GetMemberAsync(username);
+            return await _postRepository.GetPostByUsername(username);
         }
+        // PUT: api/AppUsers/5
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutAppUser(int id, User appUser)
         {
@@ -61,13 +58,11 @@ namespace API.Controllers
         }
 
         // POST: api/AppUsers
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<User>> PostAppUser(User appUser)
         {
             // _context.Users.Add(appUser);
             // await _context.SaveChangesAsync();
-
             // return CreatedAtAction("GetAppUser", new { id = appUser.Id }, appUser);
             return Ok();
         }
