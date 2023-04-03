@@ -1,5 +1,8 @@
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace API.Entities
 {
+    [Table("CliCommands")]
     public class CliCommand 
     {
         public int Id { get; set; }

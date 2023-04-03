@@ -1,5 +1,7 @@
+using System.ComponentModel.DataAnnotations.Schema;
 namespace API.Entities
 {
+    [Table("Posts")]
     public class Post
     {
         public int PostId { get; set; }

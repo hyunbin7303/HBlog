@@ -124,17 +124,17 @@ nupkg/
 *.sln.docstates
 
 # Build results
-[Dd]ebug/
-[Dd]ebugPublic/
-[Rr]elease/
-[Rr]eleases/
-x64/
-x86/
-build/
-bld/
-[Bb]in/
-[Oo]bj/
-[Oo]ut/
-msbuild.log
-msbuild.err
-msbuild.wrn
+API/[Dd]ebug/
+API/[Dd]ebugPublic/
+API/[Rr]elease/
+API/[Rr]eleases/
+API/x64/
+API/x86/
+API/build/
+API/bld/
+API/[Bb]in/
+API/[Oo]bj/
+API/[Oo]ut/
+API/msbuild.log
+API/msbuild.err
+API/msbuild.wrn
