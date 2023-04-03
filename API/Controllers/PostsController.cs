@@ -25,14 +25,14 @@ namespace API.Controllers
 
 
         [HttpGet("{username}")]
-        public async Task<ActionResult<Post>> GetUser(string username)
+        public async Task<ActionResult<Post>> GetPostByUsername(string username)
         {
             return await _postRepository.GetPostByUsername(username);
         }
         // PUT: api/AppUsers/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutAppUser(int id, User appUser)
+        public async Task<IActionResult> Put(int id, Post post)
         {
             // if (id != appUser.Id)
             // {
@@ -56,10 +56,8 @@ namespace API.Controllers
 
             return NoContent();
         }
-
-        // POST: api/AppUsers
         [HttpPost]
-        public async Task<ActionResult<User>> PostAppUser(User appUser)
+        public async Task<ActionResult<User>> Post(Post post)
         {
             // _context.Users.Add(appUser);
             // await _context.SaveChangesAsync();
@@ -67,9 +65,8 @@ namespace API.Controllers
             return Ok();
         }
 
-        // DELETE: api/AppUsers/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteAppUser(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             // var appUser = await _context.Users.FindAsync(id);
             // if (appUser == null)
