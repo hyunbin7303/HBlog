@@ -1,13 +1,13 @@
 /* You can add global styles to this file, and also import other style files */
 .tab-panel {
-    border: 1px solid #ddd;
+    border: 1px solid #9b6161;
     padding: 10px;
     border-radius: 4px;
 }
 
 .nav-tabs>li.open,
 .member-tabset>.nav-tabs>li:hover {
-    border-bottom: 4px solid #fbcdcf;
+    border-bottom: 4px solid #0f0096;
 }
 
 .member-tabset>.nav-tabs>li.open>a,
@@ -28,7 +28,7 @@
 }
 
 .member-tabset>.nav-tabs>li.active {
-    border-bottom: 4px solid #E95420;
+    border-bottom: 4px solid #0f0096;
     position: relative;
 }
 
@@ -43,8 +43,8 @@
 
 .member-tabset>.tab-content {
     margin-top: -3px;
-    background-color: #fff;
+    background-color: #404040;
     border: 0;
-    border-top: 1px solid #eee;
+    border-top: 1px solid #000000;
     padding: 15px 0;
 }

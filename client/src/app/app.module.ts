@@ -23,6 +23,7 @@ import { ServerErrorComponent } from './errors/server-error/server-error.compone
 import { MemberCardComponent } from './members/member-card/member-card.component';
 import { JwtInterceptor } from './_interceptors/jwt.interceptor';
 import { PostsComponent } from './posts/posts.component';
+import { MemberEditComponent } from './members/member-edit/member-edit.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { PostsComponent } from './posts/posts.component';
     NotFoundComponent,
     ServerErrorComponent,
     MemberCardComponent,
-    PostsComponent
+    PostsComponent,
+    MemberEditComponent
   ],
   imports: [
     BrowserAnimationsModule,
