@@ -13,6 +13,7 @@ export interface Member {
     interests: string
     city: string
     country: string
+    lookingFor: string
     photos: Photo[]
 }
 
