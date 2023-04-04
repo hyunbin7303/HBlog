@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using API.Interfaces;
 using AutoMapper;
 using API.DTOs;
+using System.Security.Claims;
 
 namespace API.Controllers
 {
@@ -34,30 +35,17 @@ namespace API.Controllers
         {
             return await _userRepository.GetMemberAsync(username);
         }
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutAppUser(int id, User appUser)
+        [HttpPut]
+        public async Task<IActionResult> Update(MemberUpdateDto memberUpdateDto)
         {
-            // if (id != appUser.Id)
-            // {
-            //     return BadRequest();
-            // }
-            // try
-            // {
-            //     await _context.SaveChangesAsync();
-            // }
-            // catch (DbUpdateConcurrencyException)
-            // {
-            //     if (!AppUserExists(id))
-            //     {
-            //         return NotFound();
-            //     }
-            //     else
-            //     {
-            //         throw;
-            //     }
-            // }
+            var username = User.FindFirst(ClaimTypes.NameIdentifier)?.Value; 
+            var user = await _userRepository.GetUserByUsernameAsync(username);
+            if(user == null) return NotFound();
 
-            return NoContent();
+            _mapper.Map(memberUpdateDto, user);
+            if(await _userRepository.SaveAllAsync()) return NoContent();
+
+            return BadRequest("Failed to update user");
         }
 
         // POST: api/AppUsers
