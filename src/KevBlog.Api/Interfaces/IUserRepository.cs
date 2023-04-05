@@ -1,5 +1,6 @@
 using API.DTOs;
-using API.Entities;
+using KevBlog.Domain.Entities;
+
 namespace API.Interfaces
 {
     public interface IUserRepository

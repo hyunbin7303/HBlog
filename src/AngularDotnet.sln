@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "API", "KevBlog.Api\API.csproj", "{40C4B7A2-0157-404A-9337-0C202D8DCA95}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KevBlog.Api", "KevBlog.Api\KevBlog.Api.csproj", "{40C4B7A2-0157-404A-9337-0C202D8DCA95}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KevBlog.Infrastructure", "KevBlog.Infrastructure\KevBlog.Infrastructure.csproj", "{2C52DAA1-E96D-4E0E-BA1B-AD788F1171DF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KevBlog.Infrastructure", "KevBlog.Infrastructure\KevBlog.Infrastructure.csproj", "{2C52DAA1-E96D-4E0E-BA1B-AD788F1171DF}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KevBlog.Domain", "KevBlog.Domain\KevBlog.Domain.csproj", "{D29C8307-039A-4B80-B712-889FB329E285}"
 EndProject

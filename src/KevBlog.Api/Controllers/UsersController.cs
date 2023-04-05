@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using API.Entities;
 using Microsoft.AspNetCore.Authorization;
 using API.Interfaces;
 using AutoMapper;
 using API.DTOs;
 using System.Security.Claims;
+using KevBlog.Domain.Entities;
 
 namespace API.Controllers
 {
@@ -61,20 +61,11 @@ namespace API.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAppUser(int id)
         {
-            // var appUser = await _context.Users.FindAsync(id);
-            // if (appUser == null)
-            // {
-            //     return NotFound();
-            // }
-
-            // _context.Users.Remove(appUser);
-            // await _context.SaveChangesAsync();
             return NoContent();
         }
 
         private bool AppUserExists(int id)
         {
-            // return _context.Users.Any(e => e.Id == id);
             return true;
         }
     }

@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using API.Data;
-using API.Entities;
 using System.Security.Cryptography;
 using System.Text;
 using API.DTOs;
 using API.Interfaces;
+using KevBlog.Domain.Entities;
 
 namespace API.Controllers
 {

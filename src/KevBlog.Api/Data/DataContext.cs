@@ -1,4 +1,4 @@
-using API.Entities;
+using KevBlog.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Data

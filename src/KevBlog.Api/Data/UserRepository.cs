@@ -1,8 +1,8 @@
 using API.DTOs;
-using API.Entities;
 using API.Interfaces;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using KevBlog.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Data

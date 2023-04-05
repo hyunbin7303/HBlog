@@ -1,8 +1,8 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using API.Entities;
 using API.Interfaces;
+using KevBlog.Domain.Entities;
 using Microsoft.IdentityModel.Tokens;
 
 namespace API.Services
