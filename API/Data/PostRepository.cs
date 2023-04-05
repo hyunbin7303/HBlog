@@ -17,14 +17,25 @@ namespace API.Data
             this._dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
         }
 
+        public async Task<Post> GetPostById(int id)
+        {
+            return await _dbContext.Posts.Where(x => x.Id == id).SingleOrDefaultAsync();
+        }
+
         public async Task<Post> GetPostByUsername(string username)
         {
-            throw new NotImplementedException();
+            var test = await _dbContext.Posts.Where(x => x.User.UserName == username).SingleOrDefaultAsync();
+            return test;
         }
 
         public async Task<IEnumerable<Post>> GetPostsAsync()
         {
             return await _dbContext.Posts.ToListAsync();
+        }
+
+        public void Remove(int id)
+        {
+            _dbContext.Posts.Remove(new Post { Id = id });
         }
 
         public async Task<bool> SaveAllAsync()
@@ -34,7 +45,7 @@ namespace API.Data
 
         public void Update(Post user)
         {
-            throw new NotImplementedException();
+            _dbContext.Entry(user).State = EntityState.Modified;
         }
     }
 }

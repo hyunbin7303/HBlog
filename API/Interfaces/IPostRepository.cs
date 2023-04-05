@@ -7,5 +7,7 @@ namespace API.Interfaces
         Task<bool> SaveAllAsync();
         Task<IEnumerable<Post>> GetPostsAsync();
         Task<Post> GetPostByUsername(string username);
+        Task<Post> GetPostById(int id);
+        void Remove(int id);
     }
 }

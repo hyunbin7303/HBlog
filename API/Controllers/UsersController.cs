@@ -48,14 +48,11 @@ namespace API.Controllers
             return BadRequest("Failed to update user");
         }
 
-        // POST: api/AppUsers
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<User>> PostAppUser(User appUser)
         {
             // _context.Users.Add(appUser);
             // await _context.SaveChangesAsync();
-
             // return CreatedAtAction("GetAppUser", new { id = appUser.Id }, appUser);
             return Ok();
         }
@@ -72,7 +69,6 @@ namespace API.Controllers
 
             // _context.Users.Remove(appUser);
             // await _context.SaveChangesAsync();
-
             return NoContent();
         }
 
