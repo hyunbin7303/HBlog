@@ -1,27 +1,16 @@
 <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-primary">
     <div class="container">
-        <a class="navbar-brand" routerLink="/" routerLinkActive="active">Chatting Application</a>
+        <a class="navbar-brand" routerLink="/" routerLinkActive="active">H, Project</a>
         
         <ul class="navbar-nav me-auto mb-2 mb-md-0" *ngIf="accountService.currentUser$ | async">
             <ng-container *ngIf="accountService.currentUser$ | async">
-                <li class="nav-item">
-                    <a class="nav-link" routerLink="/members" routerLinkActive="active">Chat Matches</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" routerLink="/posts" routerLinkActive="active">Posts</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" routerLink="/lists" routerLinkActive="active">Lists</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" routerLink="/messages" routerLinkActive="active">Messages</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" routerLink="/businesses" routerLinkActive="active">businesses</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" routerLink="/programming/interview-Questions" routerLinkActive="active">Interview Questions</a>
-                </li>
+                <li class="nav-item"><a class="nav-link" routerLink="/members" routerLinkActive="active">Users</a></li>
+                <li class="nav-item"><a class="nav-link" routerLink="/posts" routerLinkActive="active">Posts</a></li>
+                <li class="nav-item"><a class="nav-link" routerLink="/lists" routerLinkActive="active">Lists</a></li>
+                <li class="nav-item"><a class="nav-link" routerLink="/messages" routerLinkActive="active">Messages</a></li>
+                <li class="nav-item"><a class="nav-link" routerLink="/Contact" routerLinkActive="active">Contact</a></li>
+                <li class="nav-item"><a class="nav-link" routerLink="/About" routerLinkActive="active">About</a></li>
+                <!-- <li class="nav-item"><a class="nav-link" routerLink="/programming/interview-Questions" routerLinkActive="active">Interview Questions</a></li> -->
             </ng-container>
             <li class="nav-item">
                 <a class="nav-link" routerLink="/errors" routerLinkActive="active">Error</a>

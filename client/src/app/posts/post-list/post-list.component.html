@@ -1,0 +1,10 @@
+<p>post-list works!</p>
+
+
+<div class="posts-container">
+    <div class="row">
+        <div class="col-2" *ngFor="let post of posts$ | async">
+            {{post.title}}
+        </div>
+    </div>
+</div>

@@ -22,9 +22,11 @@ import { NotFoundComponent } from './errors/not-found/not-found.component';
 import { ServerErrorComponent } from './errors/server-error/server-error.component';
 import { MemberCardComponent } from './members/member-card/member-card.component';
 import { JwtInterceptor } from './_interceptors/jwt.interceptor';
-import { PostsComponent } from './posts/posts.component';
 import { MemberEditComponent } from './members/member-edit/member-edit.component';
 import { LoadingInterceptor } from './_interceptors/loading.interceptor';
+import { PostListComponent } from './posts/post-list/post-list.component';
+import { PostDetailComponent } from './posts/post-detail/post-detail.component';
+import { PostCardComponent } from './posts/post-card/post-card.component';
 
 @NgModule({
   declarations: [
@@ -42,8 +44,10 @@ import { LoadingInterceptor } from './_interceptors/loading.interceptor';
     NotFoundComponent,
     ServerErrorComponent,
     MemberCardComponent,
-    PostsComponent,
-    MemberEditComponent
+    MemberEditComponent,
+    PostListComponent,
+    PostDetailComponent,
+    PostCardComponent
   ],
   imports: [
     BrowserAnimationsModule,
