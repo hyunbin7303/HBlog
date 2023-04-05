@@ -46,7 +46,7 @@ namespace API.Controllers
         public async Task<IActionResult> SetPostStatus(int id, int statusId)
         {
             var post = await _postRepository.GetPostById(id);
-            post.Status
+            // post.Status
             return Ok();
         }
         

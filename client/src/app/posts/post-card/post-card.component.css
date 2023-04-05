@@ -1,8 +1,19 @@
-.card:hover img {
-    transform: scale(1.2, 1.2);
+.card:hover {
+    transform: scale(1.1, 1.1);
     transition-duration: 500ms;
     transition-timing-function: ease-out;
-    opacity: 0.7;
+    /* opacity: 0.7; */
+}
+.card {
+    margin-top: 50px;
+    margin-bottom: 250px;
+    height: 250px;
+    flex: 0 1 24%;
+    border:none; 
+    box-shadow: 0px 20px 50px -10px rgba(209, 217, 238, 0.5);
+}
+.card-body {
+    text-overflow: ellipsis;
 }
 
 .card img {

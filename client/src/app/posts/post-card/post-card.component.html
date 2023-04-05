@@ -1,17 +1,26 @@
-<div class="card mb-4" *ngIf="post">
-    <div class="card-img-wrapper">
+
+<div class="card" *ngIf="post">
+    <!-- <div class="card-img-wrapper">
         <img src="{{'./assets/user.png'}}" alt="{{post.title}}" class="card-img-top">
         <ul class="list-inline member-icons animate text-center">
-            <li class="list-inline-item">
-                <button routerLink="/posts/{{post.id}}" class="btn btn-primary"><i class="fa fa-user"></i></button>
-            </li>
+
         </ul>
-    </div>
-    <div class="card-body p-1">
+    </div> -->
+    <div class="card-body">
+        <img src="{{'./assets/dotnet.png'}}" class="card-img-top">
+        <small class="bg-light text-danger text-center"> Checking</small>
+        <small class="bg-light text-success text-center ml-3"> CenterInfo</small>
+        <small class="bg-light text-info text-center ml-3">Views - 100,235</small>
+        <h5 class="mt-1">{{post.title}}</h5>
+        <div class="text-center mt-3 mb-5">
+            <p class="m-auto subs-text">{{post.content}}</p>
+        </div>
         <h6 class="card-title text-center mb-1">
-            <i class="fa fa-user me-2">
-                {{post.content}}
-            </i>
+            Created: {{post.created}}
         </h6>
+        <li class="list-inline-item">
+            <button routerLink="/posts/{{post.id}}" class="btn btn-primary"><i class="fa fa-user"></i></button>
+        </li>
     </div>
 </div>
+
