@@ -1,6 +1,7 @@
 using AutoMapper;
 using KevBlog.Domain.Entities;
 using KevBlog.Domain.Interfaces;
+using KevBlog.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace KevBlog.Infrastructure.Repositories
@@ -38,7 +39,7 @@ namespace KevBlog.Infrastructure.Repositories
 
         public async Task<bool> SaveAllAsync()
         {
-            throw new NotImplementedException();
+            return await _dbContext.SaveChangesAsync() > 0;
         }
 
         public void Update(Post user)

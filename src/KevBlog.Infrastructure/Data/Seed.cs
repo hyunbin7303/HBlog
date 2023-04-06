@@ -2,9 +2,10 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
 using KevBlog.Domain.Entities;
+using KevBlog.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 
-namespace KevBlog.Infrastructure.Repositories
+namespace KevBlog.Infrastructure.Data
 {
     public class Seed
     {

@@ -1,6 +1,6 @@
-using AutoMapper.QueryableExtensions;
 using KevBlog.Domain.Entities;
 using KevBlog.Domain.Interfaces;
+using KevBlog.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 namespace KevBlog.Infrastructure.Repositories
 {

@@ -1,3 +1,5 @@
+using KevBlog.Application.Automapper;
+using KevBlog.Infrastructure.Data;
 using KevBlog.Infrastructure.Extensions;
 using KevBlog.Infrastructure.Middleware;
 using KevBlog.Infrastructure.Repositories;
@@ -6,8 +8,7 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddApplicationServices(builder.Configuration);
-builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-
+builder.Services.AddAutoMapper(typeof(AutoMapperProfiles));
 builder.Services.AddIdentityServices(builder.Configuration);
 var app = builder.Build();
 

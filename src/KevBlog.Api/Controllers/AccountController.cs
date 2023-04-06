@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography;
 using System.Text;
 using KevBlog.Domain.Entities;
-using KevBlog.Infrastructure.Repositories;
 using KevBlog.Infrastructure.Authentications;
 using KevBlog.Application.DTOs;
+using KevBlog.Infrastructure.Data;
 
 namespace API.Controllers
 {

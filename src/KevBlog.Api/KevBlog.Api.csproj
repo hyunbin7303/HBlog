@@ -14,7 +14,6 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="7.0.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.4">
       <PrivateAssets>all</PrivateAssets>
@@ -27,6 +26,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\KevBlog.Domain\KevBlog.Domain.csproj" />
+    <ProjectReference Include="..\KevBlog.Application\KevBlog.Application.csproj" />
     <ProjectReference Include="..\KevBlog.Infrastructure\KevBlog.Infrastructure.csproj" />
   </ItemGroup>
 </Project>

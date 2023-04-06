@@ -1,7 +1,7 @@
 using KevBlog.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace KevBlog.Infrastructure.Repositories
+namespace KevBlog.Infrastructure.Data
 {
     public class DataContext : DbContext
     {

@@ -1,5 +1,5 @@
 using KevBlog.Domain.Entities;
-using KevBlog.Infrastructure.Repositories;
+using KevBlog.Infrastructure.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

@@ -29,9 +29,9 @@ export class MembersService {
     const member = this.members.find(x => x.userName == username);
     if(member) return of(member);
 
-
     return this.http.get<Member>(this.baseUrl + 'users/' + username);
   }
+  
   updateMember(member : Member) {
     return this.http.put(this.baseUrl + 'users', member).pipe(
       map(() => {

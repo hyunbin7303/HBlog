@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KevBlog.Infrastructure", "K
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KevBlog.Domain", "KevBlog.Domain\KevBlog.Domain.csproj", "{D29C8307-039A-4B80-B712-889FB329E285}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KevBlog.Application", "KevinBlog.Application\KevBlog.Application.csproj", "{28A664CF-94FD-4552-9F53-3B831D71520A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KevBlog.Application", "KevBlog.Application\KevBlog.Application.csproj", "{472283CD-5963-46BC-8807-291F3AD14A6B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,10 +29,10 @@ Global
 		{D29C8307-039A-4B80-B712-889FB329E285}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D29C8307-039A-4B80-B712-889FB329E285}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D29C8307-039A-4B80-B712-889FB329E285}.Release|Any CPU.Build.0 = Release|Any CPU
-		{28A664CF-94FD-4552-9F53-3B831D71520A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{28A664CF-94FD-4552-9F53-3B831D71520A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{28A664CF-94FD-4552-9F53-3B831D71520A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{28A664CF-94FD-4552-9F53-3B831D71520A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{472283CD-5963-46BC-8807-291F3AD14A6B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{472283CD-5963-46BC-8807-291F3AD14A6B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{472283CD-5963-46BC-8807-291F3AD14A6B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{472283CD-5963-46BC-8807-291F3AD14A6B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
