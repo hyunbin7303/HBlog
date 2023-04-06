@@ -4,7 +4,6 @@ using AutoMapper;
 using System.Security.Claims;
 using KevBlog.Domain.Entities;
 using KevBlog.Domain.Interfaces;
-using Microsoft.EntityFrameworkCore;
 using KevBlog.Application.DTOs;
 namespace API.Controllers
 {
@@ -20,17 +19,6 @@ namespace API.Controllers
             this._userRepository = userRepository;
         }
 
-
-        private async Task<MemberDto> GetMembersByUsernameAsync(string username)
-        {
-            var user = await _userRepository.GetUserByUsernameAsync(username);
-            return _mapper.Map<MemberDto>(user);
-        }
-        private async Task<IEnumerable<MemberDto>> GetMembersAsync()
-        {
-            var users = await _userRepository.GetUsersAsync();
-            return _mapper.Map<IEnumerable<MemberDto>>(users);
-        }
         [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsers()
@@ -59,25 +47,44 @@ namespace API.Controllers
             return BadRequest("Failed to update user");
         }
 
+
+        [AllowAnonymous]
         [HttpPost]
-        public async Task<ActionResult<User>> PostAppUser(User appUser)
+        public async Task<ActionResult<User>> Add(User appUser)
         {
+            // check user already exists. 
+
+
             // _context.Users.Add(appUser);
             // await _context.SaveChangesAsync();
             // return CreatedAtAction("GetAppUser", new { id = appUser.Id }, appUser);
             return Ok();
         }
 
-        // DELETE: api/AppUsers/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAppUser(int id)
         {
+            var username = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var user = await _userRepository.GetUserByUsernameAsync(username);
+            if (user == null) return NotFound();
+
             return NoContent();
         }
 
         private bool AppUserExists(int id)
         {
             return true;
+        }
+
+        private async Task<MemberDto> GetMembersByUsernameAsync(string username)
+        {
+            var user = await _userRepository.GetUserByUsernameAsync(username);
+            return _mapper.Map<MemberDto>(user);
+        }
+        private async Task<IEnumerable<MemberDto>> GetMembersAsync()
+        {
+            var users = await _userRepository.GetUsersAsync();
+            return _mapper.Map<IEnumerable<MemberDto>>(users);
         }
     }
 }
