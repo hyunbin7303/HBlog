@@ -12,7 +12,7 @@ namespace KevBlog.Infrastructure.Data
         public static async Task SeedUsers(DataContext context){
             if(await context.Users.AnyAsync()) return;
 
-            var userData = await File.ReadAllTextAsync("Data/UserSeedData.json");
+            var userData = await File.ReadAllTextAsync("../KevBlog.Infrastructure/Data/UserSeedData.json");
             var options =  new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
             var users = JsonSerializer.Deserialize<List<User>>(userData);
             foreach(var user in users){
