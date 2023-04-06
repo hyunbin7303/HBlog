@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
-using API.Interfaces;
 using AutoMapper;
-using API.DTOs;
 using System.Security.Claims;
 using KevBlog.Domain.Entities;
-
+using KevBlog.Domain.Interfaces;
+using Microsoft.EntityFrameworkCore;
+using KevBlog.Application.DTOs;
 namespace API.Controllers
 {
     [Authorize]
@@ -21,11 +21,21 @@ namespace API.Controllers
         }
 
 
+        private async Task<MemberDto> GetMembersByUsernameAsync(string username)
+        {
+            var user = await _userRepository.GetUserByUsernameAsync(username);
+            return _mapper.Map<MemberDto>(user);
+        }
+        private async Task<IEnumerable<MemberDto>> GetMembersAsync()
+        {
+            var users = await _userRepository.GetUsersAsync();
+            return _mapper.Map<IEnumerable<MemberDto>>(users);
+        }
         [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsers()
         {
-            var users = await _userRepository.GetMembersAsync();
+            var users = await GetMembersAsync();
             return Ok(users);
         }
 
@@ -33,7 +43,8 @@ namespace API.Controllers
         [HttpGet("{username}")]
         public async Task<ActionResult<MemberDto>> GetUser(string username)
         {
-            return await _userRepository.GetMemberAsync(username);
+            var user = await GetMembersByUsernameAsync(username);
+            return Ok(user);    
         }
         [HttpPut]
         public async Task<IActionResult> Update(MemberUpdateDto memberUpdateDto)

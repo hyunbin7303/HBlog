@@ -3,7 +3,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace KevBlog.Domain.Entities
 {
     [Table("Applications")]
-
     public class Application 
     {
         public int ApplicationId { get; set; }

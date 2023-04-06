@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
-using API.Interfaces;
-using System.Security.Claims;
 using KevBlog.Domain.Entities;
+using KevBlog.Domain.Interfaces;
 
 namespace API.Controllers
 {

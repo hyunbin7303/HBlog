@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using API.Data;
 using System.Security.Cryptography;
 using System.Text;
-using API.DTOs;
-using API.Interfaces;
 using KevBlog.Domain.Entities;
+using KevBlog.Infrastructure.Repositories;
+using KevBlog.Infrastructure.Authentications;
+using KevBlog.Application.DTOs;
 
 namespace API.Controllers
 {

@@ -4,9 +4,9 @@ namespace KevBlog.Domain.Entities
     [Table("Posts")]
     public class Post
     {
-
         public int Id { get; set; }
         public string Title { get; set; }
+        public string Desc { get; set; }
         public string Status { get; set; }
         public string Content { get; set; }
         public string LinkForPost {get ; set; }
