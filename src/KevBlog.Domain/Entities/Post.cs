@@ -1,10 +1,10 @@
+using KevBlog.Domain.Common;
 using System.ComponentModel.DataAnnotations.Schema;
 namespace KevBlog.Domain.Entities
 {
     [Table("Posts")]
-    public class Post
+    public class Post : BaseEntity
     {
-        public int Id { get; set; }
         public string Title { get; set; }
         public string Desc { get; set; }
         public string Status { get; set; }

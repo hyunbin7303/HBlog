@@ -6,6 +6,7 @@ using KevBlog.Application.DTOs;
 using AutoMapper;
 using System.Security.Claims;
 using KevBlog.Domain.Constants;
+using KevBlog.Infrastructure.Repositories;
 
 namespace API.Controllers
 {
@@ -13,12 +14,14 @@ namespace API.Controllers
     public class PostsController : BaseApiController
     {
         private readonly IPostRepository _postRepository;
+        private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
 
-        public PostsController(IPostRepository postRepository, IMapper mapper)
+        public PostsController(IPostRepository postRepository, IUserRepository userRepository, IMapper mapper)
         {
             this._postRepository = postRepository;
             this._mapper = mapper;
+            _userRepository = userRepository;
         }
 
         [AllowAnonymous]
@@ -49,8 +52,8 @@ namespace API.Controllers
                 return NotFound(); // or should be RedirectToRoute("Homepage");
 
             var updatedPost = _mapper.Map<Post>(postUpdateDto);
-            _postRepository.Update(post);
-            return Ok(_postRepository.SaveAllAsync());
+            await _postRepository.UpdateAsync(post);
+            return Ok();
         }
         [HttpPut("{id}/status")]
         public async Task<IActionResult> SetPostStatus(int id, string status)
@@ -60,12 +63,12 @@ namespace API.Controllers
                 return NotFound();
 
             post.Status = status;
-            await _postRepository.SaveAllAsync();
+            await _postRepository.UpdateAsync(post);
             return Ok();
         }
         
         [HttpPost]
-        public async Task<ActionResult<User>> Post(PostCreateDto postCreateDto)
+        public async Task<ActionResult<User>> Create(PostCreateDto postCreateDto)
         {
             if(postCreateDto == null)
                 throw new ArgumentNullException(nameof(postCreateDto));
@@ -73,16 +76,21 @@ namespace API.Controllers
             if (string.IsNullOrEmpty(postCreateDto.Title))
                 return BadRequest("Title cannot be empty.");
 
+            var username = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var user = await _userRepository.GetUserByUsernameAsync(username);
+
             var post = _mapper.Map<Post>(postCreateDto);
-            _postRepository.Update(post);
-            return Ok(await _postRepository.SaveAllAsync());
+            post.User = user;
+            post.UserId = user.Id;
+            await _postRepository.CreateAsync(post);
+            return Ok();
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             _postRepository.Remove(id);
-            return Ok(await _postRepository.SaveAllAsync());
+            return Ok();
         }
 
     }

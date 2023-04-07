@@ -16,6 +16,12 @@ namespace KevBlog.Infrastructure.Repositories
             this._dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
         }
 
+        public async Task CreateAsync(Post post)
+        {
+            _dbContext.Posts.Add(post);
+            await _dbContext.SaveChangesAsync();
+        }
+
         public async Task<Post> GetPostById(int id)
         {
             return await _dbContext.Posts.Where(x => x.Id == id).SingleOrDefaultAsync();
@@ -37,14 +43,10 @@ namespace KevBlog.Infrastructure.Repositories
             _dbContext.Posts.Remove(new Post { Id = id });
         }
 
-        public async Task<bool> SaveAllAsync()
-        {
-            return await _dbContext.SaveChangesAsync() > 0;
-        }
-
-        public void Update(Post user)
+        public async Task UpdateAsync(Post user)
         {
             _dbContext.Entry(user).State = EntityState.Modified;
+            await _dbContext.SaveChangesAsync();
         }
     }
 }
