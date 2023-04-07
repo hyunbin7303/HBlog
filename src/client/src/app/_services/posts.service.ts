@@ -36,7 +36,16 @@ export class PostsService {
     )
   }
   
-  createPost(post: Post) {
 
+  createPost(model: any) {
+    return this.http.post<Post>(this.baseUrl + 'posts', model).pipe(
+      map(post => {
+        if (post) {
+          localStorage.setItem('post', JSON.stringify(post));
+          // this.currentUserSource.next(post);
+        }
+        return post;
+      })
+    )
   }
 }

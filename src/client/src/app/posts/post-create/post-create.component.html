@@ -1,0 +1,16 @@
+<form #createPostForm="ngForm" (ngSubmit)="createPosts()" autocomplete="off">
+    <h2 class="text-center text-primary">Creating new post</h2>
+    <hr>
+    <div class="mb-3">
+        <input type="text" class="form-control" name="title" [(ngModel)]="model.title" placeholder="Title">
+    </div>
+    <div class="mb-3">
+        <input type="textarea" class="form-control" name="desc" [(ngModel)]="model.desc" placeholder="Description">
+    </div>
+    <div class="mb-3">
+        <input type="text" class="form-control" name="type" [(ngModel)]="model.type" placeholder="Type">
+    </div>
+    <div class="text-center">
+        <button class="btn btn-success me-2" type="submit">Create Post</button>
+    </div>
+</form>

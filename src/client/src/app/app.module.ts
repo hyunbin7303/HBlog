@@ -27,6 +27,7 @@ import { LoadingInterceptor } from './_interceptors/loading.interceptor';
 import { PostListComponent } from './posts/post-list/post-list.component';
 import { PostDetailComponent } from './posts/post-detail/post-detail.component';
 import { PostCardComponent } from './posts/post-card/post-card.component';
+import { PostCreateComponent } from './posts/post-create/post-create.component';
 
 @NgModule({
   declarations: [
@@ -47,7 +48,8 @@ import { PostCardComponent } from './posts/post-card/post-card.component';
     MemberEditComponent,
     PostListComponent,
     PostDetailComponent,
-    PostCardComponent
+    PostCardComponent,
+    PostCreateComponent
   ],
   imports: [
     BrowserAnimationsModule,
