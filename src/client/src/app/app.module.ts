@@ -13,7 +13,6 @@ import { MemberListComponent } from './members/member-list/member-list.component
 import { MemberDetailComponent } from './members/member-detail/member-detail.component';
 import { ListsComponent } from './lists/lists.component';
 import { MessagesComponent } from './messages/messages.component';
-import { InterviewQuestionsComponent } from './programming/interview-questions/interview-questions.component';
 import { BusinessesComponent } from './businesses/businesses.component';
 import { SharedModule } from './_modules/shared.module';
 import { TestErrorComponent } from './errors/test-error/test-error.component';
@@ -39,7 +38,6 @@ import { PostCreateComponent } from './posts/post-create/post-create.component';
     MemberDetailComponent,
     ListsComponent,
     MessagesComponent,
-    InterviewQuestionsComponent,
     BusinessesComponent,
     TestErrorComponent,
     NotFoundComponent,

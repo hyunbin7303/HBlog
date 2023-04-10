@@ -17,9 +17,8 @@ export class PostsService {
     return this.http.get<Post[]>(this.baseUrl + 'posts')
   }
   getPostByUserName(username: string) {
-    return this.http.get<Post>(this.baseUrl + 'posts/');
+    return this.http.get<Post>(this.baseUrl + 'posts/username/' + username);
   }
-
   getPost(postId: number) {
     const post = this.posts.find(x => x.id == postId);
     if (post) return of(post);
@@ -35,7 +34,6 @@ export class PostsService {
       })
     )
   }
-  
 
   createPost(model: any) {
 

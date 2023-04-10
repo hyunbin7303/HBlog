@@ -8,7 +8,10 @@ import { Post } from 'src/app/_models/post';
 })
 export class PostCardComponent implements OnInit {
   @Input() post: Post | undefined;
+
   ngOnInit(): void {
   }
-
+  onRouteToLinkPost() {
+    window.location.href = this.post?.linkForPost as string;
+  } 
 }
