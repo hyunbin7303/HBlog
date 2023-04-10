@@ -38,6 +38,7 @@ export class PostsService {
   
 
   createPost(model: any) {
+
     return this.http.post<Post>(this.baseUrl + 'posts', model).pipe(
       map(post => {
         if (post) {

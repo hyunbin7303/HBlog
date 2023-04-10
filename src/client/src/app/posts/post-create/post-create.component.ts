@@ -15,26 +15,19 @@ export class PostCreateComponent implements OnInit {
  
   constructor(private accountService: AccountService, private postService: PostsService, private toastr: ToastrService) {
     this.accountService.currentUser$.pipe(take(1)).subscribe({
-      // next: user => this.users = user
     })
   }
   ngOnInit(): void {
   }
   createPosts() {
-    // this.postService.createPost(this.editForm?.value).subscribe({
-    //   next: _ => {
-    //     this.toastr.success("Profile updated successfully.");
-    //     this.editForm?.reset(this.member);
-    //   }
-    // })
 
     this.postService.createPost(this.model).subscribe({
-      next: () => {
-        this.cancel();
+      next: (model) => {
+        this.toastr.success("Post created successfully.");
       },
       error: error => {
         this.toastr.error(error.error),
-          console.log(error)
+        console.log(error)
       }
     })
   }
