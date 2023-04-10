@@ -1,11 +1,5 @@
 
-<div class="card" *ngIf="post">
-    <!-- <div class="card-img-wrapper">
-        <img src="{{'./assets/user.png'}}" alt="{{post.title}}" class="card-img-top">
-        <ul class="list-inline member-icons animate text-center">
-
-        </ul>
-    </div> -->
+<div class="card" *ngIf="post" (click)="onClickBody()">
     <div class="card-body">
         <img src="{{'./assets/dotnet.png'}}" class="card-img-top">
         <small class="bg-light text-danger text-center"> Checking</small>
@@ -19,7 +13,6 @@
             Created: {{post.created}}
         </h6>
         <li class="list-inline-item">
-            <!-- <button routerLinkActive="active" externalLink="https://github.com/hyunbin7303" class="btn btn-primary"><i class="fa fa-user"></i></button> -->
             <button (click)="onRouteToLinkPost()">Link For Post</button>
         </li>
     </div>

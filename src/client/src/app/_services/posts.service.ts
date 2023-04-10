@@ -23,7 +23,7 @@ export class PostsService {
     const post = this.posts.find(x => x.id == postId);
     if (post) return of(post);
 
-    return this.http.get<Post>(this.baseUrl + 'posts/' + post);
+    return this.http.get<Post>(this.baseUrl + 'posts/' + postId);
   }
 
   updatePost(post: Post) {

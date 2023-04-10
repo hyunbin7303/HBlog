@@ -14,6 +14,8 @@ import { MemberEditComponent } from './members/member-edit/member-edit.component
 import { PreventUnsavedChangesGuard } from './_guards/prevent-unsaved-changes.guard';
 import { PostListComponent } from './posts/post-list/post-list.component';
 import { PostCreateComponent } from './posts/post-create/post-create.component';
+import { PostEditComponent } from './posts/post-edit/post-edit.component';
+import { PostDetailComponent } from './posts/post-detail/post-detail.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -26,11 +28,13 @@ const routes: Routes = [
       { path: 'member/edit', component: MemberEditComponent, canDeactivate: [PreventUnsavedChangesGuard] },
       { path: 'lists', component: ListsComponent },
       { path: 'messages', component: MessagesComponent },
-      { path: 'posts/create', component: PostCreateComponent }
+      { path: 'posts/create', component: PostCreateComponent },
+      { path: 'posts/edit', component: PostEditComponent }
     ]
   },
   { path: 'businesses', component: BusinessesComponent },
   { path: 'posts', component: PostListComponent },
+  { path: 'posts/:id', component: PostDetailComponent },
   { path: 'errors', component: TestErrorComponent },
   { path: 'not-found', component: NotFoundComponent },
   { path: 'server-error', component: ServerErrorComponent },
