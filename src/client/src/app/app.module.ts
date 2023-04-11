@@ -28,6 +28,7 @@ import { PostDetailComponent } from './posts/post-detail/post-detail.component';
 import { PostCardComponent } from './posts/post-card/post-card.component';
 import { PostCreateComponent } from './posts/post-create/post-create.component';
 import { PostEditComponent } from './posts/post-edit/post-edit.component';
+import { TextInputComponent } from './_forms/text-input/text-input.component';
 
 @NgModule({
   declarations: [
@@ -49,7 +50,8 @@ import { PostEditComponent } from './posts/post-edit/post-edit.component';
     PostDetailComponent,
     PostCardComponent,
     PostCreateComponent,
-    PostEditComponent
+    PostEditComponent,
+    TextInputComponent
   ],
   imports: [
     BrowserAnimationsModule,
