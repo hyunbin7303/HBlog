@@ -1,5 +1,5 @@
 
-<div class="card" *ngIf="post" (click)="onClickBody()">
+<div class="card" *ngIf="post" routerLink="/posts/{{post.id}}">
     <div class="card-body">
         <img src="{{'./assets/dotnet.png'}}" class="card-img-top">
         <small class="bg-light text-danger text-center"> Checking</small>

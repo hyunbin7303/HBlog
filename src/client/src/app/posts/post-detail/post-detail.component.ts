@@ -10,13 +10,17 @@ import { PostsService } from 'src/app/_services/posts.service';
 })
 export class PostDetailComponent implements OnInit {
   post: Post | undefined;
+  username: string = '';
   constructor(private postService: PostsService, private route: ActivatedRoute) { }
   ngOnInit(): void {
     this.loadPost();
+    this.username = this.route.snapshot.paramMap.get('username') as string;
+    console.log(this.route.snapshot.paramMap.get('username'));
   }
   loadPost() {
     const postid = this.route.snapshot.paramMap.get('id');
     var postId: number = Number(postid);
+
     console.log(postId);
     if (!postid) return;
 
