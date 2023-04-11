@@ -15,6 +15,7 @@ namespace KevBlog.Application.Automapper
             CreateMap<Photo, PhotoDto>();
             CreateMap<Post, PostDisplayDto>();
             CreateMap<MemberUpdateDto, User>();
+            CreateMap<RegisterDto, User>();
             CreateMap<PostUpdateDto, Post>();
             CreateMap<PostCreateDto, Post>();
         }

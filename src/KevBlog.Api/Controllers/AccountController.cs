@@ -6,6 +6,7 @@ using KevBlog.Domain.Entities;
 using KevBlog.Infrastructure.Authentications;
 using KevBlog.Application.DTOs;
 using KevBlog.Infrastructure.Data;
+using AutoMapper;
 
 namespace API.Controllers
 {
@@ -13,10 +14,12 @@ namespace API.Controllers
     {
         private readonly DataContext _context;
         public ITokenService _tokenService { get; }
-        public AccountController(DataContext context, ITokenService tokenService)
+        public IMapper _mapper { get; }
+        public AccountController(DataContext context, ITokenService tokenService, IMapper mapper)
         {
+            this._mapper = mapper;
             this._tokenService = tokenService;
-            _context = context;
+            this._context = context;
         }
 
         [HttpPost("register")]
@@ -24,20 +27,19 @@ namespace API.Controllers
         {
             if(await UserExists(registerDto.UserName)) return BadRequest("Username is taken");
 
-
-            using var hmac = new HMACSHA512(); // why use using keyword?
-            var user = new User
-            {
-                UserName = registerDto.UserName.ToLower(),
-                PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(registerDto.Password)),
-                PasswordSalt = hmac.Key 
-            };
+            var user = _mapper.Map<User>(registerDto);
+            using var hmac = new HMACSHA512(); 
+            user.UserName = registerDto.UserName.ToLower();
+            user.PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(registerDto.Password));
+            user.PasswordSalt = hmac.Key;
 
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
+
             return new UserDto{
                 Username = user.UserName,
-                Token = _tokenService.CreateToken(user)
+                Token = _tokenService.CreateToken(user),
+                KnownAs = user.KnownAs
             };
         }
         private async Task<bool> UserExists(string username)
@@ -59,7 +61,9 @@ namespace API.Controllers
             return new UserDto
             {
                 Username = user.UserName,
-                Token = _tokenService.CreateToken(user)
+                Token = _tokenService.CreateToken(user),
+                PhotoUrl = user.Photos.FirstOrDefault(x=> x.IsMain)?.Url,
+                KnownAs = user.KnownAs
             };
         }
         // PUT: api/AppUsers/5
