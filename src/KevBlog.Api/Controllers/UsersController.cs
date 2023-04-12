@@ -53,8 +53,6 @@ namespace API.Controllers
         public async Task<ActionResult<User>> Add(User appUser)
         {
             // check user already exists. 
-
-
             // _context.Users.Add(appUser);
             // await _context.SaveChangesAsync();
             // return CreatedAtAction("GetAppUser", new { id = appUser.Id }, appUser);

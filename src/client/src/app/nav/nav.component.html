@@ -1,22 +1,23 @@
 <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-primary">
     <div class="container">
-        <a class="navbar-brand" routerLink="/" routerLinkActive="active">H, Project</a>
+        <a class="navbar-brand" routerLink="/" routerLinkActive="active">HappYness Blog</a>
         
         <ul class="navbar-nav me-auto mb-2 mb-md-0" *ngIf="accountService.currentUser$ | async">
             <ng-container *ngIf="accountService.currentUser$ | async">
                 <li class="nav-item"><a class="nav-link" routerLink="/members" routerLinkActive="active">Users</a></li>
                 <li class="nav-item"><a class="nav-link" routerLink="/posts" routerLinkActive="active">Posts</a></li>
-                <li class="nav-item"><a class="nav-link" routerLink="/lists" routerLinkActive="active">Lists</a></li>
+                <!-- <li class="nav-item"><a class="nav-link" routerLink="/lists" routerLinkActive="active">Lists</a></li> -->
                 <li class="nav-item"><a class="nav-link" routerLink="/messages" routerLinkActive="active">Messages</a></li>
-                <li class="nav-item"><a class="nav-link" routerLink="/Contact" routerLinkActive="active">Contact</a></li>
-                <li class="nav-item"><a class="nav-link" routerLink="/About" routerLinkActive="active">About</a></li>
-                <!-- <li class="nav-item"><a class="nav-link" routerLink="/programming/interview-Questions" routerLinkActive="active">Interview Questions</a></li> -->
+                <li class="nav-item"><a class="nav-link" routerLink="/about" routerLinkActive="active">About</a></li>
             </ng-container>
-            <li class="nav-item">
-                <a class="nav-link" routerLink="/errors" routerLinkActive="active">Error</a>
-            </li>
+            <!-- <li class="nav-item"><a class="nav-link" routerLink="/errors" routerLinkActive="active">Error</a></li> -->
         </ul>
-
+        <ul *ngIf="!(accountService.currentUser$ | async)" class="navbar-nav me-auto mb-2 mb-md-0" >
+            <ng-container>
+                <li class="nav-item"><a class="nav-link" routerLink="/posts" routerLinkActive="active">Posts</a></li>
+                <li class="nav-item"><a class="nav-link" routerLink="/about" routerLinkActive="active">About</a></li>
+            </ng-container>
+        </ul>
         <div class="dropdown" *ngIf="accountService.currentUser$ | async as user" dropdown>
             <a class="dropdown-toggle text-light text-decoration-none" dropdownToggle>Welcome, {{user.username | titlecase}}</a>
             <div class="dropdown-menu mt-3" *dropdownMenu>
@@ -26,18 +27,10 @@
         </div>
 
         <form *ngIf="!(accountService.currentUser$ | async)" #loginForm="ngForm" class="d-flex" (ngSubmit)="login()" autocomplete="off">
-            <input 
-                name ="username"
-                [(ngModel)]="model.username"              
-                class="form-control me-2" 
-                type="text" placeholder="Username">
-            <input 
-                name ="password"
-                [(ngModel)]="model.password"    
-                class="form-control me-2" 
-                type="password" 
-                placeholder="password">
+            <input name ="username" [(ngModel)]="model.username" class="form-control me-2" type="text" placeholder="Username">
+            <input name ="password" [(ngModel)]="model.password" class="form-control me-2" type="password" placeholder="password">
             <button class="btn btn-success" type="submit">Login</button>
         </form>
+        <button *ngIf="!(accountService.currentUser$ | async)" class="btn btn-primary" type="submit">register</button>
     </div>
 </nav>
