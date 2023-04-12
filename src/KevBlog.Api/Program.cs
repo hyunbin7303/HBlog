@@ -1,7 +1,7 @@
 using KevBlog.Application.Automapper;
 using KevBlog.Infrastructure.Data;
 using KevBlog.Infrastructure.Extensions;
-using KevBlog.Infrastructure.Middleware;
+using KevBlog.Infrastructure.Middlewares;
 using KevBlog.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 

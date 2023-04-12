@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-namespace API.Controllers
+namespace KevBlog.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]

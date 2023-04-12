@@ -1,5 +1,5 @@
 using KevBlog.Domain.Entities;
-using KevBlog.Domain.Interfaces;
+using KevBlog.Domain.Repositories;
 using KevBlog.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 namespace KevBlog.Infrastructure.Repositories

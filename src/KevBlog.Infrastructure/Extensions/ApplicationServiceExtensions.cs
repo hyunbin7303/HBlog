@@ -1,4 +1,4 @@
-using KevBlog.Domain.Interfaces;
+using KevBlog.Domain.Repositories;
 using KevBlog.Infrastructure.Authentications;
 using KevBlog.Infrastructure.Data;
 using KevBlog.Infrastructure.Repositories;

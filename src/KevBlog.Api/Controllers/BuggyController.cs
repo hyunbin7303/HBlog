@@ -3,7 +3,7 @@ using KevBlog.Infrastructure.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace API.Controllers
+namespace KevBlog.Api.Controllers
 {
     public class BuggyController : BaseApiController
     {
@@ -23,7 +23,7 @@ namespace API.Controllers
         public ActionResult<User> GetNotFound()
         {
             var thing = _dbContext.Users.Find(-1);
-            if(thing == null) return NotFound();
+            if (thing == null) return NotFound();
             return thing;
         }
 

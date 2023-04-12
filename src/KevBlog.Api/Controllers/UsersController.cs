@@ -3,12 +3,12 @@ using Microsoft.AspNetCore.Authorization;
 using AutoMapper;
 using System.Security.Claims;
 using KevBlog.Domain.Entities;
-using KevBlog.Domain.Interfaces;
 using KevBlog.Application.DTOs;
 using KevBlog.Infrastructure.Helpers;
 using KevBlog.Infrastructure.Extensions;
+using KevBlog.Domain.Repositories;
 
-namespace API.Controllers
+namespace KevBlog.Api.Controllers
 {
     [Authorize]
     public class UsersController : BaseApiController
@@ -18,38 +18,37 @@ namespace API.Controllers
 
         public UsersController(IUserRepository userRepository, IMapper mapper)
         {
-            this._mapper = mapper;
-            this._userRepository = userRepository;
+            _mapper = mapper;
+            _userRepository = userRepository;
         }
 
         [AllowAnonymous]
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsers([FromQuery]UserParams userParams)
+        public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsers([FromQuery] UserParams userParams)
         {
             var users = await GetMembersAsync(userParams);
             Response.AddPaginationHeader(new PaginationHeader(users.CurrentPage, users.PageSize, users.TotalCount, users.TotalPages));
             return Ok(users);
         }
 
-
         [HttpGet("{username}")]
         public async Task<ActionResult<MemberDto>> GetUser(string username)
         {
             var user = await GetMembersByUsernameAsync(username);
-            if(user is null)
+            if (user is null)
                 return NotFound($"Input user: {username} cannot find.");
 
-            return Ok(user);    
+            return Ok(user);
         }
         [HttpPut]
         public async Task<IActionResult> Update(MemberUpdateDto memberUpdateDto)
         {
-            var username = User.FindFirst(ClaimTypes.NameIdentifier)?.Value; 
+            var username = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var user = await _userRepository.GetUserByUsernameAsync(username);
-            if(user == null) return NotFound();
+            if (user == null) return NotFound();
 
             _mapper.Map(memberUpdateDto, user);
-            if(await _userRepository.SaveAllAsync()) return NoContent();
+            if (await _userRepository.SaveAllAsync()) return NoContent();
 
             return BadRequest("Failed to update user");
         }
@@ -90,7 +89,7 @@ namespace API.Controllers
         {
             var userQuery = _userRepository.GetUserQuery();
             var memberQuery = _mapper.ProjectTo<MemberDto>(userQuery);
-            return await PageList<MemberDto>.CreateAsync(memberQuery, userParams.PageNumber,userParams.PageSize);
+            return await PageList<MemberDto>.CreateAsync(memberQuery, userParams.PageNumber, userParams.PageSize);
         }
     }
 }

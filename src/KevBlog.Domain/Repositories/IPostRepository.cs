@@ -1,6 +1,6 @@
 using KevBlog.Domain.Entities;
 
-namespace KevBlog.Domain.Interfaces
+namespace KevBlog.Domain.Repositories
 {
     public interface IPostRepository
     {

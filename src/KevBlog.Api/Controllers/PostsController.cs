@@ -1,14 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using KevBlog.Domain.Entities;
-using KevBlog.Domain.Interfaces;
 using KevBlog.Application.DTOs;
 using AutoMapper;
 using System.Security.Claims;
 using KevBlog.Domain.Constants;
 using KevBlog.Infrastructure.Repositories;
+using KevBlog.Domain.Repositories;
 
-namespace API.Controllers
+namespace KevBlog.Api.Controllers
 {
     [Authorize]
     public class PostsController : BaseApiController
@@ -19,8 +19,8 @@ namespace API.Controllers
 
         public PostsController(IPostRepository postRepository, IUserRepository userRepository, IMapper mapper)
         {
-            this._postRepository = postRepository;
-            this._mapper = mapper;
+            _mapper = mapper;
+            _postRepository = postRepository;
             _userRepository = userRepository;
         }
 
@@ -30,7 +30,6 @@ namespace API.Controllers
         {
             return Ok(await _postRepository.GetPostsAsync());
         }
-
         [AllowAnonymous]
         [HttpGet("users/{username}")]
         public async Task<ActionResult<Post>> GetPostByUsername(string username)
@@ -43,7 +42,6 @@ namespace API.Controllers
         {
             return await _postRepository.GetPostById(id);
         }
-
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(int id, PostUpdateDto postUpdateDto)
         {
@@ -66,11 +64,10 @@ namespace API.Controllers
             await _postRepository.UpdateAsync(post);
             return Ok();
         }
-        
         [HttpPost]
         public async Task<ActionResult<User>> Create(PostCreateDto postCreateDto)
         {
-            if(postCreateDto == null)
+            if (postCreateDto == null)
                 throw new ArgumentNullException(nameof(postCreateDto));
 
             if (string.IsNullOrEmpty(postCreateDto.Title))
@@ -85,7 +82,6 @@ namespace API.Controllers
             await _postRepository.CreateAsync(post);
             return Ok();
         }
-
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {

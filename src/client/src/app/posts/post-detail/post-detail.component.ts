@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { take } from 'rxjs';
 import { Post } from 'src/app/_models/post';
+import { User } from 'src/app/_models/user';
 import { AccountService } from 'src/app/_services/account.service';
 import { PostsService } from 'src/app/_services/posts.service';
 
@@ -12,11 +14,17 @@ import { PostsService } from 'src/app/_services/posts.service';
 export class PostDetailComponent implements OnInit {
   post: Post | undefined;
   username: string = '';
-  constructor(private postService: PostsService, private route: ActivatedRoute) { }
+  user: User | null = null;
+
+  constructor(private postService: PostsService,private accountService: AccountService, private route: ActivatedRoute) { }
+  
   ngOnInit(): void {
+
     this.loadPost();
     this.username = this.route.snapshot.paramMap.get('username') as string;
-    console.log(this.route.snapshot.paramMap.get('username'));
+    this.accountService.currentUser$.pipe(take(1)).subscribe({
+      next: user => this.user = user
+    })
   }
   loadPost() {
     const postid = this.route.snapshot.paramMap.get('id');
