@@ -6,6 +6,7 @@ import { TabsModule } from 'ngx-bootstrap/tabs';
 import { NgxGalleryModule } from '@kolkov/ngx-gallery';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker'
+import { PaginationModule } from 'ngx-bootstrap/pagination'
 @NgModule({
   declarations: [],
   imports: [
@@ -19,7 +20,8 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker'
     NgxSpinnerModule.forRoot({
       type: 'triangle-skew-spin'
     }),
-    BsDatepickerModule.forRoot()
+    BsDatepickerModule.forRoot(),
+    PaginationModule.forRoot()
   ],
   exports: [
     BsDropdownModule,
@@ -27,7 +29,8 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker'
     TabsModule,
     NgxGalleryModule,
     NgxSpinnerModule,
-    BsDatepickerModule
+    BsDatepickerModule,
+    PaginationModule
   ]
 })
 export class SharedModule { }
