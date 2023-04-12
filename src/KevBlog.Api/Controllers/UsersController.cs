@@ -5,6 +5,9 @@ using System.Security.Claims;
 using KevBlog.Domain.Entities;
 using KevBlog.Domain.Interfaces;
 using KevBlog.Application.DTOs;
+using KevBlog.Infrastructure.Helpers;
+using KevBlog.Infrastructure.Extensions;
+
 namespace API.Controllers
 {
     [Authorize]
@@ -21,9 +24,10 @@ namespace API.Controllers
 
         [AllowAnonymous]
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsers()
+        public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsers([FromQuery]UserParams userParams)
         {
-            var users = await GetMembersAsync();
+            var users = await GetMembersAsync(userParams);
+            Response.AddPaginationHeader(new PaginationHeader(users.CurrentPage, users.PageSize, users.TotalCount, users.TotalPages));
             return Ok(users);
         }
 
@@ -32,6 +36,9 @@ namespace API.Controllers
         public async Task<ActionResult<MemberDto>> GetUser(string username)
         {
             var user = await GetMembersByUsernameAsync(username);
+            if(user is null)
+                return NotFound($"Input user: {username} cannot find.");
+
             return Ok(user);    
         }
         [HttpPut]
@@ -76,13 +83,14 @@ namespace API.Controllers
 
         private async Task<MemberDto> GetMembersByUsernameAsync(string username)
         {
-            var user = await _userRepository.GetUserByUsernameAsync(username);
-            return _mapper.Map<MemberDto>(user);
+            User user = await _userRepository.GetUserByUsernameAsync(username);
+            return _mapper.Map<MemberDto>(user) ?? null;
         }
-        private async Task<IEnumerable<MemberDto>> GetMembersAsync()
+        private async Task<PageList<MemberDto>> GetMembersAsync(UserParams userParams)
         {
-            var users = await _userRepository.GetUsersAsync();
-            return _mapper.Map<IEnumerable<MemberDto>>(users);
+            var userQuery = _userRepository.GetUserQuery();
+            var memberQuery = _mapper.ProjectTo<MemberDto>(userQuery);
+            return await PageList<MemberDto>.CreateAsync(memberQuery, userParams.PageNumber,userParams.PageSize);
         }
     }
 }

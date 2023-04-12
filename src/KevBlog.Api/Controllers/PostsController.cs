@@ -58,8 +58,8 @@ namespace API.Controllers
         [HttpPut("{id}/status")]
         public async Task<IActionResult> SetPostStatus(int id, string status)
         {
-            var post = await _postRepository.GetPostById(id);
-            if (post == null)
+            Post post = await _postRepository.GetPostById(id);
+            if (post is null)
                 return NotFound();
 
             post.Status = status;
