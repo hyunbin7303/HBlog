@@ -38,5 +38,6 @@ namespace KevBlog.Infrastructure.Repositories
         {
             _dbContext.Entry(user).State = EntityState.Modified;
         }
+
     }
 }

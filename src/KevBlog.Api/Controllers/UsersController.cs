@@ -26,6 +26,14 @@ namespace KevBlog.Api.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsers([FromQuery] UserParams userParams)
         {
+            string username = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var currUser = await _userRepository.GetUserByUsernameAsync(username);
+            userParams.CurrentUsername = currUser.UserName;
+
+            if(string.IsNullOrEmpty(userParams.Gender)) {
+                userParams.Gender = currUser.Gender == "male" ? "female" : "male";
+            }
+
             var users = await GetMembersAsync(userParams);
             Response.AddPaginationHeader(new PaginationHeader(users.CurrentPage, users.PageSize, users.TotalCount, users.TotalPages));
             return Ok(users);
@@ -88,6 +96,13 @@ namespace KevBlog.Api.Controllers
         private async Task<PageList<MemberDto>> GetMembersAsync(UserParams userParams)
         {
             var userQuery = _userRepository.GetUserQuery();
+            userQuery = userQuery.Where(x => x.UserName != userParams.CurrentUsername);
+            userQuery = userQuery.Where(x => x.Gender == userParams.Gender);
+
+            var minDob = DateTime.Today.AddYears(-userParams.MaxAge - 1);
+            var maxDob = DateTime.Today.AddYears(-userParams.MinAge);
+            userQuery = userQuery.Where(x => x.DateOfBirth >= minDob && x.DateOfBirth <= maxDob);
+
             var memberQuery = _mapper.ProjectTo<MemberDto>(userQuery);
             return await PageList<MemberDto>.CreateAsync(memberQuery, userParams.PageNumber, userParams.PageSize);
         }
