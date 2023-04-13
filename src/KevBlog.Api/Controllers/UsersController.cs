@@ -103,6 +103,12 @@ namespace KevBlog.Api.Controllers
             var maxDob = DateTime.Today.AddYears(-userParams.MinAge);
             userQuery = userQuery.Where(x => x.DateOfBirth >= minDob && x.DateOfBirth <= maxDob);
 
+            userQuery = userParams.OrderBy switch 
+            {
+                "created" => userQuery.OrderByDescending(x => x.Created),
+                _ => userQuery.OrderByDescending(x => x.LastActive)
+            };
+
             var memberQuery = _mapper.ProjectTo<MemberDto>(userQuery);
             return await PageList<MemberDto>.CreateAsync(memberQuery, userParams.PageNumber, userParams.PageSize);
         }
