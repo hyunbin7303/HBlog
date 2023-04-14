@@ -1,6 +1,7 @@
 using KevBlog.Domain.Repositories;
 using KevBlog.Infrastructure.Authentications;
 using KevBlog.Infrastructure.Data;
+using KevBlog.Infrastructure.Helpers;
 using KevBlog.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -19,6 +20,8 @@ namespace KevBlog.Infrastructure.Extensions
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IPostRepository, PostRepository>();
+
+            services.AddScoped<LogUserActivity>();
             return services;
         }
         

@@ -26,8 +26,7 @@ namespace KevBlog.Api.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsers([FromQuery] UserParams userParams)
         {
-            string username = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            var currUser = await _userRepository.GetUserByUsernameAsync(username);
+            var currUser = await _userRepository.GetUserByUsernameAsync(User.GetUsername());
             userParams.CurrentUsername = currUser.UserName;
 
             if(string.IsNullOrEmpty(userParams.Gender)) {
@@ -51,8 +50,7 @@ namespace KevBlog.Api.Controllers
         [HttpPut]
         public async Task<IActionResult> Update(MemberUpdateDto memberUpdateDto)
         {
-            var username = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            var user = await _userRepository.GetUserByUsernameAsync(username);
+            var user = await _userRepository.GetUserByUsernameAsync(User.GetUsername());
             if (user == null) return NotFound();
 
             _mapper.Map(memberUpdateDto, user);
