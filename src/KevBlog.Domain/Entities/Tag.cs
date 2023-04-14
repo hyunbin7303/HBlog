@@ -1,10 +1,12 @@
-using System.ComponentModel.DataAnnotations.Schema;
+using KevBlog.Domain.Common;
 namespace KevBlog.Domain.Entities
 {
-    [Table("Tags")]
-    public class Tag
+    public class Tag : BaseEntity
     {
-        public int Id { get; set; }
         public string Name { get; set; }
+        public string Desc { get; set; }
+        public string Slug { get; set; }
+        public List<PostTags> PostTags { get; set; }
+
     }
 }
