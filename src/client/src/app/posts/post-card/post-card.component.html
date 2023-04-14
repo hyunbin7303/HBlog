@@ -8,7 +8,7 @@
         <h5 class="mt-1">{{post.title}}</h5>
 
         <h6 class="card-title text-center mb-1">
-            Created: {{post.created}}
+            Created: {{post.created | date}}
         </h6>
         <li class="list-inline-item">
             <button (click)="onRouteToLinkPost()">Link For Post</button>
