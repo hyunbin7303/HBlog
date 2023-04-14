@@ -26,9 +26,11 @@ namespace KevBlog.Api.Controllers
 
         [AllowAnonymous]
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Post>>> GetPosts()
+        public async Task<ActionResult<IEnumerable<PostDisplayDto>>> GetPosts()
         {
-            return Ok(await _postRepository.GetPostsAsync());
+            IEnumerable<Post> posts = await _postRepository.GetPostsAsync();
+            var postDisplays = _mapper.Map<IEnumerable<PostDisplayDto>>(posts);
+            return Ok(postDisplays);
         }
         [AllowAnonymous]
         [HttpGet("users/{username}")]
