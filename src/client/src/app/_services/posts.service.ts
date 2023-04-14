@@ -21,6 +21,7 @@ export class PostsService {
   }
   getPost(postId: number) {
     const post = this.posts.find(x => x.id == postId);
+    console.log(post);
     if (post) return of(post);
 
     return this.http.get<Post>(this.baseUrl + 'posts/' + postId);
