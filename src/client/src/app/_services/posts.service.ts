@@ -1,30 +1,38 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { Post } from '../_models/post';
-import { map, of } from 'rxjs';
+import { Observable, catchError, map, of, take, throwError } from 'rxjs';
+import { User } from '../_models/user';
+import { AccountService } from './account.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PostsService {
+  user: User | undefined;
   baseUrl = environment.apiUrl;
   posts: Post[] = [];
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private accountService: AccountService) { 
+    this.accountService.currentUser$.pipe(take(1)).subscribe({
+      next: user => {
+        if (user) {
+          this.user = user;
+        }
+      }
+    })
 
-  getPosts() {
+  }
+
+  getPosts() : Observable<Post[]> {
     return this.http.get<Post[]>(this.baseUrl + 'posts')
   }
-  getPostByUserName(username: string) {
+  getPostByUserName(username: string): Observable<Post> {
     return this.http.get<Post>(this.baseUrl + 'posts/username/' + username);
   }
-  getPost(postId: number) {
-    const post = this.posts.find(x => x.id == postId);
-    console.log(post);
-    if (post) return of(post);
-
-    return this.http.get<Post>(this.baseUrl + 'posts/' + postId);
+  getPostById(id: number): Observable<Post> {
+    return this.http.get<Post>(this.baseUrl + 'posts/' + id).pipe(catchError(this.handleError));
   }
 
   updatePost(post: Post) {
@@ -47,5 +55,18 @@ export class PostsService {
         return post;
       })
     )
+  }
+  deletePost(id: number): Observable<boolean> {
+    return this.http.delete<boolean>(this.baseUrl + 'posts/' + id).pipe(catchError(this.handleError));
+  }
+  
+
+  private handleError(error: HttpErrorResponse) {
+    console.error('server error:', error);
+    if(error.error instanceof Error) {
+      let errMsg = error.error.message;
+      return throwError(() => new Error(errMsg));
+    }
+    return throwError(()=> new Error(error.message || 'Server Error.'));
   }
 }

@@ -5,7 +5,6 @@ using KevBlog.Application.DTOs;
 using AutoMapper;
 using System.Security.Claims;
 using KevBlog.Domain.Constants;
-using KevBlog.Infrastructure.Repositories;
 using KevBlog.Domain.Repositories;
 
 namespace KevBlog.Api.Controllers
@@ -38,11 +37,18 @@ namespace KevBlog.Api.Controllers
         {
             return await _postRepository.GetPostByUsername(username);
         }
+        
         [AllowAnonymous]
         [HttpGet("{id}")]
-        public async Task<ActionResult<Post>> GetPostById(int id)
+        public async Task<ActionResult<PostDisplayDto>> GetPostById(int id)
         {
-            return await _postRepository.GetPostById(id);
+            Post post = await _postRepository.GetPostById(id);
+            if(post is null || post.Status is PostStatus.Removed) 
+                NotFound();
+
+            var postDisplay = _mapper.Map<PostDisplayDto>(post);
+            return Ok(postDisplay);
+
         }
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(int id, PostUpdateDto postUpdateDto)

@@ -24,7 +24,7 @@ namespace KevBlog.Infrastructure.Repositories
 
         public async Task<Post> GetPostById(int id)
         {
-            return await _dbContext.Posts.AsNoTracking().Where(x => x.Id == id).SingleOrDefaultAsync();
+            return await _dbContext.Posts.Where(x => x.Id == id).SingleOrDefaultAsync();
         }
 
         public async Task<Post> GetPostByUsername(string username)
@@ -35,7 +35,7 @@ namespace KevBlog.Infrastructure.Repositories
 
         public async Task<IEnumerable<Post>> GetPostsAsync()
         {
-            return await _dbContext.Posts.ToListAsync();
+            return await _dbContext.Posts.AsNoTracking().ToListAsync();
         }
 
         public void Remove(int id)

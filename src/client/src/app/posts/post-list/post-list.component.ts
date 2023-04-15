@@ -12,15 +12,24 @@ import { PostsService } from 'src/app/_services/posts.service';
 })
 
 export class PostListComponent implements OnInit {
-  posts$: Observable<Post[]> | undefined;
   user: User | null = null;
-
+  posts: Post[] = [];
+  isUserEditable: boolean = false;
   constructor(private postsService: PostsService, private accountService: AccountService) {
-    this.accountService.currentUser$.pipe(take(1)).subscribe({
-      next: user => this.user = user
+    this.postsService.getPosts().subscribe({
+      next: posts => {
+        this.posts = posts;
+      }
     })
-   }
-  ngOnInit(): void {
-    this.posts$ = this.postsService.getPosts();
+    this.accountService.currentUser$.pipe(take(1)).subscribe({
+      next: user => {
+        if (user) {
+          this.user = user;
+        }
+      }
+    })
   }
+  ngOnInit(): void {
+  }
+
 }

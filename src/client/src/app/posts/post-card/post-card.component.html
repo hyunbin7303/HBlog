@@ -1,6 +1,6 @@
 
-<div class="card" *ngIf="post" routerLink="/posts/{{post.id}}">
-    <div class="card-body">
+<div class="card" *ngIf="post">
+    <div class="card-body" routerLink="/posts/{{post.id}}">
         <img src="{{'./assets/dotnet.png'}}" class="card-img-top">
         <!-- <small class="bg-light text-danger text-center"> Checking</small> -->
         <small class="bg-light text-success text-center ml-3"> {{post.type}}</small>

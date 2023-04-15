@@ -2,7 +2,7 @@
     <div class="header">
         <h1>{{post.title}}</h1>
     </div>
-    <strong>Writer: {{this.username}}</strong>
+    <!-- <strong>Writer: {{this.username}}</strong> -->
     <div class="col-4">
         <img src="{{'./assets/dotnet.png'}}" class="card-img-top img-thumbnail">
         <div class="card-body">
@@ -15,7 +15,7 @@
         <div class="card-footer">
             <div class="btn-group d-flex">
                 <button class="btn btn-primary">Like</button>
-                <button *ngIf="user" class="btn btn-info">Edit</button>
+                <button *ngIf="isEditable == true" class="btn btn-info">Edit</button> 
                 <button class="btn btn-success">Comments</button>
             </div>
         </div>

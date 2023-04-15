@@ -13,29 +13,40 @@ import { PostsService } from 'src/app/_services/posts.service';
 })
 export class PostDetailComponent implements OnInit {
   post: Post | undefined;
-  username: string = '';
-  user: User | null = null;
+  user : User | null = null;
+  isEditable: boolean = false;
+  constructor(private postService: PostsService,private accountService: AccountService, private route: ActivatedRoute) { 
 
-  constructor(private postService: PostsService,private accountService: AccountService, private route: ActivatedRoute) { }
+
+    // if (this.userId === this.post?.userId)
+    //   this.isEditable = true;
+    if (this.post)
+      console.log('UserID checking2 : ' + this.post?.id);
+
+  }
   
   ngOnInit(): void {
-
-    this.loadPost();
-    this.username = this.route.snapshot.paramMap.get('username') as string;
     this.accountService.currentUser$.pipe(take(1)).subscribe({
-      next: user => this.user = user
+      next: user => {
+        if(user) {
+          this.user = user;
+          this.loadPost();
+          console.log('Known as : ' + this.user.knownAs);
+          console.log('Title: ' + this.post?.title);
+        }
+      }
     })
   }
+
+
   loadPost() {
     const postid = this.route.snapshot.paramMap.get('id');
     var postId: number = Number(postid);
-
-    console.log(postId);
-    if (!postid) return;
-
-    this.postService.getPost(postId).subscribe({
+    this.postService.getPostById(postId).subscribe({
       next: post => {
-        this.post = post;
+        if (post) {
+          this.post = post;
+        }
       }
     });
   }

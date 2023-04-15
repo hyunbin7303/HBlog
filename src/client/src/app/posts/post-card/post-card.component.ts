@@ -15,6 +15,6 @@ export class PostCardComponent implements OnInit {
     window.location.href = this.post?.linkForPost as string;
   } 
   onClickBody(){
-    console.log(this.post?.title)
+    console.log('body click: ' + this.post?.title)
   }
 }
