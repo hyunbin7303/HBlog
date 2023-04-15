@@ -16,21 +16,23 @@ export class PostDetailComponent implements OnInit {
   user : User | null = null;
   isEditable: boolean = false;
   constructor(private postService: PostsService,private accountService: AccountService, private route: ActivatedRoute) { 
-
-
-    // if (this.userId === this.post?.userId)
-    //   this.isEditable = true;
+    this.loadPost();
     if (this.post)
       console.log('UserID checking2 : ' + this.post?.id);
 
   }
-  
+  DoCheck(): void{
+    if (this.user?.username == this.post?.userName) {
+      console.log('test: ' + this.user?.username.valueOf());
+      console.log(this.post?.userName);
+      this.isEditable = true;
+    }
+  }
   ngOnInit(): void {
     this.accountService.currentUser$.pipe(take(1)).subscribe({
       next: user => {
         if(user) {
           this.user = user;
-          this.loadPost();
           console.log('Known as : ' + this.user.knownAs);
           console.log('Title: ' + this.post?.title);
         }

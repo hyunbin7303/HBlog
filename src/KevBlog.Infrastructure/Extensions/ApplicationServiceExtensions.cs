@@ -20,6 +20,7 @@ namespace KevBlog.Infrastructure.Extensions
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IPostRepository, PostRepository>();
+            services.AddScoped<ILikesRepository, LikesRepository>();
 
             services.AddScoped<LogUserActivity>();
             return services;

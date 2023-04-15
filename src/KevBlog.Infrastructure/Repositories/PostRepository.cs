@@ -1,4 +1,3 @@
-using AutoMapper;
 using KevBlog.Domain.Entities;
 using KevBlog.Domain.Repositories;
 using KevBlog.Infrastructure.Data;
@@ -9,10 +8,8 @@ namespace KevBlog.Infrastructure.Repositories
     public class PostRepository : IPostRepository
     {
         private readonly DataContext _dbContext;
-        private readonly IMapper _mapper;
-        public PostRepository(DataContext dbContext, IMapper mapper)
+        public PostRepository(DataContext dbContext)
         {
-            this._mapper = mapper;
             this._dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
         }
 

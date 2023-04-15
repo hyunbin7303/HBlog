@@ -10,4 +10,5 @@ export interface Post {
     created: Date;
     LastUpdated: Date;
     userId: number;
+    userName: string;
 }
