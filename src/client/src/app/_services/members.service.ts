@@ -28,7 +28,6 @@ export class MembersService {
         }
       }
     })
-    console.log('Known As:' + this.members);
   }
   
   getUserParams() {

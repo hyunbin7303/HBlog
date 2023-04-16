@@ -12,32 +12,15 @@ import { PostsService } from 'src/app/_services/posts.service';
   styleUrls: ['./post-detail.component.css']
 })
 export class PostDetailComponent implements OnInit {
-  post: Post | undefined;
-  user : User | null = null;
+  post: Post | null = null;
+  postUserId: number = 0;
   isEditable: boolean = false;
   constructor(private postService: PostsService,private accountService: AccountService, private route: ActivatedRoute) { 
-    this.loadPost();
-    if (this.post)
-      console.log('UserID checking2 : ' + this.post?.id);
 
   }
-  DoCheck(): void{
-    if (this.user?.username == this.post?.userName) {
-      console.log('test: ' + this.user?.username.valueOf());
-      console.log(this.post?.userName);
-      this.isEditable = true;
-    }
-  }
+
   ngOnInit(): void {
-    this.accountService.currentUser$.pipe(take(1)).subscribe({
-      next: user => {
-        if(user) {
-          this.user = user;
-          console.log('Known as : ' + this.user.knownAs);
-          console.log('Title: ' + this.post?.title);
-        }
-      }
-    })
+    this.loadPost();
   }
 
 
@@ -48,6 +31,12 @@ export class PostDetailComponent implements OnInit {
       next: post => {
         if (post) {
           this.post = post;
+          console.log('Post ID : ' + post.id);
+          if (this.post.userName == this.postService.user?.username){
+            console.log('post username : ' + this.post.userName);
+            this.isEditable = true;
+          }
+
         }
       }
     });

@@ -6,6 +6,7 @@ using AutoMapper;
 using System.Security.Claims;
 using KevBlog.Domain.Constants;
 using KevBlog.Domain.Repositories;
+using KevBlog.Infrastructure.Extensions;
 
 namespace KevBlog.Api.Controllers
 {
@@ -40,15 +41,16 @@ namespace KevBlog.Api.Controllers
         
         [AllowAnonymous]
         [HttpGet("{id}")]
-        public async Task<ActionResult<PostDisplayDto>> GetPostById(int id)
+        public async Task<ActionResult<PostDisplayDetailsDto>> GetPostById(int id)
         {
             Post post = await _postRepository.GetPostById(id);
             if(post is null || post.Status is PostStatus.Removed) 
                 NotFound();
 
-            var postDisplay = _mapper.Map<PostDisplayDto>(post);
+            User user = await _userRepository.GetUserByIdAsync(post.UserId);
+            var postDisplay = _mapper.Map<PostDisplayDetailsDto>(post);
+            postDisplay.UserName = user.UserName ?? null;
             return Ok(postDisplay);
-
         }
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(int id, PostUpdateDto postUpdateDto)
@@ -81,9 +83,7 @@ namespace KevBlog.Api.Controllers
             if (string.IsNullOrEmpty(postCreateDto.Title))
                 return BadRequest("Title cannot be empty.");
 
-            var username = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            var user = await _userRepository.GetUserByUsernameAsync(username);
-
+            var user = await _userRepository.GetUserByUsernameAsync(User.GetUsername());
             var post = _mapper.Map<Post>(postCreateDto);
             post.User = user;
             post.UserId = user.Id;

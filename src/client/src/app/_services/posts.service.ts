@@ -22,9 +22,7 @@ export class PostsService {
         }
       }
     })
-
   }
-
   getPosts() : Observable<Post[]> {
     return this.http.get<Post[]>(this.baseUrl + 'posts')
   }
@@ -34,7 +32,6 @@ export class PostsService {
   getPostById(id: number): Observable<Post> {
     return this.http.get<Post>(this.baseUrl + 'posts/' + id).pipe(catchError(this.handleError));
   }
-
   updatePost(post: Post) {
     return this.http.put(this.baseUrl + 'posts', post).pipe(
       map(() => {
@@ -43,7 +40,6 @@ export class PostsService {
       })
     )
   }
-
   createPost(model: any) {
 
     return this.http.post<Post>(this.baseUrl + 'posts', model).pipe(
@@ -59,8 +55,6 @@ export class PostsService {
   deletePost(id: number): Observable<boolean> {
     return this.http.delete<boolean>(this.baseUrl + 'posts/' + id).pipe(catchError(this.handleError));
   }
-  
-
   private handleError(error: HttpErrorResponse) {
     console.error('server error:', error);
     if(error.error instanceof Error) {

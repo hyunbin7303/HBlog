@@ -14,6 +14,7 @@ namespace KevBlog.Application.Automapper
                 .ForMember(dest => dest.Age, opt => opt.MapFrom(src => src.DateOfBirth.CalculateAge()));
             CreateMap<Photo, PhotoDto>();
             CreateMap<Post, PostDisplayDto>();
+            CreateMap<Post, PostDisplayDetailsDto>();
             CreateMap<MemberUpdateDto, User>();
             CreateMap<RegisterDto, User>();
             CreateMap<PostUpdateDto, Post>();
