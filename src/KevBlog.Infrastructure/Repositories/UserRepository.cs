@@ -39,6 +39,22 @@ namespace KevBlog.Infrastructure.Repositories
             _dbContext.Entry(user).State = EntityState.Modified;
         }
 
+        public IQueryable<User> GetUserLikesQuery(string predicate, int userId)
+        {
+            var users = _dbContext.Users.OrderBy(x => x.UserName).AsQueryable();
+            var likes = _dbContext.Likes.AsQueryable();
 
+            if (predicate == "liked")
+            {
+                likes = likes.Where(l => l.SourceUserId == userId);
+                users = likes.Select(l => l.TargetUser);
+            }
+            if (predicate == "likedBy")
+            {
+                likes = likes.Where(l => l.TargetUserId == userId);
+                users = likes.Select(l => l.SourceUser);
+            }
+            return users;
+        }
     }
 }

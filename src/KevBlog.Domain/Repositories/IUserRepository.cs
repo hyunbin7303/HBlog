@@ -10,5 +10,6 @@ namespace KevBlog.Domain.Repositories
         IQueryable<User> GetUserQuery();
         Task<User> GetUserByIdAsync(int id);
         Task<User> GetUserByUsernameAsync(string username);
+        IQueryable<User> GetUserLikesQuery(string predicate, int userId);
     }
 }

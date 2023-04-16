@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Authorization;
 using KevBlog.Domain.Entities;
 using KevBlog.Application.DTOs;
 using AutoMapper;
-using System.Security.Claims;
 using KevBlog.Domain.Constants;
 using KevBlog.Domain.Repositories;
 using KevBlog.Infrastructure.Extensions;
