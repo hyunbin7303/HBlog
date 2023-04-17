@@ -32,8 +32,8 @@ export class PostsService {
   getPostById(id: number): Observable<Post> {
     return this.http.get<Post>(this.baseUrl + 'posts/' + id).pipe(catchError(this.handleError));
   }
-  updatePost(post: Post) {
-    return this.http.put(this.baseUrl + 'posts', post).pipe(
+  updatePost(id:number, post: Post) {
+    return this.http.put(this.baseUrl + 'posts/' + id, post).pipe(
       map(() => {
         const index = this.posts.indexOf(post);
         this.posts[index] = { ...this.posts[index], ...post }

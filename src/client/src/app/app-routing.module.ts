@@ -30,7 +30,7 @@ const routes: Routes = [
       { path: 'lists', component: ListsComponent },
       { path: 'messages', component: MessagesComponent },
       { path: 'posts/create', component: PostCreateComponent },
-      { path: 'posts/edit', component: PostEditComponent }
+      { path: 'posts/:id/edit', component: PostEditComponent }
     ]
   },
   { path: 'businesses', component: BusinessesComponent },

@@ -1,11 +1,13 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { take } from 'rxjs';
 import { Post } from 'src/app/_models/post';
+import { PostsService } from 'src/app/_services/posts.service';
+import { take } from 'rxjs';
+import { Member } from 'src/app/_models/member';
 import { User } from 'src/app/_models/user';
 import { AccountService } from 'src/app/_services/account.service';
-import { PostsService } from 'src/app/_services/posts.service';
 
 @Component({
   selector: 'app-post-edit',
@@ -13,26 +15,42 @@ import { PostsService } from 'src/app/_services/posts.service';
   styleUrls: ['./post-edit.component.css']
 })
 export class PostEditComponent implements OnInit {
-  @ViewChild('editForm') editForm: NgForm | undefined;
-
   post: Post | undefined;
-  user: User | null = null;
+  @ViewChild('editForm') editForm: NgForm | undefined;
+  @HostListener('window:beforeunload', ['$event']) unloadNotification($event: any) {
+    if (this.editForm?.dirty) {
+      $event.returnValue = true;
+    }
+  }
 
-  constructor(private accountService: AccountService, private postService: PostsService, private toastr: ToastrService) {
-    this.accountService.currentUser$.pipe(take(1)).subscribe({
-      next: user => this.user = user
-    })
+  constructor(private postService: PostsService, private toastr: ToastrService, private route: ActivatedRoute)  {
+
   }
 
 
   ngOnInit(): void {
     this.loadPost();
-
   }
   loadPost() {
-    if (!this.user) return;
-    // this.postService.getPost(this.user.username).subscribe({
-    //   next: post => this.post = member
-    // })
+    const postid = this.route.snapshot.paramMap.get('id');
+    var postId: number = Number(postid);
+    this.postService.getPostById(postId).subscribe({
+      next: post => {
+        if (post) {
+          this.post = post;
+        }
+      }
+    });
+  }
+  updatePost() {
+    this.postService.updatePost(Number(this.post?.id), this.editForm?.value).subscribe({
+      next: _ => {
+        this.toastr.success("Post updated successfully.");
+        this.editForm?.reset(this.post);
+      }
+    })
+  }
+  onAddPostTag(){
+
   }
 }

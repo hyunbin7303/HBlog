@@ -58,9 +58,12 @@ namespace KevBlog.Api.Controllers
             if (post == null || post.Status == PostStatus.Removed)
                 return NotFound(); // or should be RedirectToRoute("Homepage");
 
-            var updatedPost = _mapper.Map<Post>(postUpdateDto);
+            post.Desc = postUpdateDto.Desc;
+            post.Content = postUpdateDto.Content;
+            post.Type = postUpdateDto.Type;
+            post.LinkForPost = postUpdateDto.LinkForPost;
             await _postRepository.UpdateAsync(post);
-            return Ok();
+            return NoContent();
         }
         [HttpPut("{id}/status")]
         public async Task<IActionResult> SetPostStatus(int id, string status)

@@ -8,7 +8,7 @@ export interface Post {
     upvotes: number;
     linkForPost: string;
     created: Date;
-    LastUpdated: Date;
+    lastUpdated: Date;
     userId: number;
     userName: string;
 }

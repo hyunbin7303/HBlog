@@ -1,1 +1,38 @@
-<p>post-edit works!</p>
+<div class="row" *ngIf="post">
+    <div class="header">
+        <h1>{{post.title}}</h1>
+    </div>
+    <div class="col-8">
+        <div>
+            <div>
+                <form #editForm="ngForm" id="editForm" (ngSubmit)="updatePost()">
+                    <h4 class="mt-2">Description</h4>
+                    <textarea name="desc" rows="6" class="form-control" [(ngModel)]="post.desc"></textarea>
+                    <h4 class="mt-2">Link For Post</h4>
+                    <textarea name="linkForPost" rows="1" class="form-control" [(ngModel)]="post.linkForPost"></textarea>
+                    <h4 class="mt-2">Type</h4>
+                    <textarea name="type" rows="1" class="form-control" [(ngModel)]="post.type"></textarea>
+                    <h4 class="mt-2">Contents</h4>
+                    <textarea name="content" rows="6" class="form-control" [(ngModel)]="post.content"></textarea>
+                    <h4 class="mt-2">Location Details:</h4>
+                </form>
+                <div>
+                    <h4>Add Tags</h4>
+                    <button class="btn btn-primary" (click)="onAddPostTag()"></button>
+                </div>
+
+                <div>
+                    <strong>Last Changed:</strong>
+                    <p>{{post.lastUpdated + 'Z' | timeago}}</p>
+                </div>
+                <div>
+                    <strong>Published</strong>
+                    <p>{{post.created | date: 'dd MMM yyyy'}}</p>
+                </div>
+            </div>
+            <div class="card-footer">
+                <button type="submit" [disabled]="!editForm" form="editForm" class="btn btn-success col-12">Save Changes</button>
+            </div>
+        </div>
+    </div>
+</div>

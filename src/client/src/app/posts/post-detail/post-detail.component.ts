@@ -31,12 +31,9 @@ export class PostDetailComponent implements OnInit {
       next: post => {
         if (post) {
           this.post = post;
-          console.log('Post ID : ' + post.id);
           if (this.post.userName == this.postService.user?.username){
-            console.log('post username : ' + this.post.userName);
             this.isEditable = true;
           }
-
         }
       }
     });
