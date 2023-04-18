@@ -8,6 +8,7 @@ using KevBlog.Application.DTOs;
 using KevBlog.Domain.Entities;
 using KevBlog.Domain.Repositories;
 using KevBlog.Infrastructure.Extensions;
+using KevBlog.Infrastructure.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -28,7 +29,7 @@ namespace KevBlog.Api.Controllers
 
         [HttpPost("{username}")]
         public async Task<ActionResult> AddLike(string username){
-            var sourceUserId = int.Parse(User.GetUserId());
+            var sourceUserId = User.GetUserId();
             var likedUser = await _userRepository.GetUserByUsernameAsync(username);
             var sourceUser = await _likesRepository.GetUserWithLikes(sourceUserId);
             if(likedUser == null) return NotFound();
@@ -50,14 +51,18 @@ namespace KevBlog.Api.Controllers
             return BadRequest("Failed to like user");
         }
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<LikeDto>>> GetUserLikes(string predicate) {
-            var users = await GetUserLikes(predicate, int.Parse(User.GetUserId()));
+        public async Task<ActionResult<PageList<LikeDto>>> GetUserLikes([FromQuery]LikesParams likesParam) {
+            likesParam.UserId = User.GetUserId();
+            var users = await GetUserLikePageList(likesParam);
+
+            Response.AddPaginationHeader(new PaginationHeader(users.CurrentPage, users.PageSize, users.TotalCount, users.TotalPages));
+
             return Ok(users);
         }
-        private async Task<IEnumerable<LikeDto>> GetUserLikes(string predicate, int userId)
+        private async Task<PageList<LikeDto>> GetUserLikePageList(LikesParams likesParam)
         {
-            var userQuery = _userRepository.GetUserLikesQuery(predicate, userId);
-            var likeDto = await userQuery.Select(u => new LikeDto
+            var userQuery = _userRepository.GetUserLikesQuery(likesParam.Predicate, likesParam.UserId);
+            var likeDto = userQuery.Select(u => new LikeDto
             {
                 UserName = u.UserName,
                 KnownAs = u.KnownAs,
@@ -65,8 +70,8 @@ namespace KevBlog.Api.Controllers
                 PhotoUrl = u.Photos.FirstOrDefault(x => x.IsMain).Url,
                 City = u.City,
                 Id = u.Id
-            }).ToListAsync();
-            return likeDto;
+            });
+            return await PageList<LikeDto>.CreateAsync(likeDto,likesParam.PageNumber, likesParam.PageSize);
         }
     }
 }

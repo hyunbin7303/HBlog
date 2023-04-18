@@ -36,7 +36,8 @@ namespace KevBlog.Infrastructure.Repositories
         }
         public async Task Add(User user)
         {
-             _dbContext.Users.Add(user);
+            _dbContext.Users.Add(user);
+            await SaveAllAsync();
         }
         public void Update(User user)
         {

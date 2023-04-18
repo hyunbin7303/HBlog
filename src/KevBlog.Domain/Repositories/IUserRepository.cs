@@ -4,7 +4,7 @@ namespace KevBlog.Domain.Repositories
 {
     public interface IUserRepository
     {
-        void Add(User user);
+        Task Add(User user);
         void Update(User user);
         Task<bool> SaveAllAsync();
         Task<IEnumerable<User>> GetUsersAsync();
