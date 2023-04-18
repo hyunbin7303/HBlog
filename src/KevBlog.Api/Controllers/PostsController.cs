@@ -62,6 +62,7 @@ namespace KevBlog.Api.Controllers
             post.Content = postUpdateDto.Content;
             post.Type = postUpdateDto.Type;
             post.LinkForPost = postUpdateDto.LinkForPost;
+
             await _postRepository.UpdateAsync(post);
             return NoContent();
         }

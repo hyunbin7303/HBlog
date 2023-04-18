@@ -34,6 +34,10 @@ namespace KevBlog.Infrastructure.Repositories
         {
             return await _dbContext.SaveChangesAsync() > 0;
         }
+        public async Task Add(User user)
+        {
+             _dbContext.Users.Add(user);
+        }
         public void Update(User user)
         {
             _dbContext.Entry(user).State = EntityState.Modified;
@@ -56,5 +60,7 @@ namespace KevBlog.Infrastructure.Repositories
             }
             return users;
         }
+
+
     }
 }
