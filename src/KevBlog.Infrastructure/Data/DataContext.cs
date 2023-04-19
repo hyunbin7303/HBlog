@@ -15,6 +15,9 @@ namespace KevBlog.Infrastructure.Data
         public DbSet<Post> Posts { get; set; }
         public DbSet<Tag> Tags { get; set; }
         public DbSet<PostTags> PostTags { get; set; }
+        public DbSet<Message> Messages { get; set; }
+
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -45,6 +48,15 @@ namespace KevBlog.Infrastructure.Data
                 .WithMany(t => t.PostTags)
                 .HasForeignKey(pt => pt.TagId);
 
+            modelBuilder.Entity<Message>()
+                .HasOne(u => u.Recipient)
+                .WithMany(m => m.MessagesReceived)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<Message>()
+                .HasOne(u => u.Sender)
+                .WithMany(m => m.MessagesSent)
+                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

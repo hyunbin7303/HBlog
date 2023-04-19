@@ -20,6 +20,8 @@ namespace KevBlog.Domain.Entities
         public List<Post> Posts { get; set; } = new List<Post>();
         public List<UserLike> LikedByUsers {get; set;}
         public List<UserLike> LikedUsers {get; set; }
+        public List<Message> MessagesSent { get; set; }
+        public List<Message> MessagesReceived { get; set; }
 
     }
 }
