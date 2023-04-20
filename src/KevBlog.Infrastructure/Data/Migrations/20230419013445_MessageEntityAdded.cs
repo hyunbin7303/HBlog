@@ -19,6 +19,7 @@ namespace API.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     SenderId = table.Column<int>(type: "int", nullable: false),
                     SenderUsername = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    RecipientUsername = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     RecipientId = table.Column<int>(type: "int", nullable: false),
                     Content = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DateRead = table.Column<DateTime>(type: "datetime2", nullable: true),

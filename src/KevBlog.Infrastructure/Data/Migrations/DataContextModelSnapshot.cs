@@ -103,6 +103,9 @@ namespace API.Migrations
                     b.Property<int>("RecipientId")
                         .HasColumnType("int");
 
+                    b.Property<string>("RecipientUsername")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("SenderDeleted")
                         .HasColumnType("bit");
 
