@@ -6,9 +6,9 @@ namespace KevBlog.Domain.Repositories
     {
         void AddMessage(Message msg);
         void DeleteMessage(Message msg);
+        IQueryable<Message> GetMessagesQuery();
         Task<Message> GetMessage(int id);
-        // Task<PagedList<Message>> GetMessagesForUser();
-        Task<IEnumerable<Message>> GetMessageThread(int currUserId, int recipientId);
+        Task<IEnumerable<Message>> GetMessageThread(string currentUsernename, string recipientUsername);
         Task<bool> SaveAllAsync();
     }
 }

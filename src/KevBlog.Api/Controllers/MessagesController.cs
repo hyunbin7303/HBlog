@@ -4,10 +4,12 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using KevBlog.Application.DTOs;
 using KevBlog.Domain.Entities;
 using KevBlog.Domain.Repositories;
 using KevBlog.Infrastructure.Extensions;
+using KevBlog.Infrastructure.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -49,6 +51,36 @@ namespace KevBlog.Api.Controllers
             if(await _msgRepository.SaveAllAsync()) return Ok(_mapper.Map<MessageDto>(message));
 
             return BadRequest("Failed to send message.");
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<PageList<MessageDto>>> GetMessagesForUser([FromQuery]MessageParams messageParams)
+        {
+            messageParams.Username = User.GetUsername();
+            var messages = await GetMessagesForUserPageList(messageParams);
+            Response.AddPaginationHeader(new PaginationHeader(messages.CurrentPage, messages.PageSize, messages.TotalCount, messages.TotalPages));
+             
+            return messages;
+        }
+
+        [HttpGet("thread/{username}")]
+        public async Task<ActionResult<IEnumerable<MessageDto>>> GetMessageThread(string username)
+        {
+            var currUsername = User.GetUsername();
+            var messages = await _msgRepository.GetMessageThread(currUsername, username);
+            return Ok(_mapper.Map<IEnumerable<MessageDto>>(messages));
+        }
+
+        private async Task<PageList<MessageDto>> GetMessagesForUserPageList(MessageParams messageParams) {
+            var query = _msgRepository.GetMessagesQuery();
+            query = messageParams.Container switch
+            {
+                "Inbox" => query.Where(u => u.RecipientUsername == messageParams.Username),
+                "Outbox" => query.Where(u => u.SenderUsername == messageParams.Username),
+                _ => query.Where(u => u.RecipientUsername == messageParams.Username && u.DateRead == null)
+            };
+            var messages = query.ProjectTo<MessageDto>(_mapper.ConfigurationProvider);
+            return await PageList<MessageDto>.CreateAsync(messages, messageParams.PageNumber, messageParams.PageSize);
         }
     }
 }

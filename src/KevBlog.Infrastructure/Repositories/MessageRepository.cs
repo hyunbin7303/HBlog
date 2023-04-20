@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using KevBlog.Domain.Entities;
 using KevBlog.Domain.Repositories;
 using KevBlog.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace KevBlog.Infrastructure.Repositories
 {
@@ -23,15 +24,36 @@ namespace KevBlog.Infrastructure.Repositories
         {
             _dbContext.Messages.Remove(msg);
         }
-
+        public IQueryable<Message> GetMessagesQuery()
+        {
+            return _dbContext.Messages.OrderByDescending(x=> x.MessageSent).AsQueryable();
+        }
         public async Task<Message> GetMessage(int id)
         {
             return await _dbContext.Messages.FindAsync(id);
         }
 
-        public Task<IEnumerable<Message>> GetMessageThread(int currUserId, int recipientId)
+        public async Task<IEnumerable<Message>> GetMessageThread(string currentUsernename, string recipientUsername)
         {
-            throw new NotImplementedException();
+            var messages = await _dbContext.Messages
+                        .Include(x=> x.Sender).ThenInclude(p => p.Photos)
+                        .Include(x=> x.Recipient).ThenInclude(p => p.Photos)
+                        .Where(m => m.RecipientUsername ==currentUsernename 
+                                 && m.SenderUsername == recipientUsername
+                                 || m.RecipientUsername == recipientUsername
+                                 && m.SenderUsername == currentUsernename)
+                        .OrderByDescending(m => m.MessageSent)
+                        .ToListAsync();
+            
+            var unreadMsgs = messages.Where(m => m.DateRead == null && m.RecipientUsername == currentUsernename).ToList();
+
+            if(unreadMsgs.Any()){
+                foreach(var msg in unreadMsgs){
+                    msg.DateRead = DateTime.UtcNow;
+                }
+                await _dbContext.SaveChangesAsync();
+            }
+            return messages;
         }
 
         public async Task<bool> SaveAllAsync()
