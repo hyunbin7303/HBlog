@@ -31,6 +31,7 @@ import { PostEditComponent } from './posts/post-edit/post-edit.component';
 import { TextInputComponent } from './_forms/text-input/text-input.component';
 import { DatePickerComponent } from './_forms/date-picker/date-picker.component';
 import { AboutComponent } from './about/about.component';
+import { MemberMessagesComponent } from './members/member-messages/member-messages.component';
 
 @NgModule({
   declarations: [
@@ -55,7 +56,8 @@ import { AboutComponent } from './about/about.component';
     PostEditComponent,
     TextInputComponent,
     DatePickerComponent,
-    AboutComponent
+    AboutComponent,
+    MemberMessagesComponent
   ],
   imports: [
     BrowserAnimationsModule,
