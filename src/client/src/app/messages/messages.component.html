@@ -32,7 +32,7 @@
             </tr>
         </thead>
         <tbody class="align-middle">
-            <tr *ngFor="let message of messages" routerLink="{{container === 'Outbox' 
+            <tr [hidden]="isLoading" *ngFor="let message of messages" routerLink="{{container === 'Outbox' 
                                                                         ? '/members/' + message.recipientUsername
                                                                         : '/members/' + message.senderUsername}}"
                     [queryParams]="{tab: 'Messages'}"
@@ -56,7 +56,7 @@
 </div>
 
 
-<div class="d-flex justify-content-center" *ngIf="pagination && messages && messages.length > 0">
+<div class="d-flex justify-content-center" *ngIf="!isLoading && pagination && messages && messages.length > 0">
     <pagination [boundaryLinks]="true" [totalItems]="pagination.totalItems" [itemsPerPage]="pagination.itemsPerPage"
         [maxSize]="10" [(ngModel)]="pagination.currentPage" (pageChanged)="pageChanged($event)"></pagination>
 </div>

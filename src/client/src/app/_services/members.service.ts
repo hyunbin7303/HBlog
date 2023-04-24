@@ -7,6 +7,7 @@ import { UserParams } from '../_models/userParams';
 import { AccountService } from './account.service';
 import { User } from '../_models/user';
 import { getPaginatedResult, getPaginationHeaders } from './paginationHelper';
+import { Message } from '../_models/message';
 
 @Injectable({
   providedIn: 'root'
@@ -93,5 +94,4 @@ export class MembersService {
     params = params.append('predicate', predicate);
     return getPaginatedResult<Member[]>(this.baseUrl + 'likes', params, this.http);
   }
-
 }

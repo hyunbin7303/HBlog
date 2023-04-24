@@ -42,7 +42,7 @@ namespace KevBlog.Infrastructure.Repositories
                                  && m.SenderUsername == recipientUsername
                                  || m.RecipientUsername == recipientUsername
                                  && m.SenderUsername == currentUsernename)
-                        .OrderByDescending(m => m.MessageSent)
+                        .OrderBy(m => m.MessageSent)
                         .ToListAsync();
             
             var unreadMsgs = messages.Where(m => m.DateRead == null && m.RecipientUsername == currentUsernename).ToList();
