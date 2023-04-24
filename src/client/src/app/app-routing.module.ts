@@ -17,6 +17,7 @@ import { PostCreateComponent } from './posts/post-create/post-create.component';
 import { PostEditComponent } from './posts/post-edit/post-edit.component';
 import { PostDetailComponent } from './posts/post-detail/post-detail.component';
 import { AboutComponent } from './about/about.component';
+import { MemberDetailedResolver } from './_resolvers/member-detailed.resolver';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -25,7 +26,7 @@ const routes: Routes = [
     canActivate: [AuthGuard],
     children: [
       { path: 'members', component: MemberListComponent },
-      { path: 'members/:username', component: MemberDetailComponent },
+      { path: 'members/:username', component: MemberDetailComponent, resolve: { member: MemberDetailedResolver }},
       { path: 'member/edit', component: MemberEditComponent, canDeactivate: [PreventUnsavedChangesGuard] },
       { path: 'lists', component: ListsComponent },
       { path: 'messages', component: MessagesComponent },
