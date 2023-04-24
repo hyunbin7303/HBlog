@@ -71,13 +71,31 @@ namespace KevBlog.Api.Controllers
             return Ok(_mapper.Map<IEnumerable<MessageDto>>(messages));
         }
 
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteMessage(int id) {
+            var currUsername = User.GetUsername();
+            var message = await _msgRepository.GetMessage(id);
+
+            if(message.SenderUsername!= currUsername && message.RecipientUsername != currUsername) {
+                return Unauthorized();
+            }
+
+            if(message.SenderUsername == currUsername) message.SenderDeleted = true;
+            if(message.RecipientUsername == currUsername) message.RecipientDeleted = true;
+            if(message.SenderDeleted && message.RecipientDeleted) {
+                _msgRepository.DeleteMessage(message);
+            }
+            if(await _msgRepository.SaveAllAsync()) return Ok();
+
+            return BadRequest("Problem deleting the message");
+        }
         private async Task<PageList<MessageDto>> GetMessagesForUserPageList(MessageParams messageParams) {
             var query = _msgRepository.GetMessagesQuery();
             query = messageParams.Container switch
             {
-                "Inbox" => query.Where(u => u.RecipientUsername == messageParams.Username),
-                "Outbox" => query.Where(u => u.SenderUsername == messageParams.Username),
-                _ => query.Where(u => u.RecipientUsername == messageParams.Username && u.DateRead == null)
+                "Inbox" => query.Where(u => u.RecipientUsername == messageParams.Username && !u.RecipientDeleted),
+                "Outbox" => query.Where(u => u.SenderUsername == messageParams.Username && !u.SenderDeleted),
+                _ => query.Where(u => u.RecipientUsername == messageParams.Username && !u.RecipientDeleted && u.DateRead == null)
             };
             var messages = query.ProjectTo<MessageDto>(_mapper.ConfigurationProvider);
             return await PageList<MessageDto>.CreateAsync(messages, messageParams.PageNumber, messageParams.PageSize);

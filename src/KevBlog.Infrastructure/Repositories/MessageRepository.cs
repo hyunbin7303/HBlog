@@ -38,9 +38,9 @@ namespace KevBlog.Infrastructure.Repositories
             var messages = await _dbContext.Messages
                         .Include(x=> x.Sender).ThenInclude(p => p.Photos)
                         .Include(x=> x.Recipient).ThenInclude(p => p.Photos)
-                        .Where(m => m.RecipientUsername ==currentUsernename 
+                        .Where(m => m.RecipientUsername ==currentUsernename && !m.RecipientDeleted
                                  && m.SenderUsername == recipientUsername
-                                 || m.RecipientUsername == recipientUsername
+                                 || m.RecipientUsername == recipientUsername && !m.SenderDeleted
                                  && m.SenderUsername == currentUsernename)
                         .OrderBy(m => m.MessageSent)
                         .ToListAsync();
