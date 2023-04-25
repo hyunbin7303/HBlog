@@ -7,19 +7,20 @@ using KevBlog.Infrastructure.Authentications;
 using KevBlog.Application.DTOs;
 using KevBlog.Infrastructure.Data;
 using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 
 namespace KevBlog.Api.Controllers
 {
     public class AccountController : BaseApiController
     {
-        private readonly DataContext _context;
+        private readonly UserManager<User> _userManager;
         public ITokenService _tokenService { get; }
         public IMapper _mapper { get; }
-        public AccountController(DataContext context, ITokenService tokenService, IMapper mapper)
+        public AccountController(UserManager<User> userManager, ITokenService tokenService, IMapper mapper)
         {
-            _mapper = mapper;
+            _userManager = userManager;
             _tokenService = tokenService;
-            _context = context;
+            _mapper = mapper;
         }
 
         [HttpPost("register")]
@@ -29,8 +30,8 @@ namespace KevBlog.Api.Controllers
 
             var user = _mapper.Map<User>(registerDto);
 
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
+            var result = await _userManager.CreateAsync(user, registerDto.Password);
+            if (!result.Succeeded) return BadRequest(result.Errors);
 
             return new UserDto
             {
@@ -41,14 +42,17 @@ namespace KevBlog.Api.Controllers
         }
         private async Task<bool> UserExists(string username)
         {
-            return await _context.Users.AnyAsync(x => x.UserName == username.ToLower());
+            return await _userManager.Users.AnyAsync(x => x.UserName == username.ToLower());
         }
 
         [HttpPost("login")]
         public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(x => x.UserName == loginDto.UserName);
+            var user = await _userManager.Users.Include(p=> p.Photos).FirstOrDefaultAsync(x => x.UserName == loginDto.UserName);
             if (user == null) return Unauthorized("Invalid Username");
+
+            var result = await _userManager.CheckPasswordAsync(user, loginDto.Password);
+            if (!result) return Unauthorized("Invalid password");
 
             return new UserDto
             {
@@ -68,11 +72,11 @@ namespace KevBlog.Api.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(appUser).State = EntityState.Modified;
+            //_context.Entry(appUser).State = EntityState.Modified;
 
             try
             {
-                await _context.SaveChangesAsync();
+                //await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -92,8 +96,8 @@ namespace KevBlog.Api.Controllers
         [HttpPost]
         public async Task<ActionResult<User>> PostAppUser(User appUser)
         {
-            _context.Users.Add(appUser);
-            await _context.SaveChangesAsync();
+            //var result = _userManager.Users.Add(appUser);
+            //await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetAppUser", new { id = appUser.Id }, appUser);
         }
@@ -101,20 +105,19 @@ namespace KevBlog.Api.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAppUser(int id)
         {
-            var appUser = await _context.Users.FindAsync(id);
-            if (appUser == null)
-            {
-                return NotFound();
-            }
+            //var appUser = await _userManager.Users.(id);
+            //if (appUser == null)
+            //{
+            //    return NotFound();
+            //}
 
-            _context.Users.Remove(appUser);
-            await _context.SaveChangesAsync();
+            //_userManager.Users.Remove(appUser);
 
             return NoContent();
         }
         private bool AppUserExists(int id)
         {
-            return _context.Users.Any(e => e.Id == id);
+            return _userManager.Users.Any(e => e.Id == id);
         }
     }
 }
