@@ -1,15 +1,18 @@
 using KevBlog.Domain.Entities;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace KevBlog.Infrastructure.Data
 {
-    public class DataContext : DbContext
+    public class DataContext : IdentityDbContext<User, AppRole, int,
+                               IdentityUserClaim<int>, AppUserRole, IdentityUserLogin<int>, 
+                               IdentityRoleClaim<int>,IdentityUserToken<int>>
     {
         public DataContext(DbContextOptions options) : base(options)
         {
             
         }
-        public DbSet<User> Users {get; set; }
         public DbSet<UserLike> Likes {get; set; }
         public DbSet<Domain.Entities.Application> Applications { get; set; }
         public DbSet<Post> Posts { get; set; }
@@ -21,8 +24,24 @@ namespace KevBlog.Infrastructure.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<User>()
+                .HasMany(userRole => userRole.UserRoles)
+                .WithOne(user => user.User)
+                .HasForeignKey(userRole => userRole.UserId)
+                .IsRequired();
+
+            modelBuilder.Entity<AppRole>()
+                .HasMany(userRole => userRole.UserRoles)
+                .WithOne(user => user.Role)
+                .HasForeignKey(userRole => userRole.RoleId)
+                .IsRequired();
+
+
             modelBuilder.Entity<UserLike>()
                 .HasKey(k => new { k.SourceUserId, k.TargetUserId });
+
+
 
             modelBuilder.Entity<UserLike>()
                 .HasOne(s => s.SourceUser)

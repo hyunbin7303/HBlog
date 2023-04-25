@@ -1,8 +1,10 @@
 using KevBlog.Application.Automapper;
+using KevBlog.Domain.Entities;
 using KevBlog.Infrastructure.Data;
 using KevBlog.Infrastructure.Extensions;
 using KevBlog.Infrastructure.Middlewares;
 using KevBlog.Infrastructure.Repositories;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -29,10 +31,12 @@ app.MapControllers();
 
 using var scope = app.Services.CreateScope();
 var services = scope.ServiceProvider;
-try{
+try
+{
     var context = services.GetRequiredService<DataContext>();
+    var userManger = services.GetRequiredService<UserManager<User>>();
     await context.Database.MigrateAsync();
-    await Seed.SeedUsers(context);
+    await Seed.SeedUsers(userManger);
     await Seed.SeedPosts(context);
 }
 catch(Exception ex)
