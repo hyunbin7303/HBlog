@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using AutoMapper;
-using System.Security.Claims;
 using KevBlog.Domain.Entities;
 using KevBlog.Application.DTOs;
 using KevBlog.Infrastructure.Helpers;
@@ -22,7 +21,6 @@ namespace KevBlog.Api.Controllers
             _userRepository = userRepository;
         }
 
-        [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsers([FromQuery] UserParams userParams)
         {
