@@ -11,10 +11,12 @@ export class AdminGuard implements CanActivate {
   constructor(private accountService: AccountService, private toastr: ToastrService) {
 
   }
-  canActivate(): Observable<boolean >  {
+  canActivate(): Observable<boolean>  {
     return this.accountService.currentUser$.pipe(
       map(user => {
         if(!user) return false;
+        
+        console.log("Can Active for Admin Guard." + user.username);
         if(user.roles.includes('Admin') || user.roles.includes('Moderator')){
           return true;
         }else{
