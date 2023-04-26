@@ -32,6 +32,7 @@ import { TextInputComponent } from './_forms/text-input/text-input.component';
 import { DatePickerComponent } from './_forms/date-picker/date-picker.component';
 import { AboutComponent } from './about/about.component';
 import { MemberMessagesComponent } from './members/member-messages/member-messages.component';
+import { AdminPanelComponent } from './admin/admin-panel/admin-panel.component';
 
 @NgModule({
   declarations: [
@@ -57,7 +58,8 @@ import { MemberMessagesComponent } from './members/member-messages/member-messag
     TextInputComponent,
     DatePickerComponent,
     AboutComponent,
-    MemberMessagesComponent
+    MemberMessagesComponent,
+    AdminPanelComponent
   ],
   imports: [
     BrowserAnimationsModule,
