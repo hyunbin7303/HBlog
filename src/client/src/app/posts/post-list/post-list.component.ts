@@ -16,20 +16,9 @@ export class PostListComponent implements OnInit {
   posts: Post[] = [];
   isUserEditable: boolean = false;
   constructor(private postsService: PostsService, private accountService: AccountService) {
-    this.postsService.getPosts().subscribe({
-      next: posts => {
-        this.posts = posts;
-      }
-    })
-    this.accountService.currentUser$.pipe(take(1)).subscribe({
-      next: user => {
-        if (user) {
-          this.user = user;
-        }
-      }
-    })
+    this.postsService.getPosts().subscribe({ next: posts => { this.posts = posts; }})
+    this.accountService.currentUser$.pipe(take(1)).subscribe({ next: user => { if (user) this.user = user; }}) 
   }
   ngOnInit(): void {
   }
-
 }

@@ -4,11 +4,11 @@
         <img src="{{'./assets/dotnet.png'}}" class="card-img-top">
         <!-- <small class="bg-light text-danger text-center"> Checking</small> -->
         <small class="bg-light text-success text-center ml-3"> {{post.type}}</small>
-        <!-- <small class="bg-light text-info text-center ml-3">Views - 100,235</small> -->
-        <h5 class="mt-1">{{post.title}}</h5>
+        <h5 class="text-center mt-1">{{post.title}}</h5>
 
-        <h6 class="card-title text-center mb-1">
-            Created: {{post.created | date}}
+        <h6 class="card-title text-left mb-1">
+            {{post.userName}}
+            <!-- Published: {{post.created | date}} -->
         </h6>
         <li class="list-inline-item">
             <button (click)="onRouteToLinkPost()">Link For Post</button>

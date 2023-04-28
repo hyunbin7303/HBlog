@@ -24,9 +24,7 @@ export class MemberEditComponent implements OnInit {
   user : User | null= null;
 
   constructor(private accountService: AccountService, private memberService: MembersService, private toastr: ToastrService){
-    this.accountService.currentUser$.pipe(take(1)).subscribe({
-      next: user=> this.user = user
-    })
+    this.accountService.currentUser$.pipe(take(1)).subscribe({ next: user=> this.user = user })
   }
 
   ngOnInit(): void {

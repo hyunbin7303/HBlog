@@ -10,19 +10,10 @@ import { AccountService } from './account.service';
   providedIn: 'root'
 })
 export class PostsService {
-  user: User | undefined;
   baseUrl = environment.apiUrl;
   posts: Post[] = [];
 
-  constructor(private http: HttpClient, private accountService: AccountService) { 
-    this.accountService.currentUser$.pipe(take(1)).subscribe({
-      next: user => {
-        if (user) {
-          this.user = user;
-        }
-      }
-    })
-  }
+  constructor(private http: HttpClient) { }
   getPosts() : Observable<Post[]> {
     return this.http.get<Post[]>(this.baseUrl + 'posts')
   }

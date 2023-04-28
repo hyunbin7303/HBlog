@@ -32,7 +32,7 @@ namespace KevBlog.Infrastructure.Repositories
 
         public async Task<IEnumerable<Post>> GetPostsAsync()
         {
-            return await _dbContext.Posts.AsNoTracking().ToListAsync();
+            return await _dbContext.Posts.AsNoTracking().Include(u => u.User).ToListAsync();
         }
 
         public void Remove(int id)

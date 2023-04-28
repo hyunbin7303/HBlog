@@ -8,26 +8,28 @@
                 <form #editForm="ngForm" id="editForm" (ngSubmit)="updatePost()">
                     <h4 class="mt-2">Description</h4>
                     <textarea name="desc" rows="6" class="form-control" [(ngModel)]="post.desc"></textarea>
-                    <h4 class="mt-2">Link For Post</h4>
-                    <textarea name="linkForPost" rows="1" class="form-control" [(ngModel)]="post.linkForPost"></textarea>
-                    <h4 class="mt-2">Type</h4>
-                    <textarea name="type" rows="1" class="form-control" [(ngModel)]="post.type"></textarea>
-                    <h4 class="mt-2">Contents</h4>
-                    <textarea name="content" rows="6" class="form-control" [(ngModel)]="post.content"></textarea>
-                    <h4 class="mt-2">Location Details:</h4>
+                    <div class="input-group mt-2">
+                        <label class="col-form-label me-2">linkForPost:</label>
+                        <input type="text" name="linkForPost" required [(ngModel)]="post.linkForPost" class="form-control input-sm" placeholder="Link for Post">
+                    </div>
+                    <div class="d-flex mt-2">
+                        <label class="col-form-label me-2">Type:</label>
+                        <select name="type" style="width:150px" class="form-select ms-1" [(ngModel)]="post.type">
+                            <option *ngFor="let type of typeList" [value]="type.value">{{type.display}}</option>
+                        </select>
+                    </div>
+                    <!-- <h4 class="mt-2">Contents</h4>
+                    <textarea name="content" rows="6" class="form-control" [(ngModel)]="post.content"></textarea> -->
                 </form>
                 <div>
-                    <h4>Add Tags</h4>
-                    <button class="btn btn-primary" (click)="onAddPostTag()"></button>
+                    <button class="btn btn-primary" (click)="onAddPostTag()">Tag Update</button>
                 </div>
+                <div>
+                    <strong>Last Changed: {{post.lastUpdated + 'Z' | timeago}},  </strong>
+                    <strong>Published: {{post.created | date: 'dd MMM yyyy'}}</strong>
+                </div>
+                <div>
 
-                <div>
-                    <strong>Last Changed:</strong>
-                    <p>{{post.lastUpdated + 'Z' | timeago}}</p>
-                </div>
-                <div>
-                    <strong>Published</strong>
-                    <p>{{post.created | date: 'dd MMM yyyy'}}</p>
                 </div>
             </div>
             <div class="card-footer">

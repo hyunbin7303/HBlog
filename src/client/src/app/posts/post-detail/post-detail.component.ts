@@ -15,15 +15,21 @@ export class PostDetailComponent implements OnInit {
   post: Post | null = null;
   postUserId: number = 0;
   isEditable: boolean = false;
-  constructor(private postService: PostsService,private accountService: AccountService, private route: ActivatedRoute) { 
+  user: User | null = null;
 
+  constructor(private postService: PostsService,private accountService: AccountService, private route: ActivatedRoute) { 
+    this.accountService.currentUser$.pipe(take(1)).subscribe({
+      next: user => this.user = user
+    })
   }
 
   ngOnInit(): void {
     this.loadPost();
   }
 
-
+  onRouteToLinkPost(){
+    window.location.href = this.post?.linkForPost as string;
+  }
   loadPost() {
     const postid = this.route.snapshot.paramMap.get('id');
     var postId: number = Number(postid);
@@ -31,7 +37,7 @@ export class PostDetailComponent implements OnInit {
       next: post => {
         if (post) {
           this.post = post;
-          if (this.post.userName == this.postService.user?.username){
+          if (this.post.userName == this.user?.username){
             this.isEditable = true;
           }
         }

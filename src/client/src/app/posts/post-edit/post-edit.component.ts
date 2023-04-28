@@ -16,6 +16,9 @@ import { AccountService } from 'src/app/_services/account.service';
 })
 export class PostEditComponent implements OnInit {
   post: Post | undefined;
+  user: User | null = null;
+  typeList = [{ value: 'programming', display: 'Programming' }, { value: 'architecture', display: 'Architecture' }]
+
   @ViewChild('editForm') editForm: NgForm | undefined;
   @HostListener('window:beforeunload', ['$event']) unloadNotification($event: any) {
     if (this.editForm?.dirty) {
@@ -23,8 +26,10 @@ export class PostEditComponent implements OnInit {
     }
   }
 
-  constructor(private postService: PostsService, private toastr: ToastrService, private route: ActivatedRoute)  {
-
+  constructor(private postService: PostsService, private accountService: AccountService, private toastr: ToastrService, private route: ActivatedRoute)  {
+    this.accountService.currentUser$.pipe(take(1)).subscribe({
+      next: user => this.user = user
+    })
   }
 
 
@@ -37,7 +42,8 @@ export class PostEditComponent implements OnInit {
     this.postService.getPostById(postId).subscribe({
       next: post => {
         if (post) {
-          this.post = post;
+          if(post.userName == this.user?.username)
+            this.post = post;
         }
       }
     });

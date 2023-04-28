@@ -19,6 +19,7 @@ export class AccountService {
         const user = response;
         if(user) {
           this.setCurrentUser(user);
+          console.log("Account service user info : " + user.username)
         }
       })
     )

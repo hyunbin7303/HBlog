@@ -10,6 +10,7 @@ namespace KevBlog.Application.DTOs
         public string LinkForPost { get; set; }
         public string Type { get; set; }
         public int Upvotes { get; set; }
+        public string UserName { get; set; }
         public DateTime Created { get; set; } = DateTime.UtcNow;
         public DateTime LastUpdated { get; set; } = DateTime.UtcNow;
     }
