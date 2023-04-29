@@ -14,13 +14,15 @@ namespace KevBlog.Api.Controllers
     {
         private readonly IPostRepository _postRepository;
         private readonly IUserRepository _userRepository;
+        private readonly ITagRepository _tagRepository;
         private readonly IMapper _mapper;
 
-        public PostsController(IPostRepository postRepository, IUserRepository userRepository, IMapper mapper)
+        public PostsController(IPostRepository postRepository, IUserRepository userRepository, ITagRepository tagRepository, IMapper mapper)
         {
             _mapper = mapper;
             _postRepository = postRepository;
             _userRepository = userRepository;
+            _tagRepository = tagRepository;
         }
 
         [AllowAnonymous]
