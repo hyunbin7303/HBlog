@@ -1,10 +1,8 @@
 using KevBlog.Domain.Entities;
-
 namespace KevBlog.Domain.Repositories
 {
     public interface IUserRepository
     {
-        Task Add(User user);
         void Update(User user);
         Task<bool> SaveAllAsync();
         Task<IEnumerable<User>> GetUsersAsync();

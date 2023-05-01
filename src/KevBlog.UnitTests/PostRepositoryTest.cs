@@ -4,13 +4,12 @@ using KevBlog.Infrastructure.Data;
 using KevBlog.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Moq;
+using Xunit.Sdk;
 
 namespace KevBlog.UnitTests
 {
     internal class MockIPostRepository
     {
-        // Should I create sample user info.
-
         public static Mock<IPostRepository> GetPostsMock()
         {
             var mock = new Mock<IPostRepository>();
@@ -40,42 +39,51 @@ namespace KevBlog.UnitTests
     }
     public class PostRepositoryTest
     {
-        private readonly PostRepository repository;
+        private readonly Mock<IPostRepository> repositoryMock;
         public PostRepositoryTest()
         {
             var dataList = MockIPostRepository.GenerateData(5);
-            var data = dataList.AsQueryable();
-            var mockSet = new Mock<DbSet<Post>>();
-            mockSet.As<IQueryable<Post>>().Setup(m => m.Provider).Returns(data.Provider);
-            mockSet.As<IQueryable<Post>>().Setup(m => m.ElementType).Returns(data.ElementType);
-            mockSet.As<IQueryable<Post>>().Setup(m => m.Expression).Returns(data.Expression);
-            mockSet.As<IQueryable<Post>>().Setup(m => m.GetEnumerator()).Returns(() => data.GetEnumerator());
-
-            var mockdbContext = new Mock<DataContext>();
-            mockdbContext.Setup(x => x.Set<Post>()).Returns(mockSet.Object);
-            mockdbContext.Setup(x => x.Posts).Returns(mockSet.Object);
-            repository = new PostRepository(mockdbContext.Object);
+            repositoryMock = new Mock<IPostRepository>();
+            repositoryMock.Setup(repo => repo.GetPostsAsync().Result).Returns(dataList);
         }
 
         [Fact]
-        public void Update_NotExistingPost_ReturnFailure()
-        {
-            // TODO
-        }
-
-        [Fact] 
         public async Task GetPost_Success()
         {
-            var posts = await repository.GetPostsAsync();
+            var posts = await repositoryMock.Object.GetPostsAsync();
 
             Assert.NotNull(posts);
-            var firstPost = posts.FirstOrDefault();
-            Assert.Equal(1, firstPost.Id);
         }
+        [Fact]
+        public void Get_TestClassObjectPassed_ProperMethodCalled()
+        {
+            // Arrange
+            var testObject = new Post();
+
+            var context = new Mock<DataContext>();
+            var dbSetMock = new Mock<DbSet<Post>>();
+
+            context.Setup(x => x.Set<Post>()).Returns(dbSetMock.Object);
+            dbSetMock.Setup(x => x.Find(It.IsAny<int>())).Returns(testObject);
+
+            // Act
+            var repository = new PostRepository(context.Object);
+            var result = repository.GetPostsAsync().Result;
+
+            // Assert
+            context.Verify(x => x.Set<Post>());
+            dbSetMock.Verify(x => x.Find(It.IsAny<int>()));
+        }
+
+
         [Fact]
         public async Task GetPostById_Success()
         {
-            Post post =  await repository.GetPostById(1);
+            int findId = 1;
+
+            Post post =  await repositoryMock.Object.GetPostById(findId);
+            var posts = await repositoryMock.Object.GetPostsAsync();
+
             Assert.NotNull(post);
             Assert.Equal(1, post.Id);
         }

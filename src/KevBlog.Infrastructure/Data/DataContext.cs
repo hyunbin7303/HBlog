@@ -18,7 +18,7 @@ namespace KevBlog.Infrastructure.Data
         }
         public DbSet<UserLike> Likes {get; set; }
         public DbSet<Domain.Entities.Application> Applications { get; set; }
-        public virtual DbSet<Post> Posts { get; set; }
+        public DbSet<Post> Posts { get; set; }
         public DbSet<Tag> Tags { get; set; }
         public DbSet<PostTags> PostTags { get; set; }
         public DbSet<Message> Messages { get; set; }

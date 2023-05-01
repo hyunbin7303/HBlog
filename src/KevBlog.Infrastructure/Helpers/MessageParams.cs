@@ -1,4 +1,3 @@
-
 namespace KevBlog.Infrastructure.Helpers
 {
     public class MessageParams : PaginationParams

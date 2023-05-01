@@ -46,13 +46,14 @@ namespace KevBlog.Api.Controllers
         {
             Post post = await _postRepository.GetPostById(id);
             if(post is null || post.Status is PostStatus.Removed) 
-                NotFound();
+                return NotFound();
 
             User user = await _userRepository.GetUserByIdAsync(post.UserId);
             var postDisplay = _mapper.Map<PostDisplayDetailsDto>(post);
             postDisplay.UserName = user.UserName ?? null;
             return Ok(postDisplay);
         }
+
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(int id, PostUpdateDto postUpdateDto)
         {

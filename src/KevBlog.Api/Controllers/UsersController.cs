@@ -45,6 +45,7 @@ namespace KevBlog.Api.Controllers
 
             return Ok(user);
         }
+        
         [HttpPut]
         public async Task<IActionResult> Update(MemberUpdateDto memberUpdateDto)
         {
@@ -55,15 +56,6 @@ namespace KevBlog.Api.Controllers
             if (await _userRepository.SaveAllAsync()) return NoContent();
 
             return BadRequest("Failed to update user");
-        }
-
-
-        [AllowAnonymous]
-        [HttpPost]
-        public async Task<ActionResult<User>> Add(User appUser)
-        {
-            await _userRepository.Add(appUser);
-            return CreatedAtAction("GetAppUser", new { id = appUser.Id }, appUser);
         }
 
         [HttpDelete("{id}")]
