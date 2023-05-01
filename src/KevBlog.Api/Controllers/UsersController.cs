@@ -75,11 +75,6 @@ namespace KevBlog.Api.Controllers
             return NoContent();
         }
 
-        private bool AppUserExists(int id)
-        {
-            return true;
-        }
-
         private async Task<MemberDto> GetMembersByUsernameAsync(string username)
         {
             User user = await _userRepository.GetUserByUsernameAsync(username);
