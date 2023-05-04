@@ -24,15 +24,23 @@ namespace KevBlog.Infrastructure.Repositories
             return await _dbContext.Posts.Where(x => x.Id == id).SingleOrDefaultAsync();
         }
 
-        public async Task<Post> GetPostByUsername(string username)
+        public async Task<IEnumerable<Post>> GetPostByUserName(string userName)
         {
-            var test = await _dbContext.Posts.Where(x => x.User.UserName == username).SingleOrDefaultAsync();
-            return test;
+            return await _dbContext.Posts.Where(x => x.User.UserName == userName).ToListAsync();
         }
-
         public async Task<IEnumerable<Post>> GetPostsAsync()
         {
             return await _dbContext.Posts.AsNoTracking().Include(u => u.User).ToListAsync();
+        }
+
+        public Task<IEnumerable<Post>> GetPostsByTagname(string tagName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IEnumerable<Post>> GetPostsByUserName(string userName)
+        {
+            throw new NotImplementedException();
         }
 
         public void Remove(int id)

@@ -7,7 +7,8 @@ namespace KevBlog.Domain.Repositories
         Task CreateAsync(Post post);
         Task UpdateAsync(Post user);
         Task<IEnumerable<Post>> GetPostsAsync();
-        Task<Post> GetPostByUsername(string username);
+        Task<IEnumerable<Post>> GetPostsByUserName(string userName);
+        Task<IEnumerable<Post>> GetPostsByTagname(string tagName);
         Task<Post> GetPostById(int id);
         void Remove(int id);
     }

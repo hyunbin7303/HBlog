@@ -48,10 +48,11 @@ namespace KevBlog.UnitTests
         public UsersControllerTest()
         {
             _userRepository= new Mock<IUserRepository>();
-
+            _controller = new UsersController(_userRepository.Object, _mapper);
+            _controller.ControllerContext = new ControllerContext { HttpContext = UserSetup() };
         }
 
-       
+
         [Fact]
         public async Task GetUsersAsync_NotNull()
         {
@@ -65,13 +66,16 @@ namespace KevBlog.UnitTests
         [Fact]
         public async Task GetUsers_FindingExistingUser()
         {
-            var mock = MockIUserRepository.GetMock();
-
-            var controller = new UsersController(mock.Object, _mapper);
-
+            //var mock = MockIUserRepository.GetMock();
+            string inputUserName = "kevin0";
+            IEnumerable<User> userList = MockIUserRepository.SampleValidUserData(1);
+            User returnValue = userList.First();
+            _userRepository.Setup(repo => repo.GetUserByUsernameAsync(inputUserName)).Returns(Task.FromResult(returnValue));
             UserParams userParam = new UserParams();
-            userParam.CurrentUsername = "kevin0";
-            var result = await controller.GetUsers(userParam);
+            userParam.CurrentUsername = inputUserName;
+
+            var result = await _controller.GetUsers(userParam);
+
             Assert.NotNull(result);
         }
 
@@ -82,7 +86,6 @@ namespace KevBlog.UnitTests
             IEnumerable<User> userList = MockIUserRepository.SampleValidUserData(1);
             User returnValue = userList.First();
             _userRepository.Setup(repo => repo.GetUserByUsernameAsync(inputUserName)).Returns(Task.FromResult(returnValue));
-            _controller = new UsersController(_userRepository.Object, _mapper);
 
             // Act
             ActionResult<MemberDto> actionResult = await _controller.GetUser(inputUserName);
@@ -102,7 +105,6 @@ namespace KevBlog.UnitTests
             IEnumerable<User> userList = MockIUserRepository.SampleValidUserData(1);
             User returnValue = userList.First();
             _userRepository.Setup(repo => repo.GetUserByUsernameAsync(ExistingUser)).Returns(Task.FromResult(returnValue));
-            _controller = new UsersController(_userRepository.Object, _mapper);
 
             // Act
             ActionResult<MemberDto> actionResult = await _controller.GetUser(inputUserName);
@@ -119,17 +121,11 @@ namespace KevBlog.UnitTests
             _userRepository.Setup(repo => repo.GetUsersAsync()).Returns(Task.FromResult(userList));
             var test = await _userRepository.Object.GetUsersAsync();
 
-            _controller = new UsersController(_userRepository.Object, _mapper);
-
             MemberUpdateDto memberUpdateDto = new MemberUpdateDto();
             memberUpdateDto.Introduction = "Member Update Dto";
             memberUpdateDto.LookingFor = "";
             memberUpdateDto.Interests = "Programming";
 
-            _controller.ControllerContext = new ControllerContext
-            {
-                HttpContext = UserSetup()
-            };
             var result = await _controller.Update(memberUpdateDto);
             var obj = result as ObjectResult;
 

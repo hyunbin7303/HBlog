@@ -34,8 +34,15 @@ namespace KevBlog.Api.Controllers
             var user = await _userRepository.GetUserByUsernameAsync(User.GetUsername());
             if (user == null) return NotFound();
 
-            await _tagRepository.AddTag(tagCreateDto.Name, tagCreateDto.Desc, tagCreateDto.Slug);
+            await _tagRepository.Insert(tagCreateDto.Name, tagCreateDto.Desc, tagCreateDto.Slug);
             return Ok();
+        }
+
+
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Tag>>> Get()
+        {
+            return Ok(await _tagRepository.GetAll());
         }
 
     }

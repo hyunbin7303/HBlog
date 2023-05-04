@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using KevBlog.Domain.Entities;
 using KevBlog.Domain.Repositories;
 using KevBlog.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace KevBlog.Infrastructure.Repositories
 {
@@ -15,7 +17,7 @@ namespace KevBlog.Infrastructure.Repositories
             _dbContext = dbContext;
         }
 
-        public Task AddTag(string tagName, string tagDesc = "", string tagSlug = "")
+        public Task Insert(string tagName, string tagDesc = "", string tagSlug = "")
         {
             throw new NotImplementedException();
         }
@@ -26,6 +28,16 @@ namespace KevBlog.Infrastructure.Repositories
         }
 
         public Task Update(int id, string tagName, string tagDesc, string tagSlug)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<IEnumerable<Tag>> GetAll()
+        {
+            return await _dbContext.Tags.AsNoTracking().ToListAsync();
+        }
+
+        public Task<IEnumerable<Tag>> FindbyTagName(string tagName)
         {
             throw new NotImplementedException();
         }

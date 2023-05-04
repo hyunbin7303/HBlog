@@ -35,11 +35,22 @@ namespace KevBlog.Api.Controllers
         }
         [AllowAnonymous]
         [HttpGet("users/{username}")]
-        public async Task<ActionResult<Post>> GetPostByUsername(string username)
+        public async Task<ActionResult<IEnumerable<Post>>> GetPostsByUsername(string username)
         {
-            return await _postRepository.GetPostByUsername(username);
+            return Ok(await _postRepository.GetPostsByUserName(username));
         }
-        
+
+        [AllowAnonymous]
+        [HttpGet("Tags/{tagName}")]
+        public async Task<ActionResult<IEnumerable<PostDisplayDto>>> GetPostsByTagName(string tagName)
+        {
+            var posts = await _postRepository.GetPostsByTagname(tagName);
+            if (posts is null) return NotFound();
+
+            var postDisplays = _mapper.Map<IEnumerable<PostDisplayDto>>(posts);
+            return Ok(postDisplays);
+        }
+
         [AllowAnonymous]
         [HttpGet("{id}")]
         public async Task<ActionResult<PostDisplayDetailsDto>> GetPostById(int id)

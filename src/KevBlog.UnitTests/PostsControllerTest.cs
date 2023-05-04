@@ -12,15 +12,20 @@ namespace KevBlog.UnitTests
 {
     public class PostsControllerTest : TestBase
     {
+        private readonly PostsController controller;
         private readonly Mock<IPostRepository> postRepositoryMock;
         private readonly Mock<IUserRepository> userRepositoryMock;
         private readonly Mock<ITagRepository> tagRepositoryMock;
         public PostsControllerTest()
         {
+
             postRepositoryMock = new Mock<IPostRepository>();
             userRepositoryMock = new Mock<IUserRepository>();
             userRepositoryMock.Setup(x => x.GetUserByIdAsync(1)).Returns(Task.FromResult(GetUserFake(1)));
             tagRepositoryMock = new Mock<ITagRepository>();
+
+            controller = new PostsController(postRepositoryMock.Object, userRepositoryMock.Object, tagRepositoryMock.Object, _mapper);
+            controller.ControllerContext = new ControllerContext { HttpContext = UserSetup() };
         }
 
         [Fact]
@@ -32,14 +37,8 @@ namespace KevBlog.UnitTests
             var fakeUserPost = CreateFakePost(fakePostId, fakeUserId);
             postRepositoryMock.Setup(x => x.GetPostById(It.IsAny<int>())).Returns(Task.FromResult(fakeUserPost));
 
-            var _controller = new PostsController(postRepositoryMock.Object,userRepositoryMock.Object, tagRepositoryMock.Object, _mapper);
-            _controller.ControllerContext = new ControllerContext
-            {
-                HttpContext = UserSetup()
-            };
-
             // Act
-            ActionResult<PostDisplayDetailsDto> post = await _controller.GetPostById(fakeUserPost.Id);
+            ActionResult<PostDisplayDetailsDto> post = await controller.GetPostById(fakeUserPost.Id);
 
             // Assert
             OkObjectResult okObjectResult = Assert.IsType<OkObjectResult>(post.Result);
@@ -56,11 +55,9 @@ namespace KevBlog.UnitTests
             var fakeUserId = 1;
             var fakeUserPost = CreateFakePost(1, fakeUserId);
             postRepositoryMock.Setup(repo => repo.GetPostById(1)).Returns(Task.FromResult(fakeUserPost));
-            var _controller = new PostsController(postRepositoryMock.Object, userRepositoryMock.Object, tagRepositoryMock.Object, _mapper);
-            _controller.ControllerContext = new ControllerContext { HttpContext = UserSetup() };
 
             // Act
-            ActionResult<PostDisplayDetailsDto> post = await _controller.GetPostById(fakePostId);
+            ActionResult<PostDisplayDetailsDto> post = await controller.GetPostById(fakePostId);
 
             // Assert
             NotFoundResult okObjectResult = Assert.IsType<NotFoundResult>(post.Result);
@@ -76,16 +73,22 @@ namespace KevBlog.UnitTests
             var fakeUserPost = CreateFakePost(fakePostId, fakeUserId);
             fakeUserPost.Status = PostStatus.Removed;
             postRepositoryMock.Setup(repo => repo.GetPostById(1)).Returns(Task.FromResult(fakeUserPost));
-            var _controller = new PostsController(postRepositoryMock.Object, userRepositoryMock.Object, tagRepositoryMock.Object, _mapper);
-            _controller.ControllerContext = new ControllerContext { HttpContext = UserSetup() };
 
             // Act
-            ActionResult<PostDisplayDetailsDto> post = await _controller.GetPostById(fakePostId);
+            ActionResult<PostDisplayDetailsDto> post = await controller.GetPostById(fakePostId);
 
             // Assert
             NotFoundResult okObjectResult = Assert.IsType<NotFoundResult>(post.Result);
             Assert.Equal(StatusCodes.Status404NotFound, okObjectResult.StatusCode);
         }
+
+        [Fact]
+        public async Task CreatePostTag_CreateTagInExistingPost_Success()
+        {
+            string tag = "";
+
+        }
+
 
         [Fact]
         public async Task GetPosts_ListofPosts_ReturnSuccess()
