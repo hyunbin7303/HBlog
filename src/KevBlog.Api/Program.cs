@@ -1,3 +1,4 @@
+using KevBlog.Api.SignalR;
 using KevBlog.Application.Automapper;
 using KevBlog.Domain.Entities;
 using KevBlog.Infrastructure.Data;
@@ -22,12 +23,17 @@ if(builder.Environment.IsDevelopment()){
 }
 
 
-app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:4200"));
+app.UseCors(builder => builder
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials()
+            .WithOrigins("https://localhost:4200"));
 
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+app.MapHub<PresenceHub>("hubs/presence");
 
 using var scope = app.Services.CreateScope();
 var services = scope.ServiceProvider;
