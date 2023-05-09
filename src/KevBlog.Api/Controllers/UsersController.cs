@@ -6,32 +6,32 @@ using KevBlog.Application.DTOs;
 using KevBlog.Infrastructure.Helpers;
 using KevBlog.Infrastructure.Extensions;
 using KevBlog.Domain.Repositories;
+using KevBlog.Domain.Params;
+using KevBlog.Domain.Common;
+using KevBlog.Application.Services;
 
 namespace KevBlog.Api.Controllers
 {
     [Authorize]
     public class UsersController : BaseApiController
     {
-        private readonly IUserRepository _userRepository;
-        private readonly IMapper _mapper;
-
-        public UsersController(IUserRepository userRepository, IMapper mapper)
+        private readonly IUserService _userService;
+        public UsersController(IUserService userService)
         {
-            _mapper = mapper;
-            _userRepository = userRepository;
+            _userService = userService;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsers([FromQuery] UserParams userParams)
+        public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsers([FromQuery]UserParams userParams)
         {
-            var currUser = await _userRepository.GetUserByUsernameAsync(User.GetUsername());
+            var currUser = await _userService.GetMembersByUsernameAsync(User.GetUsername());
             userParams.CurrentUsername = currUser.UserName;
 
             if(string.IsNullOrEmpty(userParams.Gender)) {
                 userParams.Gender = currUser.Gender == "male" ? "female" : "male";
             }
 
-            var users = await GetMembersAsync(userParams);
+            var users = await _userService.GetMembersAsync(userParams);
             Response.AddPaginationHeader(new PaginationHeader(users.CurrentPage, users.PageSize, users.TotalCount, users.TotalPages));
             return Ok(users);
         }
@@ -39,7 +39,7 @@ namespace KevBlog.Api.Controllers
         [HttpGet("{username}")]
         public async Task<ActionResult<MemberDto>> GetUser(string username)
         {
-            var user = await GetMembersByUsernameAsync(username);
+            var user = await _userService.GetMembersByUsernameAsync(username);
             if (user is null)
                 return NotFound($"Input user: {username} cannot find.");
 
@@ -49,47 +49,15 @@ namespace KevBlog.Api.Controllers
         [HttpPut]
         public async Task<IActionResult> Update(MemberUpdateDto memberUpdateDto)
         {
-            var user = await _userRepository.GetUserByUsernameAsync(User.GetUsername());
+            if (memberUpdateDto is null)
+                return BadRequest("Member Update Properties are Empty.");
+
+            var user = await _userService.GetMembersByUsernameAsync(User.GetUsername());
             if (user == null) return NotFound();
 
-            _mapper.Map(memberUpdateDto, user);
-            if (await _userRepository.SaveAllAsync()) return NoContent();
+            var result = await _userService.UpdateMemberAsync(memberUpdateDto);
 
             return BadRequest("Failed to update user");
-        }
-
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteAppUser(int id)
-        {
-            var user = await _userRepository.GetUserByUsernameAsync(User.GetUsername());
-            if (user == null) return NotFound();
-
-            return NoContent();
-        }
-
-        private async Task<MemberDto> GetMembersByUsernameAsync(string username)
-        {
-            User user = await _userRepository.GetUserByUsernameAsync(username);
-            return _mapper.Map<MemberDto>(user) ?? null;
-        }
-        private async Task<PageList<MemberDto>> GetMembersAsync(UserParams userParams)
-        {
-            var userQuery = _userRepository.GetUserQuery();
-            userQuery = userQuery.Where(x => x.UserName != userParams.CurrentUsername);
-            userQuery = userQuery.Where(x => x.Gender == userParams.Gender);
-
-            var minDob = DateTime.Today.AddYears(-userParams.MaxAge - 1);
-            var maxDob = DateTime.Today.AddYears(-userParams.MinAge);
-            userQuery = userQuery.Where(x => x.DateOfBirth >= minDob && x.DateOfBirth <= maxDob);
-
-            userQuery = userParams.OrderBy switch 
-            {
-                "created" => userQuery.OrderByDescending(x => x.Created),
-                _ => userQuery.OrderByDescending(x => x.LastActive)
-            };
-
-            var memberQuery = _mapper.ProjectTo<MemberDto>(userQuery);
-            return await PageList<MemberDto>.CreateAsync(memberQuery, userParams.PageNumber, userParams.PageSize);
         }
     }
 }

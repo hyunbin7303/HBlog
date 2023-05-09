@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using KevBlog.Application.DTOs;
+using KevBlog.Application.Services;
+using KevBlog.Domain.Common;
 using KevBlog.Domain.Entities;
+using KevBlog.Domain.Params;
 using KevBlog.Domain.Repositories;
 using KevBlog.Infrastructure.Extensions;
 using KevBlog.Infrastructure.Helpers;
@@ -19,12 +22,12 @@ namespace KevBlog.Api.Controllers
     {
         private readonly IUserRepository _userRepository;
         private readonly IMessageRepository _msgRepository;
-        private readonly IMapper _mapper;
-        public MessagesController(IUserRepository userRepository, IMessageRepository messageRepository, IMapper mapper)
+        private readonly IMessageService _messageService;
+        public MessagesController(IUserRepository userRepository, IMessageRepository messageRepository, IMessageService messageService)
         {
             _userRepository = userRepository;
+            _messageService= messageService;
             _msgRepository = messageRepository;
-            _mapper = mapper;
         }
 
         [HttpPost]
@@ -33,31 +36,18 @@ namespace KevBlog.Api.Controllers
             var username = User.GetUsername();
             if(username == createMsgDto.RecipientUsername.ToLower()){
                 return BadRequest("You cannot send messages to yourself.");
-            } 
-            var sender = await _userRepository.GetUserByUsernameAsync(username);
-            var recipient = await _userRepository.GetUserByUsernameAsync(createMsgDto.RecipientUsername);
-            if(recipient == null) return NotFound();
-
-            var message = new Message
-            {
-                Sender = sender,
-                Recipient = recipient,
-                SenderUsername = sender.UserName,
-                RecipientUsername = recipient.UserName,
-                Content = createMsgDto.Content
-            };
-
-            _msgRepository.AddMessage(message);
-            if(await _msgRepository.SaveAllAsync()) return Ok(_mapper.Map<MessageDto>(message));
-
-            return BadRequest("Failed to send message.");
+            }
+            var msgDto = await _messageService.CreateMessage(username, createMsgDto);
+            if(msgDto is null)
+                return BadRequest("Failed to send message.");
+            return Ok(msgDto);
         }
 
         [HttpGet]
         public async Task<ActionResult<PageList<MessageDto>>> GetMessagesForUser([FromQuery]MessageParams messageParams)
         {
             messageParams.Username = User.GetUsername();
-            var messages = await GetMessagesForUserPageList(messageParams);
+            var messages = await _messageService.GetMessagesForUserPageList(messageParams);
             Response.AddPaginationHeader(new PaginationHeader(messages.CurrentPage, messages.PageSize, messages.TotalCount, messages.TotalPages));
              
             return messages;
@@ -67,8 +57,8 @@ namespace KevBlog.Api.Controllers
         public async Task<ActionResult<IEnumerable<MessageDto>>> GetMessageThread(string username)
         {
             var currUsername = User.GetUsername();
-            var messages = await _msgRepository.GetMessageThread(currUsername, username);
-            return Ok(_mapper.Map<IEnumerable<MessageDto>>(messages));
+            var msgs = await _messageService.GetMessageThreads(currUsername, username);
+            return Ok(msgs);
         }
 
         [HttpDelete("{id}")]
@@ -89,16 +79,6 @@ namespace KevBlog.Api.Controllers
 
             return BadRequest("Problem deleting the message");
         }
-        private async Task<PageList<MessageDto>> GetMessagesForUserPageList(MessageParams messageParams) {
-            var query = _msgRepository.GetMessagesQuery();
-            query = messageParams.Container switch
-            {
-                "Inbox" => query.Where(u => u.RecipientUsername == messageParams.Username && !u.RecipientDeleted),
-                "Outbox" => query.Where(u => u.SenderUsername == messageParams.Username && !u.SenderDeleted),
-                _ => query.Where(u => u.RecipientUsername == messageParams.Username && !u.RecipientDeleted && u.DateRead == null)
-            };
-            var messages = query.ProjectTo<MessageDto>(_mapper.ConfigurationProvider);
-            return await PageList<MessageDto>.CreateAsync(messages, messageParams.PageNumber, messageParams.PageSize);
-        }
+
     }
 }

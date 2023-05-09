@@ -6,6 +6,7 @@ using AutoMapper;
 using KevBlog.Domain.Constants;
 using KevBlog.Domain.Repositories;
 using KevBlog.Infrastructure.Extensions;
+using KevBlog.Application.Services;
 
 namespace KevBlog.Api.Controllers
 {
@@ -16,6 +17,8 @@ namespace KevBlog.Api.Controllers
         private readonly IUserRepository _userRepository;
         private readonly ITagRepository _tagRepository;
         private readonly IMapper _mapper;
+
+        private readonly IPostService _postService;
 
         public PostsController(IPostRepository postRepository, IUserRepository userRepository, ITagRepository tagRepository, IMapper mapper)
         {

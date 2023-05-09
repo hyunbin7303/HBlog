@@ -6,7 +6,7 @@ namespace KevBlog.Domain.Repositories
     {
         void AddMessage(Message msg);
         void DeleteMessage(Message msg);
-        IQueryable<Message> GetMessagesQuery();
+        Task<IEnumerable<Message>> GetMessages();
         Task<Message> GetMessage(int id);
         Task<IEnumerable<Message>> GetMessageThread(string currentUsernename, string recipientUsername);
         Task<bool> SaveAllAsync();

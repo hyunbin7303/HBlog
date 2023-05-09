@@ -1,5 +1,5 @@
 
-namespace KevBlog.Infrastructure.Helpers
+namespace KevBlog.Domain.Params
 {
     public class PaginationParams
     {

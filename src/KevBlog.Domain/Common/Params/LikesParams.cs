@@ -1,3 +1,5 @@
+using KevBlog.Domain.Params;
+
 namespace KevBlog.Infrastructure.Helpers
 {
     public class LikesParams : PaginationParams

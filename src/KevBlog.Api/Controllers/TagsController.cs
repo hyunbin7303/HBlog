@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using KevBlog.Application.DTOs;
+using KevBlog.Application.Services;
 using KevBlog.Domain.Entities;
 using KevBlog.Domain.Repositories;
 using KevBlog.Infrastructure.Extensions;
@@ -14,12 +15,12 @@ namespace KevBlog.Api.Controllers
     public class TagsController : BaseApiController
     {
         private readonly ITagRepository _tagRepository;
-        private readonly IUserRepository _userRepository;
+        private readonly IUserService _userService;
         private readonly IMapper _mapper;
-        public TagsController(ITagRepository tagRepository, IUserRepository userRepository, IMapper mapper)
+        public TagsController(ITagRepository tagRepository, IUserService userService, IMapper mapper)
         {
             this._tagRepository = tagRepository;
-            this._userRepository = userRepository;
+            this._userService = userService;
             this._mapper = mapper;  
         }
         [HttpPost]
@@ -31,7 +32,7 @@ namespace KevBlog.Api.Controllers
             if (string.IsNullOrEmpty(tagCreateDto.Name))
                 return BadRequest("Tag Name cannot be empty.");
 
-            var user = await _userRepository.GetUserByUsernameAsync(User.GetUsername());
+            var user = await _userService.GetMembersByUsernameAsync(User.GetUsername());
             if (user == null) return NotFound();
 
             await _tagRepository.Insert(tagCreateDto.Name, tagCreateDto.Desc, tagCreateDto.Slug);

@@ -1,5 +1,5 @@
 using System.Text.Json;
-using KevBlog.Infrastructure.Helpers;
+using KevBlog.Domain.Common;
 using Microsoft.AspNetCore.Http;
 
 namespace KevBlog.Infrastructure.Extensions

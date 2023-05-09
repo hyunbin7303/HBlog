@@ -1,4 +1,4 @@
-namespace KevBlog.Infrastructure.Helpers
+namespace KevBlog.Domain.Common
 {
     public class PaginationHeader
     {

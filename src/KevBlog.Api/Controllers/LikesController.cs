@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using KevBlog.Application.DTOs;
+using KevBlog.Domain.Common;
 using KevBlog.Domain.Entities;
 using KevBlog.Domain.Repositories;
 using KevBlog.Infrastructure.Extensions;

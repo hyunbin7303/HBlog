@@ -18,8 +18,7 @@ namespace KevBlog.Infrastructure.Repositories
 
         public async Task<User> GetUserByUsernameAsync(string username)
         {
-            return await _dbContext.Users.Include(p => p.Photos).
-                    SingleOrDefaultAsync(x => x.UserName == username);
+            return await _dbContext.Users.Include(p => p.Photos).SingleOrDefaultAsync(x => x.UserName == username);
         }
 
         public async Task<IEnumerable<User>> GetUsersAsync()

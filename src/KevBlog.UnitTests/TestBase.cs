@@ -3,6 +3,7 @@ using AutoMapper;
 using KevBlog.Application.Automapper;
 using KevBlog.Domain.Entities;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
@@ -11,6 +12,7 @@ namespace KevBlog.UnitTests
     public class TestBase
     {
         protected readonly IMapper _mapper;
+        private static readonly ServiceProvider _serviceProvider;
         public TestBase() 
         {
             if (_mapper == null)
@@ -22,6 +24,8 @@ namespace KevBlog.UnitTests
                 IMapper mapper = mappingConfig.CreateMapper();
                 _mapper = mapper;
             }
+
+
         } 
         public DefaultHttpContext UserSetup()
         {

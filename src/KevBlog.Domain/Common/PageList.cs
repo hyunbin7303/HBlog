@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 
-namespace KevBlog.Infrastructure.Helpers
+namespace KevBlog.Domain.Common
 {
     public class PageList<T> : List<T>
     {

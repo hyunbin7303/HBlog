@@ -43,10 +43,6 @@ namespace KevBlog.Api.Controllers
                 KnownAs = user.KnownAs
             };
         }
-        private async Task<bool> UserExists(string username)
-        {
-            return await _userManager.Users.AnyAsync(x => x.UserName == username.ToLower());
-        }
 
         [HttpPost("login")]
         public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
@@ -121,6 +117,10 @@ namespace KevBlog.Api.Controllers
         private bool AppUserExists(int id)
         {
             return _userManager.Users.Any(e => e.Id == id);
+        }
+        private async Task<bool> UserExists(string username)
+        {
+            return await _userManager.Users.AnyAsync(x => x.UserName == username.ToLower());
         }
     }
 }

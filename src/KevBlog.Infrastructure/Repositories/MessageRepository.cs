@@ -24,9 +24,9 @@ namespace KevBlog.Infrastructure.Repositories
         {
             _dbContext.Messages.Remove(msg);
         }
-        public IQueryable<Message> GetMessagesQuery()
+        public async Task<IEnumerable<Message>> GetMessages()
         {
-            return _dbContext.Messages.OrderByDescending(x=> x.MessageSent).AsQueryable();
+            return await _dbContext.Messages.OrderByDescending(x=> x.MessageSent).ToListAsync();
         }
         public async Task<Message> GetMessage(int id)
         {

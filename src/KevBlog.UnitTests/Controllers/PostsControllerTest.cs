@@ -3,12 +3,12 @@ using KevBlog.Application.DTOs;
 using KevBlog.Domain.Constants;
 using KevBlog.Domain.Entities;
 using KevBlog.Domain.Repositories;
+using KevBlog.UnitTests.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
-using System.Security.AccessControl;
 
-namespace KevBlog.UnitTests
+namespace KevBlog.UnitTests.Controllers
 {
     public class PostsControllerTest : TestBase
     {

@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using KevBlog.Api.Controllers;
 using KevBlog.Application.DTOs;
+using KevBlog.Application.Services;
 using KevBlog.Domain.Entities;
+using KevBlog.Domain.Params;
 using KevBlog.Domain.Repositories;
 using KevBlog.Infrastructure.Helpers;
 using Microsoft.AspNetCore.Http;
@@ -9,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 using Moq;
 using System.Security.Claims;
 
-namespace KevBlog.UnitTests
+namespace KevBlog.UnitTests.Controllers
 {
     internal class MockIUserRepository
     {
@@ -44,11 +46,13 @@ namespace KevBlog.UnitTests
     public class UsersControllerTest : TestBase
     {
         private readonly Mock<IUserRepository> _userRepository;
+        private readonly Mock<IUserService> _userService;
         private UsersController _controller;
         public UsersControllerTest()
         {
-            _userRepository= new Mock<IUserRepository>();
-            _controller = new UsersController(_userRepository.Object, _mapper);
+            _userRepository = new Mock<IUserRepository>();
+            _userService = new Mock<IUserService>();
+            _controller = new UsersController(_userService.Object);
             _controller.ControllerContext = new ControllerContext { HttpContext = UserSetup() };
         }
 
@@ -138,7 +142,7 @@ namespace KevBlog.UnitTests
 
             User ActualUser = null;
             _userRepository.Setup(_ => _.Update(It.IsAny<User>())).Callback(new InvocationAction(i => ActualUser = (User)i.Arguments[0]));
-            
+
         }
 
     }
