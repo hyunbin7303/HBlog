@@ -1,5 +1,6 @@
 ﻿using KevBlog.Api.Controllers;
 using KevBlog.Application.DTOs;
+using KevBlog.Application.Services;
 using KevBlog.Domain.Constants;
 using KevBlog.Domain.Entities;
 using KevBlog.Domain.Repositories;
@@ -13,18 +14,15 @@ namespace KevBlog.UnitTests.Controllers
     public class PostsControllerTest : TestBase
     {
         private readonly PostsController controller;
-        private readonly Mock<IPostRepository> postRepositoryMock;
-        private readonly Mock<IUserRepository> userRepositoryMock;
-        private readonly Mock<ITagRepository> tagRepositoryMock;
+        private readonly Mock<IPostRepository> postRepositoryMock = new();
+        private readonly Mock<IUserRepository> userRepositoryMock = new();
+        private readonly Mock<ITagRepository> tagRepositoryMock = new();
+        private readonly Mock<IPostService> postServiceMock = new();
         public PostsControllerTest()
         {
 
-            postRepositoryMock = new Mock<IPostRepository>();
-            userRepositoryMock = new Mock<IUserRepository>();
             userRepositoryMock.Setup(x => x.GetUserByIdAsync(1)).Returns(Task.FromResult(GetUserFake(1)));
-            tagRepositoryMock = new Mock<ITagRepository>();
-
-            controller = new PostsController(postRepositoryMock.Object, userRepositoryMock.Object, tagRepositoryMock.Object, _mapper);
+            controller = new PostsController(postServiceMock.Object, postRepositoryMock.Object, userRepositoryMock.Object, tagRepositoryMock.Object, _mapper);
             controller.ControllerContext = new ControllerContext { HttpContext = UserSetup() };
         }
 
@@ -95,7 +93,7 @@ namespace KevBlog.UnitTests.Controllers
         {
             IEnumerable<Post> samplePosts = MockIPostRepository.GenerateData(5);
             postRepositoryMock.Setup(x => x.GetPostsAsync()).Returns(Task.FromResult(samplePosts));
-            var controller = new PostsController(postRepositoryMock.Object, userRepositoryMock.Object, tagRepositoryMock.Object, _mapper);
+            var controller = new PostsController(postServiceMock.Object, postRepositoryMock.Object, userRepositoryMock.Object, tagRepositoryMock.Object, _mapper);
 
             ActionResult<IEnumerable<PostDisplayDto>> posts = await controller.GetPosts();
 

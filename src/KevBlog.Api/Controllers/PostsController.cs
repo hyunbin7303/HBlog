@@ -16,13 +16,15 @@ namespace KevBlog.Api.Controllers
         private readonly IPostRepository _postRepository;
         private readonly IUserRepository _userRepository;
         private readonly ITagRepository _tagRepository;
-        private readonly IMapper _mapper;
 
         private readonly IPostService _postService;
+        private readonly IMapper _mapper;
 
-        public PostsController(IPostRepository postRepository, IUserRepository userRepository, ITagRepository tagRepository, IMapper mapper)
+
+        public PostsController(IPostService postService, IPostRepository postRepository, IUserRepository userRepository, ITagRepository tagRepository, IMapper mapper)
         {
             _mapper = mapper;
+            _postService = postService;
             _postRepository = postRepository;
             _userRepository = userRepository;
             _tagRepository = tagRepository;
@@ -30,12 +32,8 @@ namespace KevBlog.Api.Controllers
 
         [AllowAnonymous]
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<PostDisplayDto>>> GetPosts()
-        {
-            IEnumerable<Post> posts = await _postRepository.GetPostsAsync();
-            var postDisplays = _mapper.Map<IEnumerable<PostDisplayDto>>(posts);
-            return Ok(postDisplays);
-        }
+        public async Task<ActionResult<IEnumerable<PostDisplayDto>>> GetPosts() => Ok(await _postService.GetPosts());
+
         [AllowAnonymous]
         [HttpGet("users/{username}")]
         public async Task<ActionResult<IEnumerable<Post>>> GetPostsByUsername(string username)
@@ -58,6 +56,9 @@ namespace KevBlog.Api.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<PostDisplayDetailsDto>> GetPostById(int id)
         {
+
+            var postDetails = await _postService.GetByIdAsync(id);
+
             Post post = await _postRepository.GetPostById(id);
             if(post is null || post.Status is PostStatus.Removed) 
                 return NotFound();

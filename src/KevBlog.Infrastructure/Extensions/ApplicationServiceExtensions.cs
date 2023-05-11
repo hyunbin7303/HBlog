@@ -4,6 +4,7 @@ using KevBlog.Infrastructure.Authentications;
 using KevBlog.Infrastructure.Data;
 using KevBlog.Infrastructure.Helpers;
 using KevBlog.Infrastructure.Repositories;
+using KevBlog.Infrastructure.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -28,12 +29,14 @@ namespace KevBlog.Infrastructure.Extensions
 
             // Application Service Layer DI
             services.AddScoped<ITokenService, TokenService>();
+            services.AddScoped<IUserService, UserService>();
             services.AddScoped<IPostService, PostService>();
             services.AddScoped<IMessageService, MessageService>();
 
             services.AddScoped<LogUserActivity>();
             services.AddSignalR();
 
+            services.AddSingleton<PresenceTracker>();
 
             return services;
         }

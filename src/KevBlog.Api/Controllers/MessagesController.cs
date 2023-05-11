@@ -20,12 +20,10 @@ namespace KevBlog.Api.Controllers
 {
     public class MessagesController : BaseApiController
     {
-        private readonly IUserRepository _userRepository;
         private readonly IMessageRepository _msgRepository;
         private readonly IMessageService _messageService;
-        public MessagesController(IUserRepository userRepository, IMessageRepository messageRepository, IMessageService messageService)
+        public MessagesController(IMessageRepository messageRepository, IMessageService messageService)
         {
-            _userRepository = userRepository;
             _messageService= messageService;
             _msgRepository = messageRepository;
         }
@@ -56,8 +54,7 @@ namespace KevBlog.Api.Controllers
         [HttpGet("thread/{username}")]
         public async Task<ActionResult<IEnumerable<MessageDto>>> GetMessageThread(string username)
         {
-            var currUsername = User.GetUsername();
-            var msgs = await _messageService.GetMessageThreads(currUsername, username);
+            var msgs = await _messageService.GetMessageThreads(User.GetUsername(), username);
             return Ok(msgs);
         }
 

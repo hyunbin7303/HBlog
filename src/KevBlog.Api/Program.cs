@@ -1,10 +1,10 @@
-using KevBlog.Api.SignalR;
 using KevBlog.Application.Automapper;
 using KevBlog.Domain.Entities;
 using KevBlog.Infrastructure.Data;
 using KevBlog.Infrastructure.Extensions;
 using KevBlog.Infrastructure.Middlewares;
 using KevBlog.Infrastructure.Repositories;
+using KevBlog.Infrastructure.SignalR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 

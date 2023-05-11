@@ -1,8 +1,6 @@
 ﻿using KevBlog.Application.DTOs;
 using KevBlog.Domain.Common;
-using KevBlog.Domain.Entities;
 using KevBlog.Domain.Params;
-using KevBlog.Domain.Repositories;
 
 namespace KevBlog.Application.Services
 {
@@ -11,6 +9,7 @@ namespace KevBlog.Application.Services
         Task<PageList<MemberDto>> GetMembersAsync(UserParams userParams);
         Task<bool> UpdateMemberAsync(MemberUpdateDto User);
         Task<MemberDto> GetMembersByUsernameAsync(string username);
+        //Task<Result>
 
     }
 }
