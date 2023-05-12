@@ -25,10 +25,10 @@ namespace KevBlog.Api.Controllers
         public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsers([FromQuery]UserParams userParams)
         {
             var currUser = await _userService.GetMembersByUsernameAsync(User.GetUsername());
-            userParams.CurrentUsername = currUser.UserName;
+            userParams.CurrentUsername = currUser.Value.UserName;
 
             if(string.IsNullOrEmpty(userParams.Gender)) {
-                userParams.Gender = currUser.Gender == "male" ? "female" : "male";
+                userParams.Gender = currUser.Value.Gender == "male" ? "female" : "male";
             }
 
             var users = await _userService.GetMembersAsync(userParams);
@@ -40,7 +40,7 @@ namespace KevBlog.Api.Controllers
         public async Task<ActionResult<MemberDto>> GetUser(string username)
         {
             var user = await _userService.GetMembersByUsernameAsync(username);
-            if (user is null)
+            if (user.Value is null)
                 return NotFound($"Input user: {username} cannot find.");
 
             return Ok(user);
@@ -53,7 +53,7 @@ namespace KevBlog.Api.Controllers
                 return BadRequest("Member Update Properties are Empty.");
 
             var user = await _userService.GetMembersByUsernameAsync(User.GetUsername());
-            if (user == null) return NotFound();
+            if (user.Value is null) return NotFound();
 
             var result = await _userService.UpdateMemberAsync(memberUpdateDto);
 

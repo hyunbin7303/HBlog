@@ -5,6 +5,7 @@ using KevBlog.Domain.Common;
 using KevBlog.Domain.Entities;
 using KevBlog.Domain.Params;
 using KevBlog.Domain.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace KevBlog.Application.Services
 {

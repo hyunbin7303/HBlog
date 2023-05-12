@@ -1,12 +1,12 @@
 <!-- <p *ngFor="let message of messages">{{message.content}}</p> -->
 <div class="card">
     <div class="body">
-        <div *ngIf="messages.length === 0">
+        <div *ngIf="(messagesService.messageThread$ | async)?.length === 0">
             No messages Yet.
         </div>
 
-        <ul *ngIf="messages.length >0" class="chat">
-            <li *ngFor="let message of messages">
+        <ul *ngIf="(messagesService.messageThread$ | async)!.length > 0" class="chat">
+            <li *ngFor="let message of (messagesService.messageThread$ | async)">
                 <div>
                     <span class="chat-img float-end">
                         <img class="rounded-circle" src="{{message.senderPhotoUrl || './assets/user.png'}}" alt="imge of user">

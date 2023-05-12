@@ -33,7 +33,7 @@ namespace KevBlog.Api.Controllers
                 return BadRequest("Tag Name cannot be empty.");
 
             var user = await _userService.GetMembersByUsernameAsync(User.GetUsername());
-            if (user == null) return NotFound();
+            if (user.Value is null) return NotFound();
 
             await _tagRepository.Insert(tagCreateDto.Name, tagCreateDto.Desc, tagCreateDto.Slug);
             return Ok();

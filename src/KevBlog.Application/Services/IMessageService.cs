@@ -8,6 +8,6 @@ namespace KevBlog.Application.Services
     {
         Task<MessageDto> CreateMessage(string userName, MessageCreateDto createMsgDto);
         Task<PageList<MessageDto>> GetMessagesForUserPageList(MessageParams messageParams);
-        Task<IEnumerable<MessageDto>> GetMessageThreads(string currUserName, string userName);
+        Task<IEnumerable<MessageDto>> GetMessageThreads(string currUserName, string recipientUsername);
     }
 }

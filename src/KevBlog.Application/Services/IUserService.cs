@@ -1,4 +1,5 @@
-﻿using KevBlog.Application.DTOs;
+﻿using KevBlog.Application.Common;
+using KevBlog.Application.DTOs;
 using KevBlog.Domain.Common;
 using KevBlog.Domain.Params;
 
@@ -8,8 +9,7 @@ namespace KevBlog.Application.Services
     {
         Task<PageList<MemberDto>> GetMembersAsync(UserParams userParams);
         Task<bool> UpdateMemberAsync(MemberUpdateDto User);
-        Task<MemberDto> GetMembersByUsernameAsync(string username);
-        //Task<Result>
+        Task<ServiceResult<MemberDto>> GetMembersByUsernameAsync(string username);
 
     }
 }

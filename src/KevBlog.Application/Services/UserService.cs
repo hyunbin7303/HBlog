@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using KevBlog.Application.Common;
 using KevBlog.Application.DTOs;
 using KevBlog.Domain.Common;
 using KevBlog.Domain.Entities;
@@ -35,16 +36,17 @@ namespace KevBlog.Application.Services
             return await PageList<MemberDto>.CreateAsync(memberQuery, userParams.PageNumber, userParams.PageSize);
         }
 
-        public async Task<MemberDto> GetMembersByUsernameAsync(string username)
+        public async Task<ServiceResult<MemberDto>> GetMembersByUsernameAsync(string username)
         {
             User user = await _userRepository.GetUserByUsernameAsync(username);
-            return _mapper.Map<MemberDto>(user) ?? null;
+            if (user is null)
+                return ServiceResult.Fail<MemberDto>(msg: "Failed to get user");
+
+            MemberDto member = _mapper.Map<MemberDto>(user);
+            return ServiceResult.Success(member);
         }
         public async Task<bool> UpdateMemberAsync(MemberUpdateDto user)
         {
-            if(user is null)
-                throw new ArgumentNullException(nameof(user));
-
             MemberUpdateDto memberUpdateDto = new MemberUpdateDto();
             _mapper.Map(memberUpdateDto, user);
             if (await _userRepository.SaveAllAsync()) return true;
