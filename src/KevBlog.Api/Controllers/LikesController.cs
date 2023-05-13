@@ -11,7 +11,6 @@ using KevBlog.Domain.Repositories;
 using KevBlog.Infrastructure.Extensions;
 using KevBlog.Infrastructure.Helpers;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace KevBlog.Api.Controllers
 {
@@ -19,11 +18,9 @@ namespace KevBlog.Api.Controllers
     {
         private readonly ILikesRepository _likesRepository;
         private readonly IUserRepository _userRepository;
-        private readonly IMapper _mapper;
 
-        public LikesController(IUserRepository userRepository, ILikesRepository likesRepository, IMapper mapper)
+        public LikesController(IUserRepository userRepository, ILikesRepository likesRepository)
         {
-            _mapper = mapper;
             _likesRepository = likesRepository;
             _userRepository = userRepository;
         }

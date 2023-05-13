@@ -24,7 +24,7 @@ namespace KevBlog.Infrastructure.Repositories
             return await _dbContext.Posts.Where(x => x.Id == id).SingleOrDefaultAsync();
         }
 
-        public async Task<IEnumerable<Post>> GetPostByUserName(string userName)
+        public async Task<IEnumerable<Post>> GetPostsByUserName(string userName)
         {
             return await _dbContext.Posts.Where(x => x.User.UserName == userName).ToListAsync();
         }
@@ -37,12 +37,6 @@ namespace KevBlog.Infrastructure.Repositories
         {
             throw new NotImplementedException();
         }
-
-        public Task<IEnumerable<Post>> GetPostsByUserName(string userName)
-        {
-            throw new NotImplementedException();
-        }
-
         public void Remove(int id)
         {
             _dbContext.Posts.Remove(new Post { Id = id });

@@ -16,13 +16,12 @@ namespace KevBlog.UnitTests.Controllers
         private readonly PostsController controller;
         private readonly Mock<IPostRepository> postRepositoryMock = new();
         private readonly Mock<IUserRepository> userRepositoryMock = new();
-        private readonly Mock<ITagRepository> tagRepositoryMock = new();
         private readonly Mock<IPostService> postServiceMock = new();
         public PostsControllerTest()
         {
 
             userRepositoryMock.Setup(x => x.GetUserByIdAsync(1)).Returns(Task.FromResult(GetUserFake(1)));
-            controller = new PostsController(postServiceMock.Object, postRepositoryMock.Object, userRepositoryMock.Object, tagRepositoryMock.Object, _mapper);
+            controller = new PostsController(postServiceMock.Object, postRepositoryMock.Object, userRepositoryMock.Object,  _mapper);
             controller.ControllerContext = new ControllerContext { HttpContext = UserSetup() };
         }
 
@@ -93,7 +92,7 @@ namespace KevBlog.UnitTests.Controllers
         {
             IEnumerable<Post> samplePosts = MockIPostRepository.GenerateData(5);
             postRepositoryMock.Setup(x => x.GetPostsAsync()).Returns(Task.FromResult(samplePosts));
-            var controller = new PostsController(postServiceMock.Object, postRepositoryMock.Object, userRepositoryMock.Object, tagRepositoryMock.Object, _mapper);
+            var controller = new PostsController(postServiceMock.Object, postRepositoryMock.Object, userRepositoryMock.Object, _mapper);
 
             ActionResult<IEnumerable<PostDisplayDto>> posts = await controller.GetPosts();
 

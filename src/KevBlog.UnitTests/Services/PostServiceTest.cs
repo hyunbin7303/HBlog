@@ -20,23 +20,13 @@ namespace KevBlog.UnitTests.Services
             _postService = new PostService(_mapper, _postRepositoryMock.Object, _UserRepositoryMock.Object);
         }
         [Fact]
-        public async Task GetPostsByUsername_NotExistingName_ReturnFalse()
+        public async Task GetPosts__ReturnFalse()
         {
             string userName = "NotExisting";
 
-            var posts = await _postService.GetPostsByUsername(userName);
+            var posts = await _postService.GetPosts();
 
             Assert.Null(posts);
-        }
-
-        [Fact]
-        public async Task GetPostsByUsername_ExistingUserName_ReturnPosts()
-        {
-            string userName = "kevin0";
-
-            var posts = await _postService.GetPostsByUsername(userName);
-
-            Assert.NotNull(posts);
         }
     }
 }

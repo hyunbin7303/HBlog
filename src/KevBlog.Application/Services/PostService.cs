@@ -17,6 +17,24 @@ namespace KevBlog.Application.Services
             _userRepository = userRepository;
         }
 
+        public Task AddTag(string tagName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<ServiceResult> CreatePost(string userName, PostCreateDto createDto)
+        {
+            if (string.IsNullOrEmpty(createDto.Title))
+                return ServiceResult.Fail(msg: "Title cannot be empty.");
+
+            var user = await _userRepository.GetUserByUsernameAsync(userName);
+            var post = _mapper.Map<Post>(createDto);
+            post.User = user;
+            post.UserId = user.Id;
+            await _postRepository.CreateAsync(post);
+            return ServiceResult.Success(msg: "Success to create post");
+        }
+
         public async Task<ServiceResult<PostDisplayDetailsDto>> GetByIdAsync(int id)
         {
             Post post = await _postRepository.GetPostById(id);
@@ -34,11 +52,6 @@ namespace KevBlog.Application.Services
             IEnumerable<Post> posts = await _postRepository.GetPostsAsync();
             var postDisplays = _mapper.Map<IEnumerable<PostDisplayDto>>(posts);
             return postDisplays;
-        }
-
-        public Task<IEnumerable<Post>> GetPostsByUsername(string username)
-        {
-            throw new NotImplementedException();
         }
     }
 }

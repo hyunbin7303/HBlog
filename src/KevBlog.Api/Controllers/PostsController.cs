@@ -15,19 +15,17 @@ namespace KevBlog.Api.Controllers
     {
         private readonly IPostRepository _postRepository;
         private readonly IUserRepository _userRepository;
-        private readonly ITagRepository _tagRepository;
 
         private readonly IPostService _postService;
         private readonly IMapper _mapper;
 
 
-        public PostsController(IPostService postService, IPostRepository postRepository, IUserRepository userRepository, ITagRepository tagRepository, IMapper mapper)
+        public PostsController(IPostService postService, IPostRepository postRepository, IUserRepository userRepository, IMapper mapper)
         {
             _mapper = mapper;
             _postService = postService;
             _postRepository = postRepository;
             _userRepository = userRepository;
-            _tagRepository = tagRepository;
         }
 
         [AllowAnonymous]
@@ -98,7 +96,7 @@ namespace KevBlog.Api.Controllers
         [HttpPost]
         public async Task<ActionResult<User>> Create(PostCreateDto postCreateDto)
         {
-            if (postCreateDto == null)
+            if (postCreateDto is null)
                 throw new ArgumentNullException(nameof(postCreateDto));
 
             if (string.IsNullOrEmpty(postCreateDto.Title))
