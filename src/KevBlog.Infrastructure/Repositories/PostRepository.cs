@@ -1,3 +1,4 @@
+using KevBlog.Domain.Constants;
 using KevBlog.Domain.Entities;
 using KevBlog.Domain.Repositories;
 using KevBlog.Infrastructure.Data;
@@ -31,11 +32,6 @@ namespace KevBlog.Infrastructure.Repositories
         public async Task<IEnumerable<Post>> GetPostsAsync()
         {
             return await _dbContext.Posts.AsNoTracking().Include(u => u.User).ToListAsync();
-        }
-
-        public Task<IEnumerable<Post>> GetPostsByTagname(string tagName)
-        {
-            throw new NotImplementedException();
         }
         public void Remove(int id)
         {

@@ -13,20 +13,21 @@ namespace KevBlog.UnitTests.Services
     public class UserServiceTest : ServiceTest
     {
         private IUserService _userService;
-        private Mock<IUserRepository> _userRepositoryMock = new Mock<IUserRepository>();
+        private Mock<IUserRepository> _userRepositoryMock = new();
         public UserServiceTest()
         {
             _userService = new UserService(_mapper, _userRepositoryMock.Object);
         }
 
         [Fact]
-        public void Test()
+        public async Task GetMembersAsync_ExistingUser_ReturnPageList()
         {
             string username = "kevin0";
             UserParams userParams = new UserParams();
 
-            var member = _userService.GetMembersAsync(userParams);
+            var member = await _userService.GetMembersAsync(userParams);
 
+            Assert.NotNull(member);
 
         }
         [Fact]

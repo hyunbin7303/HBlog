@@ -8,33 +8,6 @@ using Moq;
 
 namespace KevBlog.UnitTests.Repositories
 {
-    internal class MockIPostRepository
-    {
-        public static Mock<IPostRepository> GetPostsMock()
-        {
-            var mock = new Mock<IPostRepository>();
-            var posts = GenerateData(5);
-            mock.Setup(m => m.GetPostsAsync().Result).Returns(posts);
-            return mock;
-        }
-        public static List<Post> GenerateData(int count)
-        {
-            var posts = new List<Post>();
-            for (int i = 0; i < count; i++)
-            {
-                var post = new Post { Id = i + 1, UserId = 1, Created = DateTime.Now, Desc = "Desc" + i, Content = "Content1", LastUpdated = DateTime.Now, Status = "Pending", LinkForPost = "https://github.com/hyunbin7303" };
-                post.User = new User
-                {
-                    Id = 1,
-                    UserName = "test",
-                    City = "Kitchener",
-                    Gender = "Male",
-                };
-                posts.Add(post);
-            }
-            return posts;
-        } 
-    }
     public class PostRepositoryTest
     {
         private IPostRepository _repository;    
@@ -103,6 +76,7 @@ namespace KevBlog.UnitTests.Repositories
 
             Assert.Null(posts);
         }
+
 
         [Fact]
         public async Task VerifyingMockWorking()

@@ -1,3 +1,4 @@
+using KevBlog.Domain.Constants;
 using KevBlog.Domain.Entities;
 
 namespace KevBlog.Domain.Repositories
@@ -8,7 +9,6 @@ namespace KevBlog.Domain.Repositories
         Task UpdateAsync(Post user);
         Task<IEnumerable<Post>> GetPostsAsync();
         Task<IEnumerable<Post>> GetPostsByUserName(string userName);
-        Task<IEnumerable<Post>> GetPostsByTagname(string tagName);
         Task<Post> GetPostById(int id);
         void Remove(int id);
     }

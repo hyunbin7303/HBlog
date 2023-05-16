@@ -20,9 +20,7 @@ namespace KevBlog.Infrastructure.Data
         public virtual DbSet<Domain.Entities.Application> Applications { get; set; }
         public virtual DbSet<Post> Posts { get; set; }
         public virtual DbSet<Tag> Tags { get; set; }
-        public virtual DbSet<PostTags> PostTags { get; set; }
         public virtual DbSet<Message> Messages { get; set; }
-
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -57,18 +55,6 @@ namespace KevBlog.Infrastructure.Data
                 .WithMany(l => l.LikedByUsers)
                 .HasForeignKey(s => s.TargetUserId)
                 .OnDelete(DeleteBehavior.NoAction);
-
-
-            modelBuilder.Entity<PostTags>()
-                .HasKey(k => new { k.PostId, k.TagId});
-            modelBuilder.Entity<PostTags>()
-                .HasOne(pt => pt.Post)
-                .WithMany(p => p.PostTags)
-                .HasForeignKey(pt => pt.PostId);
-            modelBuilder.Entity<PostTags>()
-                .HasOne(pt => pt.Tag)
-                .WithMany(t => t.PostTags)
-                .HasForeignKey(pt => pt.TagId);
 
             modelBuilder.Entity<Message>()
                 .HasOne(u => u.Recipient)

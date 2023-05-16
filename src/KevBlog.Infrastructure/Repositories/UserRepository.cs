@@ -23,11 +23,7 @@ namespace KevBlog.Infrastructure.Repositories
 
         public async Task<IEnumerable<User>> GetUsersAsync()
         {
-            return await _dbContext.Users.AsNoTracking().ToListAsync();
-        }
-        public IQueryable<User> GetUserQuery()
-        {
-            return  _dbContext.Users.Include(p => p.Photos).AsNoTracking();
+            return await _dbContext.Users.Include(p=> p.Photos).AsNoTracking().ToListAsync();
         }
         public async Task<bool> SaveAllAsync()
         {

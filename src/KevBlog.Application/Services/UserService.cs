@@ -18,22 +18,22 @@ namespace KevBlog.Application.Services
 
         public async Task<PageList<MemberDto>> GetMembersAsync(UserParams userParams)
         {
-            var userQuery = _userRepository.GetUserQuery();
-            userQuery = userQuery.Where(x => x.UserName != userParams.CurrentUsername);
-            userQuery = userQuery.Where(x => x.Gender == userParams.Gender);
+            var usersList = await _userRepository.GetUsersAsync();
+            usersList = usersList.Where(x => x.UserName != userParams.CurrentUsername);
+            usersList = usersList.Where(x => x.Gender == userParams.Gender);
 
             var minDob = DateTime.Today.AddYears(-userParams.MaxAge - 1);
             var maxDob = DateTime.Today.AddYears(-userParams.MinAge);
-            userQuery = userQuery.Where(x => x.DateOfBirth >= minDob && x.DateOfBirth <= maxDob);
+            usersList = usersList.Where(x => x.DateOfBirth >= minDob && x.DateOfBirth <= maxDob);
 
-            userQuery = userParams.OrderBy switch
+            usersList = userParams.OrderBy switch
             {
-                "created" => userQuery.OrderByDescending(x => x.Created),
-                _ => userQuery.OrderByDescending(x => x.LastActive)
+                "created" => usersList.OrderByDescending(x => x.Created),
+                _ => usersList.OrderByDescending(x => x.LastActive)
             };
 
-            var memberQuery = _mapper.ProjectTo<MemberDto>(userQuery);
-            return await PageList<MemberDto>.CreateAsync(memberQuery, userParams.PageNumber, userParams.PageSize);
+            var members = _mapper.Map<IEnumerable<MemberDto>>(usersList);
+            return PageList<MemberDto>.CreateAsync(members, userParams.PageNumber, userParams.PageSize);
         }
 
         public async Task<ServiceResult<MemberDto>> GetMembersByUsernameAsync(string username)

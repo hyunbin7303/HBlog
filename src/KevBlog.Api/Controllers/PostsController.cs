@@ -14,18 +14,16 @@ namespace KevBlog.Api.Controllers
     public class PostsController : BaseApiController
     {
         private readonly IPostRepository _postRepository;
-        private readonly IUserRepository _userRepository;
 
         private readonly IPostService _postService;
         private readonly IMapper _mapper;
 
 
-        public PostsController(IPostService postService, IPostRepository postRepository, IUserRepository userRepository, IMapper mapper)
+        public PostsController(IPostService postService, IPostRepository postRepository, IMapper mapper)
         {
             _mapper = mapper;
             _postService = postService;
             _postRepository = postRepository;
-            _userRepository = userRepository;
         }
 
         [AllowAnonymous]
@@ -34,52 +32,37 @@ namespace KevBlog.Api.Controllers
 
         [AllowAnonymous]
         [HttpGet("users/{username}")]
-        public async Task<ActionResult<IEnumerable<Post>>> GetPostsByUsername(string username)
-        {
-            return Ok(await _postRepository.GetPostsByUserName(username));
-        }
+        public async Task<ActionResult<IEnumerable<Post>>> GetPostsByUsername(string username) => Ok(await _postRepository.GetPostsByUserName(username));
 
         [AllowAnonymous]
         [HttpGet("Tags/{tagName}")]
-        public async Task<ActionResult<IEnumerable<PostDisplayDto>>> GetPostsByTagName(string tagName)
-        {
-            var posts = await _postRepository.GetPostsByTagname(tagName);
-            if (posts is null) return NotFound();
+        public async Task<ActionResult<IEnumerable<PostDisplayDto>>> GetPostsByTagName(string tagName) => Ok(await _postService.GetPostsByTagName(tagName));
 
-            var postDisplays = _mapper.Map<IEnumerable<PostDisplayDto>>(posts);
-            return Ok(postDisplays);
-        }
 
         [AllowAnonymous]
         [HttpGet("{id}")]
         public async Task<ActionResult<PostDisplayDetailsDto>> GetPostById(int id)
         {
-
             var postDetails = await _postService.GetByIdAsync(id);
-
-            Post post = await _postRepository.GetPostById(id);
-            if(post is null || post.Status is PostStatus.Removed) 
-                return NotFound();
-
-            User user = await _userRepository.GetUserByIdAsync(post.UserId);
-            var postDisplay = _mapper.Map<PostDisplayDetailsDto>(post);
-            postDisplay.UserName = user.UserName ?? null;
-            return Ok(postDisplay);
+            if (postDetails.IsSuccess)
+                return Ok(postDetails.Value);
+            else
+            {
+                return BadRequest(postDetails.Message);
+            }
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(int id, PostUpdateDto postUpdateDto)
         {
-            var post = await _postRepository.GetPostById(id);
-            if (post == null || post.Status == PostStatus.Removed)
-                return NotFound(); // or should be RedirectToRoute("Homepage");
+            if(postUpdateDto is null)
+                throw new ArgumentNullException(nameof(postUpdateDto));
 
-            post.Desc = postUpdateDto.Desc;
-            post.Content = postUpdateDto.Content;
-            post.Type = postUpdateDto.Type;
-            post.LinkForPost = postUpdateDto.LinkForPost;
-
-            await _postRepository.UpdateAsync(post);
+            var result = await _postService.UpdatePost(postUpdateDto);
+            if (!result.IsSuccess && result.Message == "Post does not exist.")
+            {
+                RedirectToRoute("Posts");
+            }
             return NoContent();
         }
         [HttpPut("{id}/status")]
@@ -94,20 +77,13 @@ namespace KevBlog.Api.Controllers
             return Ok();
         }
         [HttpPost]
-        public async Task<ActionResult<User>> Create(PostCreateDto postCreateDto)
+        public async Task<ActionResult<string>> Create(PostCreateDto postCreateDto)
         {
             if (postCreateDto is null)
                 throw new ArgumentNullException(nameof(postCreateDto));
 
-            if (string.IsNullOrEmpty(postCreateDto.Title))
-                return BadRequest("Title cannot be empty.");
-
-            var user = await _userRepository.GetUserByUsernameAsync(User.GetUsername());
-            var post = _mapper.Map<Post>(postCreateDto);
-            post.User = user;
-            post.UserId = user.Id;
-            await _postRepository.CreateAsync(post);
-            return Ok();
+            var result = await _postService.CreatePost(User.GetUsername(), postCreateDto);
+            return Ok(result.Message);
         }
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)

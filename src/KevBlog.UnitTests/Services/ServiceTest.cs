@@ -1,4 +1,5 @@
-﻿using KevBlog.Domain.Params;
+﻿using KevBlog.Domain.Entities;
+using KevBlog.Domain.Params;
 using Moq;
 
 namespace KevBlog.UnitTests.Services
@@ -11,11 +12,9 @@ namespace KevBlog.UnitTests.Services
         {
 
         }
-        public ServiceTest Testing()
+        public User GetSampleUser()
         {
-            return this;
+            return new User() { Id = 1, Email= "hyunbin7303@gmail.com", UserName = "hyunbin7303", City = "Kitchener", Country = "Canada"};
         }
-
-
     }
 }

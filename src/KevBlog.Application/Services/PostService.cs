@@ -43,7 +43,7 @@ namespace KevBlog.Application.Services
 
             User user = await _userRepository.GetUserByIdAsync(post.UserId);
             var postDisplay = _mapper.Map<PostDisplayDetailsDto>(post);
-            postDisplay.UserName = user.UserName ?? null;
+            postDisplay.UserName = user?.UserName ?? "Unknown";
             return ServiceResult.Success(postDisplay);
         }
 
@@ -52,6 +52,28 @@ namespace KevBlog.Application.Services
             IEnumerable<Post> posts = await _postRepository.GetPostsAsync();
             var postDisplays = _mapper.Map<IEnumerable<PostDisplayDto>>(posts);
             return postDisplays;
+        }
+
+        public async Task<IEnumerable<PostDisplayDto>> GetPostsByTagName(string tagName)
+        {
+            IEnumerable<Post> posts = await _postRepository.GetPostsAsync();
+            var postDisplays = _mapper.Map<IEnumerable<PostDisplayDto>>(posts);
+            return postDisplays;
+
+        }
+
+        public async Task<ServiceResult> UpdatePost(PostUpdateDto updateDto)
+        {
+            var post = await _postRepository.GetPostById(updateDto.Id);
+            if (post == null || post.Status == PostStatus.Removed)
+                return ServiceResult.Fail(msg: "Post does not exist.");
+
+            post.Desc = updateDto.Desc;
+            post.Content = updateDto.Content;
+            post.Type = updateDto.Type;
+            post.LinkForPost = updateDto.LinkForPost;
+            await _postRepository.UpdateAsync(post);
+            return ServiceResult.Success();
         }
     }
 }

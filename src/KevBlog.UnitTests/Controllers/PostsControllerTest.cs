@@ -21,7 +21,7 @@ namespace KevBlog.UnitTests.Controllers
         {
 
             userRepositoryMock.Setup(x => x.GetUserByIdAsync(1)).Returns(Task.FromResult(GetUserFake(1)));
-            controller = new PostsController(postServiceMock.Object, postRepositoryMock.Object, userRepositoryMock.Object,  _mapper);
+            controller = new PostsController(postServiceMock.Object, postRepositoryMock.Object,  _mapper);
             controller.ControllerContext = new ControllerContext { HttpContext = UserSetup() };
         }
 
@@ -54,7 +54,7 @@ namespace KevBlog.UnitTests.Controllers
             postRepositoryMock.Setup(repo => repo.GetPostById(1)).Returns(Task.FromResult(fakeUserPost));
 
             // Act
-            ActionResult<PostDisplayDetailsDto> post = await controller.GetPostById(fakePostId);
+            var post = await controller.GetPostById(fakePostId);
 
             // Assert
             NotFoundResult okObjectResult = Assert.IsType<NotFoundResult>(post.Result);
@@ -80,19 +80,11 @@ namespace KevBlog.UnitTests.Controllers
         }
 
         [Fact]
-        public async Task CreatePostTag_CreateTagInExistingPost_Success()
-        {
-            string tag = "";
-
-        }
-
-
-        [Fact]
         public async Task GetPosts_ListofPosts_ReturnSuccess()
         {
             IEnumerable<Post> samplePosts = MockIPostRepository.GenerateData(5);
             postRepositoryMock.Setup(x => x.GetPostsAsync()).Returns(Task.FromResult(samplePosts));
-            var controller = new PostsController(postServiceMock.Object, postRepositoryMock.Object, userRepositoryMock.Object, _mapper);
+            var controller = new PostsController(postServiceMock.Object, postRepositoryMock.Object, _mapper);
 
             ActionResult<IEnumerable<PostDisplayDto>> posts = await controller.GetPosts();
 
