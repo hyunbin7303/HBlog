@@ -10,16 +10,19 @@ namespace KevBlog.Application.Services
     public class PostService : BaseService, IPostService
     {
         private readonly IPostRepository _postRepository;
-        private readonly IUserRepository _userRepository;   
-        public PostService(IMapper mapper, IPostRepository postRepository, IUserRepository userRepository) : base(mapper)
+        private readonly IUserRepository _userRepository;
+        private readonly ITagRepository _tagRepository;
+        public PostService(IMapper mapper, IPostRepository postRepository, IUserRepository userRepository, ITagRepository tagRepository) : base(mapper)
         {
             _postRepository = postRepository;
             _userRepository = userRepository;
+            _tagRepository = tagRepository;
         }
 
-        public Task AddTag(string tagName)
+        public async Task<ServiceResult> AddTagForPost(int postId, int tagName)
         {
-            throw new NotImplementedException();
+
+            return ServiceResult.Success($"Success to add Tag: {tagName}");
         }
 
         public async Task<ServiceResult> CreatePost(string userName, PostCreateDto createDto)
@@ -68,10 +71,12 @@ namespace KevBlog.Application.Services
             if (post == null || post.Status == PostStatus.Removed)
                 return ServiceResult.Fail(msg: "Post does not exist.");
 
+            post.Title = updateDto.Title;
             post.Desc = updateDto.Desc;
             post.Content = updateDto.Content;
             post.Type = updateDto.Type;
             post.LinkForPost = updateDto.LinkForPost;
+            post.LastUpdated = DateTime.UtcNow;
             await _postRepository.UpdateAsync(post);
             return ServiceResult.Success();
         }

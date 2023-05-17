@@ -7,13 +7,14 @@ using KevBlog.Domain.Repositories;
 using KevBlog.UnitTests.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Hosting;
 using Moq;
 
 namespace KevBlog.UnitTests.Controllers
 {
     public class PostsControllerTest : TestBase
     {
-        private readonly PostsController controller;
+        private readonly PostsController _controller;
         private readonly Mock<IPostRepository> postRepositoryMock = new();
         private readonly Mock<IUserRepository> userRepositoryMock = new();
         private readonly Mock<IPostService> postServiceMock = new();
@@ -21,8 +22,8 @@ namespace KevBlog.UnitTests.Controllers
         {
 
             userRepositoryMock.Setup(x => x.GetUserByIdAsync(1)).Returns(Task.FromResult(GetUserFake(1)));
-            controller = new PostsController(postServiceMock.Object, postRepositoryMock.Object,  _mapper);
-            controller.ControllerContext = new ControllerContext { HttpContext = UserSetup() };
+            _controller = new PostsController(postServiceMock.Object, postRepositoryMock.Object,  _mapper);
+            _controller.ControllerContext = new ControllerContext { HttpContext = UserSetup() };
         }
 
         [Fact]
@@ -35,7 +36,7 @@ namespace KevBlog.UnitTests.Controllers
             postRepositoryMock.Setup(x => x.GetPostById(It.IsAny<int>())).Returns(Task.FromResult(fakeUserPost));
 
             // Act
-            ActionResult<PostDisplayDetailsDto> post = await controller.GetPostById(fakeUserPost.Id);
+            ActionResult<PostDisplayDetailsDto> post = await _controller.GetPostById(fakeUserPost.Id);
 
             // Assert
             OkObjectResult okObjectResult = Assert.IsType<OkObjectResult>(post.Result);
@@ -54,7 +55,7 @@ namespace KevBlog.UnitTests.Controllers
             postRepositoryMock.Setup(repo => repo.GetPostById(1)).Returns(Task.FromResult(fakeUserPost));
 
             // Act
-            var post = await controller.GetPostById(fakePostId);
+            var post = await _controller.GetPostById(fakePostId);
 
             // Assert
             NotFoundResult okObjectResult = Assert.IsType<NotFoundResult>(post.Result);
@@ -72,7 +73,7 @@ namespace KevBlog.UnitTests.Controllers
             postRepositoryMock.Setup(repo => repo.GetPostById(1)).Returns(Task.FromResult(fakeUserPost));
 
             // Act
-            ActionResult<PostDisplayDetailsDto> post = await controller.GetPostById(fakePostId);
+            ActionResult<PostDisplayDetailsDto> post = await _controller.GetPostById(fakePostId);
 
             // Assert
             NotFoundResult okObjectResult = Assert.IsType<NotFoundResult>(post.Result);
@@ -84,15 +85,38 @@ namespace KevBlog.UnitTests.Controllers
         {
             IEnumerable<Post> samplePosts = MockIPostRepository.GenerateData(5);
             postRepositoryMock.Setup(x => x.GetPostsAsync()).Returns(Task.FromResult(samplePosts));
-            var controller = new PostsController(postServiceMock.Object, postRepositoryMock.Object, _mapper);
 
-            ActionResult<IEnumerable<PostDisplayDto>> posts = await controller.GetPosts();
+            ActionResult<IEnumerable<PostDisplayDto>> posts = await _controller.GetPosts();
 
             // Assert
             OkObjectResult okObjectResult = Assert.IsType<OkObjectResult>(posts.Result);
             IEnumerable<PostDisplayDto> user = Assert.IsAssignableFrom<IEnumerable<PostDisplayDto>>(okObjectResult.Value);
             Assert.Equal(StatusCodes.Status200OK, okObjectResult.StatusCode);
         }
+
+        [Fact]
+        public async Task UpdatePost_ArgumentNull_ThrowException()
+        {
+            Task Act() => _controller.Put(null);
+
+            await Assert.ThrowsAsync<ArgumentNullException>(Act);
+        }
+
+        [Fact]
+        public async Task UpdatePost_PostIdNull_BadRequest()
+        {
+            PostUpdateDto postUpdate = new()
+            {
+                Title = "New Title",
+                Desc = "New Desc",
+            };
+
+            var result = await _controller.Put(postUpdate);
+
+            var badRequest = Assert.IsType<BadRequestObjectResult>(result);
+            Assert.Equal(StatusCodes.Status400BadRequest, badRequest.StatusCode);
+        }
+
         private Post CreateFakePost(int fakePostId, int fakeUserId)
         {
             return new Post()

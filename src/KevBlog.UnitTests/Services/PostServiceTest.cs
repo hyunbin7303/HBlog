@@ -17,12 +17,12 @@ namespace KevBlog.UnitTests.Services
     public class PostServiceTest : ServiceTest
     {
         private IPostService _postService;
-        private Mock<IPostRepository> _postRepositoryMock = new();
-        private Mock<IUserRepository> _userRepositoryMock = new();
-
+        private readonly Mock<IPostRepository> _postRepositoryMock = new();
+        private readonly Mock<IUserRepository> _userRepositoryMock = new();
+        private readonly Mock<ITagRepository> _tagRepositoryMock = new();
         public PostServiceTest()
         {
-            _postService = new PostService(_mapper, _postRepositoryMock.Object, _userRepositoryMock.Object);
+            _postService = new PostService(_mapper, _postRepositoryMock.Object, _userRepositoryMock.Object, _tagRepositoryMock.Object);
         }
         [Fact]
         public async Task GetPosts_ExistingInRepo_ReturnSuccess()
@@ -104,13 +104,13 @@ namespace KevBlog.UnitTests.Services
 
 
         [Fact]
-        public async Task UpdatePost_Checking_Success()
+        public async Task UpdatePost_ValidPostUpdate_ResultReturnTrue()
         {
             var testObject = MockIPostRepository.GenerateData(5)[0];
             int postId = testObject.Id;
             PostUpdateDto postUpdateDto = new PostUpdateDto()
             {
-                Id = 1,
+                Id = postId,
                 Title = "Post Update DTO Update",
                 Desc = "Post Update new Desc",
                 Content = "Content new info",
@@ -124,7 +124,31 @@ namespace KevBlog.UnitTests.Services
             Assert.Equal(true, result.IsSuccess);
             _postRepositoryMock.Verify(x => x.GetPostById(postId), Times.Once);
             _postRepositoryMock.Verify(x => x.UpdateAsync(It.IsAny<Post>()), Times.Once);
+        }
 
+        [Fact]
+        public async Task UpdatePost_NotExistingPost_ResultReturnFalse()
+        {
+            var testObject = MockIPostRepository.GenerateData(5)[0];
+            int postId = testObject.Id;
+            int notExistingId = 2;
+            PostUpdateDto postUpdateDto = new PostUpdateDto()
+            {
+                Id = notExistingId,
+                Title = "Post Update DTO Update",
+                Desc = "Post Update new Desc",
+                Content = "Content new info",
+                LinkForPost = "",
+                Type = "Programming"
+            };
+            _postRepositoryMock.Setup(x => x.GetPostById(postId)).ReturnsAsync(testObject);
+
+            var result = await _postService.UpdatePost(postUpdateDto);
+
+            Assert.Equal(false, result.IsSuccess);
+            Assert.Equal("Post does not exist.", result.Message);
+            _postRepositoryMock.Verify(x => x.GetPostById(notExistingId), Times.Once);
+            _postRepositoryMock.Verify(x => x.UpdateAsync(It.IsAny<Post>()), Times.Never);
         }
     }
 }

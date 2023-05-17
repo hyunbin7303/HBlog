@@ -13,7 +13,7 @@ namespace KevBlog.UnitTests.Services
     public class UserServiceTest : ServiceTest
     {
         private IUserService _userService;
-        private Mock<IUserRepository> _userRepositoryMock = new();
+        private readonly Mock<IUserRepository> _userRepositoryMock = new();
         public UserServiceTest()
         {
             _userService = new UserService(_mapper, _userRepositoryMock.Object);
@@ -25,10 +25,10 @@ namespace KevBlog.UnitTests.Services
             string username = "kevin0";
             UserParams userParams = new UserParams();
 
-            var member = await _userService.GetMembersAsync(userParams);
+            var result = await _userService.GetMembersAsync(userParams);
 
-            Assert.NotNull(member);
-
+            Assert.NotNull(result);
+            _userRepositoryMock.Verify(x => x.GetUserByUsernameAsync("kevin0"), Times.Once);
         }
         [Fact]
         public void Test2()

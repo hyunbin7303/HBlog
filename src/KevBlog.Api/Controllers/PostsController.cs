@@ -14,7 +14,6 @@ namespace KevBlog.Api.Controllers
     public class PostsController : BaseApiController
     {
         private readonly IPostRepository _postRepository;
-
         private readonly IPostService _postService;
         private readonly IMapper _mapper;
 
@@ -44,25 +43,21 @@ namespace KevBlog.Api.Controllers
         public async Task<ActionResult<PostDisplayDetailsDto>> GetPostById(int id)
         {
             var postDetails = await _postService.GetByIdAsync(id);
-            if (postDetails.IsSuccess)
-                return Ok(postDetails.Value);
-            else
-            {
-                return BadRequest(postDetails.Message);
-            }
+            return (await _postService.GetByIdAsync(id)).IsSuccess ? (ActionResult<PostDisplayDetailsDto>)Ok(postDetails.Value) : (ActionResult<PostDisplayDetailsDto>)BadRequest(postDetails.Message);
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, PostUpdateDto postUpdateDto)
+        [HttpPut]
+        public async Task<IActionResult> Put(PostUpdateDto postUpdateDto)
         {
             if(postUpdateDto is null)
                 throw new ArgumentNullException(nameof(postUpdateDto));
 
+            if (postUpdateDto.Id == 0)
+                return BadRequest("Id field cannot be empty or 0");
+
             var result = await _postService.UpdatePost(postUpdateDto);
             if (!result.IsSuccess && result.Message == "Post does not exist.")
-            {
                 RedirectToRoute("Posts");
-            }
             return NoContent();
         }
         [HttpPut("{id}/status")]
