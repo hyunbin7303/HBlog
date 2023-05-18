@@ -39,6 +39,7 @@
   <ItemGroup>
     <ProjectReference Include="..\KevBlog.Domain\KevBlog.Domain.csproj" />
     <ProjectReference Include="..\KevBlog.Application\KevBlog.Application.csproj" />
+    <ProjectReference Include="..\KevBlog.Persistence.Aws\KevBlog.Persistence.Aws.csproj" />
   </ItemGroup>
 
 </Project>

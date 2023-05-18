@@ -1,10 +1,12 @@
 using KevBlog.Application.Services;
 using KevBlog.Domain.Repositories;
+using KevBlog.Domain.Services;
 using KevBlog.Infrastructure.Authentications;
 using KevBlog.Infrastructure.Data;
 using KevBlog.Infrastructure.Helpers;
 using KevBlog.Infrastructure.Repositories;
 using KevBlog.Infrastructure.SignalR;
+using KevBlog.Persistence.Aws.S3;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -32,6 +34,7 @@ namespace KevBlog.Infrastructure.Extensions
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IPostService, PostService>();
             services.AddScoped<IMessageService, MessageService>();
+            services.AddScoped<IAwsStorageService, AwsStorageService>();
 
             services.AddScoped<LogUserActivity>();
             services.AddSignalR();
