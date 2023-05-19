@@ -10,6 +10,7 @@ namespace KevBlog.Application.Services
         Task<ServiceResult<PostDisplayDetailsDto>> GetByIdAsync(int id);
         Task<ServiceResult> CreatePost(string userName, PostCreateDto createDto);
         Task<ServiceResult> UpdatePost(PostUpdateDto updateDto);
+        Task<ServiceResult> DeletePost(int id);
         Task<ServiceResult> AddTagForPost(int postId, int tagName);
     }
 }

@@ -10,6 +10,6 @@ namespace KevBlog.Domain.Repositories
         Task<IEnumerable<Post>> GetPostsAsync();
         Task<IEnumerable<Post>> GetPostsByUserName(string userName);
         Task<Post> GetPostById(int id);
-        void Remove(int id);
+        Task RemoveAsync(int id);
     }
 }

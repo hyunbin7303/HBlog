@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Authorization;
 using KevBlog.Domain.Entities;
 using KevBlog.Application.DTOs;
 using AutoMapper;
-using KevBlog.Domain.Constants;
 using KevBlog.Domain.Repositories;
 using KevBlog.Infrastructure.Extensions;
 using KevBlog.Application.Services;
@@ -15,12 +14,9 @@ namespace KevBlog.Api.Controllers
     {
         private readonly IPostRepository _postRepository;
         private readonly IPostService _postService;
-        private readonly IMapper _mapper;
 
-
-        public PostsController(IPostService postService, IPostRepository postRepository, IMapper mapper)
+        public PostsController(IPostService postService, IPostRepository postRepository)
         {
-            _mapper = mapper;
             _postService = postService;
             _postRepository = postRepository;
         }
@@ -83,7 +79,7 @@ namespace KevBlog.Api.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            _postRepository.Remove(id);
+            var result = _postService.DeletePost(id);
             return Ok();
         }
 

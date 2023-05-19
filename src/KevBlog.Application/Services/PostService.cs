@@ -80,5 +80,16 @@ namespace KevBlog.Application.Services
             await _postRepository.UpdateAsync(post);
             return ServiceResult.Success();
         }
+
+        public async Task<ServiceResult> DeletePost(int id)
+        {
+            var post = await _postRepository.GetPostById(id);
+            if (post is null)
+                return ServiceResult.Fail(msg: "Post does not exist.");
+
+            await _postRepository.RemoveAsync(id);
+            return ServiceResult.Success();
+        }
+
     }
 }

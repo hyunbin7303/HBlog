@@ -22,7 +22,7 @@ namespace KevBlog.UnitTests.Controllers
         {
 
             userRepositoryMock.Setup(x => x.GetUserByIdAsync(1)).Returns(Task.FromResult(GetUserFake(1)));
-            _controller = new PostsController(postServiceMock.Object, postRepositoryMock.Object,  _mapper);
+            _controller = new PostsController(postServiceMock.Object, postRepositoryMock.Object);
             _controller.ControllerContext = new ControllerContext { HttpContext = UserSetup() };
         }
 

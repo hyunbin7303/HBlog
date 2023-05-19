@@ -33,7 +33,7 @@ namespace KevBlog.Infrastructure.Repositories
         {
             return await _dbContext.Posts.AsNoTracking().Include(u => u.User).ToListAsync();
         }
-        public void Remove(int id)
+        public async Task RemoveAsync(int id)
         {
             _dbContext.Posts.Remove(new Post { Id = id });
         }
