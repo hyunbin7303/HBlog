@@ -1,11 +1,9 @@
-﻿
-using AutoMapper;
+﻿using AutoMapper;
 using KevBlog.Application.Automapper;
 using KevBlog.Domain.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using System.Security.Claims;
-
 namespace KevBlog.UnitTests
 {
     public abstract class TestBase

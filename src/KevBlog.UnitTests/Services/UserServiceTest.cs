@@ -1,12 +1,8 @@
 ﻿using KevBlog.Application.Services;
+using KevBlog.Domain.Entities;
 using KevBlog.Domain.Params;
 using KevBlog.Domain.Repositories;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace KevBlog.UnitTests.Services
 {
@@ -24,20 +20,37 @@ namespace KevBlog.UnitTests.Services
         {
             string username = "kevin0";
             UserParams userParams = new UserParams();
+            userParams.CurrentUsername = username;
 
             var result = await _userService.GetMembersAsync(userParams);
 
             Assert.NotNull(result);
-            _userRepositoryMock.Verify(x => x.GetUserByUsernameAsync("kevin0"), Times.Once);
+            _userRepositoryMock.Verify(x => x.GetUserByUsernameAsync(username), Times.Once);
         }
+
         [Fact]
-        public void Test2()
+        public async Task GetMembersByUsernameAsync_ExistingUser_ReturnMemberDto()
         {
-            // Arrange
+            string username = "kevin0";
+            _userRepositoryMock.Setup(x => x.GetUserByUsernameAsync(username)).ReturnsAsync(new User { Id = 1, UserName = username });
 
-            //Act
+            var result = await _userService.GetMembersByUsernameAsync(username);
 
-            //Assert
+            Assert.True(result.IsSuccess);
+            Assert.Equal(username, result.Value.UserName);
+            Assert.Equal(1, result.Value.Id);
+        }
+
+        [Fact]
+        public async Task GetMembersByUsernameAsync_NotExistingUser_ResultFailure()
+        {
+            string username = "NonExisting";
+            _userRepositoryMock.Setup(x => x.GetUserByUsernameAsync("kevin0")).ReturnsAsync(new User { Id = 1, UserName = "kevin0" });
+
+            var result = await _userService.GetMembersByUsernameAsync(username);
+
+            Assert.False(result.IsSuccess);
+            Assert.Equal("Failed to get user", result.Message);
         }
     }
 }

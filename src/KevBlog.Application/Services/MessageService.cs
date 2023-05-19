@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using KevBlog.Application.Common;
 using KevBlog.Application.DTOs;
 using KevBlog.Domain.Common;
 using KevBlog.Domain.Entities;
@@ -19,11 +20,14 @@ namespace KevBlog.Application.Services
             _userRepository = userRepository;
         }
 
-        public async Task<MessageDto> CreateMessage(string userName, MessageCreateDto createMsgDto)
+        public async Task<ServiceResult<MessageDto>> CreateMessage(string userName, MessageCreateDto createMsgDto)
         {
+            if (userName == createMsgDto.RecipientUsername.ToLower())
+                return ServiceResult.Fail<MessageDto>(msg: "You cannot send messages to yourself.");
+
             var sender = await _userRepository.GetUserByUsernameAsync(userName);
             var recipient = await _userRepository.GetUserByUsernameAsync(createMsgDto.RecipientUsername);
-            if (recipient == null) throw new Exception("Recipient not found");
+            if (recipient == null) return ServiceResult.Fail<MessageDto>(msg: "Recipient not found");
 
             var message = new Message
             {
@@ -35,8 +39,30 @@ namespace KevBlog.Application.Services
             };
 
             _msgRepository.AddMessage(message);
-            if (await _msgRepository.SaveAllAsync()) return _mapper.Map<MessageDto>(message);
-            return null;
+
+
+            if (await _msgRepository.SaveAllAsync()) return ServiceResult.Success(_mapper.Map<MessageDto>(message));
+            
+            return ServiceResult.Fail<MessageDto>(msg: "Error in Create Message.");
+        }
+
+        public async Task<ServiceResult> DeleteMessage(string currUserName, int id)
+        {
+            var message = await _msgRepository.GetMessage(id);
+            if (message.SenderUsername != currUserName && message.RecipientUsername != currUserName)
+            {
+                return ServiceResult.Fail(msg: "Unauthorized");
+            }
+
+            if (message.SenderUsername == currUserName) message.SenderDeleted = true;
+            if (message.RecipientUsername == currUserName) message.RecipientDeleted = true;
+            if (message.SenderDeleted && message.RecipientDeleted)
+            {
+                _msgRepository.DeleteMessage(message);
+            }
+            if (await _msgRepository.SaveAllAsync()) return ServiceResult.Success();
+
+            return ServiceResult.Fail(msg: "Problem deleting the message");
         }
 
         public async Task<PageList<MessageDto>> GetMessagesForUserPageList(MessageParams messageParams)

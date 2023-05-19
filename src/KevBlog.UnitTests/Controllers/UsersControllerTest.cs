@@ -1,11 +1,13 @@
 ﻿using AutoMapper;
 using KevBlog.Api.Controllers;
+using KevBlog.Application.Common;
 using KevBlog.Application.DTOs;
 using KevBlog.Application.Services;
 using KevBlog.Domain.Entities;
 using KevBlog.Domain.Params;
 using KevBlog.Domain.Repositories;
 using KevBlog.Infrastructure.Helpers;
+using KevBlog.UnitTests.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
@@ -13,36 +15,6 @@ using System.Security.Claims;
 
 namespace KevBlog.UnitTests.Controllers
 {
-    internal class MockIUserRepository
-    {
-        public static Mock<IUserRepository> GetMock()
-        {
-            var mock = new Mock<IUserRepository>();
-
-            IEnumerable<User> userList = SampleValidUserData(3);
-            mock.Setup(m => m.GetUsersAsync().Result).Returns(() => userList);
-            return mock;
-        }
-        public static IEnumerable<User> SampleValidUserData(int howMany)
-        {
-            List<User> users = new();
-            for (int i = 0; i < howMany; i++)
-            {
-                User user = new()
-                {
-                    Id = i,
-                    UserName = "kevin" + i,
-                    KnownAs = "knownas" + i,
-                    Gender = "Male",
-                    City = "Kitchener",
-                    DateOfBirth = new DateTime(1993, 7, 3),
-                    Email = "hyunbin7303@gmail.com",
-                };
-                users.Add(user);
-            }
-            return users;
-        }
-    }
     public class UsersControllerTest : TestBase
     {
         private readonly Mock<IUserRepository> _userRepository;
@@ -68,19 +40,26 @@ namespace KevBlog.UnitTests.Controllers
         }
 
         [Fact]
-        public async Task GetUsers_FindingExistingUser()
+        public async Task GetUsers_FindingExistingUser_ResultSuccess()
         {
-            //var mock = MockIUserRepository.GetMock();
             string inputUserName = "kevin0";
             IEnumerable<User> userList = MockIUserRepository.SampleValidUserData(1);
-            User returnValue = userList.First();
-            _userRepository.Setup(repo => repo.GetUserByUsernameAsync(inputUserName)).Returns(Task.FromResult(returnValue));
+            User user = userList.First();
+            MemberDto memberDto = _mapper.Map<MemberDto>(user);
+            _userRepository.Setup(repo => repo.GetUserByUsernameAsync(inputUserName)).ReturnsAsync(user);
+            _userService.Setup(s => s.GetMembersByUsernameAsync(inputUserName)).ReturnsAsync(ServiceResult.Success(memberDto));
             UserParams userParam = new UserParams();
             userParam.CurrentUsername = inputUserName;
 
-            var result = await _controller.GetUsers(userParam);
 
-            Assert.NotNull(result);
+            var actionResult = await _controller.GetUsers(userParam);
+
+
+            Assert.NotNull(actionResult);
+            OkObjectResult okObjectResult = Assert.IsType<OkObjectResult>(actionResult.Result);
+            MemberDto resultMember = Assert.IsType<MemberDto>(okObjectResult.Value);
+            Assert.Equal(inputUserName, user.UserName);
+            Assert.Equal(StatusCodes.Status200OK, okObjectResult.StatusCode);
         }
 
         [Fact]

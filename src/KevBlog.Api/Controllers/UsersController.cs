@@ -24,13 +24,7 @@ namespace KevBlog.Api.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsers([FromQuery]UserParams userParams)
         {
-            var currUser = await _userService.GetMembersByUsernameAsync(User.GetUsername());
-            userParams.CurrentUsername = currUser.Value.UserName;
-
-            if(string.IsNullOrEmpty(userParams.Gender)) {
-                userParams.Gender = currUser.Value.Gender == "male" ? "female" : "male";
-            }
-
+            userParams.CurrentUsername = User.GetUsername();
             var users = await _userService.GetMembersAsync(userParams);
             Response.AddPaginationHeader(new PaginationHeader(users.CurrentPage, users.PageSize, users.TotalCount, users.TotalPages));
             return Ok(users);

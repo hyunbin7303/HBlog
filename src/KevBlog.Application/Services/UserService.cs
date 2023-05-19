@@ -18,6 +18,10 @@ namespace KevBlog.Application.Services
 
         public async Task<PageList<MemberDto>> GetMembersAsync(UserParams userParams)
         {
+            User user = await _userRepository.GetUserByUsernameAsync(userParams.CurrentUsername);
+            if (string.IsNullOrEmpty(userParams.Gender))
+                userParams.Gender = user.Gender == "male" ? "female" : "male";
+
             var usersList = await _userRepository.GetUsersAsync();
             usersList = usersList.Where(x => x.UserName != userParams.CurrentUsername);
             usersList = usersList.Where(x => x.Gender == userParams.Gender);

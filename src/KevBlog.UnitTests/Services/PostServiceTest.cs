@@ -3,14 +3,8 @@ using KevBlog.Application.Services;
 using KevBlog.Domain.Entities;
 using KevBlog.Domain.Repositories;
 using KevBlog.UnitTests.Repositories;
-using MockQueryable.Moq;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace KevBlog.UnitTests.Services
 {
@@ -72,7 +66,7 @@ namespace KevBlog.UnitTests.Services
             // Action 
             var result = await _postService.CreatePost(userName, postCreateDto);
 
-            Assert.Equal(true, result.IsSuccess);
+            Assert.True(result.IsSuccess);
             _userRepositoryMock.Verify(x => x.GetUserByUsernameAsync("kevin0"), Times.Once);
             _postRepositoryMock.Verify(x => x.CreateAsync(It.IsAny<Post>()), Times.Once);
         }
@@ -95,7 +89,7 @@ namespace KevBlog.UnitTests.Services
 
             var result = await _postService.CreatePost(userName, postCreateDto);
 
-            Assert.Equal(false, result.IsSuccess);
+            Assert.False(result.IsSuccess);
             Assert.Equal("Title cannot be empty.", result.Message);
             _userRepositoryMock.Verify(x => x.GetUserByUsernameAsync("kevin0"), Times.Never);
             _postRepositoryMock.Verify(x => x.CreateAsync(It.IsAny<Post>()), Times.Never);
@@ -145,7 +139,7 @@ namespace KevBlog.UnitTests.Services
 
             var result = await _postService.UpdatePost(postUpdateDto);
 
-            Assert.Equal(false, result.IsSuccess);
+            Assert.False(result.IsSuccess);
             Assert.Equal("Post does not exist.", result.Message);
             _postRepositoryMock.Verify(x => x.GetPostById(notExistingId), Times.Once);
             _postRepositoryMock.Verify(x => x.UpdateAsync(It.IsAny<Post>()), Times.Never);
