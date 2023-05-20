@@ -23,14 +23,13 @@ namespace KevBlog.UnitTests.Services
         {
             int howMany = 5;
             var testObject = MockIPostRepository.GenerateData(howMany);
-            _postRepositoryMock.Setup(x => x.GetPostsAsync().Result).Returns(testObject);
-
+            _postRepositoryMock.Setup(x => x.GetPostsAsync()).ReturnsAsync(testObject);
             var posts = await _postService.GetPosts();
 
             Assert.NotNull(posts);
             Assert.Equal(howMany, posts.Count());
+            
         }
-
 
         [Fact]
         public async Task GetPostById_ExistingPostId_ReturnPostSuccessfully()
@@ -95,8 +94,6 @@ namespace KevBlog.UnitTests.Services
             _postRepositoryMock.Verify(x => x.CreateAsync(It.IsAny<Post>()), Times.Never);
         }
 
-
-
         [Fact]
         public async Task UpdatePost_ValidPostUpdate_ResultReturnTrue()
         {
@@ -143,6 +140,20 @@ namespace KevBlog.UnitTests.Services
             Assert.Equal("Post does not exist.", result.Message);
             _postRepositoryMock.Verify(x => x.GetPostById(notExistingId), Times.Once);
             _postRepositoryMock.Verify(x => x.UpdateAsync(It.IsAny<Post>()), Times.Never);
+        }
+        [Fact]
+        public async Task DeletePost_ExistingItem_ResultReturnTrue()
+        {
+            int postId = 1;
+            _postRepositoryMock.Setup(x => x.GetPostById(postId)).ReturnsAsync(new Post
+            {
+                Id = postId,
+                Title = "Post New Title",
+            });
+
+            var result = await _postService.DeletePost(1);
+
+            Assert.True(result.IsSuccess);
         }
     }
 }

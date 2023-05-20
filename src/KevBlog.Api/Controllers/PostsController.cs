@@ -79,7 +79,10 @@ namespace KevBlog.Api.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var result = _postService.DeletePost(id);
+            var result = await _postService.DeletePost(id);
+            if(!result.IsSuccess)
+                return BadRequest(result.Message);
+
             return Ok();
         }
 

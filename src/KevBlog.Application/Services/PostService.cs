@@ -53,16 +53,13 @@ namespace KevBlog.Application.Services
         public async Task<IEnumerable<PostDisplayDto>> GetPosts()
         {
             IEnumerable<Post> posts = await _postRepository.GetPostsAsync();
-            var postDisplays = _mapper.Map<IEnumerable<PostDisplayDto>>(posts);
-            return postDisplays;
+            return _mapper.Map<IEnumerable<PostDisplayDto>>(posts);
         }
 
         public async Task<IEnumerable<PostDisplayDto>> GetPostsByTagName(string tagName)
         {
             IEnumerable<Post> posts = await _postRepository.GetPostsAsync();
-            var postDisplays = _mapper.Map<IEnumerable<PostDisplayDto>>(posts);
-            return postDisplays;
-
+            return _mapper.Map<IEnumerable<PostDisplayDto>>(posts);
         }
 
         public async Task<ServiceResult> UpdatePost(PostUpdateDto updateDto)
@@ -77,6 +74,7 @@ namespace KevBlog.Application.Services
             post.Type = updateDto.Type;
             post.LinkForPost = updateDto.LinkForPost;
             post.LastUpdated = DateTime.UtcNow;
+
             await _postRepository.UpdateAsync(post);
             return ServiceResult.Success();
         }
@@ -85,7 +83,7 @@ namespace KevBlog.Application.Services
         {
             var post = await _postRepository.GetPostById(id);
             if (post is null)
-                return ServiceResult.Fail(msg: "Post does not exist.");
+                return ServiceResult.Fail(msg: "NotFound");
 
             await _postRepository.RemoveAsync(id);
             return ServiceResult.Success();

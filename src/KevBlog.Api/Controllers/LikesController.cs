@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using KevBlog.Application.DTOs;
+using KevBlog.Application.Services;
 using KevBlog.Domain.Common;
 using KevBlog.Domain.Entities;
 using KevBlog.Domain.Repositories;
@@ -18,9 +19,11 @@ namespace KevBlog.Api.Controllers
     {
         private readonly ILikesRepository _likesRepository;
         private readonly IUserRepository _userRepository;
+        private readonly ILikeService _likeService;
 
-        public LikesController(IUserRepository userRepository, ILikesRepository likesRepository)
+        public LikesController(IUserRepository userRepository, ILikesRepository likesRepository, ILikeService likeService)
         {
+            _likeService = likeService;
             _likesRepository = likesRepository;
             _userRepository = userRepository;
         }
@@ -28,48 +31,21 @@ namespace KevBlog.Api.Controllers
         [HttpPost("{username}")]
         public async Task<ActionResult> AddLike(string username){
             var sourceUserId = User.GetUserId();
-            var likedUser = await _userRepository.GetUserByUsernameAsync(username);
-            var sourceUser = await _likesRepository.GetUserWithLikes(sourceUserId);
-            if(likedUser == null) return NotFound();
+            var result = await _likeService.AddLike(sourceUserId, username);
+            if(!result.IsSuccess && result.Message == "NotFound")
+                return NotFound(result.Message);
+            if (!result.IsSuccess)
+                return BadRequest("Failed to like user");
 
-            if(sourceUser.UserName == username) return BadRequest("You cannot like yourself.");
-
-            var userLike = await _likesRepository.GetUserLike(sourceUserId, likedUser.Id);
-            if(userLike != null) return BadRequest("you already like this user.");
-
-            userLike = new UserLike
-            {
-                SourceUserId = sourceUserId,
-                TargetUserId = likedUser.Id
-            };
-            sourceUser.LikedUsers.Add(userLike);
-            if(await _userRepository.SaveAllAsync()) {
-                return Ok();
-            }
-            return BadRequest("Failed to like user");
+            return Ok(result);
         }
         [HttpGet]
         public async Task<ActionResult<PageList<LikeDto>>> GetUserLikes([FromQuery]LikesParams likesParam) {
             likesParam.UserId = User.GetUserId();
-            var users = await GetUserLikePageList(likesParam);
+            var users = await _likeService.GetUserLikePageList(likesParam);
 
             Response.AddPaginationHeader(new PaginationHeader(users.CurrentPage, users.PageSize, users.TotalCount, users.TotalPages));
-
             return Ok(users);
-        }
-        private async Task<PageList<LikeDto>> GetUserLikePageList(LikesParams likesParam)
-        {
-            var userQuery = _userRepository.GetUserLikesQuery(likesParam.Predicate, likesParam.UserId);
-            var likeDto = userQuery.Select(u => new LikeDto
-            {
-                UserName = u.UserName,
-                KnownAs = u.KnownAs,
-                Age = u.DateOfBirth.CalculateAge(),
-                PhotoUrl = u.Photos.FirstOrDefault(x => x.IsMain).Url,
-                City = u.City,
-                Id = u.Id
-            });
-            return await PageList<LikeDto>.CreateAsync(likeDto,likesParam.PageNumber, likesParam.PageSize);
         }
     }
 }

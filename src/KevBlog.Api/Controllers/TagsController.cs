@@ -16,12 +16,10 @@ namespace KevBlog.Api.Controllers
     {
         private readonly ITagRepository _tagRepository;
         private readonly IUserService _userService;
-        private readonly IMapper _mapper;
-        public TagsController(ITagRepository tagRepository, IUserService userService, IMapper mapper)
+        public TagsController(ITagRepository tagRepository, IUserService userService)
         {
             this._tagRepository = tagRepository;
             this._userService = userService;
-            this._mapper = mapper;  
         }
         [HttpPost]
         public async Task<ActionResult> Create(TagCreateDto tagCreateDto)

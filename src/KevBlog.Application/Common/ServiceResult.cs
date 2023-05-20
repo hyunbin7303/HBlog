@@ -19,7 +19,9 @@
         public static ServiceResult Success(string msg = "") => new ServiceResult(true, msg, default);
         public static ServiceResult<T> Success<T>(T value = default, string msg = "") => new ServiceResult<T>(true, msg, value, default);
         public static ServiceResult Fail(List<string> errors = default, string msg = "") => new ServiceResult(false, msg, errors);
-        public static ServiceResult<T> Fail<T>(List<string> errors = default, string msg = "") => new ServiceResult<T>(false, msg, default, errors);    
+        public static ServiceResult<T> Fail<T>(List<string> errors = default, string msg = "") => new ServiceResult<T>(false, msg, default, errors);
+        public static ServiceResult NotFound(string msg = "") => new ServiceResult(false, "NotFound", default);
+        public static ServiceResult NotFound<T>(string msg = "") => new ServiceResult(false, "NotFound", default);
     }
     public struct ServiceResult<T> : IResult
     {
