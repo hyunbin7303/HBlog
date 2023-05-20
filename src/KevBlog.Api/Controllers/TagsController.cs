@@ -16,6 +16,7 @@ namespace KevBlog.Api.Controllers
     {
         private readonly ITagRepository _tagRepository;
         private readonly IUserService _userService;
+        private readonly ITagService tagService;
         public TagsController(ITagRepository tagRepository, IUserService userService)
         {
             this._tagRepository = tagRepository;

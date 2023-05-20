@@ -1,14 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
 using KevBlog.Application.DTOs;
 using KevBlog.Application.Services;
 using KevBlog.Domain.Common;
-using KevBlog.Domain.Entities;
-using KevBlog.Domain.Repositories;
 using KevBlog.Infrastructure.Extensions;
 using KevBlog.Infrastructure.Helpers;
 using Microsoft.AspNetCore.Mvc;
@@ -17,15 +9,11 @@ namespace KevBlog.Api.Controllers
 {
     public class LikesController : BaseApiController
     {
-        private readonly ILikesRepository _likesRepository;
-        private readonly IUserRepository _userRepository;
         private readonly ILikeService _likeService;
 
-        public LikesController(IUserRepository userRepository, ILikesRepository likesRepository, ILikeService likeService)
+        public LikesController(ILikeService likeService)
         {
             _likeService = likeService;
-            _likesRepository = likesRepository;
-            _userRepository = userRepository;
         }
 
         [HttpPost("{username}")]

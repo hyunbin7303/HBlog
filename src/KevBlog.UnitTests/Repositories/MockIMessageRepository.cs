@@ -9,11 +9,11 @@ namespace KevBlog.UnitTests.Repositories
         public static Mock<IMessageRepository> GetMock()
         {
             var mock = new Mock<IMessageRepository>();
-            IEnumerable<Message> messages = SampleValidMessageData(5);
+            IEnumerable<Message> messages = GenerateData(5);
             mock.Setup(m => m.GetMessage(5).Result).Returns(() => messages);
             return mock;
         }
-        public static IEnumerable<Message> SampleValidMessageData(int count)
+        public static IEnumerable<Message> GenerateData(int count)
         {
             var messages = new List<Message>();
             for(int i=0; i< count; i++)

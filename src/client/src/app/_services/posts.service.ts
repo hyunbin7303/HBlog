@@ -24,7 +24,8 @@ export class PostsService {
     return this.http.get<Post>(this.baseUrl + 'posts/' + id).pipe(catchError(this.handleError));
   }
   updatePost(id:number, post: Post) {
-    return this.http.put(this.baseUrl + 'posts/' + id, post).pipe(
+    post.id = id;
+    return this.http.put(this.baseUrl + 'posts/', post).pipe(
       map(() => {
         const index = this.posts.indexOf(post);
         this.posts[index] = { ...this.posts[index], ...post }

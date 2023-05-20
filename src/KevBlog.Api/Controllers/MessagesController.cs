@@ -1,13 +1,9 @@
 using KevBlog.Application.DTOs;
 using KevBlog.Application.Services;
 using KevBlog.Domain.Common;
-using KevBlog.Domain.Entities;
 using KevBlog.Domain.Params;
-using KevBlog.Domain.Repositories;
 using KevBlog.Infrastructure.Extensions;
-using KevBlog.Infrastructure.Helpers;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
 namespace KevBlog.Api.Controllers
 {

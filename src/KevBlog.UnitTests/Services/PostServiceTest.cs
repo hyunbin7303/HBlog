@@ -24,6 +24,7 @@ namespace KevBlog.UnitTests.Services
             int howMany = 5;
             var testObject = MockIPostRepository.GenerateData(howMany);
             _postRepositoryMock.Setup(x => x.GetPostsAsync()).ReturnsAsync(testObject);
+
             var posts = await _postService.GetPosts();
 
             Assert.NotNull(posts);

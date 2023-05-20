@@ -1,6 +1,4 @@
-﻿using KevBlog.Application.DTOs;
-using KevBlog.Application.Services;
-using KevBlog.Domain.Entities;
+﻿using KevBlog.Application.Services;
 using KevBlog.Domain.Params;
 using KevBlog.Domain.Repositories;
 using KevBlog.UnitTests.Repositories;
@@ -21,8 +19,10 @@ namespace KevBlog.UnitTests.Services
         [Fact]
         public async Task GetPosts_ExistingInRepo_ReturnSuccess()
         {
+            int howMany = 5;
+            var testObject = MockIMessageRepository.GenerateData(howMany);
+            _msgRepositoryMock.Setup(m => m.GetMessages()).ReturnsAsync(testObject);
             MessageParams messageParams = new MessageParams();
-            _msgRepositoryMock.Setup(m => m.GetMessages()).ReturnsAsync();
 
             var posts = await _msgService.GetMessagesForUserPageList(messageParams);
 

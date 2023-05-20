@@ -1,11 +1,10 @@
 <div class="row" *ngIf="post">
-    <div class="header">
-        <h1>{{post.title}}</h1>
-    </div>
+
     <div class="col-8">
         <div>
             <div>
                 <form #editForm="ngForm" id="editForm" (ngSubmit)="updatePost()">
+                    <input type="text" name="title" required [(ngModel)]="post.title" class="form-control input-sm" placeholder="Post Title">
                     <h4 class="mt-2">Description</h4>
                     <textarea name="desc" rows="6" class="form-control" [(ngModel)]="post.desc"></textarea>
                     <div class="input-group mt-2">
