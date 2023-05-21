@@ -244,6 +244,21 @@ namespace API.Migrations
                     b.ToTable("Posts");
                 });
 
+            modelBuilder.Entity("KevBlog.Domain.Entities.PostTags", b =>
+            {
+                b.Property<int>("PostId")
+                    .HasColumnType("int");
+
+                b.Property<int>("TagId")
+                    .HasColumnType("int");
+
+                b.HasKey("PostId", "TagId");
+
+                b.HasIndex("TagId");
+
+                b.ToTable("PostTags");
+            });
+
             modelBuilder.Entity("KevBlog.Domain.Entities.Tag", b =>
                 {
                     b.Property<int>("Id")

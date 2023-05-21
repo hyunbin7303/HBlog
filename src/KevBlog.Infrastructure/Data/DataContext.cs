@@ -19,6 +19,7 @@ namespace KevBlog.Infrastructure.Data
         public virtual DbSet<UserLike> Likes {get; set; }
         public virtual DbSet<Domain.Entities.Application> Applications { get; set; }
         public virtual DbSet<Post> Posts { get; set; }
+        public virtual DbSet<PostTags> PostTags { get; set; }
         public virtual DbSet<Tag> Tags { get; set; }
         public virtual DbSet<Message> Messages { get; set; }
 
@@ -37,6 +38,19 @@ namespace KevBlog.Infrastructure.Data
                 .WithOne(user => user.Role)
                 .HasForeignKey(userRole => userRole.RoleId)
                 .IsRequired();
+
+
+
+            modelBuilder.Entity<PostTags>()
+                .HasKey(k => new { k.PostId, k.TagId });
+            modelBuilder.Entity<PostTags>()
+                .HasOne(pt => pt.Post)
+                .WithMany(p => p.PostTags)
+                .HasForeignKey(pt => pt.PostId);
+            modelBuilder.Entity<PostTags>()
+                .HasOne(pt => pt.Tag)
+                .WithMany(t => t.PostTags)
+                .HasForeignKey(pt => pt.TagId);
 
 
             modelBuilder.Entity<UserLike>()
