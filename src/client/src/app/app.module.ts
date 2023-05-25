@@ -13,7 +13,6 @@ import { MemberListComponent } from './members/member-list/member-list.component
 import { MemberDetailComponent } from './members/member-detail/member-detail.component';
 import { ListsComponent } from './lists/lists.component';
 import { MessagesComponent } from './messages/messages.component';
-import { BusinessesComponent } from './businesses/businesses.component';
 import { SharedModule } from './_modules/shared.module';
 import { TestErrorComponent } from './errors/test-error/test-error.component';
 import { ErrorInterceptor } from './_interceptors/error.interceptor';
@@ -37,6 +36,7 @@ import { HasRoleDirective } from './_directives/has-role.directive';
 import { UserManagementComponent } from './admin/user-management/user-management.component';
 import { PhotoManagementComponent } from './admin/photo-management/photo-management.component';
 import { RolesModalComponent } from './modals/roles-modal/roles-modal.component';
+import { AskModalComponent } from './modals/ask-modal/ask-modal.component';
 
 @NgModule({
   declarations: [
@@ -48,7 +48,6 @@ import { RolesModalComponent } from './modals/roles-modal/roles-modal.component'
     MemberDetailComponent,
     ListsComponent,
     MessagesComponent,
-    BusinessesComponent,
     TestErrorComponent,
     NotFoundComponent,
     ServerErrorComponent,
@@ -67,7 +66,8 @@ import { RolesModalComponent } from './modals/roles-modal/roles-modal.component'
     HasRoleDirective,
     UserManagementComponent,
     PhotoManagementComponent,
-    RolesModalComponent
+    RolesModalComponent,
+    AskModalComponent
   ],
   imports: [
     BrowserAnimationsModule,

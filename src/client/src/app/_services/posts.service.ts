@@ -3,8 +3,7 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { Post } from '../_models/post';
 import { Observable, catchError, map, of, take, throwError } from 'rxjs';
-import { User } from '../_models/user';
-import { AccountService } from './account.service';
+import { ServiceResult } from '../_models/serviceresult';
 
 @Injectable({
   providedIn: 'root'
@@ -32,15 +31,15 @@ export class PostsService {
       })
     )
   }
-  createPost(model: any) {
-
-    return this.http.post<Post>(this.baseUrl + 'posts', model).pipe(
+  createPost(model: any): Observable<string> {
+    return this.http.post<string>(this.baseUrl + 'posts', model).pipe(
       map(post => {
-        if (post) {
-          localStorage.setItem('post', JSON.stringify(post));
-          // this.currentUserSource.next(post);
+        if (post == "Success") {
+          return post;
         }
-        return post;
+        else{
+          return "Failure";
+        }
       })
     )
   }

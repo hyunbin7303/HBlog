@@ -3,15 +3,18 @@
     <div *ngIf="!registerMode" style="text-align: center;">
         <h1>GG EZ PROGRAMMING</h1>
         <p class="lead">Little by little, a little becomes a lot</p>
-        <div class="text-center">
-            <button (click)="registerToggle()" class="btn btn-primary btn-lg me-2">Register</button>
-         </div>
     </div>
     <div *ngIf="registerMode" class="container" >
         <div class="row justify-conter-center">
             <div class="col-4" >
                 <app-register (cancelRegister)="cancelRegisterMode($event)"></app-register>
             </div>
+        </div>
+    </div>
+
+    <div>
+        <div class="col-4"  *ngFor="let post of posts">
+            <app-post-card [post]="post"></app-post-card>
         </div>
     </div>
 </div>

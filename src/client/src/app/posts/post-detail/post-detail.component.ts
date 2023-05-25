@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { take } from 'rxjs';
 import { Post } from 'src/app/_models/post';
 import { User } from 'src/app/_models/user';
 import { AccountService } from 'src/app/_services/account.service';
 import { PostsService } from 'src/app/_services/posts.service';
+import { AskModalComponent } from 'src/app/modals/ask-modal/ask-modal.component';
 
 @Component({
   selector: 'app-post-detail',
@@ -16,8 +18,9 @@ export class PostDetailComponent implements OnInit {
   postUserId: number = 0;
   isEditable: boolean = false;
   user: User | null = null;
+  bsModalRef: BsModalRef<AskModalComponent> = new BsModalRef<AskModalComponent>();
 
-  constructor(private postService: PostsService,private accountService: AccountService, private route: ActivatedRoute) { 
+  constructor(private postService: PostsService, private accountService: AccountService, private route: ActivatedRoute, private modalService: BsModalService) { 
     this.accountService.currentUser$.pipe(take(1)).subscribe({
       next: user => this.user = user
     })
@@ -43,5 +46,17 @@ export class PostDetailComponent implements OnInit {
         }
       }
     });
+  }
+  DeletePost() {
+    const postid = this.route.snapshot.paramMap.get('id');
+    var postId: number = Number(postid);
+    this.postService.deletePost(postId).subscribe({
+      next: post => {
+        
+      }
+    })
+  }
+  openDeletePostModal() {
+    // this.bsModalRef = this.modalService.show()
   }
 }

@@ -19,18 +19,22 @@ export class PostCreateComponent implements OnInit {
   }
   ngOnInit(): void {
   }
-  createPosts() {
-
+  createPosts(): void {
     this.postService.createPost(this.model).subscribe({
-      next: (model) => {
-        this.toastr.success("Post created successfully.");
+      next: (result) => {
+        if(result == "Success")
+          this.toastr.success("Post created successfully.");
+        else {
+          this.toastr.error(result);
+        }
       },
       error: error => {
-        this.toastr.error(error.error),
-        console.log(error)
+        this.toastr.error(error.error)
       }
     })
   }
+
+
   cancel() {
     
   }

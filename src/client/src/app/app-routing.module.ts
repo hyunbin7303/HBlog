@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { BusinessesComponent } from './businesses/businesses.component';
 import { HomeComponent } from './home/home.component';
 import { ListsComponent } from './lists/lists.component';
 import { MemberDetailComponent } from './members/member-detail/member-detail.component';
@@ -37,7 +36,6 @@ const routes: Routes = [
       { path: 'posts/:id/edit', component: PostEditComponent }
     ]
   },
-  { path: 'businesses', component: BusinessesComponent },
   { path: 'posts', component: PostListComponent },
   { path: 'posts/:id', component: PostDetailComponent },
   { path: 'errors', component: TestErrorComponent },

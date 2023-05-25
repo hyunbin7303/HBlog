@@ -3,6 +3,6 @@
 <button *ngIf="user" routerLink="/posts/create" class="btn btn-info">Create Post</button>
 <div class="row">
     <div class="col-3" *ngFor="let post of posts">
-        <app-post-card [post]="post"></app-post-card>
+        <app-post-card style="width: 1000px;" [post]="post"></app-post-card>
     </div>
 </div>

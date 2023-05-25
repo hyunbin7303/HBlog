@@ -1,12 +1,10 @@
 ﻿using AutoMapper;
-using AutoMapper.QueryableExtensions;
 using KevBlog.Application.Common;
 using KevBlog.Application.DTOs;
 using KevBlog.Domain.Common;
 using KevBlog.Domain.Entities;
 using KevBlog.Domain.Params;
 using KevBlog.Domain.Repositories;
-using Microsoft.EntityFrameworkCore;
 
 namespace KevBlog.Application.Services
 {
@@ -74,8 +72,8 @@ namespace KevBlog.Application.Services
                 "Outbox" => messages.Where(u => u.SenderUsername == messageParams.Username && !u.SenderDeleted).ToList(),
                 _ => messages.Where(u => u.RecipientUsername == messageParams.Username && !u.RecipientDeleted && u.DateRead == null).ToList()
             };
-            var messagesDto = _mapper.Map<IEnumerable<MessageDto>>(messages).AsQueryable();
-            var pageList = await PageList<MessageDto>.CreateAsync(messagesDto, messageParams.PageNumber, messageParams.PageSize);
+            var messagesDto = _mapper.Map<IEnumerable<MessageDto>>(messages);
+            var pageList =  PageList<MessageDto>.CreateAsync(messagesDto, messageParams.PageNumber, messageParams.PageSize);
             return pageList;
         }
 

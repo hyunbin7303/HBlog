@@ -17,6 +17,7 @@
             <div class="btn-group d-flex">
                 <button class="btn btn-primary">Like</button>
                 <button *ngIf="isEditable == true" class="btn btn-info" routerLink="/posts/{{post.id}}/edit">Edit</button> 
+                <button *ngIf="isEditable == true" class="btn btn-danger" (click)="onRouteToLinkPost">Delete</button> 
                 <button class="btn btn-success" (click)="onRouteToLinkPost()">Link for Post</button>
             </div>
         </div>

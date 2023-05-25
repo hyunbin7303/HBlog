@@ -68,13 +68,16 @@ namespace KevBlog.Api.Controllers
             return Ok();
         }
         [HttpPost]
-        public async Task<ActionResult<string>> Create(PostCreateDto postCreateDto)
+        public async Task<IActionResult> Create(PostCreateDto postCreateDto)
         {
             if (postCreateDto is null)
                 throw new ArgumentNullException(nameof(postCreateDto));
 
             var result = await _postService.CreatePost(User.GetUsername(), postCreateDto);
-            return Ok(result.Message);
+            if(!result.IsSuccess)
+                return BadRequest(result.Message);
+
+            return Ok(result.IsSuccess);
         }
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)

@@ -35,7 +35,7 @@ namespace KevBlog.Application.Services
             post.User = user;
             post.UserId = user.Id;
             await _postRepository.CreateAsync(post);
-            return ServiceResult.Success(msg: "Success to create post");
+            return ServiceResult.Success(msg: "Success");
         }
 
         public async Task<ServiceResult<PostDisplayDetailsDto>> GetByIdAsync(int id)
