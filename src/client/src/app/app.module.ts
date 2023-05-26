@@ -37,6 +37,7 @@ import { UserManagementComponent } from './admin/user-management/user-management
 import { PhotoManagementComponent } from './admin/photo-management/photo-management.component';
 import { RolesModalComponent } from './modals/roles-modal/roles-modal.component';
 import { AskModalComponent } from './modals/ask-modal/ask-modal.component';
+import { PostArticleComponent } from './posts/post-article/post-article.component';
 
 @NgModule({
   declarations: [
@@ -67,7 +68,8 @@ import { AskModalComponent } from './modals/ask-modal/ask-modal.component';
     UserManagementComponent,
     PhotoManagementComponent,
     RolesModalComponent,
-    AskModalComponent
+    AskModalComponent,
+    PostArticleComponent,
   ],
   imports: [
     BrowserAnimationsModule,

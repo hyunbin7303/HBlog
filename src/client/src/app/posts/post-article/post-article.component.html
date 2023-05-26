@@ -1,0 +1,11 @@
+<div class="article" *ngIf="post">
+    <div  routerLink="/posts/{{post.id}}">
+        <h4 class="text-left mt-1">{{post.title}}</h4>
+        <h5>{{post.desc}}</h5>
+        <small class="bg-light text-success text-center ml-3"> {{post.type}}</small>
+        <li class="list-inline-item"><button (click)="onRouteToLinkPost()">Link For Post</button></li>
+        <h6 class="card-title text-right mb-1">
+            {{post.userName}}, Published: {{post.created | date}}
+        </h6>
+    </div>
+</div>

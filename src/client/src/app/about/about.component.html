@@ -1,6 +1,16 @@
-<h1>About H, Blog</h1>
-
-I am software developer, who is passionate about programming itself and the world around it.
-
-Here are lists that I 
-<br>
+<div class="container mt-5" *ngIf="bio$ | async as bio">
+    <div style="text-align: center;">
+      <h1>{{bio.firstName}}, {{bio.lastName}}</h1>
+        <p>{{bio.intro[0]}}</p>
+        <p>{{bio.intro[1]}}</p>
+        <br>
+        <h2>What is this blog?</h2>
+        <p>{{bio.about}}</p>
+        <br><br><br><br><br>
+        <h4>Contact</h4>
+        <p>{{bio.contact[0]}}</p>
+        <p>{{bio.contact[1]}}</p>
+        <p>{{bio.linkedIn}}</p>
+        <p>{{bio.github}}</p>
+    </div>
+</div> 

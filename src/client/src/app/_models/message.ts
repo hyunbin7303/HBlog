@@ -10,4 +10,3 @@ export interface Message {
   dateRead?: Date
   messageSent: string
 }
- 
