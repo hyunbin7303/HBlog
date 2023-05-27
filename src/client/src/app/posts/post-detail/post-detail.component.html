@@ -1,19 +1,18 @@
 
-<div class="row" *ngIf="post">
+<div class="row" style="text-align: center;"  *ngIf="post">
     <div class="header">
         <h1>{{post.title}}</h1>
     </div>
-    <!-- <strong>Writer: {{this.username}}</strong> -->
-    <div class="col-4">
-        <img src="{{'./assets/dotnet.png'}}" class="card-img-top img-thumbnail">
-        <div class="card-body">
+    <div style="text-align: center;">
+        <img src="{{'./assets/dotnet.png'}}" style="width: 500px;">
+        <br><br><br><br>
+        <div class="card-body" style="text-align: left;">
             <div>
-                <strong>Description</strong>
                 <p>{{post.desc}}</p>
             </div>
         </div>
-
-        <div class="card-footer">
+        <br><br><br><br>
+        <div class="col-4">
             <div class="btn-group d-flex">
                 <button class="btn btn-primary">Like</button>
                 <button *ngIf="isEditable == true" class="btn btn-info" routerLink="/posts/{{post.id}}/edit">Edit</button> 
