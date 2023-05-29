@@ -35,6 +35,7 @@ namespace KevBlog.Infrastructure.Extensions
             services.AddScoped<IPostService, PostService>();
             services.AddScoped<IMessageService, MessageService>();
             services.AddScoped<IAwsStorageService, AwsStorageService>();
+            services.AddScoped<ILikeService, LikeSerivce>();
 
             services.AddScoped<LogUserActivity>();
             services.AddSignalR();
