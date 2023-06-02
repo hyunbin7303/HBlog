@@ -12,12 +12,13 @@ namespace KevBlog.Application.Services
     {
         private readonly IMessageRepository _msgRepository;
         private readonly IUserRepository _userRepository;
-        public MessageService(IMapper mapper,IMessageRepository messageRepository,IUserRepository userRepository) : base(mapper)
+        private readonly IGroupRepository _groupRepository;
+        public MessageService(IMapper mapper,IMessageRepository messageRepository,IUserRepository userRepository, IGroupRepository groupRepository) : base(mapper)
         {
             _msgRepository = messageRepository;
             _userRepository = userRepository;
+            _groupRepository = groupRepository;
         }
-
         public async Task<ServiceResult<MessageDto>> CreateMessage(string userName, MessageCreateDto createMsgDto)
         {
             if (userName == createMsgDto.RecipientUsername.ToLower())
@@ -81,6 +82,10 @@ namespace KevBlog.Application.Services
         {
             var messages = await _msgRepository.GetMessageThread(currUserName, userName);
             return _mapper.Map<IEnumerable<MessageDto>>(messages);
+        }
+        public async Task<Connection> GetConnection(string connId)
+        {
+            return await _groupRepository.GetConnection(connId);
         }
     }
 }

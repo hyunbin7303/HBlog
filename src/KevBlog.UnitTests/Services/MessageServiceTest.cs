@@ -28,8 +28,5 @@ namespace KevBlog.UnitTests.Services
 
             Assert.NotNull(posts);
         }
-
-
-
     }
 }

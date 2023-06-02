@@ -22,6 +22,8 @@ namespace KevBlog.Infrastructure.Data
         public virtual DbSet<PostTags> PostTags { get; set; }
         public virtual DbSet<Tag> Tags { get; set; }
         public virtual DbSet<Message> Messages { get; set; }
+        public virtual DbSet<Group> Groups { get; set; }
+        public virtual DbSet<Connection> Connections { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
