@@ -80,6 +80,7 @@ namespace KevBlog.UnitTests.Controllers
             Assert.Equal(StatusCodes.Status200OK, okObjectResult.StatusCode);
         }
 
+
         [Fact]
         public async Task GetUser_PassNotExistingUser_NotFound()
         {

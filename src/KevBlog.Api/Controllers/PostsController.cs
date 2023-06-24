@@ -39,7 +39,9 @@ namespace KevBlog.Api.Controllers
         public async Task<ActionResult<PostDisplayDetailsDto>> GetPostById(int id)
         {
             var postDetails = await _postService.GetByIdAsync(id);
-            return (await _postService.GetByIdAsync(id)).IsSuccess ? (ActionResult<PostDisplayDetailsDto>)Ok(postDetails.Value) : (ActionResult<PostDisplayDetailsDto>)BadRequest(postDetails.Message);
+            return (await _postService.GetByIdAsync(id)).IsSuccess ? 
+                    (ActionResult<PostDisplayDetailsDto>)Ok(postDetails.Value) : 
+                    (ActionResult<PostDisplayDetailsDto>)NotFound(postDetails.Message);
         }
 
         [HttpPut]

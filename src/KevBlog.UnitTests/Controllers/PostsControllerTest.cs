@@ -1,4 +1,5 @@
 ﻿using KevBlog.Api.Controllers;
+using KevBlog.Application.Common;
 using KevBlog.Application.DTOs;
 using KevBlog.Application.Services;
 using KevBlog.Domain.Constants;
@@ -30,13 +31,14 @@ namespace KevBlog.UnitTests.Controllers
         public async Task GetPostById_PassValidPost_ReturnSuccess()
         {
             // Arrange
-            var fakeUserId = 1;
             var fakePostId = 1;
-            var fakeUserPost = CreateFakePost(fakePostId, fakeUserId);
-            postRepositoryMock.Setup(x => x.GetPostById(It.IsAny<int>())).Returns(Task.FromResult(fakeUserPost));
+            PostDisplayDetailsDto detailDto = new PostDisplayDetailsDto { Id = fakePostId, Title = "PostDto", Desc = "Post Desc", Status = "Created", UserName = "hyunbin7303" };
+            postServiceMock.Setup(service => service.GetByIdAsync(fakePostId))
+                            .ReturnsAsync(ServiceResult.Success<PostDisplayDetailsDto>(detailDto));
+
 
             // Act
-            ActionResult<PostDisplayDetailsDto> post = await _controller.GetPostById(fakeUserPost.Id);
+            ActionResult<PostDisplayDetailsDto> post = await _controller.GetPostById(fakePostId);
 
             // Assert
             OkObjectResult okObjectResult = Assert.IsType<OkObjectResult>(post.Result);
@@ -46,38 +48,19 @@ namespace KevBlog.UnitTests.Controllers
         }
 
         [Fact]
-        public async Task GetPostById_NotExistPostId_ReturnNotFound()
+        public async Task GetPostById_GivenNotExistPostId_ReturnNotFound()
         {
             // Arrange
             var fakePostId = 100;
-            var fakeUserId = 1;
-            var fakeUserPost = CreateFakePost(1, fakeUserId);
-            postRepositoryMock.Setup(repo => repo.GetPostById(1)).Returns(Task.FromResult(fakeUserPost));
+            string failureMessage = "Post is not exist or status is removed."; 
+            postServiceMock.Setup(service => service.GetByIdAsync(fakePostId))
+                            .ReturnsAsync(ServiceResult.Fail<PostDisplayDetailsDto>(msg: failureMessage));
 
-            // Act
-            var post = await _controller.GetPostById(fakePostId);
-
-            // Assert
-            NotFoundResult okObjectResult = Assert.IsType<NotFoundResult>(post.Result);
-            Assert.Equal(StatusCodes.Status404NotFound, okObjectResult.StatusCode);
-        }
-
-        [Fact]
-        public async Task GetPostById_PostStatusRemoved_ReturnNotFound()
-        {
-            // Arrange
-            var fakePostId = 1;
-            var fakeUserId = 1;
-            var fakeUserPost = CreateFakePost(fakePostId, fakeUserId);
-            fakeUserPost.Status = PostStatus.Removed;
-            postRepositoryMock.Setup(repo => repo.GetPostById(1)).Returns(Task.FromResult(fakeUserPost));
-
-            // Act
             ActionResult<PostDisplayDetailsDto> post = await _controller.GetPostById(fakePostId);
 
-            // Assert
-            NotFoundResult okObjectResult = Assert.IsType<NotFoundResult>(post.Result);
-            Assert.Equal(StatusCodes.Status404NotFound, okObjectResult.StatusCode);
+            NotFoundObjectResult result = Assert.IsType<NotFoundObjectResult>(post.Result);
+            Assert.Equal(failureMessage, result.Value);
+            Assert.Equal(StatusCodes.Status404NotFound, result.StatusCode);
         }
 
         [Fact]
@@ -114,7 +97,24 @@ namespace KevBlog.UnitTests.Controllers
             var result = await _controller.Put(postUpdate);
 
             var badRequest = Assert.IsType<BadRequestObjectResult>(result);
+
             Assert.Equal(StatusCodes.Status400BadRequest, badRequest.StatusCode);
+        }
+
+        [Fact]
+        public async Task UpdateExistingPost_ValidPostIdAndJsonBody_ReturnSuccess()
+        {
+
+        }
+
+        [Fact]
+        public void CreatePost_PassNull_ThrowArgumentNullException()
+        {
+
+            Action act = () => _controller.Create(null);
+
+            // Assert.Equal(StatusCodes.Status200OK, result)
+            Assert.Throws<ArgumentNullException>(() => act);
         }
 
         private Post CreateFakePost(int fakePostId, int fakeUserId)
