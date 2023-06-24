@@ -28,6 +28,7 @@ namespace KevBlog.Infrastructure.Extensions
             services.AddScoped<ILikesRepository, LikesRepository>();
             services.AddScoped<IMessageRepository, MessageRepository>();
             services.AddScoped<ITagRepository, TagRepository>();
+            services.AddScoped<IGroupRepository, GroupRepository>();    
 
             // Application Service Layer DI
             services.AddScoped<ITokenService, TokenService>();

@@ -44,7 +44,6 @@ namespace KevBlog.Application.Services
             
             return ServiceResult.Fail<MessageDto>(msg: "Error in Create Message.");
         }
-
         public async Task<ServiceResult> DeleteMessage(string currUserName, int id)
         {
             var message = await _msgRepository.GetMessage(id);
@@ -63,7 +62,6 @@ namespace KevBlog.Application.Services
 
             return ServiceResult.Fail(msg: "Problem deleting the message");
         }
-
         public async Task<PageList<MessageDto>> GetMessagesForUserPageList(MessageParams messageParams)
         {
             var messages = await _msgRepository.GetMessages();
@@ -77,7 +75,6 @@ namespace KevBlog.Application.Services
             var pageList =  PageList<MessageDto>.CreateAsync(messagesDto, messageParams.PageNumber, messageParams.PageSize);
             return pageList;
         }
-
         public async Task<IEnumerable<MessageDto>> GetMessageThreads(string currUserName, string userName)
         {
             var messages = await _msgRepository.GetMessageThread(currUserName, userName);

@@ -15,12 +15,14 @@ namespace KevBlog.Infrastructure.SignalR
         private readonly IMessageRepository _messageRepository;
         private readonly IMessageService _messageService;
         private readonly IUserRepository _userRepository;
+        private readonly IGroupRepository _groupRepository;
         private readonly IMapper _mapper;
-        public MessageHub(IMessageService messageService, IMessageRepository messageRepository, IUserRepository userRepository, IMapper mapper)
+        public MessageHub(IMessageService messageService, IMessageRepository messageRepository, IUserRepository userRepository, IGroupRepository groupRepository, IMapper mapper)
         {
             _messageService = messageService;
             _messageRepository = messageRepository;
             _userRepository = userRepository;
+            _groupRepository = groupRepository;
             _mapper = mapper;
         }
 
@@ -69,6 +71,24 @@ namespace KevBlog.Infrastructure.SignalR
         {
             var stringCompare = string.CompareOrdinal(caller, other) < 0;
             return stringCompare ? $"{caller}-{other}" : $"{other}-{caller}";
+        }
+
+        private async Task<bool> AddToGroup(string groupName)
+        {
+            var group = await _groupRepository.GetMsgGroup(groupName);
+            var connection = new Connection(Context.ConnectionId, Context.User.GetUsername());
+            if(group is null)
+            {
+                group = new Group(groupName);
+                _groupRepository.AddGroup(group);
+            }
+            group.Connections.Add(connection);
+            return await _messageRepository.SaveAllAsync(); 
+        }
+
+        private async Task RemoveFromMessageGroup()
+        {
+
         }
     }
 }

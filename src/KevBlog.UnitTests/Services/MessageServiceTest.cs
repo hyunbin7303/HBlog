@@ -12,9 +12,10 @@ namespace KevBlog.UnitTests.Services
         private IMessageService _msgService;
         private readonly Mock<IMessageRepository> _msgRepositoryMock = new();
         private readonly Mock<IUserRepository> _userRepositoryMock = new();
+        private readonly Mock<IGroupRepository> _groupRepositoryMock = new();
         public MessageServiceTest()
         {
-            _msgService = new MessageService(_mapper, _msgRepositoryMock.Object, _userRepositoryMock.Object);
+            _msgService = new MessageService(_mapper, _msgRepositoryMock.Object, _userRepositoryMock.Object, _groupRepositoryMock.Object);
         }
         [Fact]
         public async Task GetPosts_ExistingInRepo_ReturnSuccess()
