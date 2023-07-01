@@ -4,9 +4,15 @@ using Moq;
 
 namespace KevBlog.UnitTests.Repositories
 {
-    internal class MockIUserRepository
+    public class MockUserRepository : Mock<IUserRepository>
     {
-        public static Mock<IUserRepository> GetMock()
+        public MockUserRepository MockGetUsersAsync(IEnumerable<User> result)
+        {
+            Setup(x => x.GetUsersAsync()).ReturnsAsync(result);
+            return this;
+        }
+
+        public static Mock<IUserRepository> MockGetUsers()
         {
             var mock = new Mock<IUserRepository>();
 

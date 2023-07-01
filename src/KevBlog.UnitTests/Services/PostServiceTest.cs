@@ -12,17 +12,18 @@ namespace KevBlog.UnitTests.Services
     {
         private IPostService _postService;
         private readonly Mock<IPostRepository> _postRepositoryMock = new();
+        private readonly MockPostRepository _mockPostRepository = new MockPostRepository();
         private readonly Mock<IUserRepository> _userRepositoryMock = new();
         private readonly Mock<ITagRepository> _tagRepositoryMock = new();
         public PostServiceTest()
         {
-            _postService = new PostService(_mapper, _postRepositoryMock.Object, _userRepositoryMock.Object, _tagRepositoryMock.Object);
+            _postService = new PostService(_mapper, _mockPostRepository.Object, _userRepositoryMock.Object, _tagRepositoryMock.Object);
         }
         [Fact]
         public async Task GetPosts_ExistingInRepo_ReturnSuccess()
         {
             int howMany = 5;
-            var testObject = MockIPostRepository.GenerateData(howMany);
+            var testObject = MockPostRepository.GenerateData(howMany);
             _postRepositoryMock.Setup(x => x.GetPostsAsync()).ReturnsAsync(testObject);
 
             var posts = await _postService.GetPosts();
@@ -36,7 +37,7 @@ namespace KevBlog.UnitTests.Services
         public async Task GetPostById_ExistingPostId_ReturnPostSuccessfully()
         {
             int postId = 1;
-            var testObject = MockIPostRepository.GenerateData(5);
+            var testObject = MockPostRepository.GenerateData(5);
             _postRepositoryMock.Setup(x => x.GetPostById(postId)).ReturnsAsync(testObject.Where(x=> x.Id == postId).FirstOrDefault());
 
             var postDetails = await _postService.GetByIdAsync(1);
@@ -51,7 +52,7 @@ namespace KevBlog.UnitTests.Services
         public async Task CreatePost_PassValidDto_IsSuccessTrue()
         {
             int postId = 1;
-            var testObject = MockIPostRepository.GenerateData(5)[0];
+            var testObject = MockPostRepository.GenerateData(5)[0];
             string userName = "kevin0";
             PostCreateDto postCreateDto = new PostCreateDto()
             {
@@ -74,7 +75,7 @@ namespace KevBlog.UnitTests.Services
         [Fact]
         public async Task CreatePost_PostTitleNull_IsSuccessFalse()
         {
-            var testObject = MockIPostRepository.GenerateData(5)[0];
+            var testObject = MockPostRepository.GenerateData(5)[0];
             string userName = "kevin0";
             int postId = 1;
             PostCreateDto postCreateDto = new PostCreateDto()
@@ -98,7 +99,7 @@ namespace KevBlog.UnitTests.Services
         [Fact]
         public async Task UpdatePost_ValidPostUpdate_ResultReturnTrue()
         {
-            var testObject = MockIPostRepository.GenerateData(5)[0];
+            var testObject = MockPostRepository.GenerateData(5)[0];
             int postId = testObject.Id;
             PostUpdateDto postUpdateDto = new PostUpdateDto()
             {
@@ -121,7 +122,7 @@ namespace KevBlog.UnitTests.Services
         [Fact]
         public async Task UpdatePost_NotExistingPost_ResultReturnFalse()
         {
-            var testObject = MockIPostRepository.GenerateData(5)[0];
+            var testObject = MockPostRepository.GenerateData(5)[0];
             int postId = testObject.Id;
             int notExistingId = 2;
             PostUpdateDto postUpdateDto = new PostUpdateDto()

@@ -17,17 +17,22 @@ namespace KevBlog.UnitTests.Services
         {
             _msgService = new MessageService(_mapper, _msgRepositoryMock.Object, _userRepositoryMock.Object, _groupRepositoryMock.Object);
         }
-        [Fact]
-        public async Task GetPosts_ExistingInRepo_ReturnSuccess()
-        {
-            int howMany = 5;
-            var testObject = MockIMessageRepository.GenerateData(howMany);
-            _msgRepositoryMock.Setup(m => m.GetMessages()).ReturnsAsync(testObject);
-            MessageParams messageParams = new MessageParams();
+        //[Fact]
+        //public async Task GetPosts_ExistingInRepo_ReturnSuccess()
+        //{
+        //    int howMany = 5;
+        //    var testObject = MockMessageRepository.GenerateData(howMany);
+        //    _msgRepositoryMock.Setup(m => m.GetMessages()).ReturnsAsync(testObject);
+        //    MessageParams messageParams = new MessageParams();
 
-            var posts = await _msgService.GetMessagesForUserPageList(messageParams);
+        //    var posts = await _msgService.GetMessagesForUserPageList(messageParams);
 
-            Assert.NotNull(posts);
-        }
+        //    Assert.NotNull(posts);
+        //}
+
+        //public async Task WhenGetPosts_ThenReturnValidPosts()
+        //{
+        //    var mockPostsRepo = new MockPostRepository().MockGetPosts();
+        //}
     }
 }

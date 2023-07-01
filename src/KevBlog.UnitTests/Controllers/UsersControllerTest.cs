@@ -18,6 +18,7 @@ namespace KevBlog.UnitTests.Controllers
     public class UsersControllerTest : TestBase
     {
         private readonly Mock<IUserRepository> _userRepository;
+        private readonly MockUserRepository _userRepositoryMock;
         private readonly Mock<IUserService> _userService;
         private UsersController _controller;
         public UsersControllerTest()
@@ -30,20 +31,28 @@ namespace KevBlog.UnitTests.Controllers
 
 
         [Fact]
-        public async Task GetUsersAsync_NotNull()
+        public async Task GivenExistingUser_GetUsersNotNull()
         {
-            var mock = MockIUserRepository.GetMock();
+            List<User> users = new List<User>()
+            { 
+                new User { Id = 1, UserName = "user01"},
+                new User { Id = 2, UserName = "user02"},
+                new User { Id = 3, UserName = "user03"},
+                new User { Id = 4, UserName = "user04"},
+            };
+            var mock = _userRepositoryMock.MockGetUsersAsync(users);
 
             var userList = await mock.Object.GetUsersAsync();
 
             Assert.NotNull(userList);
+            Assert.Equal(4, userList.Count());
         }
 
         [Fact]
         public async Task GetUsers_FindingExistingUser_ResultSuccess()
         {
             string inputUserName = "kevin0";
-            IEnumerable<User> userList = MockIUserRepository.SampleValidUserData(1);
+            IEnumerable<User> userList = MockUserRepository.SampleValidUserData(1);
             User user = userList.First();
             MemberDto memberDto = _mapper.Map<MemberDto>(user);
             _userRepository.Setup(repo => repo.GetUserByUsernameAsync(inputUserName)).ReturnsAsync(user);
@@ -66,7 +75,7 @@ namespace KevBlog.UnitTests.Controllers
         public async Task GetUser_PassExistingUserName_ReturnOk()
         {
             string inputUserName = "kevin0";
-            IEnumerable<User> userList = MockIUserRepository.SampleValidUserData(1);
+            IEnumerable<User> userList = MockUserRepository.SampleValidUserData(1);
             User returnValue = userList.First();
             _userRepository.Setup(repo => repo.GetUserByUsernameAsync(inputUserName)).Returns(Task.FromResult(returnValue));
 
@@ -86,7 +95,7 @@ namespace KevBlog.UnitTests.Controllers
         {
             string inputUserName = "IdontExist";
             string ExistingUser = "kevin0";
-            IEnumerable<User> userList = MockIUserRepository.SampleValidUserData(1);
+            IEnumerable<User> userList = MockUserRepository.SampleValidUserData(1);
             User returnValue = userList.First();
             _userRepository.Setup(repo => repo.GetUserByUsernameAsync(ExistingUser)).Returns(Task.FromResult(returnValue));
 
@@ -101,7 +110,7 @@ namespace KevBlog.UnitTests.Controllers
         [Fact]
         public async Task UpdateUser_UpdateUserInfo_SuccessReturnOk()
         {
-            IEnumerable<User> userList = MockIUserRepository.SampleValidUserData(3);
+            IEnumerable<User> userList = MockUserRepository.SampleValidUserData(3);
             _userRepository.Setup(repo => repo.GetUsersAsync()).Returns(Task.FromResult(userList));
             var test = await _userRepository.Object.GetUsersAsync();
 
@@ -118,7 +127,7 @@ namespace KevBlog.UnitTests.Controllers
         [Fact]
         public void UpdateTesting()
         {
-            var user = MockIUserRepository.SampleValidUserData(1);
+            var user = MockUserRepository.SampleValidUserData(1);
 
             User ActualUser = null;
             _userRepository.Setup(_ => _.Update(It.IsAny<User>())).Callback(new InvocationAction(i => ActualUser = (User)i.Arguments[0]));

@@ -22,7 +22,7 @@ namespace KevBlog.UnitTests.Repositories
         public async Task GetPostsAsync_Retrieve_Success()
         {
             int postTotal = 5;
-            var mock = MockIPostRepository.GenerateData(postTotal).BuildMock().BuildMockDbSet();
+            var mock = MockPostRepository.GenerateData(postTotal).BuildMock().BuildMockDbSet();
             dataContextMock.Setup(x => x.Posts).Returns(mock.Object);
 
             var posts = await _repository.GetPostsAsync();
@@ -34,7 +34,7 @@ namespace KevBlog.UnitTests.Repositories
         [Fact]
         public async Task GetPostById_FindExistingOne_Success()
         {
-            var mock = MockIPostRepository.GenerateData(5).BuildMock().BuildMockDbSet();
+            var mock = MockPostRepository.GenerateData(5).BuildMock().BuildMockDbSet();
             dataContextMock.Setup(x => x.Posts).Returns(mock.Object);
 
             var post = await _repository.GetPostById(1);
@@ -46,7 +46,7 @@ namespace KevBlog.UnitTests.Repositories
         [Fact]
         public async Task GetPostById_NotExistingId_ReturnNull()
         {
-            var mock = MockIPostRepository.GenerateData(5).BuildMock().BuildMockDbSet();
+            var mock = MockPostRepository.GenerateData(5).BuildMock().BuildMockDbSet();
             dataContextMock.Setup(x => x.Posts).Returns(mock.Object);
 
             var post = await _repository.GetPostById(100);
@@ -57,7 +57,7 @@ namespace KevBlog.UnitTests.Repositories
         [Fact]
         public async Task GetPostsByUserName_ExistingUser_ReturnPosts()
         {
-            var mock = MockIPostRepository.GenerateData(5).BuildMock().BuildMockDbSet();
+            var mock = MockPostRepository.GenerateData(5).BuildMock().BuildMockDbSet();
             dataContextMock.Setup(x => x.Posts).Returns(mock.Object);
 
             var posts = await _repository.GetPostsByUserName("test");
@@ -69,7 +69,7 @@ namespace KevBlog.UnitTests.Repositories
         [Fact]
         public async Task GetPostsByUserName_NotExistingUser_ReturnNull()
         {
-            var mock = MockIPostRepository.GenerateData(5).BuildMock().BuildMockDbSet();
+            var mock = MockPostRepository.GenerateData(5).BuildMock().BuildMockDbSet();
             dataContextMock.Setup(x => x.Posts).Returns(mock.Object);
 
             var posts = await _repository.GetPostsByUserName("NotExisting");
@@ -77,16 +77,28 @@ namespace KevBlog.UnitTests.Repositories
             Assert.Null(posts);
         }
 
+        [Fact]
+        public async Task CreateAsync_InsertPost_AddAndSaveChangesCalledOnce()
+        {
+            var mockSet = new Mock<DbSet<Post>>();
+            dataContextMock.Setup(m => m.Posts).Returns(mockSet.Object);   
+            var repository = new PostRepository(dataContextMock.Object);
+
+            await repository.CreateAsync(new Post { Id = 1, Title = "Post Title" });
+
+            mockSet.Verify(m => m.Add(It.IsAny<Post>()), Times.Once);
+            dataContextMock.Verify(m => m.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once());
+        }
 
         [Fact]
         public async Task VerifyingMockWorking()
         {
             // Arrange
-            var testObject = MockIPostRepository.GenerateData(5)[0];
+            var testObject = MockPostRepository.GenerateData(5)[0];
 
             var context = new Mock<DataContext>();
             //var dbSetMock = new Mock<DbSet<Post>>();
-            var mock = MockIPostRepository.GenerateData(5).BuildMock().BuildMockDbSet();
+            var mock = MockPostRepository.GenerateData(5).BuildMock().BuildMockDbSet();
             mock.Setup(x => x.Find(It.IsAny<int>())).Returns(testObject);
             context.Setup(x => x.Set<Post>()).Returns(mock.Object);
 

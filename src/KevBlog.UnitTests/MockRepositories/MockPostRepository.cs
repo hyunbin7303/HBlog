@@ -4,26 +4,24 @@ using Moq;
 
 namespace KevBlog.UnitTests.Repositories
 {
-    public class MockIPostRepository : Mock<IPostRepository>
+    public class MockPostRepository : Mock<IPostRepository>
     {
-        public MockIPostRepository MockGetPostById(Post result)
+        public MockPostRepository MockGetPostById(Post result)
         {
             Setup(x => x.GetPostById(It.IsAny<int>())).ReturnsAsync(result);
             return this;
         }
-        public MockIPostRepository MockGetPostByIdInvalid()
+        public MockPostRepository MockGetPostByIdInvalid()
         {
             Setup(x => x.GetPostById(It.IsAny<int>())).Throws(new Exception());
             return this;
         }
-
-        public static Mock<IPostRepository> GetPostsMock()
+        public MockPostRepository MockGetPosts(List<Post> results)
         {
-            var mock = new Mock<IPostRepository>();
-            var posts = GenerateData(5);
-            mock.Setup(m => m.GetPostsAsync().Result).Returns(posts);
-            return mock;
+            Setup(x => x.GetPostsAsync()).ReturnsAsync(results);
+            return this;
         }
+
         public static List<Post> GenerateData(int count)
         {
             var posts = new List<Post>();

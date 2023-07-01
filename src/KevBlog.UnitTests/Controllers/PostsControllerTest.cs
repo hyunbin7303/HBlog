@@ -66,7 +66,7 @@ namespace KevBlog.UnitTests.Controllers
         [Fact]
         public async Task GetPosts_ListofPosts_ReturnSuccess()
         {
-            IEnumerable<Post> samplePosts = MockIPostRepository.GenerateData(5);
+            IEnumerable<Post> samplePosts = MockPostRepository.GenerateData(5);
             postRepositoryMock.Setup(x => x.GetPostsAsync()).Returns(Task.FromResult(samplePosts));
 
             ActionResult<IEnumerable<PostDisplayDto>> posts = await _controller.GetPosts();
