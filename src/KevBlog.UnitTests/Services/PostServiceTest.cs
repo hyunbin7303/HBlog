@@ -11,7 +11,6 @@ namespace KevBlog.UnitTests.Services
     public class PostServiceTest : ServiceTest
     {
         private IPostService _postService;
-        private readonly Mock<IPostRepository> _postRepositoryMock = new();
         private readonly MockPostRepository _mockPostRepository = new MockPostRepository();
         private readonly Mock<IUserRepository> _userRepositoryMock = new();
         private readonly Mock<ITagRepository> _tagRepositoryMock = new();
@@ -24,35 +23,42 @@ namespace KevBlog.UnitTests.Services
         {
             int howMany = 5;
             var testObject = MockPostRepository.GenerateData(howMany);
-            _postRepositoryMock.Setup(x => x.GetPostsAsync()).ReturnsAsync(testObject);
+            _mockPostRepository.Setup(x => x.GetPostsAsync()).ReturnsAsync(testObject);
 
             var posts = await _postService.GetPosts();
 
             Assert.NotNull(posts);
             Assert.Equal(howMany, posts.Count());
-            
         }
 
         [Fact]
-        public async Task GetPostById_ExistingPostId_ReturnPostSuccessfully()
+        public async Task GivenExistingPostId_WhenGetPostById__ReturnPostSuccessfully()
         {
             int postId = 1;
-            var testObject = MockPostRepository.GenerateData(5);
-            _postRepositoryMock.Setup(x => x.GetPostById(postId)).ReturnsAsync(testObject.Where(x=> x.Id == postId).FirstOrDefault());
+            _mockPostRepository.Setup(x => x.GetPostById(postId)).ReturnsAsync(new Post { Id= postId, Title="new Post mocking"});
 
             var postDetails = await _postService.GetByIdAsync(1);
 
-            Assert.NotNull(postDetails);
-            Assert.Equal(true, postDetails.IsSuccess);
+            Assert.True(postDetails.IsSuccess);
             Assert.IsType<PostDisplayDetailsDto>(postDetails.Value);
-            _postRepositoryMock.Verify(x => x.GetPostById(postId));
+            _mockPostRepository.Verify(x => x.GetPostById(postId));
         }
 
         [Fact]
-        public async Task CreatePost_PassValidDto_IsSuccessTrue()
+        public async Task GivenNotExistingPostId_WhenGetPostById__ThenReturnNotFound()
         {
             int postId = 1;
-            var testObject = MockPostRepository.GenerateData(5)[0];
+            _mockPostRepository.Setup(x => x.GetPostById(postId)).ReturnsAsync(new Post { Id = postId, Title = "new Post mocking" });
+
+            var postDetails = await _postService.GetByIdAsync(2);
+
+            Assert.False(postDetails.IsSuccess);
+            Assert.Equal("Post is not exist or status is removed.", postDetails.Message);
+        }
+
+        [Fact]
+        public async Task GivenValidPostAndExistingUser_WhenCreatePost_ThenIsSuccessTrue()
+        {
             string userName = "kevin0";
             PostCreateDto postCreateDto = new PostCreateDto()
             {
@@ -62,38 +68,28 @@ namespace KevBlog.UnitTests.Services
                 Type = "Programming"
             };
             _userRepositoryMock.Setup(x => x.GetUserByUsernameAsync(userName)).ReturnsAsync(GetSampleUser());
-            _postRepositoryMock.Setup(x => x.GetPostById(It.Is<int>(i => i == postId))).ReturnsAsync(() => testObject);
 
             // Action 
             var result = await _postService.CreatePost(userName, postCreateDto);
 
             Assert.True(result.IsSuccess);
+            Assert.True(result.Message?.Contains("Post Id"));
             _userRepositoryMock.Verify(x => x.GetUserByUsernameAsync("kevin0"), Times.Once);
-            _postRepositoryMock.Verify(x => x.CreateAsync(It.IsAny<Post>()), Times.Once);
+            _mockPostRepository.Verify(x => x.CreateAsync(It.IsAny<Post>()), Times.Once);
         }
 
         [Fact]
-        public async Task CreatePost_PostTitleNull_IsSuccessFalse()
+        public async Task GivenValidPostAndExistingUser_WhenCreatePost_ThenIsSuccessFalseAndErrorMessage()
         {
-            var testObject = MockPostRepository.GenerateData(5)[0];
             string userName = "kevin0";
-            int postId = 1;
-            PostCreateDto postCreateDto = new PostCreateDto()
-            {
-                Title = null,
-                Desc = "New Post Desc",
-                LinkForPost = "https://github.com/hyunbin7303",
-                Type = "Programming"
-            };
             _userRepositoryMock.Setup(x => x.GetUserByUsernameAsync(userName)).ReturnsAsync(GetSampleUser());
-            _postRepositoryMock.Setup(x => x.GetPostById(It.Is<int>(i => i == postId))).ReturnsAsync(() => testObject);
 
-            var result = await _postService.CreatePost(userName, postCreateDto);
+            var result = await _postService.CreatePost(userName, new PostCreateDto { Title = null });
 
             Assert.False(result.IsSuccess);
             Assert.Equal("Title cannot be empty.", result.Message);
             _userRepositoryMock.Verify(x => x.GetUserByUsernameAsync("kevin0"), Times.Never);
-            _postRepositoryMock.Verify(x => x.CreateAsync(It.IsAny<Post>()), Times.Never);
+            _mockPostRepository.Verify(x => x.CreateAsync(It.IsAny<Post>()), Times.Never);
         }
 
         [Fact]
@@ -110,13 +106,13 @@ namespace KevBlog.UnitTests.Services
                 LinkForPost = "",
                 Type = "Programming"
             };
-            _postRepositoryMock.Setup(x => x.GetPostById(postId)).ReturnsAsync(testObject);
+            _mockPostRepository.Setup(x => x.GetPostById(postId)).ReturnsAsync(testObject);
 
             var result = await _postService.UpdatePost(postUpdateDto); 
 
             Assert.Equal(true, result.IsSuccess);
-            _postRepositoryMock.Verify(x => x.GetPostById(postId), Times.Once);
-            _postRepositoryMock.Verify(x => x.UpdateAsync(It.IsAny<Post>()), Times.Once);
+            _mockPostRepository.Verify(x => x.GetPostById(postId), Times.Once);
+            _mockPostRepository.Verify(x => x.UpdateAsync(It.IsAny<Post>()), Times.Once);
         }
 
         [Fact]
@@ -134,20 +130,20 @@ namespace KevBlog.UnitTests.Services
                 LinkForPost = "",
                 Type = "Programming"
             };
-            _postRepositoryMock.Setup(x => x.GetPostById(postId)).ReturnsAsync(testObject);
+            _mockPostRepository.Setup(x => x.GetPostById(postId)).ReturnsAsync(testObject);
 
             var result = await _postService.UpdatePost(postUpdateDto);
 
             Assert.False(result.IsSuccess);
             Assert.Equal("Post does not exist.", result.Message);
-            _postRepositoryMock.Verify(x => x.GetPostById(notExistingId), Times.Once);
-            _postRepositoryMock.Verify(x => x.UpdateAsync(It.IsAny<Post>()), Times.Never);
+            _mockPostRepository.Verify(x => x.GetPostById(notExistingId), Times.Once);
+            _mockPostRepository.Verify(x => x.UpdateAsync(It.IsAny<Post>()), Times.Never);
         }
         [Fact]
-        public async Task DeletePost_ExistingItem_ResultReturnTrue()
+        public async Task GivenExistingItem_WhenDeletePost_ThenReturnTrue()
         {
             int postId = 1;
-            _postRepositoryMock.Setup(x => x.GetPostById(postId)).ReturnsAsync(new Post
+            _mockPostRepository.Setup(x => x.GetPostById(postId)).ReturnsAsync(new Post
             {
                 Id = postId,
                 Title = "Post New Title",
@@ -156,6 +152,26 @@ namespace KevBlog.UnitTests.Services
             var result = await _postService.DeletePost(1);
 
             Assert.True(result.IsSuccess);
+            Assert.Equal($"Removed Post Id: {postId}", result.Message);
+            _mockPostRepository.VerifyGetPostById(Times.Once());
+        }
+
+        [Fact]
+        public async Task GivenNotExistingPostId_WhenDeletePost_ThenReturnFalse()
+        {
+            int postId = 1;
+            int invalidPostId = 2;
+            _mockPostRepository.Setup(x => x.GetPostById(postId)).ReturnsAsync(new Post
+            {
+                Id = postId,
+                Title = "Post New Title",
+            });
+
+            var result = await _postService.DeletePost(invalidPostId);
+
+            Assert.False(result.IsSuccess);
+            Assert.Equal($"NotFound", result.Message);
+            _mockPostRepository.VerifyGetPostById(Times.Once());
         }
     }
 }

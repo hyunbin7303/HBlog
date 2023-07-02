@@ -28,19 +28,15 @@ namespace KevBlog.UnitTests.Controllers
         }
 
         [Fact]
-        public async Task GetPostById_PassValidPost_ReturnSuccess()
+        public async Task GivenPassValidPost_GetPostById__ThenOkWithObject()
         {
-            // Arrange
             var fakePostId = 1;
             PostDisplayDetailsDto detailDto = new PostDisplayDetailsDto { Id = fakePostId, Title = "PostDto", Desc = "Post Desc", Status = "Created", UserName = "hyunbin7303" };
             postServiceMock.Setup(service => service.GetByIdAsync(fakePostId))
-                            .ReturnsAsync(ServiceResult.Success<PostDisplayDetailsDto>(detailDto));
+                            .ReturnsAsync(ServiceResult.Success(detailDto));
 
-
-            // Act
             ActionResult<PostDisplayDetailsDto> post = await _controller.GetPostById(fakePostId);
 
-            // Assert
             OkObjectResult okObjectResult = Assert.IsType<OkObjectResult>(post.Result);
             PostDisplayDetailsDto postResult = Assert.IsType<PostDisplayDetailsDto>(okObjectResult.Value);
             Assert.Equal(1, postResult.Id);

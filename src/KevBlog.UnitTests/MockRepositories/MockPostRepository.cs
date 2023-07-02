@@ -21,6 +21,17 @@ namespace KevBlog.UnitTests.Repositories
             Setup(x => x.GetPostsAsync()).ReturnsAsync(results);
             return this;
         }
+        public MockPostRepository VerifyGetPost(Times times)
+        {
+            Verify(x => x.GetPostsByUserName(It.IsAny<string>()), times);
+            return this;
+        }
+        public MockPostRepository VerifyGetPostById(Times times)
+        {
+            Verify(x => x.GetPostById(It.IsAny<int>()), times);
+            return this;
+        }
+
 
         public static List<Post> GenerateData(int count)
         {
