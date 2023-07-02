@@ -10,8 +10,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace KevBlog.Api.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
     public class TagsController : BaseApiController
     {
         private readonly ITagRepository _tagRepository;
@@ -37,6 +35,8 @@ namespace KevBlog.Api.Controllers
             await _tagRepository.Insert(tagCreateDto.Name, tagCreateDto.Desc, tagCreateDto.Slug);
             return Ok();
         }
+        //[HttpPost]
+        //public async Task<ActionResult> AddTagToPost(int postId, )
 
 
         [HttpGet]

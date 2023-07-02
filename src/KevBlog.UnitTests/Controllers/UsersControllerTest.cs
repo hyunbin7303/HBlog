@@ -7,7 +7,7 @@ using KevBlog.Domain.Entities;
 using KevBlog.Domain.Params;
 using KevBlog.Domain.Repositories;
 using KevBlog.Infrastructure.Helpers;
-using KevBlog.UnitTests.Repositories;
+using KevBlog.UnitTests.Mocks.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;

@@ -2,7 +2,7 @@
 using KevBlog.Domain.Repositories;
 using Moq;
 
-namespace KevBlog.UnitTests.Repositories
+namespace KevBlog.UnitTests.Mocks.Repositories
 {
     public class MockUserRepository : Mock<IUserRepository>
     {

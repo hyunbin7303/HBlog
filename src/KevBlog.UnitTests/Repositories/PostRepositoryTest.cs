@@ -2,6 +2,7 @@ using KevBlog.Domain.Entities;
 using KevBlog.Domain.Repositories;
 using KevBlog.Infrastructure.Data;
 using KevBlog.Infrastructure.Repositories;
+using KevBlog.UnitTests.Mocks.Repositories;
 using Microsoft.EntityFrameworkCore;
 using MockQueryable.Moq;
 using Moq;
@@ -93,7 +94,6 @@ namespace KevBlog.UnitTests.Repositories
         [Fact]
         public async Task VerifyingMockWorking()
         {
-            // Arrange
             var testObject = MockPostRepository.GenerateData(5)[0];
 
             var context = new Mock<DataContext>();

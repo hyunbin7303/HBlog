@@ -5,7 +5,7 @@ using KevBlog.Application.Services;
 using KevBlog.Domain.Constants;
 using KevBlog.Domain.Entities;
 using KevBlog.Domain.Repositories;
-using KevBlog.UnitTests.Repositories;
+using KevBlog.UnitTests.Mocks.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting;

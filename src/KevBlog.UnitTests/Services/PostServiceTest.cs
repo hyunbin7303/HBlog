@@ -2,7 +2,7 @@
 using KevBlog.Application.Services;
 using KevBlog.Domain.Entities;
 using KevBlog.Domain.Repositories;
-using KevBlog.UnitTests.Repositories;
+using KevBlog.UnitTests.Mocks.Repositories;
 using Moq;
 
 

@@ -16,12 +16,12 @@ namespace KevBlog.Api.Controllers
             _awsStorageService = awsStorageService;
         }
 
-        [Authorize]
-        public async Task<IActionResult> UploadFile(string fileName)
-        {
-            var result = await _awsStorageService.DownloadFileAsync(fileName);
-            return Ok();
-        }
+        //[Authorize]
+        //public async Task<IActionResult> UploadFile(string fileName)
+        //{
+        //    var result = await _awsStorageService.DownloadFileAsync(fileName);
+        //    return Ok();
+        //}
 
     }
 }
