@@ -6,6 +6,7 @@ using KevBlog.Infrastructure.Middlewares;
 using KevBlog.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,7 +15,29 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.AddSecurityDefinition("auth", new OpenApiSecurityScheme
+    {
+        Name = "auth",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.Http,
+        Scheme = "Bearer",
+        Description = "A one time token. "
+    });
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement {
+        { 
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Id = "auth",
+                    Type = ReferenceType.SecurityScheme
+                }
+            }, new List<string>()
+        }
+    });
+});
 
 builder.Services.AddApplicationServices(builder.Configuration);
 builder.Services.AddAutoMapper(typeof(AutoMapperProfiles));

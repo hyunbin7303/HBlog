@@ -14,7 +14,6 @@ namespace KevBlog.Api.Controllers
     {
         private readonly ITagRepository _tagRepository;
         private readonly IUserService _userService;
-        private readonly ITagService tagService;
         public TagsController(ITagRepository tagRepository, IUserService userService)
         {
             this._tagRepository = tagRepository;
@@ -32,11 +31,16 @@ namespace KevBlog.Api.Controllers
             var user = await _userService.GetMembersByUsernameAsync(User.GetUsername());
             if (user.Value is null) return NotFound();
 
-            await _tagRepository.Insert(tagCreateDto.Name, tagCreateDto.Desc, tagCreateDto.Slug);
+            await _tagRepository.Insert(new Tag { Name = tagCreateDto.Name, Desc = tagCreateDto.Desc, Slug = tagCreateDto.Slug });
             return Ok();
         }
-        //[HttpPost]
-        //public async Task<ActionResult> AddTagToPost(int postId, )
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            await _tagRepository.Delete(id);
+            return NoContent();
+        }
 
 
         [HttpGet]

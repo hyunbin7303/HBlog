@@ -33,7 +33,6 @@ namespace KevBlog.Api.Controllers
         [HttpGet("Tags/{tagName}")]
         public async Task<ActionResult<IEnumerable<PostDisplayDto>>> GetPostsByTagName(string tagName) => Ok(await _postService.GetPostsByTagName(tagName));
 
-
         [AllowAnonymous]
         [HttpGet("{id}")]
         public async Task<ActionResult<PostDisplayDetailsDto>> GetPostById(int id)
@@ -56,8 +55,23 @@ namespace KevBlog.Api.Controllers
             var result = await _postService.UpdatePost(postUpdateDto);
             if (!result.IsSuccess && result.Message == "Post does not exist.")
                 RedirectToRoute("Posts");
+
             return NoContent();
         }
+
+        [HttpPut("{postId}/AddTag")] // Updating into the PostTag Table.
+        public async Task<IActionResult> AddTag(int postId, [FromBody]int tagId)
+        {
+            if (postId == 0 || tagId == 0)
+                return BadRequest("Post Id or Tag Id cannot be null");
+            
+            var result = await _postService.AddTagForPost(postId, tagId);
+            if(!result.IsSuccess)
+            {
+
+            }
+        }
+
         [HttpPut("{id}/status")]
         public async Task<IActionResult> SetPostStatus(int id, string status)
         {

@@ -6,6 +6,7 @@ using KevBlog.Domain.Entities;
 using KevBlog.Domain.Repositories;
 using KevBlog.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting;
 
 namespace KevBlog.Infrastructure.Repositories
 {
@@ -17,19 +18,22 @@ namespace KevBlog.Infrastructure.Repositories
             _dbContext = dbContext;
         }
 
-        public Task Insert(string tagName, string tagDesc = "", string tagSlug = "")
+        public async Task Insert(Tag tag)
         {
-            throw new NotImplementedException();
+            _dbContext.Tags.Add(tag);
+            await _dbContext.SaveChangesAsync();
         }
 
-        public Task Delete(int id)
+        public async Task Delete(int id)
         {
-            throw new NotImplementedException();
+            _dbContext.Tags.Remove(new Tag { Id = id });
+            await _dbContext.SaveChangesAsync();
         }
 
-        public Task Update(int id, string tagName, string tagDesc, string tagSlug)
+        public async Task Update(Tag tag)
         {
-            throw new NotImplementedException();
+            _dbContext.Entry(tag).State = EntityState.Modified;
+            await _dbContext.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<Tag>> GetAll()

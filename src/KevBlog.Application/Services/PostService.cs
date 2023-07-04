@@ -19,10 +19,17 @@ namespace KevBlog.Application.Services
             _tagRepository = tagRepository;
         }
 
-        public async Task<ServiceResult> AddTagForPost(int postId, int tagName)
+        public async Task<ServiceResult> AddTagForPost(int postId, int tagId)
         {
+            var post = _postRepository.GetPostById(postId);
+            if(post is null)
+                return ServiceResult.Fail(msg: "Post Id is not valid.");
 
-            return ServiceResult.Success($"Success to add Tag: {tagName}");
+            var tag = _tagRepository.GetById(tagId);
+            if (tag is null)
+                return ServiceResult.Fail(msg: "Tag Id is not valid.");
+
+            return ServiceResult.Success($"Success to add Tag ID: {tagId}");
         }
 
         public async Task<ServiceResult> CreatePost(string userName, PostCreateDto createDto)
