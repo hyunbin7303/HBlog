@@ -67,9 +67,9 @@ namespace KevBlog.Api.Controllers
             
             var result = await _postService.AddTagForPost(postId, tagId);
             if(!result.IsSuccess)
-            {
-
-            }
+                return BadRequest("Failed to add tags.");
+            
+            return Ok();
         }
 
         [HttpPut("{id}/status")]

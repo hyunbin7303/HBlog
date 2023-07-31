@@ -27,6 +27,7 @@ namespace KevBlog.Api.Controllers
 
             return messages;
         }
+        
         [HttpPost] 
         public async Task<ActionResult<MessageDto>> CreateMessage(MessageCreateDto createMsgDto)
         {

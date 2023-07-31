@@ -6,7 +6,7 @@ namespace KevBlog.UnitTests.Services
 {
 
 
-    public class ServiceTest : TestBase
+    public abstract class ServiceTest : TestBase
     {
         public ServiceTest()
         {

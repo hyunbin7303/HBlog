@@ -45,5 +45,10 @@ namespace KevBlog.Infrastructure.Repositories
         {
             throw new NotImplementedException();
         }
+
+        public async Task<Tag> GetById(int id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -1,4 +1,5 @@
-﻿using KevBlog.Application.Common;
+﻿using AutoMapper;
+using KevBlog.Application.Common;
 using KevBlog.Application.DTOs;
 using KevBlog.Domain.Common;
 using KevBlog.Domain.Common.Extensions;
@@ -8,11 +9,11 @@ using KevBlog.Infrastructure.Helpers;
 
 namespace KevBlog.Application.Services
 {
-    public class LikeSerivce : ILikeService
+    public class LikeSerivce : BaseService, ILikeService
     {
         private readonly ILikesRepository _likesRepository;
         private readonly IUserRepository _userRepository;
-        public LikeSerivce(ILikesRepository likesRepository, IUserRepository userRepository)
+        public LikeSerivce(IMapper mapper, ILikesRepository likesRepository, IUserRepository userRepository) : base(mapper)
         {
             _likesRepository = likesRepository;
             _userRepository = userRepository;
