@@ -45,7 +45,7 @@ namespace KevBlog.UnitTests.Services
         }
 
         [Fact]
-        public async Task GivenNotExistingPostId_WhenGetPostById__ThenReturnNotFound()
+        public async Task GivenNotExistingPostId_WhenGetPostById_ThenReturnNotFound()
         {
             int postId = 1;
             _mockPostRepository.Setup(x => x.GetPostById(postId)).ReturnsAsync(new Post { Id = postId, Title = "new Post mocking" });

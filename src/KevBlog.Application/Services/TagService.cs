@@ -10,7 +10,7 @@ namespace KevBlog.Application.Services
         private readonly ITagRepository _tagRepository; 
         public TagService(IMapper mapper, ITagRepository tagRepository) : base(mapper) 
         {
-            _tagRepository = _tagRepository;
+            _tagRepository = tagRepository;
         }
         public Task<ServiceResult> AddTagToPost(int postId, string tagName)
         {
@@ -19,6 +19,9 @@ namespace KevBlog.Application.Services
 
         public async Task<ServiceResult> CreateTag(TagCreateDto tag)
         {
+            if(tag.Name == null)
+                return ServiceResult.Fail(msg: "Tag Title is empty.");
+            
             var newTag = new Tag { Name = tag.Name, Slug = tag.Slug, Desc = tag.Desc };
             await _tagRepository.Insert(newTag);
             return ServiceResult.Success();
