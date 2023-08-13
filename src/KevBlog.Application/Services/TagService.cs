@@ -7,8 +7,8 @@ namespace KevBlog.Application.Services
 {
     public class TagService : BaseService, ITagService
     {
-        private readonly ITagRepository _tagRepository; 
-        public TagService(IMapper mapper, ITagRepository tagRepository) : base(mapper) 
+        private readonly ITagRepository _tagRepository;
+        public TagService(IMapper mapper, ITagRepository tagRepository) : base(mapper)
         {
             _tagRepository = tagRepository;
         }
@@ -19,12 +19,11 @@ namespace KevBlog.Application.Services
 
         public async Task<ServiceResult> CreateTag(TagCreateDto tag)
         {
-            if(tag.Name == null)
+            if (tag.Name == null)
                 return ServiceResult.Fail(msg: "Tag Title is empty.");
-            
-            var newTag = new Tag { Name = tag.Name, Slug = tag.Slug, Desc = tag.Desc };
-            await _tagRepository.Insert(newTag);
-            return ServiceResult.Success();
+
+            await _tagRepository.Insert(new Tag { Name = tag.Name, Slug = tag.Slug, Desc = tag.Desc });
+            return ServiceResult.Success($"Successfully created the tag name : {tag.Name}");
         }
 
         public async Task<IEnumerable<TagDto>> GetAllTags()
@@ -33,9 +32,14 @@ namespace KevBlog.Application.Services
             return _mapper.Map<IEnumerable<TagDto>>(tags);
         }
 
-        public Task<ServiceResult> RemoveTag(int tagId)
+        public async Task<ServiceResult> RemoveTag(int tagId)
         {
-            throw new NotImplementedException();
+            var tag = await _tagRepository.GetById(tagId);
+            if(tag is null)
+                return ServiceResult.Fail(msg: $"Tag id:{tagId} is not exist.");
+
+            await _tagRepository.Delete(tag);
+            return ServiceResult.Success();
         }
     }
 }

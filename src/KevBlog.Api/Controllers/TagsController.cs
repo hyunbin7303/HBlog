@@ -3,10 +3,12 @@ using KevBlog.Application.Services;
 using KevBlog.Domain.Entities;
 using KevBlog.Domain.Repositories;
 using KevBlog.Infrastructure.Extensions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace KevBlog.Api.Controllers
 {
+    [Authorize]
     public class TagsController : BaseApiController
     {
         private readonly ITagService _tagService;
@@ -28,8 +30,8 @@ namespace KevBlog.Api.Controllers
             var user = await _userService.GetMembersByUsernameAsync(User.GetUsername());
             if (user.Value is null) return NotFound();
 
-            await _tagService.CreateTag(tagCreateDto);
-            return Ok();
+            var result = await _tagService.CreateTag(tagCreateDto);
+            return Ok(result.Message);
         }
 
         [HttpDelete("{id}")]
@@ -39,13 +41,7 @@ namespace KevBlog.Api.Controllers
             return Ok(result.IsSuccess);
         }
 
-
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Tag>>> Get()
-        {
-            var result = await _tagService.GetAllTags();
-            return Ok(result);
-        }
-
+        public async Task<ActionResult<IEnumerable<Tag>>> Get() => Ok(await _tagService.GetAllTags());
     }
 }

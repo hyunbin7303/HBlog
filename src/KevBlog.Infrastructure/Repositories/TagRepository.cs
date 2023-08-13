@@ -24,9 +24,9 @@ namespace KevBlog.Infrastructure.Repositories
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task Delete(int id)
+        public async Task Delete(Tag tag)
         {
-            _dbContext.Tags.Remove(new Tag { Id = id });
+            _dbContext.Entry(tag).State = EntityState.Deleted;
             await _dbContext.SaveChangesAsync();
         }
 
@@ -41,14 +41,14 @@ namespace KevBlog.Infrastructure.Repositories
             return await _dbContext.Tags.AsNoTracking().ToListAsync();
         }
 
-        public Task<IEnumerable<Tag>> FindbyTagName(string tagName)
+        public IEnumerable<Tag> FindbyTagName(string tagName)
         {
-            throw new NotImplementedException();
+            return _dbContext.Tags.Where(x => x.Name == tagName).AsEnumerable();
         }
 
         public async Task<Tag> GetById(int id)
         {
-            throw new NotImplementedException();
+            return await _dbContext.Tags.FindAsync(id);
         }
     }
 }

@@ -44,22 +44,39 @@ namespace KevBlog.UnitTests.Services
         [Fact]
         public async Task GivenValidTag_WhenCreateTag_ThenReturnSuccess()
         {
-            _tagRepositoryMock.Setup(o => o.Insert(It.IsAny<Tag>())).Returns(Task.FromResult(new Tag()));  
             TagCreateDto tagDto = new TagCreateDto { Desc = "test", Name = "Tagname", Slug = "TestingSlug" };
+            _tagRepositoryMock.Setup(o => o.Insert(It.IsAny<Tag>())).Returns(Task.FromResult(tagDto));  
 
             var result = await _tagService.CreateTag(tagDto);
 
-            _tagRepositoryMock.Verify(o => o.Insert(It.IsAny<Tag>()));
             Assert.True(result.IsSuccess);
+            Assert.Equal($"Successfully created the tag name : {tagDto.Name}", result.Message);
+            _tagRepositoryMock.Verify(o => o.Insert(It.IsAny<Tag>()));
         }
 
-        [Fact] // TODO Need to be implemented first.
+        [Fact] 
         public async Task GivenInvalidTagId_WhenDeleteTagCalled_ThenReturnErrorMessage()
         {
             int wrongTagId = 100;
 
             var result = await _tagService.RemoveTag(wrongTagId);
 
+            Assert.False(result.IsSuccess);
+            Assert.Equal($"Tag id:{wrongTagId} is not exist.", result.Message);
+            _tagRepositoryMock.Verify(x => x.Delete(It.IsAny<Tag>()), Times.Never);
         }
+        [Fact]
+        public async Task GivenValidTagId_WhenDeleteTagCalled_ThenReturnSuccess()
+        {
+            int validTagId = 5;
+            _tagRepositoryMock.Setup(o => o.GetById(validTagId)).ReturnsAsync(new Tag { Id = validTagId, Name = "ValidTag",  Slug = "ValidTag" });
+      
+            var result = await _tagService.RemoveTag(validTagId);
+
+            Assert.True(result.IsSuccess);
+            _tagRepositoryMock.Verify(x => x.Delete(It.IsAny<Tag>()), Times.Once);
+        }
+
+
     }
 }
