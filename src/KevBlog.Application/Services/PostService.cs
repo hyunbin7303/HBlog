@@ -12,6 +12,8 @@ namespace KevBlog.Application.Services
         private readonly IPostRepository _postRepository;
         private readonly IUserRepository _userRepository;
         private readonly ITagRepository _tagRepository;
+
+        // Todo Event Publisher.
         public PostService(IMapper mapper, IPostRepository postRepository, IUserRepository userRepository, ITagRepository tagRepository) : base(mapper)
         {
             _postRepository = postRepository;
@@ -21,13 +23,15 @@ namespace KevBlog.Application.Services
 
         public async Task<ServiceResult> AddTagForPost(int postId, int tagId)
         {
-            var post = _postRepository.GetPostById(postId);
+            var post = await _postRepository.GetPostById(postId);
             if(post is null)
                 return ServiceResult.Fail(msg: "Post Id is not valid.");
 
-            var tag = _tagRepository.GetById(tagId);
+            var tag = await _tagRepository.GetById(tagId);
             if (tag is null)
                 return ServiceResult.Fail(msg: "Tag Id is not valid.");
+
+            await _postRepository.AddTagInExistingPost(post, tag);
 
             return ServiceResult.Success($"Success to add Tag ID: {tagId}");
         }

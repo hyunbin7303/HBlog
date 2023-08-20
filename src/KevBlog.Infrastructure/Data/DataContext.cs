@@ -24,6 +24,7 @@ namespace KevBlog.Infrastructure.Data
         public virtual DbSet<Message> Messages { get; set; }
         public virtual DbSet<Group> Groups { get; set; }
         public virtual DbSet<Connection> Connections { get; set; }
+        public virtual DbSet<FileStorage> FileStorages { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

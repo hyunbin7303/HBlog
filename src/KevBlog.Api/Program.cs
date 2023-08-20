@@ -4,6 +4,7 @@ using KevBlog.Infrastructure.Data;
 using KevBlog.Infrastructure.Extensions;
 using KevBlog.Infrastructure.Middlewares;
 using KevBlog.Infrastructure.Repositories;
+using KevBlog.Persistence.Aws;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
@@ -38,6 +39,8 @@ builder.Services.AddSwaggerGen(c =>
         }
     });
 });
+
+builder.Services.Configure<AwsSettings>(builder.Configuration.GetSection("AwsSettings"));
 
 builder.Services.AddApplicationServices(builder.Configuration);
 builder.Services.AddAutoMapper(typeof(AutoMapperProfiles));

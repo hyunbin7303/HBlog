@@ -59,7 +59,7 @@ namespace KevBlog.Api.Controllers
             return NoContent();
         }
 
-        [HttpPut("{postId}/AddTag")] // Updating into the PostTag Table.
+        [HttpPut("{postId}/AddTag")] 
         public async Task<IActionResult> AddTag(int postId, [FromBody]int tagId)
         {
             if (postId == 0 || tagId == 0)
@@ -83,6 +83,7 @@ namespace KevBlog.Api.Controllers
             await _postRepository.UpdateAsync(post);
             return Ok();
         }
+
         [HttpPost]
         public async Task<IActionResult> Create(PostCreateDto postCreateDto)
         {

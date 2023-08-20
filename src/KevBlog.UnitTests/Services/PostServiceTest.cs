@@ -32,10 +32,10 @@ namespace KevBlog.UnitTests.Services
         }
 
         [Fact]
-        public async Task GivenExistingPostId_WhenGetPostById__ReturnPostSuccessfully()
+        public async Task GivenExistingPostId_WhenGetPostById_ReturnPostSuccessfully()
         {
             int postId = 1;
-            _mockPostRepository.Setup(x => x.GetPostById(postId)).ReturnsAsync(new Post { Id= postId, Title="new Post mocking"});
+            _mockPostRepository.MockGetPostById(new Post { Id = postId, Title = "new Post mocking" });
 
             var postDetails = await _postService.GetByIdAsync(1);
 
@@ -47,9 +47,6 @@ namespace KevBlog.UnitTests.Services
         [Fact]
         public async Task GivenNotExistingPostId_WhenGetPostById_ThenReturnNotFound()
         {
-            int postId = 1;
-            _mockPostRepository.Setup(x => x.GetPostById(postId)).ReturnsAsync(new Post { Id = postId, Title = "new Post mocking" });
-
             var postDetails = await _postService.GetByIdAsync(2);
 
             Assert.False(postDetails.IsSuccess);

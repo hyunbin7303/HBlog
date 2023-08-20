@@ -13,11 +13,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KevBlog.Application", "KevB
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KevBlog.UnitTests", "KevBlog.UnitTests\KevBlog.UnitTests.csproj", "{BE0B0683-A0B0-4AE8-8A06-792D7AC6FA98}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KevBlog.Persistence.Aws", "KevBlog.Persistence.Aws\KevBlog.Persistence.Aws.csproj", "{14C84E7C-00A9-4DE9-96F0-9870D8B346AC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KevBlog.Persistence.Aws", "KevBlog.Persistence.Aws\KevBlog.Persistence.Aws.csproj", "{14C84E7C-00A9-4DE9-96F0-9870D8B346AC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KevBlog.Persistence.Core", "KevBlog.Persistence.Core\KevBlog.Persistence.Core.csproj", "{9312449F-E54F-4B0A-92FC-2E61476E4C47}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KevBlog.Persistence.Core", "KevBlog.Persistence.Core\KevBlog.Persistence.Core.csproj", "{9312449F-E54F-4B0A-92FC-2E61476E4C47}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KevBlog.IntegrationTests", "KevBlog.IntegrationTests\KevBlog.IntegrationTests.csproj", "{8AEEA843-4B97-4CDB-9D0B-49FB1CDD8BC7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KevBlog.IntegrationTests", "KevBlog.IntegrationTests\KevBlog.IntegrationTests.csproj", "{8AEEA843-4B97-4CDB-9D0B-49FB1CDD8BC7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{58A17033-D1A2-48F3-BDD4-213EA9A9EC51}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -60,6 +62,10 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{BE0B0683-A0B0-4AE8-8A06-792D7AC6FA98} = {58A17033-D1A2-48F3-BDD4-213EA9A9EC51}
+		{8AEEA843-4B97-4CDB-9D0B-49FB1CDD8BC7} = {58A17033-D1A2-48F3-BDD4-213EA9A9EC51}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {57E4A6D6-4519-406A-A32D-865437EC2269}

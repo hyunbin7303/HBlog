@@ -19,6 +19,12 @@ namespace KevBlog.Infrastructure.Repositories
             _dbContext.Posts.Add(post);
             await _dbContext.SaveChangesAsync();
         }
+        public async Task AddTagInExistingPost(Post post, Tag tag) 
+        {
+            var postTags = new PostTags { PostId = post.Id, TagId = tag.Id };
+            _dbContext.PostTags.Add(postTags);
+            await _dbContext.SaveChangesAsync();
+        }
 
         public async Task<Post> GetPostById(int id)
         {

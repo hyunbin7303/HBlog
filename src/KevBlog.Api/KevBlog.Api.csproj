@@ -31,4 +31,8 @@
     <ProjectReference Include="..\KevBlog.Application\KevBlog.Application.csproj" />
     <ProjectReference Include="..\KevBlog.Infrastructure\KevBlog.Infrastructure.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Filters\" />
+  </ItemGroup>
 </Project>

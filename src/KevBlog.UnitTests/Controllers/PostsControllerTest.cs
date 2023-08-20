@@ -112,17 +112,5 @@ namespace KevBlog.UnitTests.Controllers
             // Assert.Equal(StatusCodes.Status200OK, result)
             Assert.Throws<ArgumentNullException>(() => act);
         }
-
-        private Post CreateFakePost(int fakePostId, int fakeUserId)
-        {
-            return new Post()
-            {
-                Id = fakePostId,
-                Title = "Test",
-                Desc = "Test Desc",
-                LinkForPost = "https://github.com/hyunbin7303/Dotnet.KevBlog",
-                UserId = fakeUserId
-            };
-        }
     }
 }

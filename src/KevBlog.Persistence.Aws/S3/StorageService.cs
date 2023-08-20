@@ -3,38 +3,35 @@ using Amazon.Runtime.Internal;
 using Amazon.S3;
 using Amazon.S3.Model;
 using Amazon.S3.Transfer;
-using Microsoft.Extensions.Configuration;
+using KevBlog.Domain.Repositories;
+using Microsoft.Extensions.Options;
 using System.Net;
 
 namespace KevBlog.Persistence.Aws.S3
 {
     public class AwsStorageService : IAwsStorageService
     {
-        private readonly string _bucketName;
         private readonly IAmazonS3 _client;
-        public AwsStorageService(IConfiguration config)
+        private readonly IFileStorageRepository _fileStorageRepository;
+        public AwsStorageService(IOptions<AwsSettings> config, IFileStorageRepository fileStorageRepository)
         {
-            string accessKey = config.GetSection("Aws")["AccessKey"].ToString();
-            string secretKey = config.GetSection("Aws")["SecretKey"].ToString();
-            _bucketName = config.GetSection("Aws")["BucketName"];
-            _client = new AmazonS3Client(accessKey, secretKey, RegionEndpoint.CACentral1);
+            _client = new AmazonS3Client(config.Value.AccessKey, config.Value.SecretKey, RegionEndpoint.CACentral1);
+            _fileStorageRepository = fileStorageRepository;
         }
         public async Task<bool> UploadFileAsync(Stream localFilePath, string bucketName, string subDirectoryInBucket, string fileNameInS3)
         {
             TransferUtility utility = new TransferUtility(_client);
             TransferUtilityUploadRequest request = new TransferUtilityUploadRequest();
 
-            if (string.IsNullOrEmpty(subDirectoryInBucket))
-                request.BucketName = bucketName;
-            else
-                request.BucketName = bucketName + @"/" + subDirectoryInBucket;
 
-            request.Key = fileNameInS3; //file name up in S3  
+
+            request.BucketName = bucketName;
+            request.Key = subDirectoryInBucket + @"/" + fileNameInS3; 
             request.InputStream = localFilePath;
             await utility.UploadAsync(request);
             return true;
         }
-        public async Task<byte[]> DownloadFileAsync(string file)
+        public async Task<byte[]> DownloadFileAsync(string bucket, string file)
         {
             MemoryStream ms = null;
 
@@ -42,7 +39,7 @@ namespace KevBlog.Persistence.Aws.S3
             {
                 GetObjectRequest getObjectRequest = new GetObjectRequest
                 {
-                    BucketName = _bucketName,
+                    BucketName = bucket,
                     Key = file
                 };
 
@@ -67,13 +64,13 @@ namespace KevBlog.Persistence.Aws.S3
                 throw;
             }
         }
-        public async Task<bool> DeleteAsync(string fileName, string versionId = "")
+        public async Task<bool> DeleteAsync(string bucket, string fileName, string versionId = "")
         {
             try
             {
                 DeleteObjectRequest deleteObjectRequest = new()
                 {
-                    BucketName = _bucketName,
+                    BucketName = bucket,
                     Key = fileName,
                     //VersionId = !string.IsNullOrEmpty(versionId) ? versionId : null
                 };
@@ -92,13 +89,13 @@ namespace KevBlog.Persistence.Aws.S3
             }
         }
 
-        public async Task<bool> IsFileExists(string fileName, string versionId)
+        public async Task<bool> IsFileExists(string bucket, string fileName, string versionId)
         {
             try
             {
                 GetObjectMetadataRequest request = new GetObjectMetadataRequest()
                 {
-                    BucketName = _bucketName,
+                    BucketName = bucket,
                     Key = fileName,
                     VersionId = !string.IsNullOrEmpty(versionId) ? versionId : null
                 };
@@ -133,7 +130,7 @@ namespace KevBlog.Persistence.Aws.S3
                 };
 
                 var response = await _client.PutBucketAsync(request);
-                return response.HttpStatusCode == System.Net.HttpStatusCode.OK;
+                return response.HttpStatusCode == HttpStatusCode.OK;
             }
             catch (AmazonS3Exception ex)
             {

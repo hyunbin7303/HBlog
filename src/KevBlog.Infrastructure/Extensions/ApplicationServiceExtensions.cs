@@ -1,3 +1,4 @@
+using Amazon;
 using KevBlog.Application.Services;
 using KevBlog.Domain.Repositories;
 using KevBlog.Domain.Services;
@@ -28,7 +29,8 @@ namespace KevBlog.Infrastructure.Extensions
             services.AddScoped<ILikesRepository, LikesRepository>();
             services.AddScoped<IMessageRepository, MessageRepository>();
             services.AddScoped<ITagRepository, TagRepository>();
-            services.AddScoped<IGroupRepository, GroupRepository>();    
+            services.AddScoped<IGroupRepository, GroupRepository>();
+            services.AddScoped<IFileStorageRepository, FileStorageRepository>();
 
             // Application Service Layer DI
             services.AddScoped<ITokenService, TokenService>();
@@ -38,6 +40,7 @@ namespace KevBlog.Infrastructure.Extensions
             services.AddScoped<IAwsStorageService, AwsStorageService>();
             services.AddScoped<ILikeService, LikeSerivce>();
             services.AddScoped<ITagService, TagService>();
+
 
             services.AddScoped<LogUserActivity>();
             services.AddSignalR();

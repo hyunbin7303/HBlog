@@ -2,9 +2,10 @@
 {
     public interface IAwsStorageService
     {
+        Task<bool> CreateBucketAsync(string bucketName);
         Task<bool> UploadFileAsync(Stream localFilePath, string bucketName, string subDirectoryInBucket, string fileNameInS3);
-        Task<byte[]> DownloadFileAsync(string file);
-        Task<bool> DeleteAsync(string fileName, string versionId = "");
-        Task<bool> IsFileExists(string fileName, string versionId = "");
+        Task<byte[]> DownloadFileAsync(string bucket, string file);
+        Task<bool> DeleteAsync(string bucket, string fileName, string versionId = "");
+        Task<bool> IsFileExists(string bucket, string fileName, string versionId = "");
     }
 }
