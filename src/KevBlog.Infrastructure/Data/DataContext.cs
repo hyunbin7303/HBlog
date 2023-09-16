@@ -42,7 +42,8 @@ namespace KevBlog.Infrastructure.Data
                 .HasForeignKey(userRole => userRole.RoleId)
                 .IsRequired();
 
-
+            modelBuilder.Entity<FileStorage>()
+                .HasMany(fileStorage => fileStorage.SharedUsers);
 
             modelBuilder.Entity<PostTags>()
                 .HasKey(k => new { k.PostId, k.TagId });
@@ -58,8 +59,6 @@ namespace KevBlog.Infrastructure.Data
 
             modelBuilder.Entity<UserLike>()
                 .HasKey(k => new { k.SourceUserId, k.TargetUserId });
-
-
 
             modelBuilder.Entity<UserLike>()
                 .HasOne(s => s.SourceUser)

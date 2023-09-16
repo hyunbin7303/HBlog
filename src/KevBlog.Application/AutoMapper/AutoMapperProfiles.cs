@@ -15,9 +15,11 @@ namespace KevBlog.Application.Automapper
             CreateMap<User, MemberDto>()
                 .ForMember(dest => dest.PhotoUrl, opt => opt.MapFrom(src => src.Photos.FirstOrDefault(x=> x.IsMain).Url))
                 .ForMember(dest => dest.Age, opt => opt.MapFrom(src => src.DateOfBirth.CalculateAge()));
+
             CreateMap<Photo, PhotoDto>();
             CreateMap<Post, PostDisplayDto>()
                 .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.User.UserName));
+            
             CreateMap<Post, PostDisplayDetailsDto>();
             CreateMap<MemberUpdateDto, User>();
             CreateMap<RegisterDto, User>();

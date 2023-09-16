@@ -8,6 +8,6 @@ namespace KevBlog.Domain.Entities
         public string StorageType { get; set; }
         public int UserId { get; set; }
         public bool IsPublic { get; set; }
-        public List<int> Users { get; set; } = new();
+        public ICollection<User> SharedUsers { get; set; }
     }
 }
