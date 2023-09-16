@@ -1,17 +1,22 @@
+using KevBlog.Domain.Repositories;
+using KevBlog.Infrastructure.Repositories;
 using KevBlog.Persistence.Aws;
 using KevBlog.Persistence.Aws.S3;
 using Microsoft.Extensions.Options;
+using Moq;
 
 namespace KevBlog.IntegrationTests
 {
 
-    public class EndToEndTests : TestBase
+    public class AwsStorageTests : TestBase
     {
         private readonly IAwsStorageService awsStorageService;
         private IOptions<AwsSettings> _awsIOptions;
-        public EndToEndTests()
+        private Mock<IFileStorageRepository> _fileStorageRepository;
+        public AwsStorageTests()
         {
-            awsStorageService = new AwsStorageService(_awsIOptions);
+            _fileStorageRepository = new();
+            awsStorageService = new AwsStorageService(_awsIOptions, _fileStorageRepository.Object);
         }
 
         [Fact]

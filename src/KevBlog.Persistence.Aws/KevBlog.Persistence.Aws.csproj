@@ -12,4 +12,8 @@
     <PackageReference Include="Microsoft.Extensions.Options" Version="7.0.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\KevBlog.Domain\KevBlog.Domain.csproj" />
+  </ItemGroup>
+
 </Project>

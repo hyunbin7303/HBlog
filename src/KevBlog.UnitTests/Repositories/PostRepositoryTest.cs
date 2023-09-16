@@ -12,9 +12,10 @@ namespace KevBlog.UnitTests.Repositories
     public class PostRepositoryTest
     {
         private IPostRepository _repository;    
-        private readonly Mock<DataContext> dataContextMock = new();
+        private readonly Mock<DataContext> dataContextMock;
         public PostRepositoryTest()
         {
+            dataContextMock = new();
             _repository = new PostRepository(dataContextMock.Object);
         }
 
