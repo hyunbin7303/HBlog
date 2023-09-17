@@ -37,6 +37,13 @@ namespace KevBlog.Api.Controllers
             return Ok();
         }
 
+        [HttpGet("GetFile")]
+        public async Task<IActionResult> GetFile(string bucketName, CancellationToken token)
+        {
+
+            return Ok();
+        }
+
         [HttpPost("CreateBucket")]
         public async Task<IActionResult> CreateBucket(string bucketName)
         {

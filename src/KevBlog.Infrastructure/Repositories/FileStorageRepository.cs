@@ -2,12 +2,8 @@
 using KevBlog.Domain.Repositories;
 using KevBlog.Infrastructure.Data;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 namespace KevBlog.Infrastructure.Repositories
 {
-    // TODO Implement here.
-    // TODO Create Migration Code for the new models.
     public class FileStorageRepository : IFileStorageRepository
     {
         private readonly DataContext _dbContext;
@@ -15,7 +11,7 @@ namespace KevBlog.Infrastructure.Repositories
         {
             _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
         }
-        public Task<FileStorage> CreateNewStorage(string bucketName)
+        public async Task<FileStorage> CreateNewStorage(string bucketName)
         {
             throw new NotImplementedException();
         }
