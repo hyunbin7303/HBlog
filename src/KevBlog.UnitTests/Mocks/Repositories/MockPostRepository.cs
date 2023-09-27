@@ -8,12 +8,12 @@ namespace KevBlog.UnitTests.Mocks.Repositories
     {
         public MockPostRepository MockGetPostById(Post result)
         {
-            Setup(x => x.GetPostById(It.IsAny<int>())).ReturnsAsync(result);
+            Setup(x => x.GetById(It.IsAny<int>())).ReturnsAsync(result);
             return this;
         }
-        public MockPostRepository MockGetPostByIdInvalid()
+        public MockPostRepository MockGetByIdInvalid()
         {
-            Setup(x => x.GetPostById(It.IsAny<int>())).Throws(new Exception());
+            Setup(x => x.GetById(It.IsAny<int>())).Throws(new Exception());
             return this;
         }
         public MockPostRepository MockGetPosts(List<Post> results)
@@ -28,7 +28,7 @@ namespace KevBlog.UnitTests.Mocks.Repositories
         }
         public MockPostRepository VerifyGetPostById(Times times)
         {
-            Verify(x => x.GetPostById(It.IsAny<int>()), times);
+            Verify(x => x.GetById(It.IsAny<int>()), times);
             return this;
         }
 

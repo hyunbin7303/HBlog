@@ -24,6 +24,7 @@ namespace KevBlog.Infrastructure.Extensions
             services.AddCors();
 
             // Repository Layer DI
+            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IPostRepository, PostRepository>();
             services.AddScoped<ILikesRepository, LikesRepository>();

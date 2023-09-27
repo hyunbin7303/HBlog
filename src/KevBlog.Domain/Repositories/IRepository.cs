@@ -4,11 +4,11 @@ namespace KevBlog.Domain.Repositories
     public interface IRepository<TEntity> where TEntity : class
     {
         void Add(TEntity obj);
-        TEntity GetById(TEntity id);
+        Task<TEntity> GetById(int id);
         IQueryable<TEntity> GetAll();
         //IQueryable<TEntity> GetAll(ISpecification<TEntity> spec);
         IQueryable<TEntity> GetAllSoftDeleted();
-        void Remove(TEntity id);
-        int SaveChanges();
+        void Remove(int id);
+        Task<int> SaveChangesAsync();
     }
 }

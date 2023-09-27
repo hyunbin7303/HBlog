@@ -39,7 +39,7 @@ namespace KevBlog.UnitTests.Repositories
             var mock = MockPostRepository.GenerateData(5).BuildMock().BuildMockDbSet();
             dataContextMock.Setup(x => x.Posts).Returns(mock.Object);
 
-            var post = await _repository.GetPostById(1);
+            var post = await _repository.GetById(1);
 
             Assert.NotNull(post);
             Assert.Equal(1, post.Id);
@@ -51,7 +51,7 @@ namespace KevBlog.UnitTests.Repositories
             var mock = MockPostRepository.GenerateData(5).BuildMock().BuildMockDbSet();
             dataContextMock.Setup(x => x.Posts).Returns(mock.Object);
 
-            var post = await _repository.GetPostById(100);
+            var post = await _repository.GetById(100);
 
             Assert.Null(post);
         }
@@ -86,7 +86,8 @@ namespace KevBlog.UnitTests.Repositories
             dataContextMock.Setup(m => m.Posts).Returns(mockSet.Object);   
             var repository = new PostRepository(dataContextMock.Object);
 
-            await repository.CreateAsync(new Post { Id = 1, Title = "Post Title" });
+            repository.Add(new Post { Id = 1, Title = "Post Title" });
+            await repository.SaveChangesAsync();
 
             mockSet.Verify(m => m.Add(It.IsAny<Post>()), Times.Once);
             dataContextMock.Verify(m => m.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once());

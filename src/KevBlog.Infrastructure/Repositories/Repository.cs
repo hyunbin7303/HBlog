@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace KevBlog.Infrastructure.Repositories
 {
-    public abstract class Repository<TEntity> : IRepository<TEntity> where TEntity : class
+    public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
     {
         protected readonly DataContext _dataContext;
         protected readonly DbSet<TEntity> _dbSet;
@@ -18,10 +18,10 @@ namespace KevBlog.Infrastructure.Repositories
         public virtual IQueryable<TEntity> GetAll() => _dbSet;
         public virtual IQueryable<TEntity> GetAllSoftDeleted()
             => _dbSet.IgnoreQueryFilters().Where(x => EF.Property<bool>(x, "IsDeleted"));
-        public virtual TEntity GetById(TEntity id) => _dbSet.Find(id);
-        public virtual void Remove(TEntity id)
+        public virtual async Task<TEntity> GetById(int id) => await _dbSet.FindAsync(id);
+        public virtual void Remove(int id)
             => _dbSet.Remove(_dbSet.Find(id));
-        public virtual int SaveChanges()
-            => _dataContext.SaveChanges();
+        public virtual async Task<int> SaveChangesAsync()
+            => await _dataContext.SaveChangesAsync();
     }
 }

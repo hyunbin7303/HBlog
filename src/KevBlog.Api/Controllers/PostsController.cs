@@ -75,7 +75,7 @@ namespace KevBlog.Api.Controllers
         [HttpPut("{id}/status")]
         public async Task<IActionResult> SetPostStatus(int id, string status)
         {
-            Post post = await _postRepository.GetPostById(id);
+            Post post = await _postRepository.GetById(id);
             if (post is null)
                 return NotFound();
 

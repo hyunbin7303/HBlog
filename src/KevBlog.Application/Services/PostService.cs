@@ -4,6 +4,7 @@ using KevBlog.Application.DTOs;
 using KevBlog.Domain.Constants;
 using KevBlog.Domain.Entities;
 using KevBlog.Domain.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace KevBlog.Application.Services
 {
@@ -12,18 +13,19 @@ namespace KevBlog.Application.Services
         private readonly IPostRepository _postRepository;
         private readonly IUserRepository _userRepository;
         private readonly ITagRepository _tagRepository;
-
+        private readonly IRepository<PostTags> _postTagRepository;
         // Todo Event Publisher.
-        public PostService(IMapper mapper, IPostRepository postRepository, IUserRepository userRepository, ITagRepository tagRepository) : base(mapper)
+        public PostService(IMapper mapper, IPostRepository postRepository, IUserRepository userRepository, ITagRepository tagRepository, IRepository<PostTags> postTagRepository) : base(mapper)
         {
             _postRepository = postRepository;
             _userRepository = userRepository;
             _tagRepository = tagRepository;
+            _postTagRepository = postTagRepository;
         }
 
         public async Task<ServiceResult> AddTagForPost(int postId, int tagId)
         {
-            var post = await _postRepository.GetPostById(postId);
+            var post = await _postRepository.GetById(postId);
             if(post is null)
                 return ServiceResult.Fail(msg: "Post Id is not valid.");
 
@@ -31,8 +33,9 @@ namespace KevBlog.Application.Services
             if (tag is null)
                 return ServiceResult.Fail(msg: "Tag Id is not valid.");
 
-            await _postRepository.AddTagInExistingPost(post, tag);
-
+            var postTags = new PostTags { PostId = post.Id, TagId = tag.Id };
+            _postTagRepository.Add(postTags);
+            await _postTagRepository.SaveChangesAsync();
             return ServiceResult.Success($"Success to add Tag ID: {tagId}");
         }
 
@@ -45,13 +48,14 @@ namespace KevBlog.Application.Services
             var post = _mapper.Map<Post>(createDto);
             post.User = user;
             post.UserId = user.Id;
-            await _postRepository.CreateAsync(post);
+            _postRepository.Add(post);
+            await _postRepository.SaveChangesAsync();
             return ServiceResult.Success(msg: $"Post Id:{post.Id}");
         }
 
         public async Task<ServiceResult<PostDisplayDetailsDto>> GetByIdAsync(int id)
         {
-            Post post = await _postRepository.GetPostById(id);
+            Post post = await _postRepository.GetById(id);
             if (post is null || post.Status is PostStatus.Removed)
                 return ServiceResult.Fail<PostDisplayDetailsDto>(msg: "Post is not exist or status is removed.");
 
@@ -75,7 +79,7 @@ namespace KevBlog.Application.Services
 
         public async Task<ServiceResult> UpdatePost(PostUpdateDto updateDto)
         {
-            var post = await _postRepository.GetPostById(updateDto.Id);
+            Post post = await _postRepository.GetById(updateDto.Id);
             if (post == null || post.Status == PostStatus.Removed)
                 return ServiceResult.Fail(msg: "Post does not exist.");
 
@@ -92,11 +96,12 @@ namespace KevBlog.Application.Services
 
         public async Task<ServiceResult> DeletePost(int id)
         {
-            var post = await _postRepository.GetPostById(id);
+            var post = await _postRepository.GetById(id);
             if (post is null)
                 return ServiceResult.Fail(msg: "NotFound");
 
-            await _postRepository.RemoveAsync(id);
+            _postRepository.Remove(id);
+            await _postRepository.SaveChangesAsync();
             return ServiceResult.Success(msg: $"Removed Post Id: {id}");
         }
 

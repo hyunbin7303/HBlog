@@ -12,11 +12,15 @@ namespace KevBlog.UnitTests.Services
     {
         private IPostService _postService;
         private readonly MockPostRepository _mockPostRepository = new MockPostRepository();
-        private readonly Mock<IUserRepository> _userRepositoryMock = new();
-        private readonly Mock<ITagRepository> _tagRepositoryMock = new();
+        private readonly Mock<IUserRepository> _userRepositoryMock;
+        private readonly Mock<ITagRepository> _tagRepositoryMock;
+        private readonly Mock<IRepository<PostTags>> _postTagsRepositoryMock;
         public PostServiceTest()
         {
-            _postService = new PostService(_mapper, _mockPostRepository.Object, _userRepositoryMock.Object, _tagRepositoryMock.Object);
+            _userRepositoryMock = new();
+            _tagRepositoryMock = new();
+            _postTagsRepositoryMock = new();
+            _postService = new PostService(_mapper, _mockPostRepository.Object, _userRepositoryMock.Object, _tagRepositoryMock.Object, _postTagsRepositoryMock.Object);
         }
         [Fact]
         public async Task GetPosts_ExistingInRepo_ReturnSuccess()
@@ -41,7 +45,7 @@ namespace KevBlog.UnitTests.Services
 
             Assert.True(postDetails.IsSuccess);
             Assert.IsType<PostDisplayDetailsDto>(postDetails.Value);
-            _mockPostRepository.Verify(x => x.GetPostById(postId));
+            _mockPostRepository.Verify(x => x.GetById(postId));
         }
 
         [Fact]
@@ -72,7 +76,7 @@ namespace KevBlog.UnitTests.Services
             Assert.True(result.IsSuccess);
             Assert.True(result.Message?.Contains("Post Id"));
             _userRepositoryMock.Verify(x => x.GetUserByUsernameAsync("kevin0"), Times.Once);
-            _mockPostRepository.Verify(x => x.CreateAsync(It.IsAny<Post>()), Times.Once);
+            _mockPostRepository.Verify(x => x.Add(It.IsAny<Post>()), Times.Once);
         }
 
         [Fact]
@@ -86,7 +90,7 @@ namespace KevBlog.UnitTests.Services
             Assert.False(result.IsSuccess);
             Assert.Equal("Title cannot be empty.", result.Message);
             _userRepositoryMock.Verify(x => x.GetUserByUsernameAsync("kevin0"), Times.Never);
-            _mockPostRepository.Verify(x => x.CreateAsync(It.IsAny<Post>()), Times.Never);
+            _mockPostRepository.Verify(x => x.Add(It.IsAny<Post>()), Times.Never);
         }
 
         [Fact]
@@ -103,12 +107,12 @@ namespace KevBlog.UnitTests.Services
                 LinkForPost = "",
                 Type = "Programming"
             };
-            _mockPostRepository.Setup(x => x.GetPostById(postId)).ReturnsAsync(testObject);
+            _mockPostRepository.Setup(x => x.GetById(postId)).ReturnsAsync(testObject);
 
             var result = await _postService.UpdatePost(postUpdateDto); 
 
             Assert.Equal(true, result.IsSuccess);
-            _mockPostRepository.Verify(x => x.GetPostById(postId), Times.Once);
+            _mockPostRepository.Verify(x => x.GetById(postId), Times.Once);
             _mockPostRepository.Verify(x => x.UpdateAsync(It.IsAny<Post>()), Times.Once);
         }
 
@@ -127,20 +131,20 @@ namespace KevBlog.UnitTests.Services
                 LinkForPost = "",
                 Type = "Programming"
             };
-            _mockPostRepository.Setup(x => x.GetPostById(postId)).ReturnsAsync(testObject);
+            _mockPostRepository.Setup(x => x.GetById(postId)).ReturnsAsync(testObject);
 
             var result = await _postService.UpdatePost(postUpdateDto);
 
             Assert.False(result.IsSuccess);
             Assert.Equal("Post does not exist.", result.Message);
-            _mockPostRepository.Verify(x => x.GetPostById(notExistingId), Times.Once);
+            _mockPostRepository.Verify(x => x.GetById(notExistingId), Times.Once);
             _mockPostRepository.Verify(x => x.UpdateAsync(It.IsAny<Post>()), Times.Never);
         }
         [Fact]
         public async Task GivenExistingItem_WhenDeletePost_ThenReturnTrue()
         {
             int postId = 1;
-            _mockPostRepository.Setup(x => x.GetPostById(postId)).ReturnsAsync(new Post
+            _mockPostRepository.Setup(x => x.GetById(postId)).ReturnsAsync(new Post
             {
                 Id = postId,
                 Title = "Post New Title",
@@ -158,7 +162,7 @@ namespace KevBlog.UnitTests.Services
         {
             int postId = 1;
             int invalidPostId = 2;
-            _mockPostRepository.Setup(x => x.GetPostById(postId)).ReturnsAsync(new Post
+            _mockPostRepository.Setup(x => x.GetById(postId)).ReturnsAsync(new Post
             {
                 Id = postId,
                 Title = "Post New Title",

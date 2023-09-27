@@ -6,29 +6,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace KevBlog.Infrastructure.Repositories
 {
-    public class PostRepository : IPostRepository
+    public class PostRepository : Repository<Post>, IPostRepository
     {
         private readonly DataContext _dbContext;
-        public PostRepository(DataContext dbContext)
+        public PostRepository(DataContext dbContext) : base(dbContext)
         {
             this._dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
-        }
-
-        public async Task CreateAsync(Post post)
-        {
-            _dbContext.Posts.Add(post);
-            await _dbContext.SaveChangesAsync();
-        }
-        public async Task AddTagInExistingPost(Post post, Tag tag) 
-        {
-            var postTags = new PostTags { PostId = post.Id, TagId = tag.Id };
-            _dbContext.PostTags.Add(postTags);
-            await _dbContext.SaveChangesAsync();
-        }
-
-        public async Task<Post> GetPostById(int id)
-        {
-            return await _dbContext.Posts.Where(x => x.Id == id).SingleOrDefaultAsync();
         }
 
         public async Task<IEnumerable<Post>> GetPostsByUserName(string userName)
@@ -39,11 +22,6 @@ namespace KevBlog.Infrastructure.Repositories
         {
             return await _dbContext.Posts.AsNoTracking().Include(u => u.User).ToListAsync();
         }
-        public async Task RemoveAsync(int id)
-        {
-            _dbContext.Posts.Remove(new Post { Id = id });
-        }
-
         public async Task UpdateAsync(Post user)
         {
             _dbContext.Entry(user).State = EntityState.Modified;
