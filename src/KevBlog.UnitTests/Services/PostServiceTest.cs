@@ -174,5 +174,14 @@ namespace KevBlog.UnitTests.Services
             Assert.Equal($"NotFound", result.Message);
             _mockPostRepository.VerifyGetPostById(Times.Once());
         }
+
+        [Fact]
+        public async Task Given_WhenAddTagForPost_Then()
+        {
+            int postId = 1;
+            int tagId = 1;
+
+            await _postService.AddTagForPost(postId, tagId);
+        }
     }
 }
