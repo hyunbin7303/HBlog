@@ -9,10 +9,12 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using System.Text.Json;
+using Microsoft.Extensions.Hosting;
+using KevBlog.Application.Common;
+using Microsoft.Extensions.Options;
 
 namespace KevBlog.IntegrationTests.Controllers
 {
-    //https://www.youtube.com/watch?v=RXSPCIrrjHc
     //https://github.com/hassanhabib/SchoolEM/blob/master/SchoolEM.Acceptance.Tests/Brokers/ApiTestCollection.cs
     //https://andrewlock.net/exploring-dotnet-6-part-6-supporting-integration-tests-with-webapplicationfactory-in-dotnet-6/
 
@@ -61,6 +63,25 @@ namespace KevBlog.IntegrationTests.Controllers
         }
 
 
+        [Fact]
+        public async Task GivenValidPostId_WhenGetByIdCalled_ThenReturnServiceResult()
+        {
+            var post = new PostDisplayDetailsDto { Id = 1, Title = "PostDisplay#1", Desc = "TestingDesc1", Content = "TestingContent1", UserName = "hyunbin7303" };
+            var serviceResult = ServiceResult.Success(post);
+            _factory._mockPostService.Setup(x => x.GetByIdAsync(1)).ReturnsAsync(serviceResult);
+
+            var response = await _client.GetAsync("/api/posts/1");
+
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            var options = new JsonSerializerOptions
+            {
+                WriteIndented = true,
+                PropertyNameCaseInsensitive = true
+            };
+            var result = JsonSerializer.Deserialize<PostDisplayDetailsDto>(await response.Content.ReadAsStringAsync(), options);
+            Assert.Equal(post, serviceResult.Value);
+            
+        }
 
 
         public void Dispose()

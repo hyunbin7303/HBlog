@@ -6,7 +6,7 @@ using Moq;
 
 namespace KevBlog.UnitTests.Services
 {
-    public class TagServiceTest : ServiceTest
+    public class TagServiceTest : TestBase
     {
         private ITagService _tagService;
         private readonly Mock<ITagRepository> _tagRepositoryMock = new();

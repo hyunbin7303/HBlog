@@ -8,7 +8,7 @@ using Moq;
 
 namespace KevBlog.UnitTests.Services
 {
-    public class PostServiceTest : ServiceTest
+    public class PostServiceTest : TestBase
     {
         private IPostService _postService;
         private readonly MockPostRepository _mockPostRepository = new MockPostRepository();
@@ -68,14 +68,14 @@ namespace KevBlog.UnitTests.Services
                 LinkForPost = "https://github.com/hyunbin7303",
                 Type = "Programming"
             };
-            _userRepositoryMock.Setup(x => x.GetUserByUsernameAsync(userName)).ReturnsAsync(GetSampleUser());
+            _userRepositoryMock.Setup(x => x.GetUserByUsernameAsync(userName)).ReturnsAsync(new User { Id = 1, Email = "hyunbin7303@gmail.com", UserName = userName });
 
             // Action 
             var result = await _postService.CreatePost(userName, postCreateDto);
 
             Assert.True(result.IsSuccess);
             Assert.True(result.Message?.Contains("Post Id"));
-            _userRepositoryMock.Verify(x => x.GetUserByUsernameAsync("kevin0"), Times.Once);
+            _userRepositoryMock.Verify(x => x.GetUserByUsernameAsync(userName), Times.Once);
             _mockPostRepository.Verify(x => x.Add(It.IsAny<Post>()), Times.Once);
         }
 
@@ -83,7 +83,7 @@ namespace KevBlog.UnitTests.Services
         public async Task GivenValidPostAndExistingUser_WhenCreatePost_ThenIsSuccessFalseAndErrorMessage()
         {
             string userName = "kevin0";
-            _userRepositoryMock.Setup(x => x.GetUserByUsernameAsync(userName)).ReturnsAsync(GetSampleUser());
+            _userRepositoryMock.Setup(x => x.GetUserByUsernameAsync(userName)).ReturnsAsync(new User { Id = 1, Email = "hyunbin7303@gmail.com", });
 
             var result = await _postService.CreatePost(userName, new PostCreateDto { Title = null });
 

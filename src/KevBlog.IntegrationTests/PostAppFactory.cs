@@ -15,7 +15,7 @@ namespace KevBlog.IntegrationTests
     {
         public Mock<IPostService> _mockPostService { get; }
         public Mock<IPostRepository> _mockPostRepository { get; }
-
+        public Mock<IUserService> _mockUserService { get; }
         public PostAppFactory()
         {
             _mockPostService = new Mock<IPostService>();

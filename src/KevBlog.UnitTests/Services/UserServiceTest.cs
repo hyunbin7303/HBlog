@@ -6,7 +6,7 @@ using Moq;
 
 namespace KevBlog.UnitTests.Services
 {
-    public class UserServiceTest : ServiceTest
+    public class UserServiceTest : TestBase
     {
         private IUserService _userService;
         private readonly Mock<IUserRepository> _userRepositoryMock = new();
