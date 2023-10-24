@@ -22,6 +22,7 @@ jobs:
         dotnet-version: 7.0.x
     - name: Restore dependencies
       run: dotnet restore
+      working-directory: src/KevBlog.Api
     - name: Build
       run: dotnet build --no-restore
     - name: Test
