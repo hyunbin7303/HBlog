@@ -2,6 +2,7 @@
 using KevBlog.Application.Automapper;
 using KevBlog.Domain.Entities;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Security.Claims;
 namespace KevBlog.UnitTests
@@ -9,6 +10,7 @@ namespace KevBlog.UnitTests
     public abstract class TestBase
     {
         protected readonly IMapper _mapper;
+        private IConfiguration _configuration;
         private static readonly ServiceProvider _serviceProvider;
         public TestBase() 
         {
@@ -22,6 +24,13 @@ namespace KevBlog.UnitTests
                 _mapper = mapper;
             }
 
+            var inMemorySettings = new Dictionary<string, string> {
+                //{"TopLevelKey", "TopLevelValue"},
+                //{"SectionName:SomeKey", "SectionValue"},
+                // Need to set up the 
+            };
+
+            _configuration = new ConfigurationBuilder().AddInMemoryCollection(inMemorySettings).Build();
 
         } 
         public DefaultHttpContext UserSetup()

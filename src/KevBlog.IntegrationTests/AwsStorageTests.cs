@@ -11,12 +11,14 @@ namespace KevBlog.IntegrationTests
     public class AwsStorageTests : TestBase
     {
         private readonly IAwsStorageService awsStorageService;
+        private readonly IUserRepository userRepository;
         private IOptions<AwsSettings> _awsIOptions;
         private Mock<IFileStorageRepository> _fileStorageRepository;
         public AwsStorageTests()
         {
             _fileStorageRepository = new();
-            awsStorageService = new AwsStorageService(_awsIOptions, _fileStorageRepository.Object);
+            userRepository = new UserRepository(null);
+            awsStorageService = new AwsStorageService(_awsIOptions, _fileStorageRepository.Object, userRepository);
         }
 
         [Fact]

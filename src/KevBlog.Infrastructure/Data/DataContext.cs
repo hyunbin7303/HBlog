@@ -18,13 +18,14 @@ namespace KevBlog.Infrastructure.Data
         }
         public virtual DbSet<UserLike> Likes {get; set; }
         public virtual DbSet<Domain.Entities.Application> Applications { get; set; }
-        public virtual DbSet<Post> Posts { get; set; }
+        public virtual DbSet<Post> Posts { get; set; } 
         public virtual DbSet<PostTags> PostTags { get; set; }
         public virtual DbSet<Tag> Tags { get; set; }
         public virtual DbSet<Message> Messages { get; set; }
         public virtual DbSet<Group> Groups { get; set; }
         public virtual DbSet<Connection> Connections { get; set; }
         public virtual DbSet<FileStorage> FileStorages { get; set; }
+        public virtual DbSet<FileData> FileData { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -45,8 +46,12 @@ namespace KevBlog.Infrastructure.Data
             modelBuilder.Entity<FileStorage>()
                 .HasMany(fileStorage => fileStorage.SharedUsers);
 
+            //modelBuilder.Entity<FileData>()
+            //    .HasMany(fileData => fileData.)
+
             modelBuilder.Entity<PostTags>()
                 .HasKey(k => new { k.PostId, k.TagId });
+
             modelBuilder.Entity<PostTags>()
                 .HasOne(pt => pt.Post)
                 .WithMany(p => p.PostTags)
@@ -55,7 +60,6 @@ namespace KevBlog.Infrastructure.Data
                 .HasOne(pt => pt.Tag)
                 .WithMany(t => t.PostTags)
                 .HasForeignKey(pt => pt.TagId);
-
 
             modelBuilder.Entity<UserLike>()
                 .HasKey(k => new { k.SourceUserId, k.TargetUserId });
@@ -81,6 +85,7 @@ namespace KevBlog.Infrastructure.Data
                 .HasOne(u => u.Sender)
                 .WithMany(m => m.MessagesSent)
                 .OnDelete(DeleteBehavior.NoAction);
+
         }
     }
 }

@@ -1,11 +1,10 @@
 ﻿using KevBlog.Application.Services;
 using KevBlog.Domain.Repositories;
+using KevBlog.Infrastructure.Extensions;
 using KevBlog.Persistence.Aws.S3;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.IO;
-using System.Reflection.Metadata.Ecma335;
 
 namespace KevBlog.Api.Controllers
 {
@@ -21,6 +20,7 @@ namespace KevBlog.Api.Controllers
             _userService = userService;
         }
 
+        // TODO Implementation test cases. 
         [HttpPost("UploadFile")]
         public async Task<IActionResult> UploadFile(List<IFormFile> formFiles, CancellationToken token)
         {
@@ -37,18 +37,19 @@ namespace KevBlog.Api.Controllers
             return Ok();
         }
 
-        [HttpGet("GetFile")]
+        [HttpGet("GetFile/{bucketName}")]
         public async Task<IActionResult> GetFile(string bucketName, CancellationToken token)
         {
 
             return Ok();
         }
 
-        [HttpPost("CreateBucket")]
+        [HttpPost("Bucket")]
         public async Task<IActionResult> CreateBucket(string bucketName)
         {
-
-            return Ok();
+            var result = await _awsStorageService.CreateBucketAsync(bucketName, User.GetUserId());
+            if(result) return Ok();
+            return BadRequest("Creating bucket Failure");
         }
 
     }

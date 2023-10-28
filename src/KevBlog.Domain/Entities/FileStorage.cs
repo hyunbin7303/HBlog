@@ -1,5 +1,4 @@
 ﻿using KevBlog.Domain.Common;
-
 namespace KevBlog.Domain.Entities
 {
     public class FileStorage : BaseEntity
@@ -9,5 +8,6 @@ namespace KevBlog.Domain.Entities
         public int UserId { get; set; }
         public bool IsPublic { get; set; }
         public ICollection<User> SharedUsers { get; set; }
+        public ICollection<FileData> Files { get; set; }
     }
 }

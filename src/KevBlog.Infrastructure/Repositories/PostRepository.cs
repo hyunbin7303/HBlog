@@ -11,7 +11,7 @@ namespace KevBlog.Infrastructure.Repositories
         private readonly DataContext _dbContext;
         public PostRepository(DataContext dbContext) : base(dbContext)
         {
-            this._dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
+            _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
         }
 
         public async Task<IEnumerable<Post>> GetPostsByUserName(string userName)
