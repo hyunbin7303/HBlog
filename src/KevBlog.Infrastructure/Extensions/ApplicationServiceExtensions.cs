@@ -30,6 +30,7 @@ namespace KevBlog.Infrastructure.Extensions
             services.AddScoped<IMessageRepository, MessageRepository>();
             services.AddScoped<ITagRepository, TagRepository>();
             services.AddScoped<IGroupRepository, GroupRepository>();
+            services.AddScoped<IFileDataRepository, FileDataRepository>();
             services.AddScoped<IFileStorageRepository, FileStorageRepository>();
 
             // Application Service Layer DI

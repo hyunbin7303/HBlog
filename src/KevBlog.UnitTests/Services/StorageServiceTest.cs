@@ -19,12 +19,14 @@ namespace KevBlog.UnitTests.Services
         private IAwsStorageService _storageService;
         private IOptions<AwsSettings> _options;
         private Mock<IFileStorageRepository> _mockStorageRepository;
+        private Mock<IFileDataRepository> _mockDataRepository;
         private Mock<IUserRepository> _mockUserRepository;
         public StorageServiceTest()
         {
             _mockStorageRepository = new();
             _mockUserRepository = new();
-            _storageService = new AwsStorageService(_options, _mockStorageRepository.Object, _mockUserRepository.Object);
+            _mockDataRepository = new();
+            _storageService = new AwsStorageService(_options, _mockStorageRepository.Object, _mockDataRepository.Object, _mockUserRepository.Object);
         }
 
         [Fact]

@@ -21,9 +21,13 @@ namespace KevBlog.Api.Controllers
         }
 
         // TODO Implementation test cases. 
-        [HttpPost("UploadFile")]
-        public async Task<IActionResult> UploadFile(List<IFormFile> formFiles, CancellationToken token)
+        [HttpPost("Bucket/{bucketName}/UploadFile")]
+        public async Task<IActionResult> UploadFile(List<IFormFile> formFiles, string bucketName, CancellationToken token)
         {
+            var isAuthorized = await _awsStorageService.IsAuthorized(bucketName, User.GetUserId());
+            if(!isAuthorized)
+                return Unauthorized($"User is not authorized to access to this bucket: {bucketName}");
+            
             List<string> uploadedFiles = new List<string>();
             foreach (IFormFile postedFile in formFiles)
             {
@@ -31,7 +35,7 @@ namespace KevBlog.Api.Controllers
                 {
                     await postedFile.CopyToAsync(ms);
                     ms.Seek(0, SeekOrigin.Begin);
-                    var result = await _awsStorageService.UploadFileAsync(ms, "bucket","KevinBucket", postedFile.FileName);
+                    var result = await _awsStorageService.UploadFileAsync(ms,"KevinBucket", postedFile.FileName);
                 }
             }
             return Ok();

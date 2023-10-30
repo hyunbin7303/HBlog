@@ -111,7 +111,7 @@ namespace KevBlog.UnitTests.Services
 
             var result = await _postService.UpdatePost(postUpdateDto); 
 
-            Assert.Equal(true, result.IsSuccess);
+            Assert.True(result.IsSuccess);
             _mockPostRepository.Verify(x => x.GetById(postId), Times.Once);
             _mockPostRepository.Verify(x => x.UpdateAsync(It.IsAny<Post>()), Times.Once);
         }
@@ -181,7 +181,7 @@ namespace KevBlog.UnitTests.Services
             int postId = 1;
             int tagId = 1;
 
-            await _postService.AddTagForPost(postId, tagId);
+            var result = await _postService.AddTagForPost(postId, tagId);
         }
     }
 }
