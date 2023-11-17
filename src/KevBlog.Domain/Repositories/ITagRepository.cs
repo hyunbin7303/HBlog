@@ -2,13 +2,11 @@
 
 namespace KevBlog.Domain.Repositories
 {
-    public interface ITagRepository
+    public interface ITagRepository : IRepository<Tag>
     {
-        Task Insert(Tag tag);
         Task Delete(Tag tag);
         Task Update(Tag tag);
         Task<IEnumerable<Tag>> GetAll();
-        Task<Tag> GetById(int id);  
         IEnumerable<Tag> FindbyTagName(string tagName);
     }
 }

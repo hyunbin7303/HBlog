@@ -45,13 +45,13 @@ namespace KevBlog.UnitTests.Services
         public async Task GivenValidTag_WhenCreateTag_ThenReturnSuccess()
         {
             TagCreateDto tagDto = new TagCreateDto { Desc = "test", Name = "Tagname", Slug = "TestingSlug" };
-            _tagRepositoryMock.Setup(o => o.Insert(It.IsAny<Tag>())).Returns(Task.FromResult(tagDto));  
+            _tagRepositoryMock.Setup(o => o.Add(It.IsAny<Tag>()));  
 
             var result = await _tagService.CreateTag(tagDto);
 
             Assert.True(result.IsSuccess);
             Assert.Equal($"Successfully created the tag name : {tagDto.Name}", result.Message);
-            _tagRepositoryMock.Verify(o => o.Insert(It.IsAny<Tag>()));
+            _tagRepositoryMock.Verify(o => o.Add(It.IsAny<Tag>()));
         }
 
         [Fact] 

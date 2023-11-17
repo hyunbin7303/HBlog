@@ -11,7 +11,7 @@ namespace KevBlog.UnitTests.Repositories
 {
     public class PostRepositoryTest
     {
-        private IPostRepository _repository;    
+        private IPostRepository _repository;       
         private readonly Mock<DataContext> dataContextMock;
         public PostRepositoryTest()
         {

@@ -10,20 +10,13 @@ using Microsoft.Extensions.Hosting;
 
 namespace KevBlog.Infrastructure.Repositories
 {
-    public class TagRepository : ITagRepository
+    public class TagRepository : Repository<Tag>, ITagRepository
     {
         private readonly DataContext _dbContext;
-        public TagRepository(DataContext dbContext)
+        public TagRepository(DataContext dbContext) : base(dbContext)
         {
-            _dbContext = dbContext;
+            _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
         }
-
-        public async Task Insert(Tag tag)
-        {
-            _dbContext.Tags.Add(tag);
-            await _dbContext.SaveChangesAsync();
-        }
-
         public async Task Delete(Tag tag)
         {
             _dbContext.Entry(tag).State = EntityState.Deleted;

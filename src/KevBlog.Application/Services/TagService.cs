@@ -22,7 +22,7 @@ namespace KevBlog.Application.Services
             if (tag.Name == null)
                 return ServiceResult.Fail(msg: "Tag Title is empty.");
 
-            await _tagRepository.Insert(new Tag { Name = tag.Name, Slug = tag.Slug, Desc = tag.Desc });
+            _tagRepository.Add(new Tag { Name = tag.Name, Slug = tag.Slug, Desc = tag.Desc });
             return ServiceResult.Success($"Successfully created the tag name : {tag.Name}");
         }
 
@@ -38,8 +38,9 @@ namespace KevBlog.Application.Services
             if(tag is null)
                 return ServiceResult.Fail(msg: $"Tag id:{tagId} is not exist.");
 
-            await _tagRepository.Delete(tag);
+            _tagRepository.Remove(tagId);
             return ServiceResult.Success();
         }
     }
 }
+    
