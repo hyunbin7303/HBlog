@@ -19,7 +19,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KevBlog.IntegrationTests", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{58A17033-D1A2-48F3-BDD4-213EA9A9EC51}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KevBlog.Client", "KevBlog.Client\KevBlog.Client.csproj", "{4718339A-67CD-40B8-9A87-171933A2F0B1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KevBlog.WebClient", "KevBlog.WebClient\KevBlog.WebClient.csproj", "{C659E85B-3536-4455-97D3-4CF50FE14367}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -55,10 +55,10 @@ Global
 		{8AEEA843-4B97-4CDB-9D0B-49FB1CDD8BC7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8AEEA843-4B97-4CDB-9D0B-49FB1CDD8BC7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8AEEA843-4B97-4CDB-9D0B-49FB1CDD8BC7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4718339A-67CD-40B8-9A87-171933A2F0B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4718339A-67CD-40B8-9A87-171933A2F0B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4718339A-67CD-40B8-9A87-171933A2F0B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4718339A-67CD-40B8-9A87-171933A2F0B1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C659E85B-3536-4455-97D3-4CF50FE14367}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C659E85B-3536-4455-97D3-4CF50FE14367}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C659E85B-3536-4455-97D3-4CF50FE14367}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C659E85B-3536-4455-97D3-4CF50FE14367}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

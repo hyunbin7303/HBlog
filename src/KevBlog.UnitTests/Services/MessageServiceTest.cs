@@ -30,6 +30,7 @@ namespace KevBlog.UnitTests.Services
 
             Assert.False(result.IsSuccess);
             Assert.Equal("You cannot send messages to yourself.", result.Message);
+            _msgRepositoryMock.Verify(o => o.AddMessage(It.IsAny<Message>()), Times.Never);
         }
 
         [Fact]
@@ -73,6 +74,8 @@ namespace KevBlog.UnitTests.Services
             Assert.True(result.IsSuccess);
             Assert.Equal(result.Value.SenderUsername, validUser);
             Assert.Equal(result.Value.RecipientUsername, recipentUser);
+            _msgRepositoryMock.Verify(o => o.AddMessage(It.IsAny<Message>()), Times.Once);
+            _msgRepositoryMock.Verify(o => o.SaveAllAsync(), Times.Once);
         }
     }
 }
