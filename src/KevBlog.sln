@@ -19,7 +19,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KevBlog.IntegrationTests", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{58A17033-D1A2-48F3-BDD4-213EA9A9EC51}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KevBlog.WebClient", "KevBlog.WebClient\KevBlog.WebClient.csproj", "{C659E85B-3536-4455-97D3-4CF50FE14367}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KevBlog.WebClient", "KevBlog.WebClient\KevBlog.WebClient.csproj", "{C659E85B-3536-4455-97D3-4CF50FE14367}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -24,11 +24,11 @@ h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
     font-family: var(--cf-title-font);
 }
 
-    h1:focus {
-        outline: none;
-    }
+h1:focus {
+    outline: none;
+}
 
-
+/* #region Blazor Default Styles */
 .valid.modified:not([type=checkbox]) {
     outline: 1px solid #26b050;
 }
@@ -106,3 +106,5 @@ h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
 code {
     color: #c02d76;
 }
+
+/* #endregion Blazor Default Styles */
