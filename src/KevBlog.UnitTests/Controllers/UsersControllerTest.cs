@@ -1,17 +1,13 @@
-﻿using AutoMapper;
-using KevBlog.Api.Controllers;
+﻿using KevBlog.Api.Controllers;
 using KevBlog.Application.Common;
-using KevBlog.Application.DTOs;
 using KevBlog.Application.Services;
+using KevBlog.Contract.DTOs;
 using KevBlog.Domain.Entities;
 using KevBlog.Domain.Params;
-using KevBlog.Domain.Repositories;
-using KevBlog.Infrastructure.Helpers;
 using KevBlog.UnitTests.Mocks.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
-using System.Security.Claims;
 
 namespace KevBlog.UnitTests.Controllers
 {

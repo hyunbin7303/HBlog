@@ -1,14 +1,12 @@
 ﻿using KevBlog.Api.Controllers;
 using KevBlog.Application.Common;
-using KevBlog.Application.DTOs;
 using KevBlog.Application.Services;
-using KevBlog.Domain.Constants;
+using KevBlog.Contract.DTOs;
 using KevBlog.Domain.Entities;
 using KevBlog.Domain.Repositories;
 using KevBlog.UnitTests.Mocks.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Hosting;
 using Moq;
 
 namespace KevBlog.UnitTests.Controllers

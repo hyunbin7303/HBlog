@@ -1,5 +1,5 @@
-﻿using KevBlog.Application.DTOs;
-using KevBlog.Application.Services;
+﻿using KevBlog.Application.Services;
+using KevBlog.Contract.DTOs;
 using KevBlog.Domain.Entities;
 using KevBlog.Domain.Repositories;
 using KevBlog.UnitTests.Mocks.Repositories;

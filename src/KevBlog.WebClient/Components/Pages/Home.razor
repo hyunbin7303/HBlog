@@ -1,0 +1,43 @@
+﻿@page "/"
+@using KevBlog.Contract.DTOs
+
+<PageTitle>Posts</PageTitle>
+
+<div class="container-xxl py-3">
+
+    <div class="h-100 d-flex flex-column justify-content-center align-items-center">
+        <h1>Hello, world!</h1>
+        <h1 class="display-6">
+            <span class="text-danger">
+                <i class="bi bi-fire"></i>
+            </span>
+            Welcome to the HProject
+        </h1>
+
+        <div class="row row-cols-2 row-cols-lg-4 row-cols-xl-5 justify-content-center-justify-content-md-start">
+            @if (posts is not null)
+            {
+                @foreach (var post in posts)
+                {
+                    @* <PostCard Post="post"></PostCard> *@
+                    
+                }
+            }
+            else
+            {
+                <p>Waiting for loading...</p>
+            }
+        </div>
+    </div>
+</div>
+@code {
+    private List<PostDisplayDetailsDto> posts;
+
+    protected override Task OnInitializedAsync()
+    {
+        posts = new();
+        posts.Add(new PostDisplayDetailsDto { Id = 1, UserName = "hyunbin7303", Title = "YOYOYO", Desc = "My Sample Blog", Created = DateTime.Now });
+
+        return base.OnInitializedAsync();
+    }
+}

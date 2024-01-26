@@ -1,7 +1,7 @@
 using AutoMapper;
+using KevBlog.Contract.DTOs;
 using KevBlog.Domain.Common.Extensions;
 using KevBlog.Domain.Entities;
-using KevBlog.Application.DTOs;
 
 namespace KevBlog.Application.Automapper
 {

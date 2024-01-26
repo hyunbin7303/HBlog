@@ -1,5 +1,5 @@
-using KevBlog.Application.DTOs;
 using KevBlog.Application.Services;
+using KevBlog.Contract.DTOs;
 using KevBlog.Domain.Common;
 using KevBlog.Domain.Params;
 using KevBlog.Infrastructure.Extensions;
@@ -43,8 +43,7 @@ namespace KevBlog.Api.Controllers
 
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteMessage(int id) {
-            var currUsername = User.GetUsername();
-            var result = await _messageService.DeleteMessage(currUsername, id);
+            var result = await _messageService.DeleteMessage(User.GetUsername(), id);
             if(!result.IsSuccess) {
                 if(result.Message == "Unauthorized")
                     return Unauthorized();

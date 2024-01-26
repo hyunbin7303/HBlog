@@ -1,5 +1,5 @@
 ﻿using KevBlog.Application.Common;
-using KevBlog.Application.DTOs;
+using KevBlog.Contract.DTOs;
 using KevBlog.Domain.Common;
 using KevBlog.Infrastructure.Helpers;
 

@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using KevBlog.Application.Common;
-using KevBlog.Application.DTOs;
+using KevBlog.Contract.DTOs;
 using KevBlog.Domain.Entities;
 using KevBlog.Domain.Repositories;
 namespace KevBlog.Application.Services

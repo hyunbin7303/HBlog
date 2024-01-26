@@ -1,17 +1,8 @@
-﻿using KevBlog.Application.DTOs;
-using KevBlog.Domain.Entities;
-using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Moq;
 using System.Net;
-using System.Text;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 using System.Text.Json;
-using Microsoft.Extensions.Hosting;
 using KevBlog.Application.Common;
-using Microsoft.Extensions.Options;
+using KevBlog.Contract.DTOs;
 
 namespace KevBlog.IntegrationTests.Controllers
 {

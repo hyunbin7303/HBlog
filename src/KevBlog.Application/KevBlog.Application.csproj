@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\KevBlog.Domain\KevBlog.Domain.csproj" />
+    <ProjectReference Include="..\KevBlog.Shared\KevBlog.Contract.csproj" />
   </ItemGroup>
 
 </Project>

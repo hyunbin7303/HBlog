@@ -1,5 +1,5 @@
-﻿using KevBlog.Application.DTOs;
-using KevBlog.Application.Common;
+﻿using KevBlog.Application.Common;
+using KevBlog.Contract.DTOs;
 
 namespace KevBlog.Application.Services
 {

@@ -1,14 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
-using AutoMapper;
-using KevBlog.Domain.Entities;
-using KevBlog.Application.DTOs;
-using KevBlog.Infrastructure.Helpers;
 using KevBlog.Infrastructure.Extensions;
-using KevBlog.Domain.Repositories;
 using KevBlog.Domain.Params;
 using KevBlog.Domain.Common;
 using KevBlog.Application.Services;
+using KevBlog.Contract.DTOs;
 
 namespace KevBlog.Api.Controllers
 {

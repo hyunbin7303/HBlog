@@ -1,6 +1,6 @@
 ﻿using KevBlog.Application.Common;
-using KevBlog.Application.DTOs;
 using KevBlog.Application.Services;
+using KevBlog.Contract.DTOs;
 using Moq;
 namespace KevBlog.UnitTests.Mocks.Services
 {
