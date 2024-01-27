@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using KevBlog.Application.Common;
+using KevBlog.Contract.Common;
 using KevBlog.Contract.DTOs;
 using KevBlog.Domain.Entities;
 using KevBlog.Domain.Repositories;

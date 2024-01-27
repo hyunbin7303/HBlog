@@ -1,4 +1,4 @@
-﻿using KevBlog.Application.Common;
+﻿using KevBlog.Contract.Common;
 using KevBlog.Contract.DTOs;
 
 namespace KevBlog.Application.Services

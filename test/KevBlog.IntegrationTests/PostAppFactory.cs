@@ -1,12 +1,11 @@
-﻿using KevBlog.Application.Services;
+﻿using KevBlog.Application;
+using KevBlog.Application.Services;
 using KevBlog.Domain.Repositories;
-using KevBlog.Infrastructure.Data;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.VisualStudio.TestPlatform.TestHost;
 using Moq;
 using System;
 namespace KevBlog.IntegrationTests

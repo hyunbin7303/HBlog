@@ -12,12 +12,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Models\" />
-    <Folder Include="Services\" />
     <Folder Include="wwwroot\js\" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\KevBlog.Application\KevBlog.Application.csproj" />
     <ProjectReference Include="..\KevBlog.Shared\KevBlog.Contract.csproj" />
   </ItemGroup>
 

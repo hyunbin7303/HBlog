@@ -15,7 +15,7 @@
         <div class="card-body border-top bg-light">
             <h5 class="card-title">@Post.Title</h5>
             <p class="card-text">
-                @* @DateTime.Parse(Post.Created).ToString("mmmm dd, yyyy") *@
+                @Post.Created.ToString("mmmm dd, yyyy")
             </p>
         </div>
         <div class="card-footer text-end">

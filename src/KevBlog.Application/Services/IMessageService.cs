@@ -1,4 +1,4 @@
-﻿using KevBlog.Application.Common;
+﻿using KevBlog.Contract.Common;
 using KevBlog.Contract.DTOs;
 using KevBlog.Domain.Common;
 using KevBlog.Domain.Entities;

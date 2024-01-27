@@ -27,8 +27,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\KevBlog.Api\KevBlog.Api.csproj" />
-    <ProjectReference Include="..\KevBlog.Domain\KevBlog.Domain.csproj" />
+    <ProjectReference Include="..\..\src\KevBlog.Api\KevBlog.Api.csproj" />
+    <ProjectReference Include="..\..\src\KevBlog.Application\KevBlog.Application.csproj" />
+    <ProjectReference Include="..\..\src\KevBlog.Domain\KevBlog.Domain.csproj" />
+    <ProjectReference Include="..\..\src\KevBlog.Infrastructure\KevBlog.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

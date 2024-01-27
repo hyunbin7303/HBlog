@@ -4,7 +4,6 @@ using KevBlog.Domain.Entities;
 using KevBlog.Domain.Repositories;
 using Moq;
 
-
 namespace KevBlog.UnitTests.Services
 {
     public class MessageServiceTest : TestBase

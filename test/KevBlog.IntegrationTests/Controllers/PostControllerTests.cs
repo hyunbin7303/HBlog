@@ -1,8 +1,8 @@
 ﻿using Moq;
 using System.Net;
 using System.Text.Json;
-using KevBlog.Application.Common;
 using KevBlog.Contract.DTOs;
+using KevBlog.Contract.Common;
 
 namespace KevBlog.IntegrationTests.Controllers
 {

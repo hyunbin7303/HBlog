@@ -1,12 +1,10 @@
 using KevBlog.Domain.Repositories;
-using KevBlog.Infrastructure.Data;
 using KevBlog.Infrastructure.Repositories;
 using KevBlog.Persistence.Aws;
 using KevBlog.Persistence.Aws.S3;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Moq;
-
 namespace KevBlog.IntegrationTests
 {
 

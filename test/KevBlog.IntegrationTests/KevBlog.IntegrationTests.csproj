@@ -26,9 +26,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\KevBlog.Api\KevBlog.Api.csproj" />
-    <ProjectReference Include="..\KevBlog.Infrastructure\KevBlog.Infrastructure.csproj" />
-    <ProjectReference Include="..\KevBlog.Persistence.Aws\KevBlog.Persistence.Aws.csproj" />
+    <ProjectReference Include="..\..\src\KevBlog.Infrastructure\KevBlog.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\src\KevBlog.Persistence.Aws\KevBlog.Persistence.Aws.csproj" />
   </ItemGroup>
 
   <ItemGroup>
