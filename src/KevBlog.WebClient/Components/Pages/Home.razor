@@ -14,13 +14,12 @@
             Welcome to the HProject
         </h1>
 
-        <div class="row row-cols-2 row-cols-lg-4 row-cols-xl-5 justify-content-center-justify-content-md-start">
+        <div class="row row-cols-2 row-cols-lg-4 row-cols-xl-5 ">
             @if (posts is not null)
             {
                 @foreach (var post in posts)
                 {
-                    @* <PostCard Post="post"></PostCard> *@
-                    
+                    <PostCard Post="post"></PostCard>
                 }
             }
             else
@@ -31,13 +30,13 @@
     </div>
 </div>
 @code {
-    private List<PostDisplayDetailsDto> posts;
+    private List<PostDisplayDto> posts;
 
-    protected override Task OnInitializedAsync()
+
+
+    protected override async Task OnInitializedAsync()
     {
         posts = new();
-        posts.Add(new PostDisplayDetailsDto { Id = 1, UserName = "hyunbin7303", Title = "YOYOYO", Desc = "My Sample Blog", Created = DateTime.Now });
-
-        return base.OnInitializedAsync();
+        posts.Add(new PostDisplayDto { Id=1, Title= "Testing", Desc = "YOYOYO"});
     }
 }

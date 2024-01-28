@@ -8,8 +8,14 @@ using KevBlog.Domain.Repositories;
 using Microsoft.Extensions.Options;
 using System.Net;
 
-namespace KevBlog.Persistence.Aws.S3
+namespace KevBlog.Infrastructure.Services
 {
+    public class AwsSettings
+    {
+        public string AccessKey { get; set; }
+        public string SecretKey { get; set; }
+        public string BucketName { get; set; }
+    }
     public class AwsStorageService : IAwsStorageService
     {
         private readonly IAmazonS3 _client;

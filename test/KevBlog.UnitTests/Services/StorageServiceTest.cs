@@ -1,17 +1,8 @@
 ﻿using KevBlog.Application.Services;
 using KevBlog.Domain.Repositories;
-using KevBlog.Infrastructure.Repositories;
-using KevBlog.Persistence.Aws;
-using KevBlog.Persistence.Aws.S3;
-using KevBlog.UnitTests.Mocks.Repositories;
+using KevBlog.Infrastructure.Services;
 using Microsoft.Extensions.Options;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace KevBlog.UnitTests.Services
 {
     public class StorageServiceTest : TestBase

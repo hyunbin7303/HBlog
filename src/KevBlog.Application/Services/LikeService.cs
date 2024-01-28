@@ -9,11 +9,11 @@ using KevBlog.Infrastructure.Helpers;
 
 namespace KevBlog.Application.Services
 {
-    public class LikeSerivce : BaseService, ILikeService
+    public class LikeService : BaseService, ILikeService
     {
         private readonly ILikesRepository _likesRepository;
         private readonly IUserRepository _userRepository;
-        public LikeSerivce(IMapper mapper, ILikesRepository likesRepository, IUserRepository userRepository) : base(mapper)
+        public LikeService(IMapper mapper, ILikesRepository likesRepository, IUserRepository userRepository) : base(mapper)
         {
             _likesRepository = likesRepository;
             _userRepository = userRepository;

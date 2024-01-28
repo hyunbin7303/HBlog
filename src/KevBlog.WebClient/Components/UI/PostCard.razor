@@ -6,7 +6,7 @@
     <div class="card h-100 fade-in" @ref="postCardElement">
         @if (string.IsNullOrEmpty(Post.Title))
         {
-            @* <img class="card-img-top" alt="Post poster" src="" *@
+            <img class="card-img-top" alt="Post poster" src="" />
         }
         else
         {
@@ -19,7 +19,7 @@
             </p>
         </div>
         <div class="card-footer text-end">
-            <a class="btn btn-primary" href="/"></a>
+            <a class="btn btn-primary" href="/">test</a>
         </div>
     </div>
 }
@@ -35,10 +35,7 @@ else
     private ElementReference postCardElement;
 
     [Parameter]
-    public PostDisplayDetailsDto? Post { get; set; }
-
-    // [Inject]
-    // IPostService PostService { get; set; }
+    public PostDisplayDto? Post { get; set; }
 
     protected override Task OnInitializedAsync()
     {
@@ -46,7 +43,7 @@ else
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
+    {   
         if (firstRender)
         {
             await JS.InvokeVoidAsync("VanilaTilt.init", postCardElement, new

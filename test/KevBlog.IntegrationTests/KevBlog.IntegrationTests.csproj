@@ -27,7 +27,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\KevBlog.Infrastructure\KevBlog.Infrastructure.csproj" />
-    <ProjectReference Include="..\..\src\KevBlog.Persistence.Aws\KevBlog.Persistence.Aws.csproj" />
   </ItemGroup>
 
   <ItemGroup>

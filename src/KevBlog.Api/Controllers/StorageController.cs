@@ -1,7 +1,6 @@
 ﻿using KevBlog.Application.Services;
-using KevBlog.Domain.Repositories;
 using KevBlog.Infrastructure.Extensions;
-using KevBlog.Persistence.Aws.S3;
+using KevBlog.Infrastructure.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

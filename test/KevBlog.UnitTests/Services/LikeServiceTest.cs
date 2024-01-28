@@ -14,7 +14,7 @@ namespace KevBlog.UnitTests.Services
         private readonly Mock<IUserRepository> _userRepoMock = new();
         public LikeServiceTest()
         {
-            _likeService = new LikeSerivce(_mapper, _likeRepoMock.Object, _userRepoMock.Object);
+            _likeService = new LikeService(_mapper, _likeRepoMock.Object, _userRepoMock.Object);
         }
 
         [Fact]

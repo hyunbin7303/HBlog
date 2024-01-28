@@ -2,11 +2,12 @@
 This project is for demo single page application using angular and asp.net, but eventually I am going to use it for blog posting.
 
 ## Technology Stacks
-* ASP.NET Web API .NET7
-* Angular 15
-* SQL server
+* ASP.NET Web API .NET8
+* Angular 15 (Previously)
+* Blazor Web Assembly (Currently working on...)
+* SQL server (Might replace to Postgres)
 
-# Getting Started
+# Getting Started for Angular
 1. Install .NET and Angular setup globally. `npm install -g @angular/cli`
 2. Run web api from src/KevBlog.API, `dotnet run`
 3. Run client side from src/client, `ng serve`
@@ -25,9 +26,12 @@ This project is for demo single page application using angular and asp.net, but 
 * Separating Forms(e.g. Date Pickers and text inputs)
 * Pagination implementation 
 
+## Blazor Web assembly Frontend
+* 
+
 ## Backend(ASP.NET Web API) Side
 * SOLID Principle
-* CRUD 
+* CRUD -> maybe will be replaced to CQRS? 
 * Authentication via JWT
 * DDD (InProgress)
 * Repository Pattern for persisting data.
@@ -35,4 +39,3 @@ This project is for demo single page application using angular and asp.net, but 
 * Infrastructure layer(Extensions, Helpers, Data migrations/seed)
 * AutoMapper for Domain-DTO mapping.
 * Unit Testing / Integration testing (InProgress)
-

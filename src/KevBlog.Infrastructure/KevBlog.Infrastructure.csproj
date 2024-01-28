@@ -20,6 +20,7 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
+    <PackageReference Include="AWSSDK.S3" Version="3.7.305.17" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.1" />
@@ -38,7 +39,6 @@
   <ItemGroup>
     <ProjectReference Include="..\KevBlog.Domain\KevBlog.Domain.csproj" />
     <ProjectReference Include="..\KevBlog.Application\KevBlog.Application.csproj" />
-    <ProjectReference Include="..\KevBlog.Persistence.Aws\KevBlog.Persistence.Aws.csproj" />
   </ItemGroup>
 
 </Project>
