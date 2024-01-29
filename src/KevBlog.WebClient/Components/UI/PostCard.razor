@@ -3,7 +3,8 @@
 
 @if(Post is not null)
 {
-    <div class="card h-100 fade-in" @ref="postCardElement">
+    <p>@Post.Title</p>
+@*     <div class="card h-100 fade-in" @ref="postCardElement">
         @if (string.IsNullOrEmpty(Post.Title))
         {
             <img class="card-img-top" alt="Post poster" src="" />
@@ -21,7 +22,7 @@
         <div class="card-footer text-end">
             <a class="btn btn-primary" href="/">test</a>
         </div>
-    </div>
+    </div> *@
 }
 else
 {
@@ -44,14 +45,14 @@ else
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {   
-        if (firstRender)
-        {
-            await JS.InvokeVoidAsync("VanilaTilt.init", postCardElement, new
-            {
-                max = 15,
-                speed = 500,
-            });
-        }
+        // if (firstRender)
+        // {
+        //     await JS.InvokeVoidAsync("VanilaTilt.init", postCardElement, new
+        //     {
+        //         max = 15,
+        //         speed = 500,
+        //     });
+        // }
     }
     public void Dispose()
     {
