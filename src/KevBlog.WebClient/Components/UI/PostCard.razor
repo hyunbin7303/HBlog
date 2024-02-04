@@ -3,11 +3,10 @@
 
 @if(Post is not null)
 {
-    <p>@Post.Title</p>
-@*     <div class="card h-100 fade-in" @ref="postCardElement">
+    <div class="container masthead-followup px-4 px-md-3" @ref="postCardElement">
         @if (string.IsNullOrEmpty(Post.Title))
         {
-            <img class="card-img-top" alt="Post poster" src="" />
+            @* <img class="card-img-top" alt="Post poster" src="" /> *@
         }
         else
         {
@@ -19,10 +18,10 @@
                 @Post.Created.ToString("mmmm dd, yyyy")
             </p>
         </div>
-        <div class="card-footer text-end">
-            <a class="btn btn-primary" href="/">test</a>
-        </div>
-    </div> *@
+@*         <div class="card-footer text-end">
+            <a class="btn btn-primary" href ="/">test</a>
+        </div> *@
+    </div> 
 }
 else
 {

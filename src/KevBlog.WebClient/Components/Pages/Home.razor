@@ -1,5 +1,8 @@
 ﻿@page "/"
 @using KevBlog.Contract.DTOs
+@using KevBlog.WebClient.Services
+
+@inject IPostService postService;
 
 <PageTitle>Posts</PageTitle>
 
@@ -14,7 +17,7 @@
             Welcome to the HProject
         </h1>
 
-        <div class="row row-cols-2 row-cols-lg-4 row-cols-xl-5 ">
+        <div class="">
             @if (posts is not null)
             {
                 @foreach (var post in posts)
@@ -30,13 +33,10 @@
     </div>
 </div>
 @code {
-    private List<PostDisplayDto> posts;
-
-
+    private IEnumerable<PostDisplayDto> posts;
 
     protected override async Task OnInitializedAsync()
     {
-        posts = new();
-        posts.Add(new PostDisplayDto { Id=1, Title= "Testing", Desc = "YOYOYO"});
+        posts = await postService.GetPostDisplays();
     }
 }
