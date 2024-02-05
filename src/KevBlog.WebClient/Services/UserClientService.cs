@@ -2,12 +2,7 @@
 
 namespace KevBlog.WebClient.Services
 {
-    public interface IUserService
-    {
-        Task<bool> RegisterNewUser(RegisterDto registerDto);
-        Task<bool> Login(LoginDto loginDto);
-    }
-    public class UserClientService : IUserService
+    public class UserClientService 
     {
         public Task<bool> Login(LoginDto loginDto)
         {

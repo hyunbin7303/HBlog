@@ -1,0 +1,23 @@
+﻿@page "/posts/{PostId}"
+@using KevBlog.WebClient.Services
+@inject IPostService _postService;
+@inject NavigationManager navManager; 
+<h3>PostDetail</h3>
+
+@code {
+    private PostDisplayDetailsDto _postdetailsView = new PostDisplayDetailsDto();
+
+    [Parameter]
+    public int PostId { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        var result = await _postService.GetPostDetails(PostId);
+        if(result is null)
+        {
+            navManager.NavigateTo("/", replace: true);
+            return;
+        }
+        _postdetailsView = result;
+    }
+
+}

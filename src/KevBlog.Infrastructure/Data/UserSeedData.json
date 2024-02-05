@@ -1,6 +1,9 @@
 [
     {
         "UserName": "hyunbin7303",
+        "Email":  "hyunbin7303@gmail.com",
+        "FirstName": "Hyunbin",
+        "LastName":  "Park",
         "Gender": "male",
         "DateOfBirth": "1993-07-23",
         "KnownAs": "Kevin",

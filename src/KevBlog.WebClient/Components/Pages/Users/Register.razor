@@ -1,5 +1,5 @@
 ﻿@page "/users/register"
-@inject IUserService userService
+@inject UserClientService userService
 @inject NavigationManager navManager
 @using KevBlog.Contract.DTOs
 @using KevBlog.WebClient.Services
@@ -49,5 +49,7 @@
     private async Task HandleRegistration()
     {
         var result = await userService.RegisterNewUser(RegisterDtoModel);
+        if(result)
+            navManager.NavigateTo("/users/login");
     }
 }
