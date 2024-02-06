@@ -1,0 +1,31 @@
+﻿
+@if(Posts is not null)
+{
+    @foreach (var post in Posts)
+    {
+        <div class="mb-3 d-flex justify-content-between">
+            <div class="pr-3">
+                <h2 class="mb-1 h4 font-weight-bold">
+                    <a class="text-dark" href="posts/@post.Id">@post.Title</a>
+                </h2>
+                <p>
+                    @post.Desc
+                </p>
+                <div class="card-text text-muted small">
+                    @post.UserName in <a title="Category Posts">Testing</a>
+                </div>
+                <small class="text-muted">@post.Created.ToString("MMM dd")</small>
+            </div>
+        </div>
+    }
+}
+else
+{
+    <p>Waiting for loading...</p>
+
+}
+
+@code {
+    [Parameter, EditorRequired]
+    public IEnumerable<PostDisplayDto> Posts { get; set; }
+}

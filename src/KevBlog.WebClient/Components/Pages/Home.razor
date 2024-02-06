@@ -16,20 +16,7 @@
             </span>
             Welcome to the HProject
         </h1>
-
-        <div class="">
-            @if (posts is not null)
-            {
-                @foreach (var post in posts)
-                {
-                    <PostCard Post="post"></PostCard>
-                }
-            }
-            else
-            {
-                <p>Waiting for loading...</p>
-            }
-        </div>
+        <PostList Posts=@posts></PostList>
     </div>
 </div>
 @code {
