@@ -17,7 +17,7 @@ namespace KevBlog.Infrastructure.Extensions
         public static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration config){
             services.AddDbContext<DataContext>(opt =>
             {
-                opt.UseSqlServer(config.GetConnectionString("DefaultConnection"));
+                opt.UseNpgsql(config.GetConnectionString("DefaultConnection"));
             });
             services.AddCors();
 

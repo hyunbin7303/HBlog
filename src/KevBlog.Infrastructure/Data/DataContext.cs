@@ -30,13 +30,18 @@ namespace KevBlog.Infrastructure.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-
             modelBuilder.Entity<User>()
                 .HasMany(userRole => userRole.UserRoles)
                 .WithOne(user => user.User)
                 .HasForeignKey(userRole => userRole.UserId)
                 .IsRequired();
-
+            //modelBuilder.Entity<User>()
+            //        .Property(e => e.LastActive)
+            //        .HasConversion
+            //        (
+            //            src => src.Kind == DateTimeKind.Utc ? src : DateTime.SpecifyKind(src, DateTimeKind.Utc),
+            //            dst => dst.Kind == DateTimeKind.Utc ? dst : DateTime.SpecifyKind(dst, DateTimeKind.Utc)
+            //        );
             modelBuilder.Entity<AppRole>()
                 .HasMany(userRole => userRole.UserRoles)
                 .WithOne(user => user.Role)

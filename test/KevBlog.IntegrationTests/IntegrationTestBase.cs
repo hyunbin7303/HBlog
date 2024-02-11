@@ -12,7 +12,7 @@ namespace KevBlog.IntegrationTests
         {
             var check = _config.GetConnectionString("DefaultConnection");
             var options = new DbContextOptionsBuilder<DataContext>()
-                .UseSqlServer(check).Options;
+                .UseNpgsql(check).Options;
             _dataContext = new DataContext(options);
         }
     }
