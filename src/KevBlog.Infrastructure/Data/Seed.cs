@@ -1,6 +1,7 @@
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
+using KevBlog.Contract.DTOs;
 using KevBlog.Domain.Entities;
 using KevBlog.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Identity;
@@ -10,12 +11,13 @@ namespace KevBlog.Infrastructure.Data
 {
     public class Seed
     {
-        private readonly static string _seedFilePath = "../KevBlog.Infrastructure/Data/UserSeedData.json";
+        private readonly static string _seedUserFilePath = "../KevBlog.Infrastructure/Data/UserSeedData.json";
+        private readonly static string _seedPostFilePath = "../KevBlog.Infrastructure/Data/PostSeedData.json";
         public static async Task SeedUsers(UserManager<User> userManager, RoleManager<AppRole> roleManager)
         {
             if(await userManager.Users.AnyAsync()) return;
 
-            var userData = await File.ReadAllTextAsync(_seedFilePath);
+            var userData = await File.ReadAllTextAsync(_seedUserFilePath);
             var options =  new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
             var users = JsonSerializer.Deserialize<List<User>>(userData);
 
@@ -47,8 +49,15 @@ namespace KevBlog.Infrastructure.Data
         public static async Task SeedPosts(DataContext context) {
             if(await context.Posts.AnyAsync()) return;
 
-            var postData = await File.ReadAllTextAsync(_seedFilePath);
-            var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+            var postData = await File.ReadAllTextAsync(_seedPostFilePath);
+            var posts = JsonSerializer.Deserialize<List<Post>>(postData);
+
+            foreach(var post in posts)
+            {
+                await context.AddAsync(post);
+                await context.SaveChangesAsync();
+            }
+
         }
     }
 }

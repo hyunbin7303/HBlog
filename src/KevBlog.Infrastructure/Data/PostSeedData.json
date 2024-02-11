@@ -1,0 +1,16 @@
+[
+  {
+    "Title": "Programming is fun!",
+    "Desc": "Description for this Post",
+    "Content": "HAHAHAHA I don't know what to say about this",
+    "Type": "Programming",
+    "UserId": 1
+  },
+  {
+    "Title": "Sample Post for my blog!",
+    "Desc": "TestTest",
+    "Content": "asdf",
+    "Type": "Self-Reflection",
+    "UserId": 1
+  }
+]
