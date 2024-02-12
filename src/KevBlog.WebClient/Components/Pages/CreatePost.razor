@@ -1,5 +1,46 @@
 ﻿@page "/posts/create"
-<h3>Create new Post</h3>
-@code {
+@inject IPostService postService
+@inject NavigationManager navManager
+@using KevBlog.WebClient.Services
 
+<div class="container-xxl py-4">
+    <h3>Create new post</h3>
+    <div class="card-body">
+        <EditForm Model="newPostDto" OnValidSubmit="CreateNewPost">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+            <div class="form-group">
+                <label for="title">Post Title</label>
+                <InputText class="form-control" @bind-Value="newPostDto.Title" />
+            </div>
+            <div class="form-group">
+                <label for="description">Description</label>
+                <InputText class="form-control" @bind-Value="newPostDto.Desc" />
+            </div>
+
+            <div class="form-group">
+                <label for="type">Post Type</label>
+                <InputText class="form-control" @bind-Value="newPostDto.Type" />
+            </div>
+            <div class="form-group">
+                <label for="Content">Content</label>
+                <InputTextArea class="form-control" @bind-Value="newPostDto.Content" />
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-block">Create</button>
+        </EditForm>
+    </div>
+</div>
+
+
+
+@code {
+    PostCreateDto newPostDto = new PostCreateDto();
+
+    private async Task CreateNewPost()
+    {
+        var result = await postService.CreatePost(newPostDto);
+        if (result)
+            navManager.NavigateTo("/posts");
+    }
 }

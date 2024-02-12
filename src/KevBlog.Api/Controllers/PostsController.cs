@@ -85,6 +85,7 @@ namespace KevBlog.Api.Controllers
             return Ok();
         }
 
+        [AllowAnonymous] // TODO Remove this - currently added this for frontend update.
         [HttpPost]
         public async Task<IActionResult> Create(PostCreateDto postCreateDto)
         {

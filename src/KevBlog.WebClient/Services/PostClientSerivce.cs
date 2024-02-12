@@ -19,9 +19,10 @@ namespace KevBlog.WebClient.Services
             //_httpClient.DefaultRequestHeaders.Accept.Add(new("application/json"));
         }
 
-        public Task<bool> CreatePost(PostCreateDto postCreateDto)
+        public async Task<bool> CreatePost(PostCreateDto postCreateDto)
         {
-            throw new NotImplementedException();
+            var result = await _httpClient.PostAsJsonAsync($"Posts", postCreateDto);
+            return result.IsSuccessStatusCode;
         }
 
         public async Task<PostDisplayDetailsDto> GetPostDetails(int id) =>
