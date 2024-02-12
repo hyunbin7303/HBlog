@@ -1,6 +1,3 @@
-using Blazorise;
-using Blazorise.Bootstrap;
-using Blazorise.Icons.FontAwesome;
 using KevBlog.WebClient;
 using KevBlog.WebClient.Services;
 using Microsoft.AspNetCore.Components.Web;
@@ -11,13 +8,6 @@ builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
-
-builder.Services.AddBlazorise(options =>
-{
-    options.Immediate = true;
-})
-    .AddBootstrapProviders()
-    .AddFontAwesomeIcons();
 
 builder.Services.AddScoped<IPostService, PostClientSerivce>();
 builder.Services.AddScoped<UserClientService>();
