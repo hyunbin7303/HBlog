@@ -1,17 +1,27 @@
 ﻿using KevBlog.Contract.DTOs;
+using System.Net.Http.Json;
 
 namespace KevBlog.WebClient.Services
 {
     public class UserClientService 
     {
-        public Task<bool> Login(LoginDto loginDto)
+        private HttpClient _httpClient;
+        public UserClientService(HttpClient httpClient)
         {
-            throw new NotImplementedException();
+            _httpClient = httpClient;
+            _httpClient.BaseAddress = new Uri("https://localhost:5001/api/");
         }
 
-        public Task<bool> RegisterNewUser(RegisterDto registerDto)
+        public async Task<bool> Login(LoginDto loginDto)
         {
-            throw new NotImplementedException();
+            var result = await _httpClient.PostAsJsonAsync($"Account/login", loginDto);
+            return result.IsSuccessStatusCode;
+        }
+
+        public async Task<bool> RegisterNewUser(RegisterDto registerDto)
+        {
+            var result = await _httpClient.PostAsJsonAsync($"Account/register", registerDto);
+            return result.IsSuccessStatusCode;
         }
     }
 }

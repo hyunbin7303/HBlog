@@ -9,10 +9,10 @@ namespace KevBlog.WebClient.Services
         public Task<PostDisplayDetailsDto> GetPostDetails(int id);
         public Task<bool> CreatePost(PostCreateDto postCreateDto);
     }
-    public class PostClientSerivce : IPostService
+    public class PostClientService : IPostService
     {
         private HttpClient _httpClient;
-        public PostClientSerivce(HttpClient httpClient)
+        public PostClientService(HttpClient httpClient)
         {
             _httpClient = httpClient;
             _httpClient.BaseAddress = new Uri("https://localhost:5001/api/");

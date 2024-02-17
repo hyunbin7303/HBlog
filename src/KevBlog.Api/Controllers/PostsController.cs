@@ -5,7 +5,6 @@ using AutoMapper;
 using KevBlog.Domain.Repositories;
 using KevBlog.Infrastructure.Extensions;
 using KevBlog.Contract.DTOs;
-using KevBlog.Application;
 using KevBlog.Application.Services;
 
 namespace KevBlog.Api.Controllers
@@ -85,7 +84,6 @@ namespace KevBlog.Api.Controllers
             return Ok();
         }
 
-        [AllowAnonymous] // TODO Remove this - currently added this for frontend update.
         [HttpPost]
         public async Task<IActionResult> Create(PostCreateDto postCreateDto)
         {

@@ -1,0 +1,42 @@
+﻿@page "/users/Login"
+@inject IAuthService authService
+@inject UserClientService userService
+@inject NavigationManager navManager
+@using KevBlog.WebClient.Services
+<div class="container-xxl py-4">
+    <h3>Sign In</h3>
+    <div class="card-body">
+        <EditForm Model="LoginDtoModel" OnValidSubmit="HandleSignIn">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+            <div class="form-group">
+                <label for="email">UserName</label>
+                <InputText class="form-control" @bind-Value="LoginDtoModel.UserName" />
+                <ValidationMessage For="@(() => LoginDtoModel.UserName)" />
+            </div>
+            <div class="form-group">
+                <label for="text">Password</label>
+                <InputText class="form-control" type="password" @bind-Value="LoginDtoModel.Password" />
+                <ValidationMessage For="@(() => LoginDtoModel.Password)" />
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Login</button>
+        </EditForm>
+    </div>
+</div>
+
+
+
+@code {
+    public string? _errorMsg;
+
+    LoginDto LoginDtoModel = new LoginDto();
+
+    private async Task HandleSignIn()
+    {
+        var test = await authService.AuthenAsync(LoginDtoModel);
+        Console.WriteLine("Value: " + test);
+        var result = await userService.Login(LoginDtoModel);
+        if (result)
+            navManager.NavigateTo("/users/login");
+    }
+}
