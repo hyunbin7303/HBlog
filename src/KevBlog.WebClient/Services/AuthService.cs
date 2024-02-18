@@ -8,7 +8,7 @@ namespace KevBlog.WebClient.Services
 {
     public interface IAuthService
     {
-        Task<string> AuthenAsync(LoginDto loginDto);
+        Task<UserDto> AuthenAsync(LoginDto loginDto);
     }
     public class AuthService : IAuthService
     {
@@ -22,7 +22,7 @@ namespace KevBlog.WebClient.Services
             _authenStateProvider = authenticationStateProvider;
         }
 
-        public async Task<string> AuthenAsync(LoginDto loginDto)
+        public async Task<UserDto> AuthenAsync(LoginDto loginDto)
         {
             var result = await _httpClient.PostAsJsonAsync($"Account/login", loginDto);
             var obj = await result.Content.ReadFromJsonAsync<UserDto>();
@@ -31,8 +31,7 @@ namespace KevBlog.WebClient.Services
 
             await ((ApiAuthStateProvider)_authenStateProvider).LoggedIn();
 
-            // Receive UserDto
-            return obj.Token;
+            return obj;
         }
     }
 }
