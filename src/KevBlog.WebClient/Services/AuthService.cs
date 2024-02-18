@@ -9,6 +9,7 @@ namespace KevBlog.WebClient.Services
     public interface IAuthService
     {
         Task<UserDto> AuthenAsync(LoginDto loginDto);
+        Task Logout(); 
     }
     public class AuthService : IAuthService
     {
@@ -32,6 +33,11 @@ namespace KevBlog.WebClient.Services
             await ((ApiAuthStateProvider)_authenStateProvider).LoggedIn();
 
             return obj;
+        }
+
+        public async Task Logout()
+        {
+            await ((ApiAuthStateProvider)_authenStateProvider).LoggedOut();
         }
     }
 }

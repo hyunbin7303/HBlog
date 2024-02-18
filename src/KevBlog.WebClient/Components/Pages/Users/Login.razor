@@ -39,10 +39,14 @@
 
     private async Task HandleSignIn()
     {
-        var test = await authService.AuthenAsync(LoginDtoModel);
-        Console.WriteLine("Value: " + test);
-        // var result = await userService.Login(LoginDtoModel);
-        // if (result)
-        //     navManager.NavigateTo("/users/login");
+        UserDto user = await authService.AuthenAsync(LoginDtoModel);
+        if (string.IsNullOrEmpty(user.Token))
+        {
+            navManager.NavigateTo("/users/login");
+        }
+        else
+        {
+            navManager.NavigateTo("/");
+        }
     }
 }

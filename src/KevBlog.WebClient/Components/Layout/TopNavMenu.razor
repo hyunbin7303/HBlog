@@ -1,4 +1,4 @@
-﻿<nav class="navbar navbar-expand-lg navStyle" data-bs-theme="dark" >
+﻿<nav class="navbar navbar-expand-lg navStyle" data-bs-theme="dark">
     <div class="container-xxl">
         <a href="/" class="me-3">
             <img src="/images/KP.png" height="50" />
@@ -8,42 +8,66 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarBM">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <NavLink class="nav-link" href="/" Match="NavLinkMatch.All">
-                        <i class="bi bi-home"></i>
-                        Home
-                    </NavLink>
-                </li>
-                <li class="nav-item">
-                    <NavLink class="nav-link" href="/AboutMe" Match="NavLinkMatch.All">
-                        <i class="bi bi-home"></i>
-                        About Me
-                    </NavLink>
-                </li>
-                <li class="nav-item">
-                    <NavLink class="nav-link" href="/posts" Match="NavLinkMatch.All">
-                        <i class="bi bi-home"></i>
-                        Posts
-                    </NavLink>
-                </li>
-                <li class="nav-item">
-                    <NavLink class="nav-link" href="/posts/create" Match="NavLinkMatch.All">
-                        <i class="bi bi-home"></i>
-                        Create new post
-                    </NavLink>
-                </li>
-                <li class="nav-item">
-                    <NavLink class="nav-link" href="/users/login" Match="NavLinkMatch.All">
-                        <i class="bi bi-home"></i>
-                        Login
-                    </NavLink>
-                </li>
-                <li class="nav-item">
-                    <NavLink class="nav-link" href="/users/register" Match="NavLinkMatch.All">
-                        <i class="bi bi-home"></i>
-                        Register
-                    </NavLink>
-                </li>
+                <AuthorizeView>
+                    <NotAuthorized>
+                        <li class="nav-item">
+                            <NavLink class="nav-link" href="/" Match="NavLinkMatch.All">
+                                <i class="bi bi-home"></i>
+                                Home
+                            </NavLink>
+                        </li>
+                        <li class="nav-item">
+                            <NavLink class="nav-link" href="/posts" Match="NavLinkMatch.All">
+                                <i class="bi bi-home"></i>
+                                Posts
+                            </NavLink>
+                        </li>
+                        <li class="nav-item">
+                            <NavLink class="nav-link" href="/users/login" Match="NavLinkMatch.All">
+                                <i class="bi bi-home"></i>
+                                Login
+                            </NavLink>
+                        </li>
+                        <li class="nav-item">
+                            <NavLink class="nav-link" href="/users/register" Match="NavLinkMatch.All">
+                                <i class="bi bi-home"></i>
+                                Register
+                            </NavLink>
+                        </li>
+                    </NotAuthorized>
+                    <Authorized>
+                        <li class="nav-item">
+                            <NavLink class="nav-link" href="/" Match="NavLinkMatch.All">
+                                <i class="bi bi-home"></i>
+                                Home
+                            </NavLink>
+                        </li>
+                        <li class="nav-item">
+                            <NavLink class="nav-link" href="/AboutMe" Match="NavLinkMatch.All">
+                                <i class="bi bi-home"></i>
+                                About Me
+                            </NavLink>
+                        </li>
+                        <li class="nav-item">
+                            <NavLink class="nav-link" href="/posts" Match="NavLinkMatch.All">
+                                <i class="bi bi-home"></i>
+                                Posts
+                            </NavLink>
+                        </li>
+                        <li class="nav-item">
+                            <NavLink class="nav-link" href="/posts/create" Match="NavLinkMatch.All">
+                                <i class="bi bi-home"></i>
+                                Create new post
+                            </NavLink>
+                        </li>
+                        <li class="nav-item">
+                            <NavLink class="nav-link" href="/users/logout" Match="NavLinkMatch.All">
+                                <i class="bi bi-home"></i>
+                                Logout
+                            </NavLink>
+                        </li>
+                    </Authorized>
+                </AuthorizeView>
             </ul>
         </div>
     </div>

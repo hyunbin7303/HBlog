@@ -46,8 +46,9 @@ namespace KevBlog.WebClient.Providers
             NotifyAuthenticationStateChanged(authState);
         }
 
-        public void LoggedOut()
+        public async Task LoggedOut()
         {
+            await _localStorageService.RemoveItemAsync("accessToken");
             var nobody = new ClaimsPrincipal(new ClaimsIdentity());
             var authState = Task.FromResult(new AuthenticationState(nobody));
             NotifyAuthenticationStateChanged(authState);

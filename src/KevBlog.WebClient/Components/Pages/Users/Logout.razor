@@ -1,0 +1,11 @@
+﻿@page "/users/logout"
+@using KevBlog.WebClient.Services
+@inject IAuthService authService
+@inject NavigationManager navManager
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        await authService.Logout();
+        navManager.NavigateTo("/");
+    }
+}
