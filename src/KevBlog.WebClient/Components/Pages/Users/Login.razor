@@ -1,6 +1,6 @@
 ﻿@page "/users/Login"
 @inject IAuthService authService
-@inject UserClientService userService
+@* @inject UserClientService userService *@
 @inject NavigationManager navManager
 @using KevBlog.WebClient.Services
 <div class="container-xxl py-4">
@@ -31,12 +31,18 @@
 
     LoginDto LoginDtoModel = new LoginDto();
 
+    protected override Task OnInitializedAsync()
+    {
+        Console.WriteLine("Test");
+        return base.OnInitializedAsync();
+    }
+
     private async Task HandleSignIn()
     {
         var test = await authService.AuthenAsync(LoginDtoModel);
         Console.WriteLine("Value: " + test);
-        var result = await userService.Login(LoginDtoModel);
-        if (result)
-            navManager.NavigateTo("/users/login");
+        // var result = await userService.Login(LoginDtoModel);
+        // if (result)
+        //     navManager.NavigateTo("/users/login");
     }
 }
