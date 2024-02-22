@@ -1,16 +1,10 @@
 # HappYness Blog / KevBlog
-This project is for demo single page application using angular and asp.net, but eventually I am going to use it for blog posting.
+This project is for building my own blog using Asp.net Web API and Blazor WebAssembly.
 
 ## Technology Stacks
 * ASP.NET Web API .NET8
-* Angular 15 (Previously)
-* Blazor Web Assembly (Currently working on...)
-* SQL server (Might replace to Postgres)
-
-# Getting Started for Angular
-1. Install .NET and Angular setup globally. `npm install -g @angular/cli`
-2. Run web api from src/KevBlog.API, `dotnet run`
-3. Run client side from src/client, `ng serve`
+* Blazor Web Assembly 
+* Postgres
 
 # Functionality Overview
 * User can see post posts without login.
@@ -19,22 +13,17 @@ This project is for demo single page application using angular and asp.net, but 
 * User can link their blog post from external site.
 
 # Technology implementations
-## Frontend(Angular) Side
-* Service layers and Dependency injection
-* Interceptors for JWT token handling, error handling and loading screen.
-* Gurads for Authentication process.
-* Separating Forms(e.g. Date Pickers and text inputs)
-* Pagination implementation 
-
-## Blazor Web assembly Frontend
-* 
+## Frontend(Blaor WASM) Side
+* HTTP Client service layer to interact with Web API.
+* Authentication using JWT Token.
+* Authorization
 
 ## Backend(ASP.NET Web API) Side
 * SOLID Principle
-* CRUD -> maybe will be replaced to CQRS? 
+* Service layer  -> maybe will be replaced to CQRS.
+* Repository Pattern for persisting data
 * Authentication via JWT
 * DDD (InProgress)
-* Repository Pattern for persisting data.
 * Pagination for retrieving data.
 * Infrastructure layer(Extensions, Helpers, Data migrations/seed)
 * AutoMapper for Domain-DTO mapping.
