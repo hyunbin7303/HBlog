@@ -2,6 +2,7 @@
 @using KevBlog.WebClient.Services
 @inject IPostService _postService;
 @inject NavigationManager navManager; 
+@inject MarkdownService MarkdownService
 
 
 @if (_postdetailsView is not null)
@@ -18,7 +19,8 @@
                         </p>
                         <h1 class="display-4 secondfont mb-3 font-weight-bold">@_postdetailsView.Title</h1>
                         <p class="mb-3">
-                            @_postdetailsView.Desc
+                            @((MarkupString)htmlContent)
+                            @* @_postdetailsView.Desc *@
                         </p>
                         <div class="d-flex align-items-center">
                             <small class="ml-2">
@@ -42,10 +44,13 @@ else
     private PostDisplayDetailsDto _postdetailsView = new PostDisplayDetailsDto();
     [Parameter]
     public int? PostId { get; set; }
+    private string htmlContent;
 
     protected override async Task OnInitializedAsync()
     {
         var result = await _postService.GetPostDetails(PostId.Value);
+        htmlContent = MarkdownService.RenderMarkdown(result.Content);
+
         if(result is null)
         {
             navManager.NavigateTo("/", replace: true);

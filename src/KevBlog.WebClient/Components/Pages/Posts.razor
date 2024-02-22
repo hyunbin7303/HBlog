@@ -1,6 +1,22 @@
 ﻿@page "/posts"
+@using KevBlog.WebClient.Services
+@inject IPostService postService;
+<div class="container-xxl py-3">
+
+    <div class="h-100 d-flex flex-column justify-content-center align-items-center">
+        @if (posts is not null)
+        {
+            <PostList Posts=@posts></PostList>
+        }
+    </div>
+</div>
 
 
 @code {
 
+    private IEnumerable<PostDisplayDto> posts;
+    protected override async Task OnInitializedAsync()
+    {
+        posts = await postService.GetPostDisplays();
+    }
 }

@@ -35,7 +35,6 @@ namespace KevBlog.WebClient.Providers
             return new AuthenticationState(user);
         }
 
-
         public async Task LoggedIn()
         {
             var savedToken = await _localStorageService.GetItemAsync<string>("accessToken");
