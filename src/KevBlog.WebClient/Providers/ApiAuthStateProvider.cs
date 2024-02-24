@@ -39,7 +39,8 @@ namespace KevBlog.WebClient.Providers
         {
             var savedToken = await _localStorageService.GetItemAsync<string>("accessToken");
             var tokenContent = _jwtSecurityTokenHandler.ReadJwtToken(savedToken);
-            var claims = tokenContent.Claims;
+            var claims = tokenContent.Claims.ToList();
+            //claims.Add(new Claim(ClaimTypes.Name, tokenContent.Subject));
             var user = new ClaimsPrincipal(new ClaimsIdentity(claims, "jwt"));
             var authState = Task.FromResult(new AuthenticationState(user));
             NotifyAuthenticationStateChanged(authState);

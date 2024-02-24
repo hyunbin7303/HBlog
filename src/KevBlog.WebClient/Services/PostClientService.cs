@@ -1,4 +1,5 @@
-﻿using KevBlog.Contract.DTOs;
+﻿using Blazored.LocalStorage;
+using KevBlog.Contract.DTOs;
 using System.Net.Http.Json;
 
 namespace KevBlog.WebClient.Services
@@ -9,20 +10,26 @@ namespace KevBlog.WebClient.Services
         public Task<PostDisplayDetailsDto> GetPostDetails(int id);
         public Task<bool> CreatePost(PostCreateDto postCreateDto);
     }
-    public class PostClientService : IPostService
+    public class PostClientService : BaseHttpService, IPostService
     {
-        private HttpClient _httpClient;
-        public PostClientService(HttpClient httpClient)
+        public PostClientService(HttpClient httpClient, ILocalStorageService localStorage) : base(httpClient, localStorage)
         {
-            _httpClient = httpClient;
             _httpClient.BaseAddress = new Uri("https://localhost:5001/api/");
-            //_httpClient.DefaultRequestHeaders.Accept.Add(new("application/json"));
         }
 
         public async Task<bool> CreatePost(PostCreateDto postCreateDto)
         {
-            var result = await _httpClient.PostAsJsonAsync($"Posts", postCreateDto);
-            return result.IsSuccessStatusCode;
+            try
+            {
+                await GetBearerToken();
+                var result = await _httpClient.PostAsJsonAsync($"Posts", postCreateDto);
+                return result.IsSuccessStatusCode;
+            }
+            catch(Exception ex)
+            {
+                await Console.Out.WriteLineAsync(ex.Message);
+            }
+            return false;
         }
 
         public async Task<PostDisplayDetailsDto> GetPostDetails(int id) =>
