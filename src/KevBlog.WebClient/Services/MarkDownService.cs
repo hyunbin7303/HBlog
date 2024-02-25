@@ -4,10 +4,16 @@ namespace KevBlog.WebClient.Services
 {
     public class MarkdownService
     {
+        public MarkdownPipeline _pipeline { get; set; }
+
+        public MarkdownService()
+        {
+            var builder = new MarkdownPipelineBuilder();
+            _pipeline = builder.UseBootstrap().UseAdvancedExtensions().Build();
+        }
         public string RenderMarkdown(string markdownContent)
         {
-            var pipeline = new MarkdownPipelineBuilder().UseAdvancedExtensions().Build();
-            return Markdown.ToHtml(markdownContent, pipeline);
+            return Markdown.ToHtml(markdownContent, _pipeline);
         }
     }
 }

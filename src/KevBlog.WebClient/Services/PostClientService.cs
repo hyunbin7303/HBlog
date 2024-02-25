@@ -12,11 +12,8 @@ namespace KevBlog.WebClient.Services
     }
     public class PostClientService : BaseHttpService, IPostService
     {
-        public PostClientService(HttpClient httpClient, ILocalStorageService localStorage) : base(httpClient, localStorage)
-        {
-            _httpClient.BaseAddress = new Uri("https://localhost:5001/api/");
-        }
-
+        public PostClientService(HttpClient httpClient, ILocalStorageService localStorage) 
+            : base(httpClient, localStorage){ }
         public async Task<bool> CreatePost(PostCreateDto postCreateDto)
         {
             try

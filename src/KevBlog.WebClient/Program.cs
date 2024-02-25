@@ -1,5 +1,6 @@
 using Blazored.LocalStorage;
 using KevBlog.WebClient;
+using KevBlog.WebClient.Extensions;
 using KevBlog.WebClient.Providers;
 using KevBlog.WebClient.Services;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -13,11 +14,8 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 
 builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
-builder.Services.AddScoped<MarkdownService>();
-builder.Services.AddScoped<IHttpService, BaseHttpService>();
-builder.Services.AddScoped<IPostService, PostClientService>();
-builder.Services.AddScoped<IAuthService, AuthService>(); 
-builder.Services.AddScoped<UserClientService>();
+builder.Services.RegisterClientServices();
+
 builder.Services.AddScoped<ApiAuthStateProvider>();
 builder.Services.AddScoped<AuthenticationStateProvider>(p => p.GetRequiredService<ApiAuthStateProvider>());
 builder.Services.AddAuthorizationCore();

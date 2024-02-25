@@ -15,6 +15,7 @@ namespace KevBlog.WebClient.Services
         public BaseHttpService(HttpClient httpClient, ILocalStorageService localStorageService)
         {
             _httpClient = httpClient;
+            _httpClient.BaseAddress = new Uri("https://localhost:5001/api/");
             _localStorageService = localStorageService;
         }
 
@@ -30,10 +31,10 @@ namespace KevBlog.WebClient.Services
 
         protected async Task GetBearerToken()
         {
-            var token= await _localStorageService.GetItemAsStringAsync("accessToken");
+            var token= await _localStorageService.GetItemAsync<string>("accessToken");
             if (token != null)
             {
-                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token.Trim('"'));
+                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             }
         }
     }
