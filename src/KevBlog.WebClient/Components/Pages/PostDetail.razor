@@ -7,6 +7,11 @@
 
 @if (_postdetailsView is not null)
 {
+    @if (isButtonsVisible)
+    {
+        <button>Testing button</button>
+    }
+
     <div class="masthead-followup mx-5 px-5 px-md-3">
     <section class="mt-2 mb-5 pb-md-4 align-items-center p-4 pb-0 pt-lg-5 rounded-3 border shadow-lg">
             <h2 class="px-5 mt-4">@_postdetailsView.Title</h2>
@@ -48,13 +53,27 @@ else
 
 
 @code {
-    private PostDisplayDetailsDto _postdetailsView = new PostDisplayDetailsDto();
+    [CascadingParameter]
+    private Task<AuthenticationState>? authenticationState { get; set; }
+
     [Parameter]
     public int? PostId { get; set; }
+
+    private PostDisplayDetailsDto _postdetailsView = new PostDisplayDetailsDto();
+
     private string htmlContent;
+    private bool isButtonsVisible = false;
 
     protected override async Task OnInitializedAsync()
     {
+        if (authenticationState is not null)
+        {
+            var authState = await authenticationState;
+            var user = authState?.User;
+            if (user?.Identity is not null && user.Identity.IsAuthenticated)
+                isButtonsVisible = true;
+        }
+
         var result = await _postService.GetPostDetails(PostId.Value);
         htmlContent = MarkdownService.RenderMarkdown(result.Content);
 
