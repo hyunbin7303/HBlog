@@ -7,6 +7,14 @@
 
 @if (_postdetailsView is not null)
 {
+    <div class="masthead-followup mx-5 px-5 px-md-3">
+    <section class="mt-2 mb-5 pb-md-4 align-items-center p-4 pb-0 pt-lg-5 rounded-3 border shadow-lg">
+            <h2 class="px-5 mt-4">@_postdetailsView.Title</h2>
+            <Entry>@((MarkupString)htmlContent)</Entry>
+    </section>
+    </div>
+@* 
+
     <div class="container">
         <div class="jumbotron jumbotron-fluid mb-3 pl-0 pt-0 pb-0 bg-white position-relative">
             <PageTitle>@_postdetailsView.Title</PageTitle>
@@ -20,7 +28,6 @@
                         <h1 class="display-4 secondfont mb-3 font-weight-bold">@_postdetailsView.Title</h1>
                         <p class="mb-3">
                             @((MarkupString)htmlContent)
-                            @* @_postdetailsView.Desc *@
                         </p>
                         <div class="d-flex align-items-center">
                             <small class="ml-2">
@@ -31,7 +38,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> *@
 }
 else
 {
