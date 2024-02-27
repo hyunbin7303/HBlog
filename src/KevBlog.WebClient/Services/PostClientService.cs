@@ -9,6 +9,7 @@ namespace KevBlog.WebClient.Services
         public Task<IEnumerable<PostDisplayDto>> GetPostDisplays();
         public Task<PostDisplayDetailsDto> GetPostDetails(int id);
         public Task<bool> CreatePost(PostCreateDto postCreateDto);
+        public Task<bool> UpdatePost(PostUpdateDto postUpdateDto);
     }
     public class PostClientService : BaseHttpService, IPostService
     {
@@ -25,14 +26,29 @@ namespace KevBlog.WebClient.Services
             catch(Exception ex)
             {
                 await Console.Out.WriteLineAsync(ex.Message);
+                return false;
             }
-            return false;
         }
-
+        public async Task<bool> UpdatePost(PostUpdateDto postUpdateDto)
+        {
+            try
+            {
+                await GetBearerToken();
+                var result = await _httpClient.PostAsJsonAsync($"Posts", postUpdateDto);
+                return result.IsSuccessStatusCode;
+            }
+            catch (Exception ex)
+            {
+                await Console.Out.WriteLineAsync(ex.Message);
+                return false;
+            }
+        }
         public async Task<PostDisplayDetailsDto> GetPostDetails(int id) =>
             await _httpClient.GetFromJsonAsync<PostDisplayDetailsDto>($"Posts/{id}");
 
         public async Task<IEnumerable<PostDisplayDto>> GetPostDisplays() =>
              await _httpClient.GetFromJsonAsync<IEnumerable<PostDisplayDto>>($"Posts");
+
+
     }
 }

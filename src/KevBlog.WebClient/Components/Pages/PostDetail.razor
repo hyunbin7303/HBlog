@@ -9,7 +9,7 @@
 {
     @if (isButtonsVisible)
     {
-        <button>Testing button</button>
+        <button class="btn btn-dark" @onclick="@(()=>navManager.NavigateTo($"/posts/edit/{_postdetailsView.Id}"))">Edit</button>
     }
 
     <div class="masthead-followup mx-5 px-5 px-md-3">
@@ -18,32 +18,7 @@
             <Entry>@((MarkupString)htmlContent)</Entry>
     </section>
     </div>
-@* 
 
-    <div class="container">
-        <div class="jumbotron jumbotron-fluid mb-3 pl-0 pt-0 pb-0 bg-white position-relative">
-            <PageTitle>@_postdetailsView.Title</PageTitle>
-
-            <div class="h-100 tofront">
-                <div class="row justify-content-between">
-                    <div class="col-md-6 pt-6 pb-6 pr-6 align-self-center">
-                        <p class="text-uppercase font-weight-bold">
-                                <a>@_postdetailsView.Type</a>
-                        </p>
-                        <h1 class="display-4 secondfont mb-3 font-weight-bold">@_postdetailsView.Title</h1>
-                        <p class="mb-3">
-                            @((MarkupString)htmlContent)
-                        </p>
-                        <div class="d-flex align-items-center">
-                            <small class="ml-2">
-                                @_postdetailsView.UserName <span class="text-muted d-block">@_postdetailsView.Created</span>
-                            </small>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div> *@
 }
 else
 {
