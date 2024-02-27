@@ -34,7 +34,7 @@ namespace KevBlog.WebClient.Services
             try
             {
                 await GetBearerToken();
-                var result = await _httpClient.PostAsJsonAsync($"Posts", postUpdateDto);
+                var result = await _httpClient.PutAsJsonAsync($"Posts", postUpdateDto);
                 return result.IsSuccessStatusCode;
             }
             catch (Exception ex)
