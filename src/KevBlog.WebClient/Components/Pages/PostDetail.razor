@@ -10,6 +10,7 @@
     @if (isButtonsVisible)
     {
         <button class="btn btn-dark" @onclick="@(()=>navManager.NavigateTo($"/posts/edit/{_postdetailsView.Id}"))">Edit</button>
+        <button class="btn btn-danger" @onclick="DeletePost">Delete</button>
     }
 
     <div class="masthead-followup mx-5 px-5 px-md-3">
@@ -60,4 +61,8 @@ else
         _postdetailsView = result;
     }
 
+    public async Task DeletePost()
+    {
+        // TODO : API call for PostDelete.
+    }
 }
