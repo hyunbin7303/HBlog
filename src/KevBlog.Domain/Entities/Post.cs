@@ -17,6 +17,7 @@ namespace KevBlog.Domain.Entities
         public DateTime LastUpdated { get; set; } = DateTime.UtcNow;
         public int UserId { get; set; }
         public List<PostTags> PostTags {get; set; }
+        public List<PostCategories> PostCategories { get; set; } 
         public virtual User User { get; set; }
     }
 }

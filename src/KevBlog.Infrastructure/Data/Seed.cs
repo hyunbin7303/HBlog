@@ -57,7 +57,20 @@ namespace KevBlog.Infrastructure.Data
                 await context.AddAsync(post);
                 await context.SaveChangesAsync();
             }
+        }
+        public static async Task SeedCategories(DataContext context)
+        {
+            if (await context.Categories.AnyAsync()) return;
 
+            Category category1 = new Category { Id = 1, Title = "Programming", Description = "Programming Category" };
+            Category category2 = new Category { Id = 2, Title = "Devops", Description = "DevOps Knowledge" };
+            Category category3 = new Category { Id = 3, Title = "Life", Description = "Life" };
+            var categories = new[] { category1, category2, category3 };
+            foreach (var post in categories)
+            {
+                await context.AddAsync(post);
+                await context.SaveChangesAsync();
+            }
         }
     }
 }

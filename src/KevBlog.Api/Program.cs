@@ -75,6 +75,7 @@ public class Program
             await context.Database.MigrateAsync();
             await Seed.SeedUsers(userManager, roleManager);
             await Seed.SeedPosts(context);
+            await Seed.SeedCategories(context);
         }
         catch (Exception ex)
         {

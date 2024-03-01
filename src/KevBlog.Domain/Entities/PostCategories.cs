@@ -1,6 +1,6 @@
 ﻿using KevBlog.Domain.Common;
 namespace KevBlog.Domain.Entities;
-public class PostCategory : BaseEntity
+public class PostCategories : BaseEntity
 {
     public int PostId { get; set; }
     public int CategoryId { get; set; }
