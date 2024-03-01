@@ -28,6 +28,7 @@ namespace KevBlog.Infrastructure.Extensions
             services.AddScoped<ILikesRepository, LikesRepository>();
             services.AddScoped<IMessageRepository, MessageRepository>();
             services.AddScoped<ITagRepository, TagRepository>();
+            services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<IGroupRepository, GroupRepository>();
             services.AddScoped<IFileDataRepository, FileDataRepository>();
             services.AddScoped<IFileStorageRepository, FileStorageRepository>();
