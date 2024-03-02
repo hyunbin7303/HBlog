@@ -2,6 +2,7 @@
 using KevBlog.Contract.DTOs;
 using KevBlog.WebClient.Providers;
 using Microsoft.AspNetCore.Components.Authorization;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
 
 namespace KevBlog.WebClient.Services
@@ -9,6 +10,7 @@ namespace KevBlog.WebClient.Services
     public interface IAuthService
     {
         Task<UserDto> AuthenAsync(LoginDto loginDto);
+        Task GetBearerToken();
         Task Logout(); 
     }
     public class AuthService : IAuthService
@@ -34,7 +36,14 @@ namespace KevBlog.WebClient.Services
 
             return obj;
         }
-
+        public async Task GetBearerToken()
+        {
+            var token = await _localStorageService.GetItemAsync<string>("accessToken");
+            if (token != null)
+            {
+                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            }
+        }
         public async Task Logout()
         {
             await ((ApiAuthStateProvider)_authenStateProvider).LoggedOut();

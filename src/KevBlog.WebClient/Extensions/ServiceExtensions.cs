@@ -5,9 +5,9 @@ public static class ServiceExtensions
 {
     public static void RegisterClientServices(this IServiceCollection services)
     {
-        services.AddScoped<MarkdownService>();
-        services.AddScoped<IHttpService, BaseHttpService>();
+        services.AddSingleton<MarkdownService>();
         services.AddScoped<IPostService, PostClientService>();
+        services.AddScoped<ICategoryService, CategoryClientService>();
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<UserClientService>();
     }

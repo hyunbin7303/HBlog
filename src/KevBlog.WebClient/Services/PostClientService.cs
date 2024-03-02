@@ -11,15 +11,20 @@ namespace KevBlog.WebClient.Services
         public Task<bool> CreatePost(PostCreateDto postCreateDto);
         public Task<bool> UpdatePost(PostUpdateDto postUpdateDto);
     }
-    public class PostClientService : BaseHttpService, IPostService
+    public class PostClientService : IPostService
     {
-        public PostClientService(HttpClient httpClient, ILocalStorageService localStorage) 
-            : base(httpClient, localStorage){ }
+        private HttpClient _httpClient;
+        private IAuthService _authService;
+        public PostClientService(HttpClient httpClient, IAuthService authService)
+        {
+            _httpClient = httpClient;
+            _authService = authService; 
+        }
         public async Task<bool> CreatePost(PostCreateDto postCreateDto)
         {
             try
             {
-                await GetBearerToken();
+                await _authService.GetBearerToken();
                 var result = await _httpClient.PostAsJsonAsync($"Posts", postCreateDto);
                 return result.IsSuccessStatusCode;
             }
@@ -33,7 +38,7 @@ namespace KevBlog.WebClient.Services
         {
             try
             {
-                await GetBearerToken();
+                await _authService.GetBearerToken();
                 var result = await _httpClient.PutAsJsonAsync($"Posts", postUpdateDto);
                 return result.IsSuccessStatusCode;
             }

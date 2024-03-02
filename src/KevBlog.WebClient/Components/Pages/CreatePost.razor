@@ -1,7 +1,9 @@
 ﻿@page "/posts/create"
 @inject IPostService postService
+@inject ICategoryService categoryService
 @inject NavigationManager navManager
 @inject AuthenticationStateProvider AuthenticationStateProvider
+@using KevBlog.Domain.Entities
 @using KevBlog.WebClient.Providers
 @using KevBlog.WebClient.Services
 @using Microsoft.AspNetCore.Authorization
@@ -20,6 +22,15 @@
             <div class="form-group">
                 <label for="description">Description</label>
                 <InputText class="form-control" @bind-Value="newPostDto.Desc" />
+            </div>
+            <div class="form-group">
+                <label for="description">Category</label>
+                <InputSelect class="select-element" @bind-Value="newPostDto.CategoryId">
+                    @foreach (var category in Categories)
+                    {
+                        <option value="@category.Id">@category.Title</option>
+                    }
+                </InputSelect>
             </div>
             <div class="form-group">
                 <label for="type">Post Type</label>
@@ -42,11 +53,20 @@
     [CascadingParameter]
     private Task<AuthenticationState> AuthState { get; set; }
 
-    public System.Security.Claims.ClaimsPrincipal CurrentUser;
+    public System.Security.Claims.ClaimsPrincipal CurrentUser { get; set; }
+
+    private List<Category> Categories { get; set; } = new List<Category>();
+    protected override async Task OnInitializedAsync()
+    {
+        // Categories = await categoryService.GetCategories();
+        Categories.Add(new Category { Id = 1, Title = "Programming" });
+        Categories.Add(new Category { Id = 2, Title = "Devops" });
+    }
 
 
     private async Task CreateNewPost()
     {
+        var id = newPostDto.CategoryId;
         var authState = await AuthState;
         var user = authState.User;
         if (user.Identity.IsAuthenticated)

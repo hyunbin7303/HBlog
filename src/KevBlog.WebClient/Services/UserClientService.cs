@@ -3,10 +3,15 @@ using KevBlog.Contract.DTOs;
 using System.Net.Http.Json;
 namespace KevBlog.WebClient.Services
 {
-    public class UserClientService : BaseHttpService
+    public class UserClientService
     {
-        public UserClientService(HttpClient httpClient, ILocalStorageService localStorageService) 
-            : base(httpClient, localStorageService){ }
+        private HttpClient _httpClient;
+        private IAuthService _authService;
+        public UserClientService(HttpClient httpClient, IAuthService authService)
+        {
+            _httpClient = httpClient;
+            _authService = authService;
+        }
         public async Task<bool> RegisterNewUser(RegisterDto registerDto)
         {
             var result = await _httpClient.PostAsJsonAsync($"Account/register", registerDto);

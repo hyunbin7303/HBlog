@@ -2,7 +2,6 @@ using Blazored.LocalStorage;
 using KevBlog.WebClient;
 using KevBlog.WebClient.Extensions;
 using KevBlog.WebClient.Providers;
-using KevBlog.WebClient.Services;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
@@ -13,7 +12,8 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 
 
 builder.Services.AddBlazoredLocalStorage();
-builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+
+builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://localhost:5001/api/") }); // Replace builder.HostEnvironment.BaseAddress
 builder.Services.RegisterClientServices();
 
 builder.Services.AddScoped<ApiAuthStateProvider>();

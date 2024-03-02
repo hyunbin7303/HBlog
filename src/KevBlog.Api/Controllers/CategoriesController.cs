@@ -11,6 +11,6 @@ namespace KevBlog.Api.Controllers
             _categoryRepository = repository;
         }
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Tag>>> Get() => Ok(await _categoryRepository.GetCategoriesAsync());
+        public async Task<ActionResult<IEnumerable<Category>>> Get() => Ok(await _categoryRepository.GetCategoriesAsync());
     }
 }
