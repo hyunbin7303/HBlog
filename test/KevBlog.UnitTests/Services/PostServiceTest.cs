@@ -15,13 +15,18 @@ namespace KevBlog.UnitTests.Services
         private readonly MockPostRepository _mockPostRepository = new MockPostRepository();
         private readonly Mock<IUserRepository> _userRepositoryMock;
         private readonly Mock<ITagRepository> _tagRepositoryMock;
+        private readonly Mock<ICategoryRepository> _categoryMock;
         private readonly Mock<IRepository<PostTags>> _postTagsRepositoryMock;
+        private readonly Mock<IRepository<PostCategories>> _postCategoryMock;
         public PostServiceTest()
         {
             _userRepositoryMock = new();
             _tagRepositoryMock = new();
             _postTagsRepositoryMock = new();
-            _postService = new PostService(_mapper, _mockPostRepository.Object, _userRepositoryMock.Object, _tagRepositoryMock.Object, _postTagsRepositoryMock.Object);
+            _postCategoryMock = new();
+            _categoryMock = new();
+            _postService = new PostService(_mapper, _mockPostRepository.Object, _userRepositoryMock.Object, _tagRepositoryMock.Object, 
+                _postTagsRepositoryMock.Object, _categoryMock.Object, _postCategoryMock.Object);
         }
         [Fact]
         public async Task GetPosts_ExistingInRepo_ReturnSuccess()

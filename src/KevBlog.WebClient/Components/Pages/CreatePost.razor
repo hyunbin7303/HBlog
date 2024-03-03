@@ -55,14 +55,11 @@
 
     public System.Security.Claims.ClaimsPrincipal CurrentUser { get; set; }
 
-    private List<Category> Categories { get; set; } = new List<Category>();
+    private IEnumerable<Category> Categories { get; set; } = new List<Category>();
     protected override async Task OnInitializedAsync()
     {
-        // Categories = await categoryService.GetCategories();
-        Categories.Add(new Category { Id = 1, Title = "Programming" });
-        Categories.Add(new Category { Id = 2, Title = "Devops" });
+        Categories = await categoryService.GetCategories();
     }
-
 
     private async Task CreateNewPost()
     {
@@ -74,7 +71,7 @@
             var result = await postService.CreatePost(newPostDto);
             if (result)
                 navManager.NavigateTo("/posts");
-        }
 
+        }
     }
 }

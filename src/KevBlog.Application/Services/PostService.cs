@@ -11,12 +11,16 @@ public class PostService : BaseService, IPostService
     private readonly IUserRepository _userRepository;
     private readonly ITagRepository _tagRepository;
     private readonly IRepository<PostTags> _postTagRepository;
-    public PostService(IMapper mapper, IPostRepository postRepository, IUserRepository userRepository, ITagRepository tagRepository, IRepository<PostTags> postTagRepository) : base(mapper)
+    private readonly IRepository<PostCategories> _postCategoryRepository;
+    private readonly ICategoryRepository _categoryRepository;
+    public PostService(IMapper mapper, IPostRepository postRepository, IUserRepository userRepository, ITagRepository tagRepository, IRepository<PostTags> postTagRepository, ICategoryRepository categoryRepository, IRepository<PostCategories> postCategoryRepository) : base(mapper)
     {
         _postRepository = postRepository;
         _userRepository = userRepository;
         _tagRepository = tagRepository;
         _postTagRepository = postTagRepository;
+        _categoryRepository = categoryRepository;
+        _postCategoryRepository = postCategoryRepository;
     }
 
     public async Task<ServiceResult> AddTagForPost(int postId, int tagId)
@@ -35,17 +39,45 @@ public class PostService : BaseService, IPostService
         return ServiceResult.Success($"Success to add Tag ID: {tagId}");
     }
 
+    public async Task<ServiceResult> AddCategoryForPost(int postId, int categoryId)
+    {
+        var post = await _postRepository.GetById(postId);
+        if (post is null)
+            return ServiceResult.Fail(msg: "Post Id is not valid.");
+
+        var category = await _categoryRepository.GetById(categoryId);
+        if (category is null)
+            return ServiceResult.Fail(msg: "Category Id is not valid.");
+
+        var postCategories = new PostCategories { PostId = post.Id, CategoryId = category.Id };
+        _postCategoryRepository.Add(postCategories);
+        await _postTagRepository.SaveChangesAsync();
+        return ServiceResult.Success($"Success to add Category ID: {categoryId}");
+    }
+
     public async Task<ServiceResult> CreatePost(string userName, PostCreateDto createDto)
     {
         if (string.IsNullOrEmpty(createDto.Title))
             return ServiceResult.Fail(msg: "Title cannot be empty.");
 
+        if (createDto.CategoryId == 0)
+            return ServiceResult.Fail(msg: "Category needs to be setup.");
+
+        var category = await _categoryRepository.GetById(createDto.CategoryId);
+        if (category is null)
+            return ServiceResult.Fail(msg: "Cannot find category.");
+
         var user = await _userRepository.GetUserByUsernameAsync(userName);
         var post = _mapper.Map<Post>(createDto);
         post.User = user;
         post.UserId = user.Id;
-        _postRepository.Add(post);
+        await _postRepository.Add(post);
         await _postRepository.SaveChangesAsync();
+
+        var postCategories = new PostCategories { PostId = post.Id, CategoryId = category.Id };
+        await _postCategoryRepository.Add(postCategories);
+        await _postRepository.SaveChangesAsync();
+
         return ServiceResult.Success(msg: $"Post Id:{post.Id}");
     }
 

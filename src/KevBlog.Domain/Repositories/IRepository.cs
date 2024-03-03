@@ -3,7 +3,7 @@ namespace KevBlog.Domain.Repositories
 {
     public interface IRepository<TEntity> where TEntity : class
     {
-        void Add(TEntity obj);
+        Task Add(TEntity obj);
         Task<TEntity> GetById(int id);
         IQueryable<TEntity> GetAll();
         //IQueryable<TEntity> GetAll(ISpecification<TEntity> spec);
