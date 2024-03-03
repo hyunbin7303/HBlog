@@ -49,7 +49,7 @@
     private async Task HandleRegistration()
     {
         var result = await userService.RegisterNewUser(RegisterDtoModel);
-        if(result)
+        if(result.Item1)
             navManager.NavigateTo("/users/login");
     }
 }

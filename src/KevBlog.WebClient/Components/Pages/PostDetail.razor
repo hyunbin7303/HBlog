@@ -46,7 +46,7 @@ else
         {
             var authState = await authenticationState;
             var user = authState?.User;
-            if (user?.Identity is not null && user.Identity.IsAuthenticated)
+             if (user?.Identity is not null && user.Identity.IsAuthenticated)
                 isButtonsVisible = true;
         }
 
