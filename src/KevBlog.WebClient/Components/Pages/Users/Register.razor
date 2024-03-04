@@ -1,6 +1,7 @@
 ﻿@page "/users/register"
 @inject UserClientService userService
 @inject NavigationManager navManager
+@inject IAuthService authService
 @using KevBlog.Contract.DTOs
 @using KevBlog.WebClient.Services
 <div class="container-xxl py-4">
@@ -36,6 +37,14 @@
                 <InputText class="form-control" type="password" @bind-Value="RegisterDtoModel.Password" />
                 <ValidationMessage For="@(() => RegisterDtoModel.Password)" />
             </div>
+
+            @if(errorMessages.Count > 0)
+            {
+                foreach(var msg in errorMessages)
+                {
+                    <p>@msg</p>
+                }
+            }
             <button type="submit" class="btn btn-primary btn-block">Register</button>
         </EditForm>
     </div>
@@ -45,11 +54,19 @@
 
 @code {
     RegisterDto RegisterDtoModel = new RegisterDto();
-
+    List<string> errorMessages = new();
     private async Task HandleRegistration()
     {
         var result = await userService.RegisterNewUser(RegisterDtoModel);
-        if(result.Item1)
-            navManager.NavigateTo("/users/login");
+        if (result.Item1)
+        {
+            errorMessages = new();
+            await authService.AuthenAsync(new LoginDto { UserName = RegisterDtoModel.UserName, Password = RegisterDtoModel.Password });
+            navManager.NavigateTo("/");
+        }
+        if(result.Item2 != null)
+        {
+            errorMessages = result.Item2.Select(t => t.Description).ToList();
+        }
     }
 }
