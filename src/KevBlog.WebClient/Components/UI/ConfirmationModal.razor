@@ -1,0 +1,32 @@
+﻿@if (IsVisible)
+{
+    <div class="modal-backdrop">
+        <div class="modal-content">
+            <h3>@Title</h3>
+            <p>@Message</p>
+            <button class="btn btn-danger mb-1" @onclick="Confirm">Yes</button>
+            <button class="btn btn-success" @onclick="Cancel">No</button>
+        </div>
+    </div>
+}
+ 
+@code {
+    [Parameter] public string Title { get; set; }
+
+    [Parameter] public string Message { get; set; }
+
+    [Parameter] public EventCallback<bool> ConfirmationChanged { get; set; }
+
+    [Parameter] public bool IsVisible { get; set; }
+
+    private void Confirm()
+    {
+        ConfirmationChanged.InvokeAsync(true);
+    }
+
+    private void Cancel()
+    {
+        ConfirmationChanged.InvokeAsync(false);
+    }
+}
+
