@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace KevBlog.Infrastructure.Repositories
 {
-    public class Repository<TEntity> : IRepository<TEntity> where TEntity : BaseEntity, new()
+    public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
     {
         protected readonly DataContext _dataContext;
         protected readonly DbSet<TEntity> _dbSet;
