@@ -10,6 +10,7 @@ namespace KevBlog.WebClient.Services
         public Task<PostDisplayDetailsDto> GetPostDetails(int id);
         public Task<bool> CreatePost(PostCreateDto postCreateDto);
         public Task<bool> UpdatePost(PostUpdateDto postUpdateDto);
+        public Task<bool> DeletePost(int id);
     }
     public class PostClientService : IPostService
     {
@@ -43,6 +44,20 @@ namespace KevBlog.WebClient.Services
                 return result.IsSuccessStatusCode;
             }
             catch (Exception ex)
+            {
+                await Console.Out.WriteLineAsync(ex.Message);
+                return false;
+            }
+        }
+        public async Task<bool> DeletePost(int id)
+        {
+            try
+            {
+                await _authService.GetBearerToken();
+                var result = await _httpClient.DeleteAsync($"Posts/{id}");
+                return result.IsSuccessStatusCode;
+            }
+            catch(Exception ex)
             {
                 await Console.Out.WriteLineAsync(ex.Message);
                 return false;
