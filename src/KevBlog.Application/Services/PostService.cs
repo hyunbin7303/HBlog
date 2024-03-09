@@ -1,8 +1,11 @@
 ﻿using AutoMapper;
 using KevBlog.Contract.Common;
 using KevBlog.Contract.DTOs;
+using KevBlog.Domain.Common;
+using KevBlog.Domain.Common.Params;
 using KevBlog.Domain.Constants;
 using KevBlog.Domain.Entities;
+using KevBlog.Domain.Params;
 using KevBlog.Domain.Repositories;
 namespace KevBlog.Application.Services;
 public class PostService : BaseService, IPostService
@@ -11,16 +14,14 @@ public class PostService : BaseService, IPostService
     private readonly IUserRepository _userRepository;
     private readonly ITagRepository _tagRepository;
     private readonly IRepository<PostTags> _postTagRepository;
-    private readonly IRepository<PostCategories> _postCategoryRepository;
     private readonly ICategoryRepository _categoryRepository;
-    public PostService(IMapper mapper, IPostRepository postRepository, IUserRepository userRepository, ITagRepository tagRepository, IRepository<PostTags> postTagRepository, ICategoryRepository categoryRepository, IRepository<PostCategories> postCategoryRepository) : base(mapper)
+    public PostService(IMapper mapper, IPostRepository postRepository, IUserRepository userRepository, ITagRepository tagRepository, IRepository<PostTags> postTagRepository, ICategoryRepository categoryRepository) : base(mapper)
     {
         _postRepository = postRepository;
         _userRepository = userRepository;
         _tagRepository = tagRepository;
         _postTagRepository = postTagRepository;
         _categoryRepository = categoryRepository;
-        _postCategoryRepository = postCategoryRepository;
     }
 
     public async Task<ServiceResult> AddTagForPost(int postId, int tagId)
@@ -49,9 +50,7 @@ public class PostService : BaseService, IPostService
         if (category is null)
             return ServiceResult.Fail(msg: "Category Id is not valid.");
 
-        var postCategories = new PostCategories { PostId = post.Id, CategoryId = category.Id };
-        _postCategoryRepository.Add(postCategories);
-        await _postTagRepository.SaveChangesAsync();
+        //TODO Update Category?
         return ServiceResult.Success($"Success to add Category ID: {categoryId}");
     }
 
@@ -74,8 +73,8 @@ public class PostService : BaseService, IPostService
         await _postRepository.Add(post);
         await _postRepository.SaveChangesAsync();
 
-        var postCategories = new PostCategories { PostId = post.Id, CategoryId = category.Id };
-        await _postCategoryRepository.Add(postCategories);
+        //var postCategories = new PostCategories { PostId = post.Id, CategoryId = category.Id };
+        //await _postCategoryRepository.Add(postCategories);
         await _postRepository.SaveChangesAsync();
 
         return ServiceResult.Success(msg: $"Post Id:{post.Id}");
@@ -98,9 +97,29 @@ public class PostService : BaseService, IPostService
         IEnumerable<Post> posts = await _postRepository.GetPostsAsync();
         return _mapper.Map<IEnumerable<PostDisplayDto>>(posts);
     }
+    public async Task<PageList<PostDisplayDto>> GetPosts(PostParams postParams)
+    {
+        var category = await _categoryRepository.GetById(postParams.CategoryId);
+        if(category is null)
+            throw new ArgumentNullException(nameof(category));  // May need to change this? 
+
+        var postList = await _postRepository.GetPostsAsync();
+        if(postList is null)
+            throw new ArgumentNullException(nameof(postList));
+
+        // TODO Check how to implement
+        return null; 
+    }
+
 
     public async Task<IEnumerable<PostDisplayDto>> GetPostsByTagName(string tagName)
     {
+        var tags = await _tagRepository.FindbyTagName(tagName);
+        if(tags is null)
+            throw new ArgumentNullException(nameof(tags));
+
+        var tagPosts = _postTagRepository.GetById(tags.Id);
+
         IEnumerable<Post> posts = await _postRepository.GetPostsAsync();
         return _mapper.Map<IEnumerable<PostDisplayDto>>(posts);
     }
@@ -132,5 +151,6 @@ public class PostService : BaseService, IPostService
         await _postRepository.SaveChangesAsync();
         return ServiceResult.Success(msg: $"Removed Post Id: {id}");
     }
+
 
 }

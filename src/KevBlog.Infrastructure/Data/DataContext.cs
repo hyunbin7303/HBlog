@@ -22,7 +22,6 @@ namespace KevBlog.Infrastructure.Data
         public virtual DbSet<PostTags> PostTags { get; set; }
         public virtual DbSet<Tag> Tags { get; set; }
         public virtual DbSet<Category> Categories { get; set; }
-        public virtual DbSet<PostCategories> PostCategories { get; set; }
         public virtual DbSet<Message> Messages { get; set; }
         public virtual DbSet<Group> Groups { get; set; }
         public virtual DbSet<Connection> Connections { get; set; }
@@ -63,17 +62,6 @@ namespace KevBlog.Infrastructure.Data
                 .HasOne(pt => pt.Tag)
                 .WithMany(t => t.PostTags)
                 .HasForeignKey(pt => pt.TagId);
-
-            modelBuilder.Entity<PostCategories>()
-                .HasKey(k => new  { k.CategoryId, k.PostId });
-            modelBuilder.Entity<PostCategories>()
-                .HasOne(p => p.Post)
-                .WithMany(pc => pc.PostCategories)
-                .HasForeignKey(pc => pc.PostId);
-            modelBuilder.Entity<PostCategories>()
-                .HasOne(p => p.Category)
-                .WithMany(pc => pc.PostCategories)
-                .HasForeignKey(pc => pc.CategoryId);
 
             modelBuilder.Entity<UserLike>()
                 .HasKey(k => new { k.SourceUserId, k.TargetUserId });
