@@ -74,8 +74,8 @@ public class Program
             var roleManager = services.GetRequiredService<RoleManager<AppRole>>();
             await context.Database.MigrateAsync();
             await Seed.SeedUsers(userManager, roleManager);
-            await Seed.SeedPosts(context);
             await Seed.SeedCategories(context);
+            await Seed.SeedPosts(context);
         }
         catch (Exception ex)
         {

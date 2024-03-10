@@ -96,12 +96,6 @@ namespace KevBlog.UnitTests.Controllers
         }
 
         [Fact]
-        public async Task UpdateExistingPost_ValidPostIdAndJsonBody_ReturnSuccess()
-        {
-
-        }
-
-        [Fact]
         public void CreatePost_PassNull_ThrowArgumentNullException()
         {
 

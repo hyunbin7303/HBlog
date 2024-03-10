@@ -5,7 +5,6 @@ using KevBlog.Domain.Common;
 using KevBlog.Domain.Common.Params;
 using KevBlog.Domain.Constants;
 using KevBlog.Domain.Entities;
-using KevBlog.Domain.Params;
 using KevBlog.Domain.Repositories;
 namespace KevBlog.Application.Services;
 public class PostService : BaseService, IPostService
@@ -28,11 +27,11 @@ public class PostService : BaseService, IPostService
     {
         var post = await _postRepository.GetById(postId);
         if(post is null)
-            return ServiceResult.Fail(msg: "Post Id is not valid.");
+            return ServiceResult.NotFound(msg: "Cannot find post.");
 
         var tag = await _tagRepository.GetById(tagId);
         if (tag is null)
-            return ServiceResult.Fail(msg: "Tag Id is not valid.");
+            return ServiceResult.NotFound(msg: "Cannot find tag."); 
 
         var postTags = new PostTags { PostId = post.Id, TagId = tag.Id };
         _postTagRepository.Add(postTags);
@@ -64,19 +63,14 @@ public class PostService : BaseService, IPostService
 
         var category = await _categoryRepository.GetById(createDto.CategoryId);
         if (category is null)
-            return ServiceResult.Fail(msg: "Cannot find category.");
+            return ServiceResult.NotFound(msg: "Cannot find category.");
 
         var user = await _userRepository.GetUserByUsernameAsync(userName);
         var post = _mapper.Map<Post>(createDto);
         post.User = user;
         post.UserId = user.Id;
-        await _postRepository.Add(post);
+        _postRepository.Add(post);
         await _postRepository.SaveChangesAsync();
-
-        //var postCategories = new PostCategories { PostId = post.Id, CategoryId = category.Id };
-        //await _postCategoryRepository.Add(postCategories);
-        await _postRepository.SaveChangesAsync();
-
         return ServiceResult.Success(msg: $"Post Id:{post.Id}");
     }
 
@@ -152,5 +146,8 @@ public class PostService : BaseService, IPostService
         return ServiceResult.Success(msg: $"Removed Post Id: {id}");
     }
 
-
+    public Task<IEnumerable<PostDisplayDto>> GetPostsByCategory(int categoryId)
+    {
+        throw new NotImplementedException();
+    }
 }
