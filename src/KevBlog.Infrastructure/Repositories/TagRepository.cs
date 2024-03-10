@@ -34,9 +34,9 @@ namespace KevBlog.Infrastructure.Repositories
             return await _dbContext.Tags.AsNoTracking().ToListAsync();
         }
 
-        public IEnumerable<Tag> FindbyTagName(string tagName)
+        public async Task<Tag> FindbyTagName(string tagName)
         {
-            return _dbContext.Tags.Where(x => x.Name == tagName).AsEnumerable();
+            return _dbContext.Tags.Where(x => x.Name == tagName).FirstOrDefault();
         }
 
         public async Task<Tag> GetById(int id)

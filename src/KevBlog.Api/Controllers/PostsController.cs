@@ -6,6 +6,9 @@ using KevBlog.Domain.Repositories;
 using KevBlog.Infrastructure.Extensions;
 using KevBlog.Contract.DTOs;
 using KevBlog.Application.Services;
+using KevBlog.Domain.Common.Params;
+using KevBlog.Domain.Common;
+using KevBlog.Domain.Params;
 
 namespace KevBlog.Api.Controllers
 {
@@ -24,6 +27,10 @@ namespace KevBlog.Api.Controllers
         [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<PostDisplayDto>>> GetPosts() => Ok(await _postService.GetPosts());
+
+        [AllowAnonymous]
+        [HttpGet("categories")]
+        public async Task<ActionResult<IEnumerable<PostDisplayDto>>> GetPostsByCategory(int categoryId) => Ok(await _postService.GetPostsByCategory(categoryId));
 
         [AllowAnonymous]
         [HttpGet("users/{username}")]
@@ -96,6 +103,7 @@ namespace KevBlog.Api.Controllers
 
             return Ok(result.IsSuccess);
         }
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {

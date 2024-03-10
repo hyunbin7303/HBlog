@@ -1,7 +1,7 @@
 ﻿using KevBlog.Contract.Common;
 using KevBlog.Contract.DTOs;
 using KevBlog.Domain.Common;
-using KevBlog.Infrastructure.Helpers;
+using KevBlog.Domain.Params;
 
 namespace KevBlog.Application.Services
 {

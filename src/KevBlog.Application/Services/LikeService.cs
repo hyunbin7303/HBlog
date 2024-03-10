@@ -4,8 +4,8 @@ using KevBlog.Contract.DTOs;
 using KevBlog.Domain.Common;
 using KevBlog.Domain.Common.Extensions;
 using KevBlog.Domain.Entities;
+using KevBlog.Domain.Params;
 using KevBlog.Domain.Repositories;
-using KevBlog.Infrastructure.Helpers;
 
 namespace KevBlog.Application.Services
 {

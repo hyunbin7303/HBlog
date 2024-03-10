@@ -27,5 +27,9 @@ namespace KevBlog.Infrastructure.Repositories
             _dbContext.Entry(user).State = EntityState.Modified;
             await _dbContext.SaveChangesAsync();
         }
+        public async Task<IEnumerable<Post>> GetPostsWithIncludesAsync(int id)
+        {
+            return await _dbContext.Posts.AsNoTracking().Include(x => x.Category).ToListAsync();
+        }
     }
 }
