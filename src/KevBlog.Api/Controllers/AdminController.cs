@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace KevBlog.Api.Controllers
 {
+    [Route("api/[controller]")]
     public class AdminController : BaseApiController
     {
         private readonly UserManager<User> _userManager;

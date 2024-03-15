@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace KevBlog.Api.Controllers
 {
+    [Route("api/[controller]")]
     public class BuggyController : BaseApiController
     {
         private readonly DataContext _dbContext;

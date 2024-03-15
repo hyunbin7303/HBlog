@@ -9,6 +9,7 @@ using KevBlog.Contract.DTOs;
 namespace KevBlog.Api.Controllers
 {
     [Authorize]
+    [Route("api/[controller]")]
     public class UsersController : BaseApiController
     {
         private readonly IUserService _userService;

@@ -37,14 +37,14 @@ else
 
     private PostDisplayDetailsDto _postdetailsView = new PostDisplayDetailsDto();
 
-    private string htmlContent;
+    private string htmlContent = string.Empty;
     private bool isButtonsVisible = false;
     private bool _showDeleteConfirmationModal = false;
 
 
     protected override async Task OnInitializedAsync()
     {
-        var result = await _postService.GetPostDetails(PostId.Value);
+        var result = await _postService.GetPostDetails(PostId!.Value);
         htmlContent = MarkdownService.RenderMarkdown(result.Content);
         if (result is null)
         {
@@ -58,7 +58,7 @@ else
             var authState = await authenticationState;
             var user = authState.User;
             var userName = user.FindFirst(u => u.Type.Contains("unique_name"))?.Value;
-            if (user.Identity.IsAuthenticated && userName == _postdetailsView.UserName)
+            if (user.Identity!.IsAuthenticated && userName == _postdetailsView.UserName)
                 isButtonsVisible = true;
         }
     }
@@ -69,7 +69,7 @@ else
         {
             if (_postdetailsView != null)
             {
-                await _postService.DeletePost(PostId.Value);
+                await _postService.DeletePost(PostId!.Value);
             }
         }
     }

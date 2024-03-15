@@ -9,6 +9,7 @@ namespace KevBlog.Api.Controllers
 {
 
     [Authorize]
+    [Route("api/[controller]")]
     public class StorageController : BaseApiController
     {
         private readonly IAwsStorageService _awsStorageService;

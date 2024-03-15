@@ -1,9 +1,24 @@
 ﻿@page "/posts"
+@using KevBlog.Domain.Entities
 @using KevBlog.WebClient.Services
+@inject ICategoryService categoryService
 @inject IPostService postService;
-<div class="container-xxl py-3">
+<div class="container-xxl py-2">
 
-    <div class="h-100 d-flex flex-column justify-content-center align-items-center">
+    <div class="col-md-4">
+        <select class="form-control" onchange="@HandleChangeCategory">
+            <option value="">Select Category</option>
+
+            @foreach (var category in Categories)
+            {
+                <option value="@category.Id">
+                    @category.Title
+                </option>
+            }
+        </select>
+    </div>
+
+    <div class="h-100 d-flex flex-column justify-content-center">
         @if (posts is not null)
         {
             <PostList Posts=@posts></PostList>
@@ -18,9 +33,22 @@
 
 @code {
 
+    private IEnumerable<Category> Categories { get; set; } = new List<Category>();
+
+    private int? selectCategoryId = 0;
+
     private IEnumerable<PostDisplayDto> posts;
     protected override async Task OnInitializedAsync()
     {
+        Categories = await categoryService.GetCategories();
         posts = await postService.GetPostDisplays();
+    }
+
+    private async Task HandleChangeCategory(ChangeEventArgs args)
+    {
+        posts = new List<PostDisplayDto>();
+        var categoryId = int.Parse(args.Value.ToString());
+        posts = await postService.GetPostDisplays(categoryId);
+
     }
 }

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace KevBlog.Api.Controllers
 {
+    [Route("api/[controller]")]
     public class MessagesController : BaseApiController
     {
         private readonly IMessageService _messageService;

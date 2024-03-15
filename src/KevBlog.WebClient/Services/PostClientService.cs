@@ -6,7 +6,7 @@ namespace KevBlog.WebClient.Services
 {
     public interface IPostService
     {
-        public Task<IEnumerable<PostDisplayDto>> GetPostDisplays();
+        public Task<IEnumerable<PostDisplayDto>> GetPostDisplays(int categoryId = 0);
         public Task<PostDisplayDetailsDto> GetPostDetails(int id);
         public Task<bool> CreatePost(PostCreateDto postCreateDto);
         public Task<bool> UpdatePost(PostUpdateDto postUpdateDto);
@@ -19,7 +19,7 @@ namespace KevBlog.WebClient.Services
         public PostClientService(HttpClient httpClient, IAuthService authService)
         {
             _httpClient = httpClient;
-            _authService = authService; 
+            _authService = authService;
         }
         public async Task<bool> CreatePost(PostCreateDto postCreateDto)
         {
@@ -29,7 +29,7 @@ namespace KevBlog.WebClient.Services
                 var result = await _httpClient.PostAsJsonAsync($"Posts", postCreateDto);
                 return result.IsSuccessStatusCode;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 await Console.Out.WriteLineAsync(ex.Message);
                 return false;
@@ -57,7 +57,7 @@ namespace KevBlog.WebClient.Services
                 var result = await _httpClient.DeleteAsync($"Posts/{id}");
                 return result.IsSuccessStatusCode;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 await Console.Out.WriteLineAsync(ex.Message);
                 return false;
@@ -66,9 +66,11 @@ namespace KevBlog.WebClient.Services
         public async Task<PostDisplayDetailsDto> GetPostDetails(int id) =>
             await _httpClient.GetFromJsonAsync<PostDisplayDetailsDto>($"Posts/{id}");
 
-        public async Task<IEnumerable<PostDisplayDto>> GetPostDisplays() =>
-             await _httpClient.GetFromJsonAsync<IEnumerable<PostDisplayDto>>($"Posts");
-
-
+        public async Task<IEnumerable<PostDisplayDto>> GetPostDisplays(int categoryId = 0) =>
+             categoryId switch
+             {
+                 0 => await _httpClient.GetFromJsonAsync<IEnumerable<PostDisplayDto>>($"Posts"),
+                 _ => await _httpClient.GetFromJsonAsync<IEnumerable<PostDisplayDto>>($"Posts/categories/{categoryId}")
+             };
     }
 }

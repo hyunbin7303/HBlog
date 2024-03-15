@@ -55,8 +55,6 @@ public class Program
             app.UseSwagger();
             app.UseSwaggerUI();
         }
-
-
         //app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:4200"));
         app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:7183"));
 

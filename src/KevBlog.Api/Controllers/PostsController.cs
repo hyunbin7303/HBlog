@@ -1,18 +1,16 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using KevBlog.Domain.Entities;
-using AutoMapper;
 using KevBlog.Domain.Repositories;
 using KevBlog.Infrastructure.Extensions;
 using KevBlog.Contract.DTOs;
 using KevBlog.Application.Services;
-using KevBlog.Domain.Common.Params;
-using KevBlog.Domain.Common;
-using KevBlog.Domain.Params;
+
 
 namespace KevBlog.Api.Controllers
 {
     [Authorize]
+    [Route("api")]
     public class PostsController : BaseApiController
     {
         private readonly IPostRepository _postRepository;
@@ -25,23 +23,27 @@ namespace KevBlog.Api.Controllers
         }
 
         [AllowAnonymous]
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<PostDisplayDto>>> GetPosts() => Ok(await _postService.GetPosts());
+        [HttpGet("posts")]
+        public async Task<ActionResult<IEnumerable<PostDisplayDto>>> GetPosts()
+        {
+            return Ok(new ApiResponse<IEnumerable<PostDisplayDto>>(await _postService.GetPosts()));
+        }
 
         [AllowAnonymous]
-        [HttpGet("categories")]
+        [HttpGet]
+        [Route("categories/{categoryId}/posts")]
         public async Task<ActionResult<IEnumerable<PostDisplayDto>>> GetPostsByCategory(int categoryId) => Ok(await _postService.GetPostsByCategory(categoryId));
 
         [AllowAnonymous]
-        [HttpGet("users/{username}")]
+        [HttpGet("users/{username}/posts")]
         public async Task<ActionResult<IEnumerable<Post>>> GetPostsByUsername(string username) => Ok(await _postRepository.GetPostsByUserName(username));
 
         [AllowAnonymous]
-        [HttpGet("Tags/{tagName}")]
+        [HttpGet("tags/{tagName}/posts")]
         public async Task<ActionResult<IEnumerable<PostDisplayDto>>> GetPostsByTagName(string tagName) => Ok(await _postService.GetPostsByTagName(tagName));
 
         [AllowAnonymous]
-        [HttpGet("{id}")]
+        [HttpGet("posts/{id}")]
         public async Task<ActionResult<PostDisplayDetailsDto>> GetPostById(int id)
         {
             var postDetails = await _postService.GetByIdAsync(id);
@@ -50,7 +52,7 @@ namespace KevBlog.Api.Controllers
                     (ActionResult<PostDisplayDetailsDto>)NotFound(postDetails.Message);
         }
 
-        [HttpPut]
+        [HttpPut("posts")]
         public async Task<IActionResult> Put(PostUpdateDto postUpdateDto)
         {
             if(postUpdateDto is null)
@@ -66,7 +68,7 @@ namespace KevBlog.Api.Controllers
             return NoContent();
         }
 
-        [HttpPut("{postId}/AddTag")] 
+        [HttpPut("posts/{postId}/AddTag")] 
         public async Task<IActionResult> AddTag(int postId, [FromBody]int tagId)
         {
             if (postId == 0 || tagId == 0)
@@ -79,7 +81,7 @@ namespace KevBlog.Api.Controllers
             return Ok();
         }
 
-        [HttpPut("{id}/status")]
+        [HttpPut("posts/{id}/status")]
         public async Task<IActionResult> SetPostStatus(int id, string status)
         {
             Post post = await _postRepository.GetById(id);
@@ -91,7 +93,7 @@ namespace KevBlog.Api.Controllers
             return Ok();
         }
 
-        [HttpPost]
+        [HttpPost("posts")]
         public async Task<IActionResult> Create(PostCreateDto postCreateDto)
         {
             if (postCreateDto is null)
@@ -104,7 +106,7 @@ namespace KevBlog.Api.Controllers
             return Ok(result.IsSuccess);
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("posts/{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             var result = await _postService.DeletePost(id);

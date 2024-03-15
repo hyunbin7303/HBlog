@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace KevBlog.Api.Controllers
 {
     [Authorize]
+    [Route("api/[controller]")]
     public class TagsController : BaseApiController
     {
         private readonly ITagService _tagService;

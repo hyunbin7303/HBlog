@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace KevBlog.Api.Controllers
 {
+    [Route("api/[controller]")]
     public class LikesController : BaseApiController
     {
         private readonly ILikeService _likeService;

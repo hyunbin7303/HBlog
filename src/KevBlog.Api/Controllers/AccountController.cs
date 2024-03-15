@@ -8,6 +8,7 @@ using KevBlog.Contract.DTOs;
 
 namespace KevBlog.Api.Controllers
 {
+    [Route("api/[controller]")]
     public class AccountController : BaseApiController
     {
         private readonly UserManager<User> _userManager;
@@ -90,25 +91,22 @@ namespace KevBlog.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<User>> PostAppUser(User appUser)
+        public ActionResult<User> PostAppUser(User appUser)
         {
             //var result = _userManager.Users.Add(appUser);
             //await _context.SaveChangesAsync();
-
             return CreatedAtAction("GetAppUser", new { id = appUser.Id }, appUser);
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteAppUser(int id)
+        public IActionResult DeleteAppUser(int id)
         {
             //var appUser = await _userManager.Users.(id);
             //if (appUser == null)
             //{
             //    return NotFound();
             //}
-
             //_userManager.Users.Remove(appUser);
-
             return NoContent();
         }
         private bool AppUserExists(int id)

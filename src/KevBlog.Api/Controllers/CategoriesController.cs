@@ -3,6 +3,7 @@ using KevBlog.Domain.Repositories;
 using Microsoft.AspNetCore.Mvc;
 namespace KevBlog.Api.Controllers
 {
+    [Route("api/[controller]")]
     public class CategoriesController : BaseApiController
     {
         private readonly ICategoryRepository _categoryRepository;
