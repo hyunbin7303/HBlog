@@ -3,6 +3,7 @@ using KevBlog.Contract.DTOs;
 using KevBlog.Domain.Entities;
 using KevBlog.Domain.Repositories;
 using Moq;
+using NUnit.Framework;
 
 namespace KevBlog.UnitTests.Services
 {
@@ -20,19 +21,19 @@ namespace KevBlog.UnitTests.Services
             _msgService = new MessageService(_mapper, _msgRepositoryMock.Object, _userRepositoryMock.Object, _groupRepositoryMock.Object);
         }
 
-        [Fact]
+        [Test]
         public async Task GivenSameNameForUserAndRecipient_WhenCreatemessageCalled_ThenResultFail()
         {
             string username = "test";
             
             var result = await _msgService.CreateMessage(username, new MessageCreateDto { Content = "YOYOYO", RecipientUsername = username });
 
-            Assert.False(result.IsSuccess);
-            Assert.Equal("You cannot send messages to yourself.", result.Message);
+            Assert.That(result.IsSuccess, Is.False);
+            Assert.That(result.Message, Is.EqualTo("You cannot send messages to yourself."));
             _msgRepositoryMock.Verify(o => o.AddMessage(It.IsAny<Message>()), Times.Never);
         }
 
-        [Fact]
+        [Test]
         public async Task GivenUserExist_AndNoRecipient_WhenCreateMessage_ThenResultFail()
         {
             string validUser = "validUser01";
@@ -40,11 +41,11 @@ namespace KevBlog.UnitTests.Services
           
             var result = await _msgService.CreateMessage(validUser, new MessageCreateDto { Content = "YOYOYO", RecipientUsername = "Recipient01" });
 
-            Assert.False(result.IsSuccess);
-            Assert.Equal("Recipient not found", result.Message);
+            Assert.That(result.IsSuccess, Is.False);
+            Assert.That(result.Message, Is.EqualTo("Recipient not found"));
         }
 
-        [Fact]
+        [Test]
         public async Task GivenSaveAllFailure_WhenCreateMessage_ThenResultFail()
         {
             string validUser = "validUser01";
@@ -55,11 +56,11 @@ namespace KevBlog.UnitTests.Services
 
             var result = await _msgService.CreateMessage(validUser, new MessageCreateDto { Content = "YOYOYO", RecipientUsername = recipentUser });
 
-            Assert.False(result.IsSuccess);
-            Assert.Equal("Error in Create Message.", result.Message);
+            Assert.That(result.IsSuccess, Is.False);
+            Assert.That(result.Message, Is.EqualTo("Error in Create Message."));
         }
 
-        [Fact]
+        [Test]
         public async Task GivenSaveAllSuccess_WhenCreateMessage_ThenResultSuccess()
         {
             string validUser = "validUser01";
@@ -70,9 +71,9 @@ namespace KevBlog.UnitTests.Services
 
             var result = await _msgService.CreateMessage(validUser, new MessageCreateDto { Content = "YOYOYO", RecipientUsername = recipentUser });
 
-            Assert.True(result.IsSuccess);
-            Assert.Equal(result.Value.SenderUsername, validUser);
-            Assert.Equal(result.Value.RecipientUsername, recipentUser);
+            Assert.That(result.IsSuccess,Is.True);
+            Assert.That(result.Value.SenderUsername, Is.EqualTo(validUser));
+            Assert.That(result.Value.RecipientUsername, Is.EqualTo(validUser));
             _msgRepositoryMock.Verify(o => o.AddMessage(It.IsAny<Message>()), Times.Once);
             _msgRepositoryMock.Verify(o => o.SaveAllAsync(), Times.Once);
         }

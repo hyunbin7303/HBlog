@@ -2,6 +2,7 @@
 using KevBlog.Domain.Repositories;
 using KevBlog.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace KevBlog.Infrastructure.Repositories
 {
@@ -24,5 +25,7 @@ namespace KevBlog.Infrastructure.Repositories
             => _dbSet.Remove(_dbSet.Find(id));
         public virtual async Task<int> SaveChangesAsync()
             => await _dataContext.SaveChangesAsync();
+        public async Task<IEnumerable<TEntity>> GetAll(Expression<Func<TEntity, bool>> predicate)
+            => await Task.Run(() => _dbSet.Where(predicate)); 
     }
 }

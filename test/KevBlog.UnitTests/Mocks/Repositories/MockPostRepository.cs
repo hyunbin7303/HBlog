@@ -35,10 +35,23 @@ namespace KevBlog.UnitTests.Mocks.Repositories
 
         public static List<Post> GenerateData(int count)
         {
+            DateTime startDate = new DateTime(2018, 1, 1);
+            DateTime endDate = new DateTime(2024, 3, 15);
+
             var posts = new List<Post>();
             for (int i = 0; i < count; i++)
             {
-                var post = new Post { Id = i + 1, UserId = 1, Created = DateTime.Now, Desc = "Desc" + i, Content = "Content1", LastUpdated = DateTime.Now, Status = "Pending", LinkForPost = "https://github.com/hyunbin7303" };
+                var post = new Post 
+                { 
+                    Id = i + 1, 
+                    UserId = 1, 
+                    Created = TestHelper.GenerateRandomDateTime(startDate, endDate), 
+                    Desc = "Desc" + i, 
+                    Content = "Content1", 
+                    LastUpdated = DateTime.Now, 
+                    Status = "Pending", 
+                    CategoryId  = 1,
+                    LinkForPost = "https://github.com/hyunbin7303" };
                 post.User = new User
                 {
                     Id = 1,

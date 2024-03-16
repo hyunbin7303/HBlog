@@ -17,19 +17,5 @@ namespace KevBlog.UnitTests.Services
             _likeService = new LikeService(_mapper, _likeRepoMock.Object, _userRepoMock.Object);
         }
 
-        [Fact]
-        public async Task Given_When_Then()
-        {
-            var result = await _likeService.AddLike(1, "hyunbin7303");
-        }
-
-        [Fact]
-        public async Task Given_When_Then2()
-        {
-            LikesParams likesParams = new();
-            var result = await _likeService.GetUserLikePageList(likesParams);
-
-            //Assert.False(result.)
-        }
     }
 }

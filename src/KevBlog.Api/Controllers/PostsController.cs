@@ -5,6 +5,8 @@ using KevBlog.Domain.Repositories;
 using KevBlog.Infrastructure.Extensions;
 using KevBlog.Contract.DTOs;
 using KevBlog.Application.Services;
+using KevBlog.Domain.Params;
+using KevBlog.Domain.Common.Params;
 
 
 namespace KevBlog.Api.Controllers
@@ -24,15 +26,22 @@ namespace KevBlog.Api.Controllers
 
         [AllowAnonymous]
         [HttpGet("posts")]
-        public async Task<ActionResult<IEnumerable<PostDisplayDto>>> GetPosts()
+        public async Task<ActionResult<IEnumerable<PostDisplayDto>>> GetPosts([FromQuery]QueryParams queryParams)
         {
-            return Ok(new ApiResponse<IEnumerable<PostDisplayDto>>(await _postService.GetPosts()));
+            return Ok(new ApiResponse<IEnumerable<PostDisplayDto>>(await _postService.GetPosts(queryParams)));
         }
 
         [AllowAnonymous]
         [HttpGet]
         [Route("categories/{categoryId}/posts")]
-        public async Task<ActionResult<IEnumerable<PostDisplayDto>>> GetPostsByCategory(int categoryId) => Ok(await _postService.GetPostsByCategory(categoryId));
+        public async Task<ActionResult<IEnumerable<PostDisplayDto>>> GetPostsByCategory(int categoryId)
+        {
+            var result = await _postService.GetPostsByCategory(categoryId);
+            if(result.IsSuccess is false)
+                return NotFound(result.Message);  
+            
+            return Ok(result.Value);
+        }
 
         [AllowAnonymous]
         [HttpGet("users/{username}/posts")]

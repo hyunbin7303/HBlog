@@ -6,6 +6,7 @@ namespace KevBlog.Domain.Repositories
     {
         Task UpdateAsync(Post user);
         Task<IEnumerable<Post>> GetPostsAsync();
+        Task<IEnumerable<Post>> GetPostsAsync(int limit, int offset);   
         Task<IEnumerable <Post>> GetPostsWithIncludesAsync(int id);   
         Task<IEnumerable<Post>> GetPostsByUserName(string userName);
     }

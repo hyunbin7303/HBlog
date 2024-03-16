@@ -1,4 +1,3 @@
-using KevBlog.Domain.Constants;
 using KevBlog.Domain.Entities;
 using KevBlog.Domain.Repositories;
 using KevBlog.Infrastructure.Data;
@@ -22,6 +21,10 @@ namespace KevBlog.Infrastructure.Repositories
         {
             return await _dbContext.Posts.AsNoTracking().Include(u => u.User).ToListAsync();
         }
+        public async Task<IEnumerable<Post>> GetPostsAsync(int limit, int offset)
+        {
+            return await _dbContext.Posts.AsNoTracking().OrderByDescending(p => p.Created).Skip(offset).Take(limit).ToListAsync();
+        }
         public async Task UpdateAsync(Post user)
         {
             _dbContext.Entry(user).State = EntityState.Modified;
@@ -31,5 +34,7 @@ namespace KevBlog.Infrastructure.Repositories
         {
             return await _dbContext.Posts.AsNoTracking().Include(x => x.Category).ToListAsync();
         }
+
+
     }
 }

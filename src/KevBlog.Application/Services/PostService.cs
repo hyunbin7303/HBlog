@@ -86,25 +86,11 @@ public class PostService : BaseService, IPostService
         return ServiceResult.Success(postDisplay);
     }
 
-    public async Task<IEnumerable<PostDisplayDto>> GetPosts()
+    public async Task<IEnumerable<PostDisplayDto>> GetPosts(QueryParams query)
     {
         IEnumerable<Post> posts = await _postRepository.GetPostsAsync();
         return _mapper.Map<IEnumerable<PostDisplayDto>>(posts);
     }
-    public async Task<PageList<PostDisplayDto>> GetPosts(PostParams postParams)
-    {
-        var category = await _categoryRepository.GetById(postParams.CategoryId);
-        if(category is null)
-            throw new ArgumentNullException(nameof(category));  // May need to change this? 
-
-        var postList = await _postRepository.GetPostsAsync();
-        if(postList is null)
-            throw new ArgumentNullException(nameof(postList));
-
-        // TODO Check how to implement
-        return null; 
-    }
-
 
     public async Task<IEnumerable<PostDisplayDto>> GetPostsByTagName(string tagName)
     {
@@ -146,8 +132,16 @@ public class PostService : BaseService, IPostService
         return ServiceResult.Success(msg: $"Removed Post Id: {id}");
     }
 
-    public Task<IEnumerable<PostDisplayDto>> GetPostsByCategory(int categoryId)
+    public async Task<ServiceResult<IEnumerable<PostDisplayDto>>> GetPostsByCategory(int categoryId)
     {
-        throw new NotImplementedException();
+        var category = await _categoryRepository.GetById(categoryId);
+        if(category is null)
+            return ServiceResult.Fail<IEnumerable<PostDisplayDto>>(msg: "NotFound Category.");
+
+        var posts = await _postRepository.GetAll(o => o.CategoryId == categoryId);
+        if(posts.Count() == 0)
+            return ServiceResult.Fail<IEnumerable<PostDisplayDto>>(msg: "NotFound Posts.");
+
+        return ServiceResult.Success<IEnumerable<PostDisplayDto>>(msg: "Success");
     }
 }

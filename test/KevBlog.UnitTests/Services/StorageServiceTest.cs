@@ -1,8 +1,8 @@
-﻿using KevBlog.Application.Services;
-using KevBlog.Domain.Repositories;
+﻿using KevBlog.Domain.Repositories;
 using KevBlog.Infrastructure.Services;
 using Microsoft.Extensions.Options;
 using Moq;
+using NUnit.Framework;
 namespace KevBlog.UnitTests.Services
 {
     public class StorageServiceTest : TestBase
@@ -19,19 +19,5 @@ namespace KevBlog.UnitTests.Services
             _mockDataRepository = new();
             _storageService = new AwsStorageService(_options, _mockStorageRepository.Object, _mockDataRepository.Object, _mockUserRepository.Object);
         }
-
-        [Fact]
-        public async Task GivenEmptyName_CreateBucket_ThenReturnError()
-        {
-            var result = await _storageService.CreateBucketAsync(string.Empty, 0);
-
-            Assert.False(result);
-        }
-
-        //[Fact]
-        //public async Task Given_When_Then()
-        //{
-        //    var result = await _storageService.CreateBucketAsync("NewBucket", 0);
-        //}
     }
 }

@@ -2,7 +2,9 @@
 using KevBlog.Domain.Entities;
 using KevBlog.Domain.Params;
 using KevBlog.Domain.Repositories;
+using KevBlog.UnitTests.Mocks.Repositories;
 using Moq;
+using NUnit.Framework;
 
 namespace KevBlog.UnitTests.Services
 {
@@ -10,25 +12,26 @@ namespace KevBlog.UnitTests.Services
     {
         private IUserService _userService;
         private readonly Mock<IUserRepository> _userRepositoryMock = new();
+        private readonly MockUserRepository _userRepositoryMock2 = new(); // Just use this?
         public UserServiceTest()
         {
             _userService = new UserService(_mapper, _userRepositoryMock.Object);
         }
 
-        [Fact]
+        [Test]
         public async Task GetMembersAsync_ExistingUser_ReturnPageList()
         {
             string username = "kevin0";
-            UserParams userParams = new UserParams();
+            UserParams userParams = new UserParams { Gender = "male", PageNumber=0, PageSize = 5 };
             userParams.CurrentUsername = username;
 
             var result = await _userService.GetMembersAsync(userParams);
 
-            Assert.NotNull(result);
+            Assert.That(result, Is.Not.Null);
             _userRepositoryMock.Verify(x => x.GetUserByUsernameAsync(username), Times.Once);
         }
 
-        [Fact]
+        [Test]
         public async Task GetMembersByUsernameAsync_ExistingUser_ReturnMemberDto()
         {
             string username = "kevin0";
@@ -36,12 +39,12 @@ namespace KevBlog.UnitTests.Services
 
             var result = await _userService.GetMembersByUsernameAsync(username);
 
-            Assert.True(result.IsSuccess);
-            Assert.Equal(username, result.Value.UserName);
-            Assert.Equal(1, result.Value.Id);
+            Assert.That(result.IsSuccess, Is.True);
+            Assert.That(result.Value.UserName, Is.EqualTo(username));
+            Assert.That(result.Value.Id, Is.EqualTo(1));
         }
 
-        [Fact]
+        [Test]
         public async Task GetMembersByUsernameAsync_NotExistingUser_ResultFailure()
         {
             string username = "NonExisting";
@@ -49,8 +52,8 @@ namespace KevBlog.UnitTests.Services
 
             var result = await _userService.GetMembersByUsernameAsync(username);
 
-            Assert.False(result.IsSuccess);
-            Assert.Equal("Failed to get user", result.Message);
+            Assert.That(result.IsSuccess, Is.False);
+            Assert.That(result.Message, Is.EqualTo("Failed to get user"));
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿using KevBlog.Domain.Common;
+﻿using System.Linq.Expressions;
 namespace KevBlog.Domain.Repositories
 {
     public interface IRepository<TEntity> where TEntity : class
@@ -6,8 +6,7 @@ namespace KevBlog.Domain.Repositories
         void Add(TEntity obj);
         Task<TEntity> GetById(int id);
         IQueryable<TEntity> GetAll();
-
-        //IQueryable<TEntity> GetAll(ISpecification<TEntity> spec);
+        Task<IEnumerable<TEntity>> GetAll(Expression<Func<TEntity, bool>> predicate);
         IQueryable<TEntity> GetAllSoftDeleted();
         void Remove(int id);
         Task<int> SaveChangesAsync();

@@ -4,8 +4,10 @@ using KevBlog.Infrastructure.Data;
 using KevBlog.Infrastructure.Repositories;
 using KevBlog.UnitTests.Mocks.Repositories;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using MockQueryable.Moq;
 using Moq;
+using NUnit.Framework;
 
 namespace KevBlog.UnitTests.Repositories
 {
@@ -20,7 +22,7 @@ namespace KevBlog.UnitTests.Repositories
         }
 
 
-        [Fact]
+        [Test]  
         public async Task GetPostsAsync_Retrieve_Success()
         {
             int postTotal = 5;
@@ -29,11 +31,11 @@ namespace KevBlog.UnitTests.Repositories
 
             var posts = await _repository.GetPostsAsync();
 
-            Assert.NotNull(posts);
-            Assert.Equal(postTotal, posts.Count());
+            Assert.That(posts, Is.Not.Null);
+            Assert.That(posts.Count(), Is.EqualTo(5));
         }
 
-        [Fact]
+        [Test]
         public async Task GetPostById_FindExistingOne_Success()
         {
             var mock = MockPostRepository.GenerateData(5).BuildMock().BuildMockDbSet();
@@ -41,11 +43,11 @@ namespace KevBlog.UnitTests.Repositories
 
             var post = await _repository.GetById(1);
 
-            Assert.NotNull(post);
-            Assert.Equal(1, post.Id);
+            Assert.That(post, Is.Not.Null);
+            Assert.That(post.Id, Is.EqualTo(1));
         }
 
-        [Fact]
+        [Test]
         public async Task GetPostById_NotExistingId_ReturnNull()
         {
             var mock = MockPostRepository.GenerateData(5).BuildMock().BuildMockDbSet();
@@ -53,10 +55,10 @@ namespace KevBlog.UnitTests.Repositories
 
             var post = await _repository.GetById(100);
 
-            Assert.Null(post);
+            Assert.That(post, Is.Not.Null);
         }
 
-        [Fact]
+        [Test]
         public async Task GetPostsByUserName_ExistingUser_ReturnPosts()
         {
             var mock = MockPostRepository.GenerateData(5).BuildMock().BuildMockDbSet();
@@ -64,11 +66,11 @@ namespace KevBlog.UnitTests.Repositories
 
             var posts = await _repository.GetPostsByUserName("test");
 
-            Assert.NotNull(posts);
-            Assert.Equal(1, posts.First().UserId);
+            Assert.That(posts, Is.Not.Null);
+            Assert.That(posts.First().UserId, Is.EqualTo(1));
         }
 
-        [Fact]
+        [Test]
         public async Task GetPostsByUserName_NotExistingUser_ReturnNull()
         {
             var mock = MockPostRepository.GenerateData(5).BuildMock().BuildMockDbSet();
@@ -76,11 +78,11 @@ namespace KevBlog.UnitTests.Repositories
 
             var posts = await _repository.GetPostsByUserName("NotExisting");
 
-            Assert.Null(posts);
+            Assert.That(posts, Is.Not.Null);
         }
 
-        [Fact]
-        public async Task CreateAsync_InsertPost_AddAndSaveChangesCalledOnce()
+        [Test]
+        public async Task GivenValidObjects_WhenInsertData_AddAndSaveChangesCalledOnce()
         {
             var mockSet = new Mock<DbSet<Post>>();
             dataContextMock.Setup(m => m.Posts).Returns(mockSet.Object);   
@@ -93,13 +95,24 @@ namespace KevBlog.UnitTests.Repositories
             dataContextMock.Verify(m => m.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once());
         }
 
-        [Fact]
+        [Test]
+        public async Task GetPostsAsync_LimitFour_ReturnFourObjectsInOrderByCreatedTime()
+        {
+            var mock = MockPostRepository.GenerateData(5).BuildMock().BuildMockDbSet();
+            dataContextMock.Setup(x => x.Posts).Returns(mock.Object);
+
+            var result = await _repository.GetPostsAsync(4,0);
+
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.Count(), Is.EqualTo(4));
+        }
+
+        [Test]
         public async Task VerifyingMockWorking()
         {
             var testObject = MockPostRepository.GenerateData(5)[0];
 
             var context = new Mock<DataContext>();
-            //var dbSetMock = new Mock<DbSet<Post>>();
             var mock = MockPostRepository.GenerateData(5).BuildMock().BuildMockDbSet();
             mock.Setup(x => x.Find(It.IsAny<int>())).Returns(testObject);
             context.Setup(x => x.Set<Post>()).Returns(mock.Object);

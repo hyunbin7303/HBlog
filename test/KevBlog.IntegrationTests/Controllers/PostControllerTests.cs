@@ -3,6 +3,7 @@ using System.Net;
 using System.Text.Json;
 using KevBlog.Contract.DTOs;
 using KevBlog.Contract.Common;
+using KevBlog.Domain.Common.Params;
 
 namespace KevBlog.IntegrationTests.Controllers
 {
@@ -23,12 +24,13 @@ namespace KevBlog.IntegrationTests.Controllers
         [Fact]
         public async Task GivenValidPosts_WhenGetPostsCalled_ThenResponsePosts()
         {
+            QueryParams postParams = new();
             IEnumerable<PostDisplayDto> posts = new List<PostDisplayDto>
             {
                 new PostDisplayDto { Id = 1, Title = "PostDisplay#1", Desc = "TestingDesc1", Content = "TestingContent1", UserName="hyunbin7303" },
                 new PostDisplayDto { Id = 2, Title = "PostDisplay#2", Desc = "TestingDesc2", Content = "TestingContent2", UserName="hyunbin7303" },
             };
-            _factory._mockPostService.Setup(x => x.GetPosts()).ReturnsAsync(posts);
+            _factory._mockPostService.Setup(x => x.GetPosts(postParams)).ReturnsAsync(posts);
             var response = await _client.GetAsync("/api/posts");
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 

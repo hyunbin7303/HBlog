@@ -3,6 +3,7 @@ using KevBlog.Contract.DTOs;
 using KevBlog.Domain.Entities;
 using KevBlog.Domain.Repositories;
 using Moq;
+using NUnit.Framework;
 
 namespace KevBlog.UnitTests.Services
 {
@@ -14,7 +15,7 @@ namespace KevBlog.UnitTests.Services
         {
             _tagService = new TagService(_mapper, _tagRepositoryMock.Object);
         }
-        [Fact]
+        [Test]
         public async Task WhenGetAllTagsCalled_ThenReturnAllTags()
         {
             IEnumerable<Tag> tags = new List<Tag>()
@@ -26,22 +27,22 @@ namespace KevBlog.UnitTests.Services
             _tagRepositoryMock.Setup(o => o.GetAll()).ReturnsAsync(tags);
             var result = await _tagService.GetAllTags();
 
-            Assert.NotNull(result);
-            Assert.Equal(3, result.Count());
-            Assert.Equal(1, result.First().TagId);
-            Assert.Equal("Programming", result.First().Name);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.Count(), Is.EqualTo(3));
+            Assert.That(result.First().TagId, Is.EqualTo(1));
+            Assert.That(result.First().Name, Is.EqualTo("Programming"));
         }
 
-        [Fact]
+        [Test]
         public async Task GivenTitleEmpty_WhenCreateTagcalled_ThenReturnMessage()
         {
             var result = await _tagService.CreateTag(new TagCreateDto { });
 
-            Assert.False(result.IsSuccess);
-            Assert.Equal("Tag Title is empty.", result.Message);
+            Assert.That(result.IsSuccess, Is.False);
+            Assert.That(result.Message, Is.EqualTo("Tag Title is empty."));
         }
 
-        [Fact]
+        [Test]
         public async Task GivenValidTag_WhenCreateTag_ThenReturnSuccess()
         {
             TagCreateDto tagDto = new TagCreateDto { Desc = "test", Name = "Tagname", Slug = "TestingSlug" };
@@ -49,23 +50,23 @@ namespace KevBlog.UnitTests.Services
 
             var result = await _tagService.CreateTag(tagDto);
 
-            Assert.True(result.IsSuccess);
-            Assert.Equal($"Successfully created the tag name : {tagDto.Name}", result.Message);
+            Assert.That(result.IsSuccess, Is.True);
+            Assert.That(result.Message, Is.EqualTo($"Successfully created the tag name : {tagDto.Name}"));
             _tagRepositoryMock.Verify(o => o.Add(It.IsAny<Tag>()));
         }
 
-        [Fact] 
+        [Test] 
         public async Task GivenInvalidTagId_WhenDeleteTagCalled_ThenReturnErrorMessage()
         {
             int wrongTagId = 100;
 
             var result = await _tagService.RemoveTag(wrongTagId);
 
-            Assert.False(result.IsSuccess);
-            Assert.Equal($"Tag id:{wrongTagId} is not exist.", result.Message);
+            Assert.That(result.IsSuccess, Is.False);
+            Assert.That(result.Message, Is.EqualTo($"Tag id:{wrongTagId} is not exist."));
             _tagRepositoryMock.Verify(x => x.Delete(It.IsAny<Tag>()), Times.Never);
         }
-        [Fact]
+        [Test]
         public async Task GivenValidTagId_WhenDeleteTagCalled_ThenReturnSuccess()
         {
             int validTagId = 5;
@@ -73,7 +74,7 @@ namespace KevBlog.UnitTests.Services
       
             var result = await _tagService.RemoveTag(validTagId);
 
-            Assert.True(result.IsSuccess);
+            Assert.That(result.IsSuccess, Is.True);
             _tagRepositoryMock.Verify(x => x.Delete(It.IsAny<Tag>()), Times.Once);
         }
 
