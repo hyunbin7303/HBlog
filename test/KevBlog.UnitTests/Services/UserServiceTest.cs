@@ -11,8 +11,7 @@ namespace KevBlog.UnitTests.Services
     public class UserServiceTest : TestBase
     {
         private IUserService _userService;
-        private readonly Mock<IUserRepository> _userRepositoryMock = new();
-        private readonly MockUserRepository _userRepositoryMock2 = new(); // Just use this?
+        private readonly MockUserRepository _userRepositoryMock = new(); // Just use this?
         public UserServiceTest()
         {
             _userService = new UserService(_mapper, _userRepositoryMock.Object);

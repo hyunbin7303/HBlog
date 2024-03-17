@@ -88,7 +88,7 @@ public class PostService : BaseService, IPostService
 
     public async Task<IEnumerable<PostDisplayDto>> GetPosts(QueryParams query)
     {
-        IEnumerable<Post> posts = await _postRepository.GetPostsAsync();
+        IEnumerable<Post> posts = await _postRepository.GetPostsAsync(query.Limit, query.Offset);
         return _mapper.Map<IEnumerable<PostDisplayDto>>(posts);
     }
 
@@ -142,6 +142,6 @@ public class PostService : BaseService, IPostService
         if(posts.Count() == 0)
             return ServiceResult.Fail<IEnumerable<PostDisplayDto>>(msg: "NotFound Posts.");
 
-        return ServiceResult.Success<IEnumerable<PostDisplayDto>>(msg: "Success");
+        return ServiceResult.Success(_mapper.Map<IEnumerable<PostDisplayDto>>(posts));
     }
 }

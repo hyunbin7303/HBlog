@@ -4,13 +4,31 @@
     "Desc": "Description for this Post",
     "Content": "HAHAHAHA I don't know what to say about this",
     "Type": "Programming",
-    "UserId": 1
+    "UserId": 1,
+    "CategoryId":  1
   },
   {
-    "Title": "Sample Post for my blog!",
+    "Title": "How to use Azure",
     "Desc": "TestTest",
-    "Content": "asdf",
+    "Content": "# Azure investigation",
     "Type": "Self-Reflection",
-    "UserId": 1
+    "UserId": 1,
+    "CategoryId": 2
+  },
+  {
+    "Title": "My life",
+    "Desc": "TestTest",
+    "Content": "# Azure investigation",
+    "Type": "Self-Reflection",
+    "UserId": 1,
+    "CategoryId": 3
+  },
+  {
+    "Title": "My travel",
+    "Desc": "TestTest",
+    "Content": "# korea trip",
+    "Type": "Self-Reflection",
+    "UserId": 1,
+    "CategoryId": 3
   }
 ]

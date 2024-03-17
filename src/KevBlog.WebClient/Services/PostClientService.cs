@@ -6,7 +6,8 @@ namespace KevBlog.WebClient.Services
 {
     public interface IPostService
     {
-        public Task<IEnumerable<PostDisplayDto>> GetPostDisplays(int categoryId = 0);
+        public Task<IEnumerable<PostDisplayDto>> GetPostDisplays(int limit = 5, int offset = 0);
+        public Task<IEnumerable<PostDisplayDto>> GetPostDisplayByCategoryId(int categoryId);
         public Task<PostDisplayDetailsDto> GetPostDetails(int id);
         public Task<bool> CreatePost(PostCreateDto postCreateDto);
         public Task<bool> UpdatePost(PostUpdateDto postUpdateDto);
@@ -66,11 +67,33 @@ namespace KevBlog.WebClient.Services
         public async Task<PostDisplayDetailsDto> GetPostDetails(int id) =>
             await _httpClient.GetFromJsonAsync<PostDisplayDetailsDto>($"Posts/{id}");
 
-        public async Task<IEnumerable<PostDisplayDto>> GetPostDisplays(int categoryId = 0) =>
-             categoryId switch
-             {
-                 0 => await _httpClient.GetFromJsonAsync<IEnumerable<PostDisplayDto>>($"Posts"),
-                 _ => await _httpClient.GetFromJsonAsync<IEnumerable<PostDisplayDto>>($"Posts/categories/{categoryId}")
-             };
+
+        private record ApiResponse<T>(T Data, bool Success = true, string ErrorMessage = null);
+        public async Task<IEnumerable<PostDisplayDto>> GetPostDisplays(int limit = 5, int offset = 0)
+        {
+            var query = new Dictionary<string, string>
+            {
+                { "limit",  limit.ToString() },
+                { "offset", offset.ToString() }
+            };
+            var url = BuildUrlWithQueryStringUsingUriBuilder($"{_httpClient.BaseAddress}posts", query);
+
+            var result = await _httpClient.GetFromJsonAsync<ApiResponse<IEnumerable<PostDisplayDto>>>(url);
+            return result.Data!;
+        }
+
+        public async Task<IEnumerable<PostDisplayDto>> GetPostDisplayByCategoryId(int categoryId)
+        {
+            var result = await _httpClient.GetFromJsonAsync<IEnumerable<PostDisplayDto>>($"categories/{categoryId}/posts");
+            return result!;
+        }
+        public string BuildUrlWithQueryStringUsingUriBuilder(string basePath, Dictionary<string, string> queryParams)
+        {
+            var uriBuilder = new UriBuilder(basePath)
+            {
+                Query = string.Join("&", queryParams.Select(kvp => $"{kvp.Key}={kvp.Value}"))
+            };
+            return uriBuilder.Uri.AbsoluteUri;
+        }
     }
 }
