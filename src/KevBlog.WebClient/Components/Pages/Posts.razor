@@ -46,9 +46,6 @@
 
     private async Task HandleChangeCategory(ChangeEventArgs args)
     {
-        posts = new List<PostDisplayDto>();
-        var categoryId = int.Parse(args.Value.ToString());
-        posts = await postService.GetPostDisplays(categoryId);
-
+        posts = await postService.GetPostDisplayByCategoryId(int.Parse(args.Value.ToString()));
     }
 }
