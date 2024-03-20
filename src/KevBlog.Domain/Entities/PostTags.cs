@@ -1,6 +1,4 @@
-﻿using KevBlog.Domain.Common;
-
-namespace KevBlog.Domain.Entities
+﻿namespace KevBlog.Domain.Entities
 {
     public class PostTags
     {

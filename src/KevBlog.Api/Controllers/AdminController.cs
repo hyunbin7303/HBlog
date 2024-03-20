@@ -6,7 +6,6 @@ using Microsoft.EntityFrameworkCore;
 
 namespace KevBlog.Api.Controllers
 {
-    [Route("api/[controller]")]
     public class AdminController : BaseApiController
     {
         private readonly UserManager<User> _userManager;
@@ -17,7 +16,7 @@ namespace KevBlog.Api.Controllers
         }
 
         [Authorize(Policy ="RequireAdminRole")]
-        [HttpGet("users-with-roles")]
+        [HttpGet("admin/users-with-roles")]
         public async Task<ActionResult> GetUsersWithRoles()
         {
             var users = await _userManager.Users
@@ -33,7 +32,7 @@ namespace KevBlog.Api.Controllers
             return Ok(users);
         }
         [Authorize(Policy = "RequireAdminRole")]
-        [HttpPost("edit-roles/{username}")]
+        [HttpPost("admin/edit-roles/{username}")]
         public async Task<ActionResult> EditRoles(string username, [FromQuery]string roles)
         {
             if (string.IsNullOrEmpty(roles)) return BadRequest("You must select at least one role");
@@ -50,7 +49,7 @@ namespace KevBlog.Api.Controllers
         }
 
         [Authorize(Policy ="ModeratePhotoRole")]
-        [HttpGet("photos-to-moderate")]
+        [HttpGet("admin/photos-to-moderate")]
         public ActionResult GetPhotosForModeration()
         {
             return Ok("Admins or moderators can see this.");

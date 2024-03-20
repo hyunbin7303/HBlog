@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace KevBlog.Api.Controllers
 {
-    [Route("api/[controller]")]
     public class LikesController : BaseApiController
     {
         private readonly ILikeService _likeService;
@@ -17,7 +16,7 @@ namespace KevBlog.Api.Controllers
             _likeService = likeService;
         }
 
-        [HttpPost("{username}")]
+        [HttpPost("likes/{username}")]
         public async Task<ActionResult> AddLike(string username){
             var sourceUserId = User.GetUserId();
             var result = await _likeService.AddLike(sourceUserId, username);
@@ -28,7 +27,7 @@ namespace KevBlog.Api.Controllers
 
             return Ok(result);
         }
-        [HttpGet]
+        [HttpGet("likes")]
         public async Task<ActionResult<PageList<LikeDto>>> GetUserLikes([FromQuery]LikesParams likesParam) {
             likesParam.UserId = User.GetUserId();
             var users = await _likeService.GetUserLikePageList(likesParam);

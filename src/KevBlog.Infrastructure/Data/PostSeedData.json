@@ -1,16 +1,18 @@
 [
   {
-    "Title": "Programming is fun!",
+    "Id":  1,
+    "Title": "Dotnet Programming is fun!",
     "Desc": "Description for this Post",
-    "Content": "HAHAHAHA I don't know what to say about this",
+    "Content": "## How to handle Concurrency \n * Task.",
     "Type": "Programming",
     "UserId": 1,
     "CategoryId": 1,
-    "Created":  "2020-01-05"
+    "Created": "2020-01-05"
   },
   {
-    "Title": "How to use Azure",
-    "Desc": "TestTest",
+    "Id":  2,
+    "Title": "How to use Azure in dotnet",
+    "Desc": "Basic implementation using Azure",
     "Content": "# Azure investigation",
     "Type": "Self-Reflection",
     "UserId": 1,
@@ -18,6 +20,7 @@
     "Created": "2022-07-05"
   },
   {
+    "Id": 3,
     "Title": "My life",
     "Desc": "TestTest",
     "Content": "# My life in Korea",
@@ -27,6 +30,7 @@
     "Created": "2021-01-20"
   },
   {
+    "Id": 4,
     "Title": "My travel",
     "Desc": "TestTest",
     "Content": "# korea trip",
@@ -36,6 +40,7 @@
     "Created": "2019-05-06"
   },
   {
+    "Id": 5,
     "Title": "Macy Life!!!",
     "Desc": "TestTest",
     "Content": "# korea trip",
@@ -43,5 +48,15 @@
     "UserId": 2,
     "CategoryId": 3,
     "Created": "2020-01-05"
+  },
+  {
+    "Id": 6,
+    "Title": "Recent Book - Wonder",
+    "Desc": "Book read",
+    "Content": "# My impression about Wonder",
+    "Type": "Self-Reflection",
+    "UserId": 1,
+    "CategoryId": 3,
+    "Created": "2024-03-10"
   }
 ]

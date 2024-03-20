@@ -74,6 +74,8 @@ public class Program
             await Seed.SeedUsers(userManager, roleManager);
             await Seed.SeedCategories(context);
             await Seed.SeedPosts(context);
+            await Seed.SeedTags(context);
+            await Seed.SeedPostTags(context);
         }
         catch (Exception ex)
         {

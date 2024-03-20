@@ -54,6 +54,7 @@ namespace KevBlog.Infrastructure.Data
 
             modelBuilder.Entity<PostTags>()
                 .HasKey(k => new { k.PostId, k.TagId });
+
             modelBuilder.Entity<PostTags>()
                 .HasOne(pt => pt.Post)
                 .WithMany(p => p.PostTags)

@@ -6,6 +6,7 @@ using KevBlog.Domain.Common.Params;
 using KevBlog.Domain.Constants;
 using KevBlog.Domain.Entities;
 using KevBlog.Domain.Repositories;
+using System.Runtime.ConstrainedExecution;
 namespace KevBlog.Application.Services;
 public class PostService : BaseService, IPostService
 {
@@ -76,13 +77,15 @@ public class PostService : BaseService, IPostService
 
     public async Task<ServiceResult<PostDisplayDetailsDto>> GetByIdAsync(int id)
     {
-        Post post = await _postRepository.GetById(id);
+        Post post = await _postRepository.GetPostDetails(id);
         if (post is null || post.Status is PostStatus.Removed)
             return ServiceResult.Fail<PostDisplayDetailsDto>(msg: "Post is not exist or status is removed.");
 
-        User user = await _userRepository.GetUserByIdAsync(post.UserId);
         var postDisplay = _mapper.Map<PostDisplayDetailsDto>(post);
+
+        User user = await _userRepository.GetUserByIdAsync(post.UserId);
         postDisplay.UserName = user?.UserName ?? "Unknown";
+      
         return ServiceResult.Success(postDisplay);
     }
 
@@ -92,16 +95,18 @@ public class PostService : BaseService, IPostService
         return _mapper.Map<IEnumerable<PostDisplayDto>>(posts);
     }
 
-    public async Task<IEnumerable<PostDisplayDto>> GetPostsByTagName(string tagName)
+    public async Task<ServiceResult<IEnumerable<PostDisplayDto>>> GetPostsByTagName(string tagName)
     {
         var tags = await _tagRepository.FindbyTagName(tagName);
         if(tags is null)
             throw new ArgumentNullException(nameof(tags));
 
-        var tagPosts = _postTagRepository.GetById(tags.Id);
+        var tagPosts = await _postTagRepository.GetAll(o => o.Tag.Name == tagName);
 
         IEnumerable<Post> posts = await _postRepository.GetPostsAsync();
-        return _mapper.Map<IEnumerable<PostDisplayDto>>(posts);
+        var result =  _mapper.Map<IEnumerable<PostDisplayDto>>(posts);
+        return ServiceResult.Success(result);
+
     }
 
     public async Task<ServiceResult> UpdatePost(PostUpdateDto updateDto)
@@ -143,5 +148,20 @@ public class PostService : BaseService, IPostService
             return ServiceResult.Fail<IEnumerable<PostDisplayDto>>(msg: "NotFound Posts.");
 
         return ServiceResult.Success(_mapper.Map<IEnumerable<PostDisplayDto>>(posts));
+    }
+
+    public async Task<ServiceResult<IEnumerable<PostDisplayDto>>> GetPostsByUsername(string userName)
+    {
+        var user = await _userRepository.GetUserByUsernameAsync(userName);
+        if(user is null)
+            return ServiceResult.Fail<IEnumerable<PostDisplayDto>>(msg: "NotFound Category.");
+
+
+        throw new NotImplementedException();
+    }
+
+    public Task<ServiceResult<PostDisplayDetailsDto>> GetBySlugAsync(string slug)
+    {
+        throw new NotImplementedException();
     }
 }

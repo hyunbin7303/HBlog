@@ -30,11 +30,10 @@ namespace KevBlog.Infrastructure.Repositories
             _dbContext.Entry(user).State = EntityState.Modified;
             await _dbContext.SaveChangesAsync();
         }
-        public async Task<IEnumerable<Post>> GetPostsWithIncludesAsync(int id)
+
+        public async Task<Post> GetPostDetails(int id)
         {
-            return await _dbContext.Posts.AsNoTracking().Include(x => x.Category).ToListAsync();
+            return await _dbContext.Posts.Where(p => p.Id == id).Include(u => u.User).Include(t => t.PostTags).FirstOrDefaultAsync();
         }
-
-
     }
 }

@@ -9,7 +9,6 @@ namespace KevBlog.Api.Controllers
 {
 
     [Authorize]
-    [Route("api/[controller]")]
     public class StorageController : BaseApiController
     {
         private readonly IAwsStorageService _awsStorageService;
@@ -21,7 +20,7 @@ namespace KevBlog.Api.Controllers
         }
 
         // TODO Implementation test cases. 
-        [HttpPost("Bucket/{bucketName}/UploadFile")]
+        [HttpPost("storage/Bucket/{bucketName}/UploadFile")]
         public async Task<IActionResult> UploadFile(List<IFormFile> formFiles, string bucketName, CancellationToken token)
         {
             var isAuthorized = await _awsStorageService.IsAuthorized(bucketName, User.GetUserId());
@@ -41,14 +40,14 @@ namespace KevBlog.Api.Controllers
             return Ok();
         }
 
-        [HttpGet("GetFile/{bucketName}")]
+        [HttpGet("storage/GetFile/{bucketName}")]
         public async Task<IActionResult> GetFile(string bucketName, CancellationToken token)
         {
 
             return Ok();
         }
 
-        [HttpPost("Bucket")]
+        [HttpPost("storage/Bucket")]
         public async Task<IActionResult> CreateBucket(string bucketName)
         {
             var result = await _awsStorageService.CreateBucketAsync(bucketName, User.GetUserId());

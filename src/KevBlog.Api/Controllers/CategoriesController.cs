@@ -3,7 +3,6 @@ using KevBlog.Domain.Repositories;
 using Microsoft.AspNetCore.Mvc;
 namespace KevBlog.Api.Controllers
 {
-    [Route("api/[controller]")]
     public class CategoriesController : BaseApiController
     {
         private readonly ICategoryRepository _categoryRepository;
@@ -11,7 +10,7 @@ namespace KevBlog.Api.Controllers
         {
             _categoryRepository = repository;
         }
-        [HttpGet]
+        [HttpGet("categories")]
         public async Task<ActionResult<IEnumerable<Category>>> Get() => Ok(await _categoryRepository.GetCategoriesAsync());
     }
 }

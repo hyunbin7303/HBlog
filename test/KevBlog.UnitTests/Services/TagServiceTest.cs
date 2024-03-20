@@ -11,9 +11,10 @@ namespace KevBlog.UnitTests.Services
     {
         private ITagService _tagService;
         private readonly Mock<ITagRepository> _tagRepositoryMock = new();
+        private readonly Mock<IPostRepository> _postRepositoryMock = new();
         public TagServiceTest()
         {
-            _tagService = new TagService(_mapper, _tagRepositoryMock.Object);
+            _tagService = new TagService(_mapper, _tagRepositoryMock.Object, _postRepositoryMock.Object, null);
         }
         [Test]
         public async Task WhenGetAllTagsCalled_ThenReturnAllTags()

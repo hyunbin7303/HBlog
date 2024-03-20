@@ -8,17 +8,16 @@ using Microsoft.AspNetCore.Mvc;
 namespace KevBlog.Api.Controllers
 {
     [Authorize]
-    [Route("api/[controller]")]
     public class TagsController : BaseApiController
     {
         private readonly ITagService _tagService;
         private readonly IUserService _userService;
         public TagsController(ITagService tagService, IUserService userService)
         {
-            this._tagService = tagService;
-            this._userService = userService;
+            _tagService = tagService;
+            _userService = userService;
         }
-        [HttpPost]
+        [HttpPost("tags")]
         public async Task<ActionResult> Create(TagCreateDto tagCreateDto)
         {
             if (tagCreateDto is null)
@@ -34,14 +33,23 @@ namespace KevBlog.Api.Controllers
             return Ok(result.Message);
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("tags/{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             var result = await _tagService.RemoveTag(id);
             return Ok(result.IsSuccess);
         }
 
-        [HttpGet]
+        [AllowAnonymous]
+        [HttpGet("tags")]
         public async Task<ActionResult<IEnumerable<Tag>>> Get() => Ok(await _tagService.GetAllTags());
+
+        [AllowAnonymous]
+        [HttpGet("posts/{postId}/tags")]
+        public async Task<ActionResult<IEnumerable<TagDto>>> GetTagByPostId(int postId)
+        {
+            var result = await _tagService.GetTagsByPostId(postId);
+            return Ok(result);
+        }
     }
 }

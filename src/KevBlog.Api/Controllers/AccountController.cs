@@ -8,7 +8,6 @@ using KevBlog.Contract.DTOs;
 
 namespace KevBlog.Api.Controllers
 {
-    [Route("api/[controller]")]
     public class AccountController : BaseApiController
     {
         private readonly UserManager<User> _userManager;
@@ -21,7 +20,7 @@ namespace KevBlog.Api.Controllers
             _mapper = mapper;
         }
 
-        [HttpPost("register")]
+        [HttpPost("account/register")]
         public async Task<ActionResult<UserDto>> Register(RegisterDto registerDto)
         {
             if (await UserExists(registerDto.UserName)) return BadRequest("Username is taken");
@@ -42,7 +41,7 @@ namespace KevBlog.Api.Controllers
             };
         }
 
-        [HttpPost("login")]
+        [HttpPost("account/login")]
         public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
         {
             var user = await _userManager.Users.Include(p=> p.Photos).FirstOrDefaultAsync(x => x.UserName == loginDto.UserName);
@@ -61,7 +60,7 @@ namespace KevBlog.Api.Controllers
             };
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("account/{id}")]
         public async Task<IActionResult> PutAppUser(int id, User appUser)
         {
             if (id != appUser.Id)
@@ -90,7 +89,7 @@ namespace KevBlog.Api.Controllers
             return NoContent();
         }
 
-        [HttpPost]
+        [HttpPost("account")]
         public ActionResult<User> PostAppUser(User appUser)
         {
             //var result = _userManager.Users.Add(appUser);
@@ -98,7 +97,7 @@ namespace KevBlog.Api.Controllers
             return CreatedAtAction("GetAppUser", new { id = appUser.Id }, appUser);
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("account/{id}")]
         public IActionResult DeleteAppUser(int id)
         {
             //var appUser = await _userManager.Users.(id);

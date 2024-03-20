@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace KevBlog.Api.Controllers
 {
-    [Route("api/[controller]")]
     public class BuggyController : BaseApiController
     {
         private readonly DataContext _dbContext;
@@ -14,13 +13,13 @@ namespace KevBlog.Api.Controllers
             _dbContext = dbContext;
         }
         [Authorize]
-        [HttpGet("auth")]
+        [HttpGet("buggy/auth")]
         public ActionResult<string> GetSecret()
         {
             return "Secret text";
         }
 
-        [HttpGet("not-found")]
+        [HttpGet("buggy/not-found")]
         public ActionResult<User> GetNotFound()
         {
             var thing = _dbContext.Users.Find(-1);
@@ -28,14 +27,14 @@ namespace KevBlog.Api.Controllers
             return thing;
         }
 
-        [HttpGet("server-error")]
+        [HttpGet("buggy/server-error")]
         public ActionResult<string> GetServerError()
         {
             var thing = _dbContext.Users.Find(-1);
             var thingToReturn = thing.ToString();
             return thingToReturn;
         }
-        [HttpGet("bad-request")]
+        [HttpGet("buggy/bad-request")]
         public ActionResult<string> GetBadRequest()
         {
             return BadRequest("This was not a good request.");

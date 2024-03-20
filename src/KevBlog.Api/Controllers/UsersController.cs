@@ -9,7 +9,6 @@ using KevBlog.Contract.DTOs;
 namespace KevBlog.Api.Controllers
 {
     [Authorize]
-    [Route("api/[controller]")]
     public class UsersController : BaseApiController
     {
         private readonly IUserService _userService;
@@ -18,7 +17,7 @@ namespace KevBlog.Api.Controllers
             _userService = userService;
         }
 
-        [HttpGet]
+        [HttpGet("users")]
         public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsers([FromQuery]UserParams userParams)
         {
             userParams.CurrentUsername = User.GetUsername();
@@ -27,7 +26,7 @@ namespace KevBlog.Api.Controllers
             return Ok(users);
         }
 
-        [HttpGet("{username}")]
+        [HttpGet("users/{username}")]
         public async Task<ActionResult<MemberDto>> GetUser(string username)
         {
             var user = await _userService.GetMembersByUsernameAsync(username);
@@ -37,7 +36,7 @@ namespace KevBlog.Api.Controllers
             return Ok(user);
         }
         
-        [HttpPut]
+        [HttpPut("users")]
         public async Task<IActionResult> Update(MemberUpdateDto memberUpdateDto)
         {
             if (memberUpdateDto is null)

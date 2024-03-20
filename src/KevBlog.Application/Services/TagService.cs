@@ -3,14 +3,19 @@ using KevBlog.Contract.Common;
 using KevBlog.Contract.DTOs;
 using KevBlog.Domain.Entities;
 using KevBlog.Domain.Repositories;
+using Microsoft.EntityFrameworkCore;
 namespace KevBlog.Application.Services
 {
     public class TagService : BaseService, ITagService
     {
         private readonly ITagRepository _tagRepository;
-        public TagService(IMapper mapper, ITagRepository tagRepository) : base(mapper)
+        private readonly IPostRepository _postRepository;
+        private readonly IRepository<PostTags> _postTagRepository;
+        public TagService(IMapper mapper, ITagRepository tagRepository, IPostRepository postRepository, IRepository<PostTags> postTagRepository) : base(mapper)
         {
             _tagRepository = tagRepository;
+            _postRepository = postRepository;
+            _postTagRepository = postTagRepository;
         }
         public Task<ServiceResult> AddTagToPost(int postId, string tagName)
         {
@@ -29,7 +34,19 @@ namespace KevBlog.Application.Services
         public async Task<IEnumerable<TagDto>> GetAllTags()
         {
             var tags = await _tagRepository.GetAll();
-            return _mapper.Map<IEnumerable<TagDto>>(tags);
+            return _mapper.Map<IList<TagDto>>(tags);
+        }
+
+        public async Task<ServiceResult<IEnumerable<TagDto>>> GetTagsByPostId(int postId)
+        {
+            var post = await  _postRepository.GetById(postId);
+            if (post is null)
+                return ServiceResult.Fail<IEnumerable<TagDto>>(msg: $"Post Id:{postId} does not exist.");
+
+            var result = _postTagRepository.GetAll();
+            var tags = result.Include(x=> x.Post).Include(x=> x.Tag).Where(p => p.PostId == postId).Select(o => o.Tag).ToList();
+            var resultTag = _mapper.Map<IEnumerable<TagDto>>(tags);
+            return ServiceResult.Success(resultTag);
         }
 
         public async Task<ServiceResult> RemoveTag(int tagId)

@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace KevBlog.Api.Controllers
 {
-    [Route("api/[controller]")]
     public class MessagesController : BaseApiController
     {
         private readonly IMessageService _messageService;
@@ -16,10 +15,10 @@ namespace KevBlog.Api.Controllers
             _messageService= messageService;
         }
 
-        [HttpGet("thread/{username}")]
+        [HttpGet("Messages/thread/{username}")]
         public async Task<ActionResult<IEnumerable<MessageDto>>> GetMessageThread(string username) => Ok(await _messageService.GetMessageThreads(User.GetUsername(), username));
 
-        [HttpGet]
+        [HttpGet("messages")]
         public async Task<ActionResult<PageList<MessageDto>>> GetMessagesForUser([FromQuery] MessageParams messageParams)
         {
             messageParams.Username = User.GetUsername();
@@ -29,7 +28,7 @@ namespace KevBlog.Api.Controllers
             return messages;
         }
         
-        [HttpPost] 
+        [HttpPost("messages")] 
         public async Task<ActionResult<MessageDto>> CreateMessage(MessageCreateDto createMsgDto)
         {
             if (createMsgDto is null)
@@ -42,7 +41,7 @@ namespace KevBlog.Api.Controllers
             return Ok(msgResult);
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("messages/{id}")]
         public async Task<ActionResult> DeleteMessage(int id) {
             var result = await _messageService.DeleteMessage(User.GetUsername(), id);
             if(!result.IsSuccess) {

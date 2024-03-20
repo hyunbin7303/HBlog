@@ -3,9 +3,7 @@ using KevBlog.Application.Services;
 using KevBlog.Contract.Common;
 using KevBlog.Contract.DTOs;
 using KevBlog.Domain.Common.Params;
-using KevBlog.Domain.Entities;
 using KevBlog.Domain.Repositories;
-using KevBlog.UnitTests.Mocks.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using NUnit.Framework;
@@ -15,7 +13,6 @@ namespace KevBlog.UnitTests.Controllers
     public class PostsControllerTest : TestBase
     {
         private PostsController _controller;
-        private readonly Mock<IPostRepository> postRepositoryMock = new();
         private readonly Mock<IUserRepository> userRepositoryMock = new();
         private readonly Mock<IPostService> postServiceMock = new();
 
@@ -23,7 +20,7 @@ namespace KevBlog.UnitTests.Controllers
         public void Init()
         {
             userRepositoryMock.Setup(x => x.GetUserByIdAsync(1)).Returns(Task.FromResult(GetUserFake(1)));
-            _controller = new PostsController(postServiceMock.Object, postRepositoryMock.Object);
+            _controller = new PostsController(postServiceMock.Object, userRepositoryMock.Object);
             _controller.ControllerContext = new ControllerContext { HttpContext = UserSetup() };
         }
 
@@ -61,12 +58,8 @@ namespace KevBlog.UnitTests.Controllers
         [Test]
         public async Task GetPosts_ListofPosts_ReturnSuccess()
         {
-            IEnumerable<Post> samplePosts = MockPostRepository.GenerateData(5);
-            postRepositoryMock.Setup(x => x.GetPostsAsync()).Returns(Task.FromResult(samplePosts));
-
             ActionResult<IEnumerable<PostDisplayDto>> posts = await _controller.GetPosts(new QueryParams());
 
-            // Assert
             Assert.That(posts.Result, Is.TypeOf<OkObjectResult>());
         }
 

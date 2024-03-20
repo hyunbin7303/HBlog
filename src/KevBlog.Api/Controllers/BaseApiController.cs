@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace KevBlog.Api.Controllers
 {
     [ServiceFilter(typeof(LogUserActivity))]
+    [Route("api")]
     [ApiController]
     public class BaseApiController : ControllerBase
     {

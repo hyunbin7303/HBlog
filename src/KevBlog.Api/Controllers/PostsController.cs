@@ -12,16 +12,14 @@ using KevBlog.Domain.Common.Params;
 namespace KevBlog.Api.Controllers
 {
     [Authorize]
-    [Route("api")]
     public class PostsController : BaseApiController
     {
-        private readonly IPostRepository _postRepository;
         private readonly IPostService _postService;
-
-        public PostsController(IPostService postService, IPostRepository postRepository)
+        private readonly IUserRepository _userRepository;
+        public PostsController(IPostService postService, IUserRepository userRepository)
         {
             _postService = postService;
-            _postRepository = postRepository;
+            _userRepository = userRepository;
         }
 
         [AllowAnonymous]
@@ -45,7 +43,15 @@ namespace KevBlog.Api.Controllers
 
         [AllowAnonymous]
         [HttpGet("users/{username}/posts")]
-        public async Task<ActionResult<IEnumerable<Post>>> GetPostsByUsername(string username) => Ok(await _postRepository.GetPostsByUserName(username));
+        public async Task<ActionResult<IEnumerable<Post>>> GetPostsByUsername(string username) 
+        {
+            var user = await _userRepository.GetUserByUsernameAsync(username);
+            if (user is null)
+                return NotFound("User not found.");
+
+            return Ok(await _postService.GetPostsByUsername(user.UserName));
+        }
+
 
         [AllowAnonymous]
         [HttpGet("tags/{tagName}/posts")]
@@ -65,7 +71,7 @@ namespace KevBlog.Api.Controllers
         public async Task<IActionResult> Put(PostUpdateDto postUpdateDto)
         {
             if(postUpdateDto is null)
-                throw new ArgumentNullException(nameof(postUpdateDto));
+                return BadRequest($"Argument null for {nameof(postUpdateDto)}.");
 
             if (postUpdateDto.Id == 0)
                 return BadRequest("Id field cannot be empty or 0");
@@ -87,18 +93,6 @@ namespace KevBlog.Api.Controllers
             if(!result.IsSuccess)
                 return BadRequest("Failed to add tags.");
             
-            return Ok();
-        }
-
-        [HttpPut("posts/{id}/status")]
-        public async Task<IActionResult> SetPostStatus(int id, string status)
-        {
-            Post post = await _postRepository.GetById(id);
-            if (post is null)
-                return NotFound();
-
-            post.Status = status;
-            await _postRepository.UpdateAsync(post);
             return Ok();
         }
 
