@@ -30,14 +30,14 @@ namespace KevBlog.Api.Controllers
             if (user.Value is null) return NotFound();
 
             var result = await _tagService.CreateTag(tagCreateDto);
-            return Ok(result.Message);
+            return Ok(result);
         }
 
         [HttpDelete("tags/{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             var result = await _tagService.RemoveTag(id);
-            return Ok(result.IsSuccess);
+            return Ok(result);
         }
 
         [AllowAnonymous]
@@ -49,7 +49,7 @@ namespace KevBlog.Api.Controllers
         public async Task<ActionResult<IEnumerable<TagDto>>> GetTagByPostId(int postId)
         {
             var result = await _tagService.GetTagsByPostId(postId);
-            return Ok(result);
+            return Ok(result.Value);
         }
     }
 }

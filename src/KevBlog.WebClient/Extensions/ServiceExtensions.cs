@@ -8,6 +8,7 @@ public static class ServiceExtensions
         services.AddSingleton<MarkdownService>();
         services.AddScoped<IPostService, PostClientService>();
         services.AddScoped<ICategoryService, CategoryClientService>();
+        services.AddScoped<ITagService, TagClientService>();
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<UserClientService>();
     }

@@ -69,7 +69,7 @@ namespace KevBlog.WebClient.Services
 
 
         private record ApiResponse<T>(T Data, bool Success = true, string ErrorMessage = null);
-        public async Task<IEnumerable<PostDisplayDto>> GetPostDisplays(int limit = 5, int offset = 0)
+        public async Task<IEnumerable<PostDisplayDto>> GetPostDisplays(int limit = 10, int offset = 0)
         {
             var query = new Dictionary<string, string>
             {

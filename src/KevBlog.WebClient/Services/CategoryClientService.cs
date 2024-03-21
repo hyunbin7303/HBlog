@@ -14,7 +14,6 @@ namespace KevBlog.WebClient.Services
             _httpClient = httpClient;
         }
 
-        public async Task<IEnumerable<Category>> GetCategories()
-    => await _httpClient.GetFromJsonAsync<IEnumerable<Category>>($"Categories");
+        public async Task<IEnumerable<Category>> GetCategories() => await _httpClient.GetFromJsonAsync<IEnumerable<Category>>($"Categories");
     }
 }

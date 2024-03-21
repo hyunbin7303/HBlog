@@ -1,5 +1,4 @@
-﻿using Blazored.LocalStorage;
-using KevBlog.Contract.DTOs;
+﻿using KevBlog.Contract.DTOs;
 using Microsoft.AspNetCore.Identity;
 using System.Net.Http.Json;
 using System.Text.Json;
@@ -8,11 +7,9 @@ namespace KevBlog.WebClient.Services
     public class UserClientService
     {
         private HttpClient _httpClient;
-        private IAuthService _authService;
-        public UserClientService(HttpClient httpClient, IAuthService authService)
+        public UserClientService(HttpClient httpClient)
         {
             _httpClient = httpClient;
-            _authService = authService;
         }
         public async Task<(bool, IEnumerable<IdentityError>?)> RegisterNewUser(RegisterDto registerDto)
         {
