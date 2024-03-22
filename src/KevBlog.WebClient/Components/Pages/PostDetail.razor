@@ -18,7 +18,17 @@
     <section class="mt-2 mb-5 pb-md-4 align-items-center p-4 pb-0 pt-lg-5 rounded-3 border shadow-lg">
             <h2 class="px-5 mt-4">@_postdetailsView.Title</h2>
             <Entry>@((MarkupString)htmlContent)</Entry>
+
+
     </section>
+
+        @if(_postdetailsView.Tags is not null)
+        {
+            @foreach (var tag in _postdetailsView.Tags)
+            {
+                <button>@tag.Name</button>
+            }
+        }
     </div>
 
 }
@@ -38,7 +48,6 @@ else
 
     private PostDisplayDetailsDto _postdetailsView = new PostDisplayDetailsDto();
 
-    private IEnumerable<TagDto> _tagDtos = new List<TagDto>();
 
     private string htmlContent = string.Empty;
     private bool isButtonsVisible = false;
@@ -47,15 +56,14 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        _tagDtos = await _tagService.GetTagsByPostId(PostId!.Value);
         var result = await _postService.GetPostDetails(PostId!.Value);
-        htmlContent = MarkdownService.RenderMarkdown(result.Content);
         if (result is null)
         {
             navManager.NavigateTo("/", replace: true);
             return;
         }
         _postdetailsView = result;
+        htmlContent = MarkdownService.RenderMarkdown(_postdetailsView.Content);
 
         if (authenticationState is not null)
         {

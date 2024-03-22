@@ -2,10 +2,10 @@
 {
     public static class PostStatus
     {
-        public const string Pending = "Pending";
-        public const string Draft = "Draft";
-        public const string InActive = "InActive";
-        public const string Active = "Active";
-        public const string Removed = "Removed";
+        public const string Pending = "pending";
+        public const string Draft = "draft";
+        public const string InActive = "inactive";
+        public const string Active = "active";
+        public const string Removed = "removed";
     }
 }

@@ -1,12 +1,10 @@
 ﻿using AutoMapper;
 using KevBlog.Contract.Common;
 using KevBlog.Contract.DTOs;
-using KevBlog.Domain.Common;
 using KevBlog.Domain.Common.Params;
 using KevBlog.Domain.Constants;
 using KevBlog.Domain.Entities;
 using KevBlog.Domain.Repositories;
-using System.Runtime.ConstrainedExecution;
 namespace KevBlog.Application.Services;
 public class PostService : BaseService, IPostService
 {
@@ -70,6 +68,7 @@ public class PostService : BaseService, IPostService
         var post = _mapper.Map<Post>(createDto);
         post.User = user;
         post.UserId = user.Id;
+        post.Status = PostStatus.Active;
         _postRepository.Add(post);
         await _postRepository.SaveChangesAsync();
         return ServiceResult.Success(msg: $"Post Id:{post.Id}");

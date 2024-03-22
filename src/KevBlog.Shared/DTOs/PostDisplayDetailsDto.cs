@@ -13,6 +13,6 @@ public class PostDisplayDetailsDto
     public int CategoryId { get; set; }
     public DateTime Created { get; set; } = DateTime.UtcNow;
     public DateTime LastUpdated { get; set; } = DateTime.UtcNow;
-    public string[] Tags { get; set; }
+    public TagDto[] Tags { get; set; }
     
 }

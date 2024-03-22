@@ -33,7 +33,12 @@ namespace KevBlog.Infrastructure.Repositories
 
         public async Task<Post> GetPostDetails(int id)
         {
-            return await _dbContext.Posts.Where(p => p.Id == id).Include(u => u.User).Include(t => t.PostTags).FirstOrDefaultAsync();
+            return await _dbContext.Posts
+                .Where(p => p.Id == id)
+                .Include(u => u.User)
+                .Include(t => t.PostTags)
+                .ThenInclude(o => o.Tag)
+                .FirstOrDefaultAsync();
         }
     }
 }

@@ -5,16 +5,18 @@
     "Desc": "Description for this Post",
     "Content": "## How to handle Concurrency \n * Task.",
     "Type": "Programming",
+    "Status":  "active",
     "UserId": 1,
     "CategoryId": 1,
     "Created": "2020-01-05"
   },
   {
-    "Id":  2,
+    "Id": 2,
     "Title": "How to use Azure in dotnet",
     "Desc": "Basic implementation using Azure",
     "Content": "# Azure investigation",
     "Type": "Self-Reflection",
+    "Status": "active",
     "UserId": 1,
     "CategoryId": 2,
     "Created": "2022-07-05"
@@ -25,6 +27,7 @@
     "Desc": "TestTest",
     "Content": "# My life in Korea",
     "Type": "Self-Reflection",
+    "Status": "active",
     "UserId": 1,
     "CategoryId": 3,
     "Created": "2021-01-20"
@@ -35,6 +38,7 @@
     "Desc": "TestTest",
     "Content": "# korea trip",
     "Type": "Self-Reflection",
+    "Status": "active",
     "UserId": 1,
     "CategoryId": 3,
     "Created": "2019-05-06"
@@ -45,6 +49,7 @@
     "Desc": "TestTest",
     "Content": "# korea trip",
     "Type": "Self-Reflection",
+    "Status": "active",
     "UserId": 2,
     "CategoryId": 3,
     "Created": "2020-01-05"
@@ -55,6 +60,7 @@
     "Desc": "Book read",
     "Content": "# My impression about Wonder",
     "Type": "Self-Reflection",
+    "Status": "active",
     "UserId": 1,
     "CategoryId": 3,
     "Created": "2024-03-10"
