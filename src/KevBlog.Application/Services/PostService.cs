@@ -5,6 +5,7 @@ using KevBlog.Domain.Common.Params;
 using KevBlog.Domain.Constants;
 using KevBlog.Domain.Entities;
 using KevBlog.Domain.Repositories;
+using Microsoft.EntityFrameworkCore;
 namespace KevBlog.Application.Services;
 public class PostService : BaseService, IPostService
 {
@@ -151,16 +152,23 @@ public class PostService : BaseService, IPostService
 
     public async Task<ServiceResult<IEnumerable<PostDisplayDto>>> GetPostsByUsername(string userName)
     {
-        var user = await _userRepository.GetUserByUsernameAsync(userName);
-        if(user is null)
-            return ServiceResult.Fail<IEnumerable<PostDisplayDto>>(msg: "NotFound Category.");
-
-
-        throw new NotImplementedException();
+        var posts = await _postRepository.GetPostsByUserName(userName);
+        return ServiceResult.Success(_mapper.Map<IEnumerable<PostDisplayDto>>(posts));
     }
 
     public Task<ServiceResult<PostDisplayDetailsDto>> GetBySlugAsync(string slug)
     {
         throw new NotImplementedException();
+    }
+
+    public async Task<ServiceResult<IEnumerable<PostDisplayDto>>> GetPostsByTagId(int tagId)
+    {
+        var tag = await _tagRepository.GetById(tagId);
+        if (tag is null)
+            return ServiceResult.Fail<IEnumerable<PostDisplayDto>>(msg: "NotFound Tag.");
+
+        var postTags = _postTagRepository.GetAll();
+        var posts = postTags.Include(o => o.Post).Where(t => t.TagId == tagId).Select(x => x.Post);
+        return ServiceResult.Success(_mapper.Map<IEnumerable<PostDisplayDto>>(posts));
     }
 }

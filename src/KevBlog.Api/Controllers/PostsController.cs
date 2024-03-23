@@ -52,10 +52,12 @@ namespace KevBlog.Api.Controllers
             return Ok(await _postService.GetPostsByUsername(user.UserName));
         }
 
-
         [AllowAnonymous]
-        [HttpGet("tags/{tagName}/posts")]
-        public async Task<ActionResult<IEnumerable<PostDisplayDto>>> GetPostsByTagName(string tagName) => Ok(await _postService.GetPostsByTagName(tagName));
+        [HttpGet("tags/{tagId}/posts")]
+        public async Task<ActionResult<IEnumerable<PostDisplayDto>>> GetPostsbyTagId(int tagId)
+        {
+            return Ok(await _postService.GetPostsByTagId(tagId));
+        }
 
         [AllowAnonymous]
         [HttpGet("posts/{id}")]

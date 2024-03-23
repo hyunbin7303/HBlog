@@ -4,7 +4,7 @@ namespace KevBlog.Domain.Repositories
 {
     public interface IPostRepository : IRepository<Post>
     {
-        Task UpdateAsync(Post user);
+        Task UpdateAsync(Post post);
         Task<IEnumerable<Post>> GetPostsAsync();
         Task<Post> GetPostDetails(int id); 
         Task<IEnumerable<Post>> GetPostsAsync(int limit, int offset);   

@@ -7,8 +7,7 @@
 
     <div class="col-md-4">
         <select class="form-control" onchange="@HandleChangeCategory">
-            <option value="">Select Category</option>
-
+            <option value="0">Select All</option>
             @foreach (var category in Categories)
             {
                 <option value="@category.Id">
@@ -46,6 +45,13 @@
 
     private async Task HandleChangeCategory(ChangeEventArgs args)
     {
-        posts = await postService.GetPostDisplayByCategoryId(int.Parse(args.Value.ToString()));
+        int num = int.Parse(args.Value.ToString());
+        if(num == 0)
+        {
+            posts = await postService.GetPostDisplays();
+            return;
+        }
+
+        posts = await postService.GetPostDisplayByCategoryId(num);
     }
 }
