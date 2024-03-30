@@ -6,6 +6,7 @@ namespace KevBlog.WebClient.Services
     public interface ITagService
     {
         Task<IEnumerable<TagDto>> GetTagsByPostId(int postId);
+        Task<IEnumerable<TagDto>> GetTags();
     }
     public class TagClientService : ITagService
     {

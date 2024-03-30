@@ -12,6 +12,7 @@ namespace KevBlog.WebClient.Services
         public Task<bool> CreatePost(PostCreateDto postCreateDto);
         public Task<bool> UpdatePost(PostUpdateDto postUpdateDto);
         public Task<bool> DeletePost(int id);
+        public Task<bool> AddTag(int id, int tagId);
     }
     public class PostClientService : IPostService
     {
@@ -94,6 +95,11 @@ namespace KevBlog.WebClient.Services
                 Query = string.Join("&", queryParams.Select(kvp => $"{kvp.Key}={kvp.Value}"))
             };
             return uriBuilder.Uri.AbsoluteUri;
+        }
+
+        public Task<bool> AddTag(int id, int tagId)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -102,7 +102,7 @@ namespace KevBlog.Api.Controllers
         public async Task<IActionResult> Create(PostCreateDto postCreateDto)
         {
             if (postCreateDto is null)
-                throw new ArgumentNullException(nameof(postCreateDto));
+                return BadRequest($"Argument null for {nameof(postCreateDto)}.");
 
             var result = await _postService.CreatePost(User.GetUsername(), postCreateDto);
             if(!result.IsSuccess)

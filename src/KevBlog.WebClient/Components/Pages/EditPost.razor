@@ -1,7 +1,10 @@
 ﻿@page "/posts/edit/{PostId:int?}"
+@using KevBlog.Domain.Entities
 @using KevBlog.WebClient.Services
 @using Microsoft.AspNetCore.Authorization
 @inject IPostService postService
+@inject ICategoryService categoryService
+@inject ITagService tagService
 @inject NavigationManager navManager
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
@@ -20,17 +23,40 @@
                 <label for="description">Description</label>
                 <InputText class="form-control" @bind-Value="postView.Desc" />
             </div>
+
             <div class="form-group">
-                <label for="type">Post Type</label>
-                <InputText class="form-control" @bind-Value="postView.Type" />
+                <label for="description">Category</label>
+                <InputSelect class="select-element" @bind-Value="postView.CategoryId">
+                    @foreach (var category in Categories)
+                    {
+                        <option value="@category.Id">@category.Title</option>
+                    }
+                </InputSelect>
             </div>
             <div class="form-group">
                 <label for="Content">Content</label>
                 <InputTextArea class="form-control" @bind-Value="postView.Content" />
             </div>
+            <br />
             <div class="form-group">
-                <label for="type">Tags</label>
-                <br/>
+                <label for="type">Tags</label>  
+                <InputSelect class="select-element" @bind-Value="postView.Tags">
+                    @foreach (var category in Categories)
+                    {
+                        <option value="@category.Id">@category.Title</option>
+                    }
+                </InputSelect>
+                <br />
+                <div>
+                    @if (postView.Tags is not null)
+                    {
+                        @foreach (var tag in postView.Tags)
+                        {
+                            <button>@tag.Name</button>
+                        }
+                    }
+                </div>
+
             </div>
             <br />
             <br />
@@ -38,7 +64,6 @@
                 <label for="Content">Visible to public</label>
                 <InputCheckbox  @bind-Value="isVisible"/>
             </div>
-
             <br />
             <button type="submit" class="btn btn-primary btn-block">Update</button>
         </EditForm>
@@ -55,17 +80,21 @@
     private Task<AuthenticationState> AuthState { get; set; }
 
     private bool isVisible { get; set; }
+    // private string categoryName { get; set; }
+    private IEnumerable<Category> Categories { get; set; } = new List<Category>();
 
     protected override async Task OnInitializedAsync()
     {
         postView = await postService.GetPostDetails(PostId.Value);
+        Categories = await categoryService.GetCategories();
+        tagService = await tagService.GetTags();
+        // var categoryName = categories.Where(x => x.Id == postView.CategoryId);
     }
 
     private async Task UpdatePost()
     {
         var authState = await AuthState;
-        var user = authState.User;
-        if (user.Identity.IsAuthenticated)
+        if (authState.User.Identity.IsAuthenticated)
         {
             PostUpdateDto postUpdateDto = new PostUpdateDto
                 {
@@ -81,5 +110,8 @@
                 navManager.NavigateTo($"/posts/{postUpdateDto.Id}");
         }
 
+    }
+    private async Task AddTagInPost()
+    {
     }
 }
