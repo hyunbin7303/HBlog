@@ -43,7 +43,7 @@
                 <InputSelect class="form-select" style="width:200px"
                              ValueExpression="@(() => tagNumber)"
                              Value="@tagNumber"
-                             ValueChanged="((int value) => HandleRotar1Change(value))">
+                             ValueChanged="((int value) => HandleAddingTag(value))">
 
                     @foreach (var tag in tags)
                     {
@@ -117,20 +117,14 @@
 
     }
 
-    public async Task HandleRotar1Change(int tagId)
+    public async Task HandleAddingTag(int tagId)
     {
         Console.WriteLine($"Tag id: {tagId}");
-        Console.WriteLine($"Post ID: {PostId}");
         tagNumber = tagId;
         if (postView.Tags.Where(pt => pt.TagId == tagId).Count() == 0)
         {
-            var result = await postService.AddTagInPost(PostId.Value, tagId);
-            Console.WriteLine(result);
+            var result = await postService.AddTagInPost(PostId.Value, tagNumber);
+            postView = await postService.GetPostDetails(PostId.Value);
         }
-
-    }
-    void AttachTagInPost(int tagId)
-    {
-
     }
 }
