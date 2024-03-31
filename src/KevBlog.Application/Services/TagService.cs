@@ -17,9 +17,19 @@ namespace KevBlog.Application.Services
             _postRepository = postRepository;
             _postTagRepository = postTagRepository;
         }
-        public Task<ServiceResult> AddTagToPost(int postId, string tagName)
+        public async Task<ServiceResult> AddTagToPost(int postId, int tagId)
         {
-            throw new NotImplementedException();
+            var post = await _postRepository.GetById(postId);
+            if (post is null)
+                return ServiceResult.Fail(msg: $"Post Id:{postId} does not exist.");
+
+            var tag = await _tagRepository.GetById(tagId);
+            if (tag is null)
+                return ServiceResult.Fail(msg: $"Tag Id:{tagId} does not exist.");
+
+            _postTagRepository.Add(new PostTags { PostId = post.Id, TagId = tag.Id });
+            var result = await _postTagRepository.SaveChangesAsync();
+            return ServiceResult.Success($"Successfully created the tag name : {tag.Name}");
         }
 
         public async Task<ServiceResult> CreateTag(TagCreateDto tag)

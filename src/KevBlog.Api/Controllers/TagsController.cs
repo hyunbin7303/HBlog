@@ -21,7 +21,7 @@ namespace KevBlog.Api.Controllers
         public async Task<ActionResult> Create(TagCreateDto tagCreateDto)
         {
             if (tagCreateDto is null)
-                throw new ArgumentNullException(nameof(tagCreateDto));
+                return BadRequest($"Json body is not valid format. {nameof(tagCreateDto)}");
 
             if (string.IsNullOrEmpty(tagCreateDto.Name))
                 return BadRequest("Tag Name cannot be empty.");
@@ -42,7 +42,7 @@ namespace KevBlog.Api.Controllers
 
         [AllowAnonymous]
         [HttpGet("tags")]
-        public async Task<ActionResult<IEnumerable<Tag>>> Get() => Ok(await _tagService.GetAllTags());
+        public async Task<ActionResult<IEnumerable<TagDto>>> Get() => Ok(await _tagService.GetAllTags());
 
         [AllowAnonymous]
         [HttpGet("posts/{postId}/tags")]

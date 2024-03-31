@@ -1,4 +1,5 @@
-﻿using KevBlog.Contract.DTOs;
+﻿using KevBlog.Contract.Common;
+using KevBlog.Contract.DTOs;
 using System.Net.Http.Json;
 
 namespace KevBlog.WebClient.Services
@@ -15,6 +16,13 @@ namespace KevBlog.WebClient.Services
         {
             _httpClient = httpClient;
         }
+
+        public async Task<IEnumerable<TagDto>> GetTags()
+        {
+            IEnumerable<TagDto>? result = await _httpClient.GetFromJsonAsync<IEnumerable<TagDto>>($"tags");
+            return result!;
+        }
+
         public async Task<IEnumerable<TagDto>> GetTagsByPostId(int postId)
         {
             IEnumerable<TagDto>? result = await _httpClient.GetFromJsonAsync<IEnumerable<TagDto>>($"posts/{postId}/tags");

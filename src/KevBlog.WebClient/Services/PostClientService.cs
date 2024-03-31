@@ -1,5 +1,8 @@
 ﻿using Blazored.LocalStorage;
+using KevBlog.Contract.Common;
 using KevBlog.Contract.DTOs;
+using KevBlog.Domain.Entities;
+using System;
 using System.Net.Http.Json;
 
 namespace KevBlog.WebClient.Services
@@ -12,7 +15,7 @@ namespace KevBlog.WebClient.Services
         public Task<bool> CreatePost(PostCreateDto postCreateDto);
         public Task<bool> UpdatePost(PostUpdateDto postUpdateDto);
         public Task<bool> DeletePost(int id);
-        public Task<bool> AddTag(int id, int tagId);
+        public Task<bool> AddTagInPost(int postId, int tagId);
     }
     public class PostClientService : IPostService
     {
@@ -53,23 +56,14 @@ namespace KevBlog.WebClient.Services
         }
         public async Task<bool> DeletePost(int id)
         {
-            try
-            {
-                await _authService.GetBearerToken();
-                var result = await _httpClient.DeleteAsync($"Posts/{id}");
-                return result.IsSuccessStatusCode;
-            }
-            catch (Exception ex)
-            {
-                await Console.Out.WriteLineAsync(ex.Message);
-                return false;
-            }
+            await _authService.GetBearerToken();
+            var result = await _httpClient.DeleteAsync($"Posts/{id}");
+            return result.IsSuccessStatusCode;
         }
         public async Task<PostDisplayDetailsDto> GetPostDetails(int id) =>
             await _httpClient.GetFromJsonAsync<PostDisplayDetailsDto>($"Posts/{id}");
 
 
-        private record ApiResponse<T>(T Data, bool Success = true, string ErrorMessage = null);
         public async Task<IEnumerable<PostDisplayDto>> GetPostDisplays(int limit = 10, int offset = 0)
         {
             var query = new Dictionary<string, string>
@@ -97,9 +91,11 @@ namespace KevBlog.WebClient.Services
             return uriBuilder.Uri.AbsoluteUri;
         }
 
-        public Task<bool> AddTag(int id, int tagId)
+        public async Task<bool> AddTagInPost(int postId, int tagId)
         {
-            throw new NotImplementedException();
+            await _authService.GetBearerToken();
+            var result = await _httpClient.PutAsJsonAsync($"posts/{postId}/AddTag", tagId);
+            return result.IsSuccessStatusCode;
         }
     }
 }

@@ -10,6 +10,7 @@
     @if (isButtonsVisible)
     {
         <button class="btn btn-dark" @onclick="@(()=>navManager.NavigateTo($"/posts/edit/{_postdetailsView.Id}"))">Edit</button>
+        @* <button class="btn btn-light" @onclick="() => ConfigureTagDialog()">Add Tag</button> *@
         <button class="btn btn-danger" @onclick="() => ConfirmDeleteCategory(_postdetailsView.Id)">Delete</button>
         <ConfirmationModal Title="Confirm Delete" Message="Do you want to delete this blog post?" IsVisible="@_showDeleteConfirmationModal" ConfirmationChanged="OnModalConfirm" />
     }

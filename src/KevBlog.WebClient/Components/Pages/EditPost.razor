@@ -39,30 +39,35 @@
             </div>
             <br />
             <div class="form-group">
-                <label for="type">Tags</label>  
-                <InputSelect class="select-element" @bind-Value="postView.Tags">
-                    @foreach (var category in Categories)
+
+                <InputSelect class="form-select" style="width:200px"
+                             ValueExpression="@(() => tagNumber)"
+                             Value="@tagNumber"
+                             ValueChanged="((int value) => HandleRotar1Change(value))">
+
+                    @foreach (var tag in tags)
                     {
-                        <option value="@category.Id">@category.Title</option>
+                        <option value="@tag.TagId">@tag.Name</option>
                     }
                 </InputSelect>
-                <br />
-                <div>
-                    @if (postView.Tags is not null)
-                    {
-                        @foreach (var tag in postView.Tags)
-                        {
-                            <button>@tag.Name</button>
-                        }
-                    }
-                </div>
-
             </div>
+            <br />
+            <div>
+                @if (postView.Tags is not null)
+                {
+                    @foreach (var tag in postView.Tags)
+                    {
+                        <button>@tag.Name</button>
+                    }
+                }
+            </div>
+
+
             <br />
             <br />
             <div class="form-group">
                 <label for="Content">Visible to public</label>
-                <InputCheckbox  @bind-Value="isVisible"/>
+                <InputCheckbox @bind-Value="isVisible" />
             </div>
             <br />
             <button type="submit" class="btn btn-primary btn-block">Update</button>
@@ -79,16 +84,16 @@
     [CascadingParameter]
     private Task<AuthenticationState> AuthState { get; set; }
 
+    public int tagNumber;
     private bool isVisible { get; set; }
-    // private string categoryName { get; set; }
-    private IEnumerable<Category> Categories { get; set; } = new List<Category>();
+    private IEnumerable<Category> Categories = new List<Category>();
+    private IEnumerable<TagDto> tags = new List<TagDto>();
 
     protected override async Task OnInitializedAsync()
     {
         postView = await postService.GetPostDetails(PostId.Value);
         Categories = await categoryService.GetCategories();
-        tagService = await tagService.GetTags();
-        // var categoryName = categories.Where(x => x.Id == postView.CategoryId);
+        tags = await tagService.GetTags();
     }
 
     private async Task UpdatePost()
@@ -111,7 +116,21 @@
         }
 
     }
-    private async Task AddTagInPost()
+
+    public async Task HandleRotar1Change(int tagId)
     {
+        Console.WriteLine($"Tag id: {tagId}");
+        Console.WriteLine($"Post ID: {PostId}");
+        tagNumber = tagId;
+        if (postView.Tags.Where(pt => pt.TagId == tagId).Count() == 0)
+        {
+            var result = await postService.AddTagInPost(PostId.Value, tagId);
+            Console.WriteLine(result);
+        }
+
+    }
+    void AttachTagInPost(int tagId)
+    {
+
     }
 }
