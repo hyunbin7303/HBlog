@@ -3,18 +3,40 @@
 @using KevBlog.WebClient.Services
 @inject ICategoryService categoryService
 @inject IPostService postService;
-<div class="container-xxl py-2">
+@inject ITagService tagService;
+<div class="container-xxl py-2 d-flex">
+    <div class="col-xl-3" >
+        <div>
+            <label>Category</label>
+            <select @onchange="HandleChangeCategory">
+                <option value="0">Select All</option>
+                @foreach (var category in Categories)
+                {
+                    <option value="@category.Id">@category.Title</option>
+                }
+            </select>
+            <br>
+            <label>Tag</label>
+            <select class="select" @onchange="SearchTagSelected">
+                <option value="-1" disabled selected>(select)</option>
 
-    <div class="col-md-4">
-        <select class="form-control" onchange="@HandleChangeCategory">
-            <option value="0">Select All</option>
-            @foreach (var category in Categories)
-            {
-                <option value="@category.Id">
-                    @category.Title
-                </option>
-            }
-        </select>
+                @for (var i = 0; i < tags?.Count; i++)
+                {
+                    <option value="@i">@tags[i].Name</option>
+                }
+            </select>
+            <div>
+
+                @if (searchTags is not null)
+                {
+                    @foreach (var tag in searchTags)
+                    {
+                        <button @onclick="@(() => RemoveTag(tag))">@tag.Name</button>
+                    }
+                }
+            </div>
+        </div>
+
     </div>
 
     <div class="h-100 d-flex flex-column justify-content-center">
@@ -33,19 +55,21 @@
 @code {
 
     private IEnumerable<Category> Categories { get; set; } = new List<Category>();
-
+    private List<TagDto>? tags = new();
     private int? selectCategoryId = 0;
-
     private IEnumerable<PostDisplayDto> posts;
+    private List<TagDto>? searchTags = new();
+
     protected override async Task OnInitializedAsync()
     {
         Categories = await categoryService.GetCategories();
         posts = await postService.GetPostDisplays();
+        tags = (await tagService.GetTags()).ToList();
     }
 
-    private async Task HandleChangeCategory(ChangeEventArgs args)
+    private async Task HandleChangeCategory(ChangeEventArgs e)
     {
-        int num = int.Parse(args.Value.ToString());
+        int num = int.Parse((string?)e.Value);
         if(num == 0)
         {
             posts = await postService.GetPostDisplays();
@@ -53,5 +77,21 @@
         }
 
         posts = await postService.GetPostDisplayByCategoryId(num);
+    }
+    private void SearchTagSelected(ChangeEventArgs e)
+    {
+        if (tags is null) return;
+        if (int.TryParse((string?)e.Value, out var index) && index >= 0)
+            AddTag(tags[index]);
+    }
+    private void AddTag(TagDto tag)
+    {
+        if (searchTags?.Find(t => t.TagId == tag.TagId) is null)
+            searchTags?.Add(tag);
+    }
+
+    private void RemoveTag(TagDto tag)
+    {
+        searchTags?.RemoveAll(t => t == tag);
     }
 }
