@@ -94,8 +94,10 @@ public class PostService : BaseService, IPostService
         IEnumerable<Post> posts = await _postRepository.GetPostsAsync(query.Limit, query.Offset);
         if(query.CategoryId != 0)
             posts = posts.Where(p =>p.CategoryId == query.CategoryId);
-        
-        posts = posts.Where(p => p.PostTags.Any(tag => query.TagIds.Contains(tag.TagId)));
+
+        if (query.TagIds.Any())
+            posts = posts.Where(p => p.PostTags.Any(tag => query.TagIds.Contains(tag.TagId)));
+
         return _mapper.Map<IEnumerable<PostDisplayDto>>(posts);
     }
 
