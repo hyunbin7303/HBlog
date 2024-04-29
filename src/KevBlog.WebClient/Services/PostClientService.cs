@@ -1,7 +1,6 @@
 ﻿using Blazored.LocalStorage;
 using KevBlog.Contract.Common;
 using KevBlog.Contract.DTOs;
-using KevBlog.Domain.Entities;
 using System;
 using System.Net.Http.Json;
 
@@ -10,7 +9,7 @@ namespace KevBlog.WebClient.Services
     public interface IPostService
     {
         public Task<IEnumerable<PostDisplayDto>> GetPostDisplays(int limit = 5, int offset = 0);
-        public Task<IEnumerable<PostDisplayDto>> GetPostDisplayByCategoryId(int categoryId);
+        public Task<IEnumerable<PostDisplayDto>> GetPostDisplayByCategoryId(int categoryId, List<TagDto>? tags = null);
         public Task<PostDisplayDetailsDto> GetPostDetails(int id);
         public Task<bool> CreatePost(PostCreateDto postCreateDto);
         public Task<bool> UpdatePost(PostUpdateDto postUpdateDto);
@@ -77,7 +76,7 @@ namespace KevBlog.WebClient.Services
             return result.Data!;
         }
 
-        public async Task<IEnumerable<PostDisplayDto>> GetPostDisplayByCategoryId(int categoryId)
+        public async Task<IEnumerable<PostDisplayDto>> GetPostDisplayByCategoryId(int categoryId, List<TagDto>? tags = null)
         {
             var result = await _httpClient.GetFromJsonAsync<IEnumerable<PostDisplayDto>>($"categories/{categoryId}/posts");
             return result!;

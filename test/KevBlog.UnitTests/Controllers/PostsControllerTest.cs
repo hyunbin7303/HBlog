@@ -58,7 +58,7 @@ namespace KevBlog.UnitTests.Controllers
         [Test]
         public async Task GetPosts_ListofPosts_ReturnSuccess()
         {
-            ActionResult<IEnumerable<PostDisplayDto>> posts = await _controller.GetPosts(new QueryParams());
+            ActionResult<IEnumerable<PostDisplayDto>> posts = await _controller.GetPosts(new PostParams());
 
             Assert.That(posts.Result, Is.TypeOf<OkObjectResult>());
         }

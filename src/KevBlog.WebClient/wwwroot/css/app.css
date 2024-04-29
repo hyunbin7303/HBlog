@@ -1,3 +1,7 @@
+
+
+
+
 :root {
     /* fonts */
     --cf-title-font: 'Bebas Neue', sans-serif;
@@ -11,9 +15,12 @@
 }
 
 html, body {
+/*    padding-top: 5rem;
+    flex-direction: column;*/
     font-family: var(--cf-body-font);
     font-size: var(--cf-font-size);
     height: 100%;
+    /*overflow-y: hidden;*/
 }
 
 #app {

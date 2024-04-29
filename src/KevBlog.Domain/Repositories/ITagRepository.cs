@@ -7,6 +7,6 @@ namespace KevBlog.Domain.Repositories
         Task Delete(Tag tag);
         Task Update(Tag tag);
         Task<IEnumerable<Tag>> GetAll();
-        Task<Tag> FindbyTagName(string tagName);
+        Task<Tag> FindbySlug(string slug);
     }
 }

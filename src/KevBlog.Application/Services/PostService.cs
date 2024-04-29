@@ -89,21 +89,24 @@ public class PostService : BaseService, IPostService
         return ServiceResult.Success(postDisplay);
     }
 
-    public async Task<IEnumerable<PostDisplayDto>> GetPosts(QueryParams query)
+    public async Task<IEnumerable<PostDisplayDto>> GetPosts(PostParams query)
     {
         IEnumerable<Post> posts = await _postRepository.GetPostsAsync(query.Limit, query.Offset);
+        if(query.CategoryId != 0)
+            posts = posts.Where(p =>p.CategoryId == query.CategoryId);
+        
+        posts = posts.Where(p => p.PostTags.Any(tag => query.TagIds.Contains(tag.TagId)));
         return _mapper.Map<IEnumerable<PostDisplayDto>>(posts);
     }
 
-    public async Task<ServiceResult<IEnumerable<PostDisplayDto>>> GetPostsByTagName(string tagName)
+    public async Task<ServiceResult<IEnumerable<PostDisplayDto>>> GetPostsByTagSlug(string tagSlug)
     {
-        var tags = await _tagRepository.FindbyTagName(tagName);
+        var tags = await _tagRepository.FindbySlug(tagSlug);
         if(tags is null)
-            throw new ArgumentNullException(nameof(tags));
-
-        var tagPosts = await _postTagRepository.GetAll(o => o.Tag.Name == tagName);
-
-        IEnumerable<Post> posts = await _postRepository.GetPostsAsync();
+            return ServiceResult.Fail<IEnumerable<PostDisplayDto>>(msg: "Tag does not exist.");
+        
+        var tagPosts = await _postTagRepository.GetAll(o => o.TagId == tags.Id);
+        var posts = tagPosts.Select(o => o.Post);
         var result =  _mapper.Map<IEnumerable<PostDisplayDto>>(posts);
         return ServiceResult.Success(result);
 

@@ -32,7 +32,7 @@ namespace KevBlog.Application.Services
             return ServiceResult.Success($"Successfully created the tag name : {tag.Name}");
         }
 
-        public async Task<ServiceResult> CreateTag(TagCreateDto tag)
+        public ServiceResult CreateTag(TagCreateDto tag)
         {
             if (tag.Name == null)
                 return ServiceResult.Fail(msg: "Tag Title is empty.");

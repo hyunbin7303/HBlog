@@ -23,7 +23,10 @@ namespace KevBlog.Infrastructure.Repositories
         }
         public async Task<IEnumerable<Post>> GetPostsAsync(int limit, int offset)
         {
-            return await _dbContext.Posts.AsNoTracking().OrderByDescending(p => p.Created).Skip(offset).Take(limit).ToListAsync();
+            return await _dbContext.Posts.Include(p => p.PostTags)
+                .AsNoTracking()
+                .OrderByDescending(p => p.Created)
+                .Skip(offset).Take(limit).ToListAsync();
         }
         public async Task UpdateAsync(Post user)
         {

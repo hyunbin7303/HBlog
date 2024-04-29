@@ -6,7 +6,7 @@ namespace KevBlog.Application.Services
     {
         Task<IEnumerable<TagDto>> GetAllTags();
         Task<ServiceResult<IEnumerable<TagDto>>> GetTagsByPostId(int postId);
-        Task<ServiceResult> CreateTag(TagCreateDto tag);
+        ServiceResult CreateTag(TagCreateDto tag);
         Task<ServiceResult> RemoveTag(int tagId);
 
     }

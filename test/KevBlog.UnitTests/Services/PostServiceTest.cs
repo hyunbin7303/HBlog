@@ -35,7 +35,7 @@ namespace KevBlog.UnitTests.Services
             var testObject = MockPostRepository.GenerateData(howMany);
             _mockPostRepo.Setup(x => x.GetPostsAsync()).ReturnsAsync(testObject);
 
-            var posts = await _postService.GetPosts(new QueryParams());
+            var posts = await _postService.GetPosts(new PostParams());
 
             Assert.That(posts.Count(), Is.EqualTo(5));
         }
@@ -47,7 +47,7 @@ namespace KevBlog.UnitTests.Services
             var testObject = MockPostRepository.GenerateData(howMany);
             _mockPostRepo.Setup(x => x.GetPostsAsync(4,0)).ReturnsAsync(testObject);
 
-            var posts = await _postService.GetPosts(new QueryParams { Limit=4, Offset = 0});
+            var posts = await _postService.GetPosts(new PostParams { Limit=4, Offset = 0});
 
             Assert.That(posts.Count(), Is.EqualTo(4));
         }

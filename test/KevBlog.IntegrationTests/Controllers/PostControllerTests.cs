@@ -24,7 +24,7 @@ namespace KevBlog.IntegrationTests.Controllers
         [Fact]
         public async Task GivenValidPosts_WhenGetPostsCalled_ThenResponsePosts()
         {
-            QueryParams postParams = new();
+            PostParams postParams = new();
             IEnumerable<PostDisplayDto> posts = new List<PostDisplayDto>
             {
                 new PostDisplayDto { Id = 1, Title = "PostDisplay#1", Desc = "TestingDesc1", Content = "TestingContent1", UserName="hyunbin7303" },

@@ -29,7 +29,7 @@ namespace KevBlog.Api.Controllers
             var user = await _userService.GetMembersByUsernameAsync(User.GetUsername());
             if (user.Value is null) return NotFound();
 
-            var result = await _tagService.CreateTag(tagCreateDto);
+            var result = _tagService.CreateTag(tagCreateDto);
             return Ok(result);
         }
 

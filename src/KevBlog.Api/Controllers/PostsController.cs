@@ -24,7 +24,7 @@ namespace KevBlog.Api.Controllers
 
         [AllowAnonymous]
         [HttpGet("posts")]
-        public async Task<ActionResult<IEnumerable<PostDisplayDto>>> GetPosts([FromQuery]QueryParams queryParams)
+        public async Task<ActionResult<IEnumerable<PostDisplayDto>>> GetPosts([FromQuery]PostParams queryParams)
         {
             return Ok(new ApiResponse<IEnumerable<PostDisplayDto>>(await _postService.GetPosts(queryParams)));
         }
