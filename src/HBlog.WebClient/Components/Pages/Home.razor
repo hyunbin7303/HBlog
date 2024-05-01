@@ -1,0 +1,29 @@
+﻿@page "/"
+@using HBlog.Contract.DTOs
+@using HBlog.WebClient.Services
+
+@inject IPostService postService;
+
+<PageTitle>Posts</PageTitle>
+
+<div class="container-xxl py-3">
+
+    <div class="h-100 d-flex flex-column justify-content-center align-items-center">
+        <h1>Hello, world!</h1>
+        <h1 class="display-6">
+            <span class="text-danger">
+                <i class="bi bi-fire"></i>
+            </span>
+            Welcome to the HProject
+        </h1>
+        <PostList Posts=@posts></PostList>
+    </div>
+</div>
+@code {
+    private IEnumerable<PostDisplayDto> posts;
+
+    protected override async Task OnInitializedAsync()
+    {
+        posts = await postService.GetPostDisplays();
+    }
+}

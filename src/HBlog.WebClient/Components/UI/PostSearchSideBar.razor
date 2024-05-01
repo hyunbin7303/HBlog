@@ -1,0 +1,24 @@
+﻿<div class="sidebar">
+    <ul>
+        <li><a href="#">Link 1</a></li>
+        <li><a href="#">Link 2</a></li>
+        <li><a href="#">Link 3</a></li>
+    </ul>
+</div>
+
+@code {
+    private bool collapseNavMenu = true;
+    private bool isHovered = false;
+
+    private void ExpandNavMenu()
+    {
+        isHovered = true;
+        if (collapseNavMenu) collapseNavMenu = false;
+    }
+
+    private void CollapseNavMenu()
+    {
+        isHovered = false;
+        if (!collapseNavMenu) collapseNavMenu = true;
+    }
+}
