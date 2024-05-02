@@ -25,7 +25,7 @@ namespace HBlog.Infrastructure.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("KevBlog.Domain.Entities.AppRole", b =>
+            modelBuilder.Entity("HBlog.Domain.Entities.AppRole", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -54,7 +54,7 @@ namespace HBlog.Infrastructure.Migrations
                     b.ToTable("AspNetRoles", (string)null);
                 });
 
-            modelBuilder.Entity("KevBlog.Domain.Entities.AppUserRole", b =>
+            modelBuilder.Entity("HBlog.Domain.Entities.AppUserRole", b =>
                 {
                     b.Property<int>("UserId")
                         .HasColumnType("integer");
@@ -69,7 +69,7 @@ namespace HBlog.Infrastructure.Migrations
                     b.ToTable("AspNetUserRoles", (string)null);
                 });
 
-            modelBuilder.Entity("KevBlog.Domain.Entities.Application", b =>
+            modelBuilder.Entity("HBlog.Domain.Entities.Application", b =>
                 {
                     b.Property<int>("ApplicationId")
                         .ValueGeneratedOnAdd()
@@ -94,7 +94,7 @@ namespace HBlog.Infrastructure.Migrations
                     b.ToTable("Applications");
                 });
 
-            modelBuilder.Entity("KevBlog.Domain.Entities.Category", b =>
+            modelBuilder.Entity("HBlog.Domain.Entities.Category", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -113,7 +113,7 @@ namespace HBlog.Infrastructure.Migrations
                     b.ToTable("Categories");
                 });
 
-            modelBuilder.Entity("KevBlog.Domain.Entities.CliCommand", b =>
+            modelBuilder.Entity("HBlog.Domain.Entities.CliCommand", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -146,7 +146,7 @@ namespace HBlog.Infrastructure.Migrations
                     b.ToTable("CliCommands");
                 });
 
-            modelBuilder.Entity("KevBlog.Domain.Entities.Connection", b =>
+            modelBuilder.Entity("HBlog.Domain.Entities.Connection", b =>
                 {
                     b.Property<string>("ConnectionId")
                         .HasColumnType("text");
@@ -164,7 +164,7 @@ namespace HBlog.Infrastructure.Migrations
                     b.ToTable("Connections");
                 });
 
-            modelBuilder.Entity("KevBlog.Domain.Entities.FileData", b =>
+            modelBuilder.Entity("HBlog.Domain.Entities.FileData", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -194,7 +194,7 @@ namespace HBlog.Infrastructure.Migrations
                     b.ToTable("FileData");
                 });
 
-            modelBuilder.Entity("KevBlog.Domain.Entities.FileStorage", b =>
+            modelBuilder.Entity("HBlog.Domain.Entities.FileStorage", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -219,7 +219,7 @@ namespace HBlog.Infrastructure.Migrations
                     b.ToTable("FileStorages");
                 });
 
-            modelBuilder.Entity("KevBlog.Domain.Entities.Group", b =>
+            modelBuilder.Entity("HBlog.Domain.Entities.Group", b =>
                 {
                     b.Property<string>("Name")
                         .HasColumnType("text");
@@ -229,7 +229,7 @@ namespace HBlog.Infrastructure.Migrations
                     b.ToTable("Groups");
                 });
 
-            modelBuilder.Entity("KevBlog.Domain.Entities.Message", b =>
+            modelBuilder.Entity("HBlog.Domain.Entities.Message", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -273,7 +273,7 @@ namespace HBlog.Infrastructure.Migrations
                     b.ToTable("Messages");
                 });
 
-            modelBuilder.Entity("KevBlog.Domain.Entities.Photo", b =>
+            modelBuilder.Entity("HBlog.Domain.Entities.Photo", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -300,7 +300,7 @@ namespace HBlog.Infrastructure.Migrations
                     b.ToTable("Photos");
                 });
 
-            modelBuilder.Entity("KevBlog.Domain.Entities.Post", b =>
+            modelBuilder.Entity("HBlog.Domain.Entities.Post", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -348,7 +348,7 @@ namespace HBlog.Infrastructure.Migrations
                     b.ToTable("Posts");
                 });
 
-            modelBuilder.Entity("KevBlog.Domain.Entities.PostCategories", b =>
+            modelBuilder.Entity("HBlog.Domain.Entities.PostCategories", b =>
                 {
                     b.Property<int>("CategoryId")
                         .HasColumnType("integer");
@@ -363,7 +363,7 @@ namespace HBlog.Infrastructure.Migrations
                     b.ToTable("PostCategories");
                 });
 
-            modelBuilder.Entity("KevBlog.Domain.Entities.PostTags", b =>
+            modelBuilder.Entity("HBlog.Domain.Entities.PostTags", b =>
                 {
                     b.Property<int>("PostId")
                         .HasColumnType("integer");
@@ -378,7 +378,7 @@ namespace HBlog.Infrastructure.Migrations
                     b.ToTable("PostTags");
                 });
 
-            modelBuilder.Entity("KevBlog.Domain.Entities.Tag", b =>
+            modelBuilder.Entity("HBlog.Domain.Entities.Tag", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -400,7 +400,7 @@ namespace HBlog.Infrastructure.Migrations
                     b.ToTable("Tags");
                 });
 
-            modelBuilder.Entity("KevBlog.Domain.Entities.User", b =>
+            modelBuilder.Entity("HBlog.Domain.Entities.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -508,7 +508,7 @@ namespace HBlog.Infrastructure.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("KevBlog.Domain.Entities.UserLike", b =>
+            modelBuilder.Entity("HBlog.Domain.Entities.UserLike", b =>
                 {
                     b.Property<int>("SourceUserId")
                         .HasColumnType("integer");
@@ -611,15 +611,15 @@ namespace HBlog.Infrastructure.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("KevBlog.Domain.Entities.AppUserRole", b =>
+            modelBuilder.Entity("HBlog.Domain.Entities.AppUserRole", b =>
                 {
-                    b.HasOne("KevBlog.Domain.Entities.AppRole", "Role")
+                    b.HasOne("HBlog.Domain.Entities.AppRole", "Role")
                         .WithMany("UserRoles")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("KevBlog.Domain.Entities.User", "User")
+                    b.HasOne("HBlog.Domain.Entities.User", "User")
                         .WithMany("UserRoles")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -630,9 +630,9 @@ namespace HBlog.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("KevBlog.Domain.Entities.CliCommand", b =>
+            modelBuilder.Entity("HBlog.Domain.Entities.CliCommand", b =>
                 {
-                    b.HasOne("KevBlog.Domain.Entities.Application", "Application")
+                    b.HasOne("HBlog.Domain.Entities.Application", "Application")
                         .WithMany("CliCommands")
                         .HasForeignKey("ApplicationId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -641,16 +641,16 @@ namespace HBlog.Infrastructure.Migrations
                     b.Navigation("Application");
                 });
 
-            modelBuilder.Entity("KevBlog.Domain.Entities.Connection", b =>
+            modelBuilder.Entity("HBlog.Domain.Entities.Connection", b =>
                 {
-                    b.HasOne("KevBlog.Domain.Entities.Group", null)
+                    b.HasOne("HBlog.Domain.Entities.Group", null)
                         .WithMany("Connections")
                         .HasForeignKey("GroupName");
                 });
 
-            modelBuilder.Entity("KevBlog.Domain.Entities.FileData", b =>
+            modelBuilder.Entity("HBlog.Domain.Entities.FileData", b =>
                 {
-                    b.HasOne("KevBlog.Domain.Entities.FileStorage", "FileStorage")
+                    b.HasOne("HBlog.Domain.Entities.FileStorage", "FileStorage")
                         .WithMany("Files")
                         .HasForeignKey("FileStorageId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -659,15 +659,15 @@ namespace HBlog.Infrastructure.Migrations
                     b.Navigation("FileStorage");
                 });
 
-            modelBuilder.Entity("KevBlog.Domain.Entities.Message", b =>
+            modelBuilder.Entity("HBlog.Domain.Entities.Message", b =>
                 {
-                    b.HasOne("KevBlog.Domain.Entities.User", "Recipient")
+                    b.HasOne("HBlog.Domain.Entities.User", "Recipient")
                         .WithMany("MessagesReceived")
                         .HasForeignKey("RecipientId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("KevBlog.Domain.Entities.User", "Sender")
+                    b.HasOne("HBlog.Domain.Entities.User", "Sender")
                         .WithMany("MessagesSent")
                         .HasForeignKey("SenderId")
                         .OnDelete(DeleteBehavior.NoAction)
@@ -678,9 +678,9 @@ namespace HBlog.Infrastructure.Migrations
                     b.Navigation("Sender");
                 });
 
-            modelBuilder.Entity("KevBlog.Domain.Entities.Photo", b =>
+            modelBuilder.Entity("HBlog.Domain.Entities.Photo", b =>
                 {
-                    b.HasOne("KevBlog.Domain.Entities.User", "User")
+                    b.HasOne("HBlog.Domain.Entities.User", "User")
                         .WithMany("Photos")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -689,9 +689,9 @@ namespace HBlog.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("KevBlog.Domain.Entities.Post", b =>
+            modelBuilder.Entity("HBlog.Domain.Entities.Post", b =>
                 {
-                    b.HasOne("KevBlog.Domain.Entities.User", "User")
+                    b.HasOne("HBlog.Domain.Entities.User", "User")
                         .WithMany("Posts")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -700,15 +700,15 @@ namespace HBlog.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("KevBlog.Domain.Entities.PostCategories", b =>
+            modelBuilder.Entity("HBlog.Domain.Entities.PostCategories", b =>
                 {
-                    b.HasOne("KevBlog.Domain.Entities.Category", "Category")
+                    b.HasOne("HBlog.Domain.Entities.Category", "Category")
                         .WithMany("PostCategories")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("KevBlog.Domain.Entities.Post", "Post")
+                    b.HasOne("HBlog.Domain.Entities.Post", "Post")
                         .WithMany("PostCategories")
                         .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -719,15 +719,15 @@ namespace HBlog.Infrastructure.Migrations
                     b.Navigation("Post");
                 });
 
-            modelBuilder.Entity("KevBlog.Domain.Entities.PostTags", b =>
+            modelBuilder.Entity("HBlog.Domain.Entities.PostTags", b =>
                 {
-                    b.HasOne("KevBlog.Domain.Entities.Post", "Post")
+                    b.HasOne("HBlog.Domain.Entities.Post", "Post")
                         .WithMany("PostTags")
                         .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("KevBlog.Domain.Entities.Tag", "Tag")
+                    b.HasOne("HBlog.Domain.Entities.Tag", "Tag")
                         .WithMany("PostTags")
                         .HasForeignKey("TagId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -738,22 +738,22 @@ namespace HBlog.Infrastructure.Migrations
                     b.Navigation("Tag");
                 });
 
-            modelBuilder.Entity("KevBlog.Domain.Entities.User", b =>
+            modelBuilder.Entity("HBlog.Domain.Entities.User", b =>
                 {
-                    b.HasOne("KevBlog.Domain.Entities.FileStorage", null)
+                    b.HasOne("HBlog.Domain.Entities.FileStorage", null)
                         .WithMany("SharedUsers")
                         .HasForeignKey("FileStorageId");
                 });
 
-            modelBuilder.Entity("KevBlog.Domain.Entities.UserLike", b =>
+            modelBuilder.Entity("HBlog.Domain.Entities.UserLike", b =>
                 {
-                    b.HasOne("KevBlog.Domain.Entities.User", "SourceUser")
+                    b.HasOne("HBlog.Domain.Entities.User", "SourceUser")
                         .WithMany("LikedUsers")
                         .HasForeignKey("SourceUserId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("KevBlog.Domain.Entities.User", "TargetUser")
+                    b.HasOne("HBlog.Domain.Entities.User", "TargetUser")
                         .WithMany("LikedByUsers")
                         .HasForeignKey("TargetUserId")
                         .OnDelete(DeleteBehavior.NoAction)
@@ -766,7 +766,7 @@ namespace HBlog.Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
                 {
-                    b.HasOne("KevBlog.Domain.Entities.AppRole", null)
+                    b.HasOne("HBlog.Domain.Entities.AppRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -775,7 +775,7 @@ namespace HBlog.Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<int>", b =>
                 {
-                    b.HasOne("KevBlog.Domain.Entities.User", null)
+                    b.HasOne("HBlog.Domain.Entities.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -784,7 +784,7 @@ namespace HBlog.Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<int>", b =>
                 {
-                    b.HasOne("KevBlog.Domain.Entities.User", null)
+                    b.HasOne("HBlog.Domain.Entities.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -793,53 +793,53 @@ namespace HBlog.Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>
                 {
-                    b.HasOne("KevBlog.Domain.Entities.User", null)
+                    b.HasOne("HBlog.Domain.Entities.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("KevBlog.Domain.Entities.AppRole", b =>
+            modelBuilder.Entity("HBlog.Domain.Entities.AppRole", b =>
                 {
                     b.Navigation("UserRoles");
                 });
 
-            modelBuilder.Entity("KevBlog.Domain.Entities.Application", b =>
+            modelBuilder.Entity("HBlog.Domain.Entities.Application", b =>
                 {
                     b.Navigation("CliCommands");
                 });
 
-            modelBuilder.Entity("KevBlog.Domain.Entities.Category", b =>
+            modelBuilder.Entity("HBlog.Domain.Entities.Category", b =>
                 {
                     b.Navigation("PostCategories");
                 });
 
-            modelBuilder.Entity("KevBlog.Domain.Entities.FileStorage", b =>
+            modelBuilder.Entity("HBlog.Domain.Entities.FileStorage", b =>
                 {
                     b.Navigation("Files");
 
                     b.Navigation("SharedUsers");
                 });
 
-            modelBuilder.Entity("KevBlog.Domain.Entities.Group", b =>
+            modelBuilder.Entity("HBlog.Domain.Entities.Group", b =>
                 {
                     b.Navigation("Connections");
                 });
 
-            modelBuilder.Entity("KevBlog.Domain.Entities.Post", b =>
+            modelBuilder.Entity("HBlog.Domain.Entities.Post", b =>
                 {
                     b.Navigation("PostCategories");
 
                     b.Navigation("PostTags");
                 });
 
-            modelBuilder.Entity("KevBlog.Domain.Entities.Tag", b =>
+            modelBuilder.Entity("HBlog.Domain.Entities.Tag", b =>
                 {
                     b.Navigation("PostTags");
                 });
 
-            modelBuilder.Entity("KevBlog.Domain.Entities.User", b =>
+            modelBuilder.Entity("HBlog.Domain.Entities.User", b =>
                 {
                     b.Navigation("LikedByUsers");
 

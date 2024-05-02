@@ -11,8 +11,8 @@ namespace HBlog.Infrastructure.Data
 {
     public class Seed
     {
-        private readonly static string _seedUserFilePath = "../KevBlog.Infrastructure/Data/UserSeedData.json";
-        private readonly static string _seedPostFilePath = "../KevBlog.Infrastructure/Data/PostSeedData.json";
+        private readonly static string _seedUserFilePath = "../HBlog.Infrastructure/Data/UserSeedData.json";
+        private readonly static string _seedPostFilePath = "../HBlog.Infrastructure/Data/PostSeedData.json";
         public static async Task SeedUsers(UserManager<User> userManager, RoleManager<AppRole> roleManager)
         {
             if(await userManager.Users.AnyAsync()) return;
