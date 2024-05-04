@@ -2,6 +2,7 @@ using Blazored.LocalStorage;
 using HBlog.WebClient;
 using HBlog.WebClient.Extensions;
 using HBlog.WebClient.Providers;
+using HBlog.WebClient.States;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
@@ -18,6 +19,8 @@ builder.Services.RegisterClientServices();
 
 builder.Services.AddScoped<ApiAuthStateProvider>();
 builder.Services.AddScoped<AuthenticationStateProvider>(p => p.GetRequiredService<ApiAuthStateProvider>());
+builder.Services.AddScoped<PostDashboardState>();
+
 builder.Services.AddAuthorizationCore();
 
 await builder.Build().RunAsync();

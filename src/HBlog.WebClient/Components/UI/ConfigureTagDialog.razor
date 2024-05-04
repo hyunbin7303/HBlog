@@ -1,5 +1,66 @@
-﻿<h3>ConfigureTagDialog</h3>
+﻿@using HBlog.WebClient.Services
+@inject ITagService tagService;
+
+<div class="dialog-title">
+    <h2>Tag filter</h2>
+</div>
+<form class="dialog-body">
+    <div>
+        <label>Tag Selection:</label>
+        <select class="select" @onchange="SearchTagSelected">
+            <option value="-1" disabled selected>(select)</option>
+
+            @for (var i = 0; i < tags?.Count; i++)
+            {
+                <option value="@i">@tags[i].Name</option>
+            }
+        </select>
+
+    </div>
+    <div>
+        @if (SearchTags is not null)
+        {
+            @foreach (var tag in SearchTags)
+            {
+                <button @onclick="@(() => RemoveTag(tag))">@tag.Name</button>
+            }
+        }
+    </div>
+</form>
+
+<div class="dialog-buttons">
+    <button class="btn btn-success ml-auto" @onclick="OnConfirm">Apply</button>
+    <button class="btn btn-secondary mr-auto" @onclick="OnCancel">Cancel</button>
+</div>
+
 
 @code {
+    List<TagDto>? tags;
+    [Parameter, EditorRequired] public List<TagDto> SearchTags { get; set; }
+    [Parameter, EditorRequired] public EventCallback OnCancel { get; set; }
+    [Parameter, EditorRequired] public EventCallback OnConfirm { get; set; }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        tags = (await tagService.GetTags()).ToList();
+    }
+
+    private void SearchTagSelected(ChangeEventArgs e)
+    {
+        if (tags is null) return;
+        if (int.TryParse((string?)e.Value, out var index) && index >= 0)
+            AddTag(tags[index]);
+    }
+    private void AddTag(TagDto tag)
+    {
+        if (SearchTags?.Find(t => t.TagId == tag.TagId) is null)
+            SearchTags?.Add(tag);
+    }
+    private void RemoveTag(TagDto tag)
+    {
+        SearchTags.Remove(tag);
+    }
+
 
 }

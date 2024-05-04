@@ -1,9 +1,11 @@
 ﻿@page "/posts"
 @using HBlog.Domain.Entities
 @using HBlog.WebClient.Services
+@using HBlog.WebClient.States
 @inject ICategoryService categoryService
 @inject IPostService postService;
 @inject ITagService tagService;
+@inject PostDashboardState PostDashboardState;
 <div class="container-xxl py-2 d-flex">
     <div class="col-xl-3" >
         <div>
@@ -17,27 +19,18 @@
             </select>
             <br>
             <label>Tag</label>
-            <select class="select" @onchange="SearchTagSelected">
-                <option value="-1" disabled selected>(select)</option>
-
-                @for (var i = 0; i < tags?.Count; i++)
+            @if(SearchTags is not null)
+            {
+                @foreach (TagDto tag in SearchTags)
                 {
-                    <option value="@i">@tags[i].Name</option>
+                    <button>@tag.Name</button>
                 }
-            </select>
+            }
             <div>
-
-                @if (searchTags is not null)
-                {
-                    @foreach (var tag in searchTags)
-                    {
-                        <button @onclick="@(() => RemoveTag(tag))">@tag.Name</button>
-                    }
-                }
+                <button @onclick="@(() => PostDashboardState.ShowConfigureTagSelectDialog())">Tag Filters</button>
             </div>
         </div>
-
-    </div>
+    </div>  
 
     <div class="h-100 d-flex flex-column justify-content-center">
         @if (posts is not null)
@@ -51,14 +44,19 @@
     </div>
 </div>
 
-
+<TemplateDialog Show="PostDashboardState.ShowingConfigureDialog">
+    <ConfigureTagDialog 
+        SearchTags ="SearchTags"
+        OnCancel="PostDashboardState.CancelConfigureTagDialog"
+        OnConfirm="PostDashboardState.ConfirmConfigureTagDialog" />
+</TemplateDialog>
 @code {
 
     private IEnumerable<Category> Categories { get; set; } = new List<Category>();
     private List<TagDto>? tags = new();
     private int? selectCategoryId = 0;
     private IEnumerable<PostDisplayDto> posts;
-    private List<TagDto>? searchTags = new();
+    public List<TagDto> SearchTags = new();
 
     protected override async Task OnInitializedAsync()
     {
@@ -75,23 +73,9 @@
             posts = await postService.GetPostDisplays();
             return;
         }
-
         posts = await postService.GetPostDisplayByCategoryId(num);
     }
-    private void SearchTagSelected(ChangeEventArgs e)
-    {
-        if (tags is null) return;
-        if (int.TryParse((string?)e.Value, out var index) && index >= 0)
-            AddTag(tags[index]);
-    }
-    private void AddTag(TagDto tag)
-    {
-        if (searchTags?.Find(t => t.TagId == tag.TagId) is null)
-            searchTags?.Add(tag);
-    }
 
-    private void RemoveTag(TagDto tag)
-    {
-        searchTags?.RemoveAll(t => t == tag);
-    }
+
+
 }
