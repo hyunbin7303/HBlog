@@ -1,19 +1,22 @@
 ﻿using Blazored.LocalStorage;
 using HBlog.Contract.Common;
 using HBlog.Contract.DTOs;
+using HBlog.WebClient.Helpers;
 using System;
+using System.Collections.Generic;
 using System.Net.Http.Json;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace HBlog.WebClient.Services
 {
     public interface IPostService
     {
         public Task<IEnumerable<PostDisplayDto>> GetPostDisplays(int limit = 5, int offset = 0);
-        public Task<IEnumerable<PostDisplayDto>> GetPostDisplayByCategoryId(int categoryId, List<TagDto>? tags = null);
+        public Task<IEnumerable<PostDisplayDto>> GetPostDisplayByFilters(int categoryId, List<TagDto>? tags = null);
         public Task<PostDisplayDetailsDto> GetPostDetails(int id);
         public Task<bool> CreatePost(PostCreateDto postCreateDto);
         public Task<bool> UpdatePost(PostUpdateDto postUpdateDto);
-        public Task<bool> DeletePost(int id);
+        public Task<bool> DeletePost(int id);   
         public Task<bool> AddTagInPost(int postId, int tagId);
     }
     public class PostClientService : IPostService
@@ -70,31 +73,31 @@ namespace HBlog.WebClient.Services
                 { "limit",  limit.ToString() },
                 { "offset", offset.ToString() }
             };
-            var url = BuildUrlWithQueryStringUsingUriBuilder($"{_httpClient.BaseAddress}posts", query);
+            var url = QueryHelper.BuildUrlWithQueryStringUsingUriBuilder($"{_httpClient.BaseAddress}posts", query);
 
             var result = await _httpClient.GetFromJsonAsync<ApiResponse<IEnumerable<PostDisplayDto>>>(url);
             return result.Data!;
         }
 
-        public async Task<IEnumerable<PostDisplayDto>> GetPostDisplayByCategoryId(int categoryId, List<TagDto>? tags = null)
+        public async Task<IEnumerable<PostDisplayDto>> GetPostDisplayByFilters(int categoryId, List<TagDto>? tags = null)
         {
-            var result = await _httpClient.GetFromJsonAsync<IEnumerable<PostDisplayDto>>($"categories/{categoryId}/posts");
+            var query = new Dictionary<string, string>
+            {
+                { "categoryId ",  categoryId.ToString() },
+                { "tagId", string.Join(",", tags) }
+            };
+
+            var url = QueryHelper.BuildUrlWithQueryStringUsingUriBuilder($"{_httpClient.BaseAddress}posts", query);
+            var result = await _httpClient.GetFromJsonAsync<IEnumerable<PostDisplayDto>>(url);
             return result!;
         }
-        public string BuildUrlWithQueryStringUsingUriBuilder(string basePath, Dictionary<string, string> queryParams)
-        {
-            var uriBuilder = new UriBuilder(basePath)
-            {
-                Query = string.Join("&", queryParams.Select(kvp => $"{kvp.Key}={kvp.Value}"))
-            };
-            return uriBuilder.Uri.AbsoluteUri;
-        }
-
         public async Task<bool> AddTagInPost(int postId, int tagId)
         {
             await _authService.GetBearerToken();
             var result = await _httpClient.PutAsJsonAsync($"posts/{postId}/AddTag", tagId);
             return result.IsSuccessStatusCode;
         }
+
+
     }
 }

@@ -32,6 +32,7 @@
     <ProjectReference Include="..\..\src\HBlog.Application\HBlog.Application.csproj" />
     <ProjectReference Include="..\..\src\HBlog.Domain\HBlog.Domain.csproj" />
     <ProjectReference Include="..\..\src\HBlog.Infrastructure\HBlog.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\src\HBlog.WebClient\HBlog.WebClient.csproj" />
   </ItemGroup>
 
 </Project>

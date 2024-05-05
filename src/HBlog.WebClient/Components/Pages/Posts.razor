@@ -73,7 +73,7 @@
             posts = await postService.GetPostDisplays();
             return;
         }
-        posts = await postService.GetPostDisplayByCategoryId(num);
+        posts = await postService.GetPostDisplayByFilters(num, SearchTags);
     }
 
 

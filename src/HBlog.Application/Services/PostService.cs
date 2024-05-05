@@ -95,8 +95,8 @@ public class PostService : BaseService, IPostService
         if(query.CategoryId != 0)
             posts = posts.Where(p =>p.CategoryId == query.CategoryId);
 
-        if (query.TagIds.Any())
-            posts = posts.Where(p => p.PostTags.Any(tag => query.TagIds.Contains(tag.TagId)));
+        if (query.TagId.Any())
+            posts = posts.Where(p => p.PostTags.Any(pt => query.TagId.Contains(pt.TagId)));
 
         return _mapper.Map<IEnumerable<PostDisplayDto>>(posts);
     }
