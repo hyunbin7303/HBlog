@@ -4,9 +4,8 @@ namespace HBlog.WebClient.States
 {
     public class PostDashboardState
     {
-        public bool ShowingConfigureDialog { get; set; }    
-        public List<TagDto>? SearchTags { get; set; }
-        public List<TagDto> Tags { get; set; }
+        public bool ShowingConfigureDialog { get; private set; }
+        public List<TagDto>? SearchTags { get; private set; } = new();
         public void ShowConfigureTagSelectDialog()
         {
             ShowingConfigureDialog = true;
@@ -19,12 +18,6 @@ namespace HBlog.WebClient.States
 
         public void ConfirmConfigureTagDialog()
         {
-            if (SearchTags is not null)
-            {
-                //SearchTags.Add(ConfiguringPizza);
-                //ConfiguringPizza = null;
-            }
-
             ShowingConfigureDialog = false;
         }
     }

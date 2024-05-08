@@ -19,9 +19,9 @@
             </select>
             <br>
             <label>Tag</label>
-            @if(SearchTags is not null)
+            @if (PostDashboardState.SearchTags is not null)
             {
-                @foreach (TagDto tag in SearchTags)
+                @foreach (TagDto tag in PostDashboardState.SearchTags)
                 {
                     <button>@tag.Name</button>
                 }
@@ -45,8 +45,7 @@
 </div>
 
 <TemplateDialog Show="PostDashboardState.ShowingConfigureDialog">
-    <ConfigureTagDialog 
-        SearchTags ="SearchTags"
+    <ConfigureTagDialog SearchTags="PostDashboardState.SearchTags"
         OnCancel="PostDashboardState.CancelConfigureTagDialog"
         OnConfirm="PostDashboardState.ConfirmConfigureTagDialog" />
 </TemplateDialog>
@@ -56,13 +55,16 @@
     private List<TagDto>? tags = new();
     private int? selectCategoryId = 0;
     private IEnumerable<PostDisplayDto> posts;
-    public List<TagDto> SearchTags = new();
 
     protected override async Task OnInitializedAsync()
     {
         Categories = await categoryService.GetCategories();
         posts = await postService.GetPostDisplays();
         tags = (await tagService.GetTags()).ToList();
+    }
+    protected override Task OnParametersSetAsync()
+    {
+        return base.OnParametersSetAsync();
     }
 
     private async Task HandleChangeCategory(ChangeEventArgs e)
@@ -73,7 +75,7 @@
             posts = await postService.GetPostDisplays();
             return;
         }
-        posts = await postService.GetPostDisplayByFilters(num, SearchTags);
+        posts = await postService.GetPostDisplayByFilters(num, PostDashboardState.SearchTags);
     }
 
 

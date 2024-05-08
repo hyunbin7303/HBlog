@@ -2,16 +2,14 @@
 using HBlog.Contract.Common;
 using HBlog.Contract.DTOs;
 using HBlog.WebClient.Helpers;
-using System;
 using System.Collections.Generic;
 using System.Net.Http.Json;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace HBlog.WebClient.Services
 {
     public interface IPostService
     {
-        public Task<IEnumerable<PostDisplayDto>> GetPostDisplays(int limit = 5, int offset = 0);
+        public Task<IEnumerable<PostDisplayDto>> GetPostDisplays(int limit = 10, int offset = 0);
         public Task<IEnumerable<PostDisplayDto>> GetPostDisplayByFilters(int categoryId, List<TagDto>? tags = null);
         public Task<PostDisplayDetailsDto> GetPostDetails(int id);
         public Task<bool> CreatePost(PostCreateDto postCreateDto);
@@ -83,13 +81,16 @@ namespace HBlog.WebClient.Services
         {
             var query = new Dictionary<string, string>
             {
-                { "categoryId ",  categoryId.ToString() },
-                { "tagId", string.Join(",", tags) }
+                { "categoryId", categoryId.ToString() },
             };
+            
+            string url = QueryHelper.BuildUrlWithQueryStringUsingUriBuilder($"{_httpClient.BaseAddress}posts", query);
+            if (tags is not null)
+                url +=  "&" + QueryHelper.ArrayToQueryString("tagid", tags.Select(x => x.Name).ToArray());
 
-            var url = QueryHelper.BuildUrlWithQueryStringUsingUriBuilder($"{_httpClient.BaseAddress}posts", query);
-            var result = await _httpClient.GetFromJsonAsync<IEnumerable<PostDisplayDto>>(url);
-            return result!;
+            await Console.Out.WriteLineAsync(url);
+            var result = await _httpClient.GetFromJsonAsync<ApiResponse<IEnumerable<PostDisplayDto>>>(url);
+            return result.Data!;
         }
         public async Task<bool> AddTagInPost(int postId, int tagId)
         {
