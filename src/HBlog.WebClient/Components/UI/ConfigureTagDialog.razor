@@ -1,38 +1,39 @@
 ﻿@using HBlog.WebClient.Services
 @inject ITagService tagService;
 
-<div class="dialog-title">
-    <h2>Tag filter</h2>
-</div>
-<form class="dialog-body">
-    <div>
-        <label>Tag Selection:</label>
-        <select class="select" @onchange="SearchTagSelected">
-            <option value="-1" disabled selected>(select)</option>
-
-            @for (var i = 0; i < tags?.Count; i++)
-            {
-                <option value="@i">@tags[i].Name</option>
-            }
-        </select>
-
+<div style="margin: 1ch;">
+    <div class="dialog-title">
+        <h2>Tag filter</h2>
     </div>
-    <div>
-        @if (SearchTags is not null)
-        {
-            @foreach (var tag in SearchTags)
+    <form class="dialog-body">
+        <div>
+            <label>Tag Selection:</label>
+            <select class="select" @onchange="SearchTagSelected">
+                <option value="-1" disabled selected>(select)</option>
+
+                @for (var i = 0; i < tags?.Count; i++)
+                {
+                    <option value="@i">@tags[i].Name</option>
+                }
+            </select>
+
+        </div>
+        <div>
+            @if (SearchTags is not null)
             {
-                <button @onclick="@(() => RemoveTag(tag))">@tag.Name</button>
+                @foreach (var tag in SearchTags)
+                {
+                    <button @onclick="@(() => RemoveTag(tag))">@tag.Name</button>
+                }
             }
-        }
+        </div>
+    </form>
+
+    <div class="dialog-buttons">
+        <button class="btn btn-success ml-auto" @onclick="OnConfirm">Apply</button>
+        <button class="btn btn-secondary mr-auto" @onclick="OnCancel">Cancel</button>
     </div>
-</form>
-
-<div class="dialog-buttons">
-    <button class="btn btn-success ml-auto" @onclick="OnConfirm">Apply</button>
-    <button class="btn btn-secondary mr-auto" @onclick="OnCancel">Cancel</button>
 </div>
-
 
 @code {
     List<TagDto>? tags;

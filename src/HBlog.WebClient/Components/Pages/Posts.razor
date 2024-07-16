@@ -18,7 +18,10 @@
                 }
             </select>
             <br>
-            <label>Tag</label>
+
+            <div>
+                <button @onclick="@(() => PostDashboardState.ShowConfigureTagSelectDialog())" style="margin: 0.5ch;">Tag Filters</button>
+            </div>
             @if (PostDashboardState.SearchTags is not null)
             {
                 @foreach (TagDto tag in PostDashboardState.SearchTags)
@@ -27,10 +30,10 @@
                 }
             }
             <div>
-                <button @onclick="@(() => PostDashboardState.ShowConfigureTagSelectDialog())">Tag Filters</button>
+                <button type="submit" class="btn btn-success ml-auto" @onclick="SearchSelectedSetup" >Search</button>
             </div>
         </div>
-    </div>  
+    </div>
 
     <div class="h-100 d-flex flex-column justify-content-center">
         @if (posts is not null)
@@ -65,6 +68,9 @@
     protected override Task OnParametersSetAsync()
     {
         return base.OnParametersSetAsync();
+    }
+    protected async Task SearchSelectedSetup(MouseEventArgs e) {
+        posts = await postService.GetPostDisplayByFilters(selectCategoryId.Value, PostDashboardState.SearchTags);
     }
 
     private async Task HandleChangeCategory(ChangeEventArgs e)

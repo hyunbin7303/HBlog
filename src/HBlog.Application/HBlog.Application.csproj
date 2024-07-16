@@ -12,7 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\HBlog.Domain\HBlog.Domain.csproj" />
-    <ProjectReference Include="..\HBlog.Shared\HBlog.Contract.csproj" />
+    <ProjectReference Include="..\HBlog.Shared\HBlog.Shared.csproj" />
   </ItemGroup>
 
 </Project>

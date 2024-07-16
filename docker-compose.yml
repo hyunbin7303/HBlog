@@ -1,0 +1,23 @@
+version: "3.10"
+services:
+    hblog_api:
+        build: .
+        container_name: hblog_api
+        ports:
+            - "8000:8010"
+        depends_on:
+            - hblog_database
+    hblog_database:
+        image: postgres:latest
+        container_name: hblog_db
+        environment:
+          - POSTGRES_USER=postgres
+          - POSTGRES_PASSWORD=postgres
+
+        ports:
+          - "5432:5432"
+        healthcheck:
+          test: ["CMD-SHELL", "pg_isready -U postgres"]
+          interval: 10s
+          timeout: 5s
+          retries: 5

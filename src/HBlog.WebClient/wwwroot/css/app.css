@@ -150,3 +150,21 @@ code {
     animation: dialog-entry 0.4s;
     animation-timing-function: cubic-bezier(0.075, 0.820, 0.165, 1.000);
 }
+
+
+.my-button {
+    position: absolute;
+    top:50%;
+    background-color:#0a0a23;
+    color: #fff;
+    border:none;
+    border-radius:10px;
+    padding:15px;
+    min-height:30px;
+    min-width: 120px;
+}
+.my-button:hover {
+    background-color:#002ead;
+    transition: 0.7s;
+}
+

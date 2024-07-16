@@ -11,14 +11,16 @@ EXPOSE 8081
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["HBlog.Api/HBlog.Api.csproj", "HBlog.Api/"]
-COPY ["HBlog.Domain/HBlog.Domain.csproj", "HBlog.Domain/"]
-COPY ["HBlog.Application/HBlog.Application.csproj", "HBlog.Application/"]
-COPY ["HBlog.Shared/HBlog.Contract.csproj", "HBlog.Shared/"]
-COPY ["HBlog.Infrastructure/HBlog.Infrastructure.csproj", "HBlog.Infrastructure/"]
-RUN dotnet restore "HBlog.Api/HBlog.Api.csproj"
+COPY ["/src/HBlog.Domain/*.csproj", "HBlog.Domain/"]
+COPY ["/src/HBlog.Application/*.csproj", "HBlog.Application/"]
+COPY ["/src/HBlog.Shared/*.csproj", "HBlog.Shared/"]
+COPY ["/src/HBlog.Infrastructure/*.csproj", "HBlog.Infrastructure/"]
+COPY ["/src/HBlog.Api/HBlog.Api.csproj", "HBlog.Api/"]
+COPY ["/src/HBlog.Infrastructure/Data/PostSeedData.json", "HBlog.Infrastructure/Data/"]
+COPY ["/src/HBlog.Infrastructure/Data/UserSeedData.json", "HBlog.Infrastructure/Data/"]
+RUN dotnet restore "/src/HBlog.Api/HBlog.Api.csproj"
 COPY . .
-WORKDIR "/src/HBlog.Api"
+WORKDIR "/src/src/HBlog.Api/"
 RUN dotnet build "HBlog.Api.csproj" -c %BUILD_CONFIGURATION% -o /app/build
 
 FROM build AS publish
