@@ -95,7 +95,7 @@ namespace HBlog.WebClient.Services
         public async Task<bool> AddTagInPost(int postId, int tagId)
         {
             await _authService.GetBearerToken();
-            var result = await _httpClient.PutAsJsonAsync($"posts/{postId}/AddTag", tagId);
+            var result = await _httpClient.PutAsJsonAsync($"posts/{postId}/Tags", tagId);
             return result.IsSuccessStatusCode;
         }
 

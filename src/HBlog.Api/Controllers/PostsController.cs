@@ -85,7 +85,7 @@ namespace HBlog.Api.Controllers
             return NoContent();
         }
 
-        [HttpPut("posts/{postId}/AddTag")] 
+        [HttpPut("posts/{postId}/Tags")] 
         public async Task<IActionResult> AddTag(int postId, [FromBody]int tagId)
         {
             if (postId == 0 || tagId == 0)
