@@ -10,7 +10,7 @@
             "request": "launch",
             "preLaunchTask": "build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/src/KevBlog.Api/bin/Debug/net7.0/KevBlog.Api.dll",
+            "program": "${workspaceFolder}/src/KevBlog.Api/bin/Debug/net8.0/KevBlog.Api.dll",
             "args": [],
             "cwd": "${workspaceFolder}/src/KevBlog.Api",
             "stopAtEntry": false,

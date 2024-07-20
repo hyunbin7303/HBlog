@@ -13,7 +13,7 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["/src/HBlog.Domain/*.csproj", "HBlog.Domain/"]
 COPY ["/src/HBlog.Application/*.csproj", "HBlog.Application/"]
-COPY ["/src/HBlog.Shared/*.csproj", "HBlog.Shared/"]
+COPY ["/src/HBlog.Contract/*.csproj", "HBlog.Contract/"]
 COPY ["/src/HBlog.Infrastructure/*.csproj", "HBlog.Infrastructure/"]
 COPY ["/src/HBlog.Api/HBlog.Api.csproj", "HBlog.Api/"]
 COPY ["/src/HBlog.Infrastructure/Data/PostSeedData.json", "HBlog.Infrastructure/Data/"]
