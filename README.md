@@ -1,16 +1,13 @@
-# HappYness Blog / KevBlog
+# HBlog
 This project is for building my own blog using Asp.net Web API and Blazor WebAssembly.
 
 ## Technology Stacks
 * ASP.NET Web API .NET8
-* Blazor Web Assembly 
+* EFCore
+* Blazor WebAssembly
+* Bootstrap
 * Postgres
 
-# Functionality Overview
-* User can see post posts without login.
-* User is able to create an account.
-* User can create a post and update.
-* User can link their blog post from external site.
 
 # Technology implementations
 ## Frontend(Blaor WASM) Side
@@ -28,3 +25,9 @@ This project is for building my own blog using Asp.net Web API and Blazor WebAss
 * Infrastructure layer(Extensions, Helpers, Data migrations/seed)
 * AutoMapper for Domain-DTO mapping.
 * Unit Testing / Integration testing (InProgress)
+
+## Contribution
+
+If you have any suggestions for how HP could be improved, feel free to create a issue and do some works for me!
+For more, checkout the contribution guide.
+
