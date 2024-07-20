@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HBlog.Application", "HBlog.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HBlog.Infrastructure", "HBlog.Infrastructure\HBlog.Infrastructure.csproj", "{745AD1B6-15C4-488E-B463-F87FA59162C9}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HBlog.Contract", "HBlog.Shared\HBlog.Contract.csproj", "{1F4438EA-3B37-4EDA-8172-5B65A1A719E1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HBlog.Contract", "HBlog.Contract\HBlog.Contract.csproj", "{1F4438EA-3B37-4EDA-8172-5B65A1A719E1}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HBlog.WebClient", "HBlog.WebClient\HBlog.WebClient.csproj", "{F7682807-E80D-47F3-9404-856BCDCB2C2D}"
 EndProject
