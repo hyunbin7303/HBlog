@@ -29,5 +29,5 @@ This project is for building my own blog using Asp.net Web API and Blazor WebAss
 ## Contribution
 
 If you have any suggestions for how HP could be improved, feel free to create a issue and do some works for me!
-For more, checkout the contribution guide.
+For more, checkout the [Contributing guidelines](https://github.com/hyunbin7303/HBlog/blob/main/.github/CONTRIBUTING.md).
 
