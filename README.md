@@ -10,7 +10,7 @@ This project is for building my own blog using Asp.net Web API and Blazor WebAss
 
 
 # Technology implementations
-## Frontend(Blaor WASM) Side
+## Frontend(Blazor WASM) Side
 * HTTP Client service layer to interact with Web API.
 * Authentication using JWT Token.
 * Authorization
