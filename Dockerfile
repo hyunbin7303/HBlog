@@ -1,8 +1,3 @@
-#See https://aka.ms/customizecontainer to learn how to customize your debug container and how Visual Studio uses this Dockerfile to build your images for faster debugging.
-
-#Depending on the operating system of the host machines(s) that will build or run the containers, the image specified in the FROM statement may need to be changed.
-#For more information, please see https://aka.ms/containercompat
-
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 WORKDIR /app
 EXPOSE 8080
@@ -16,8 +11,8 @@ COPY ["/src/HBlog.Application/*.csproj", "HBlog.Application/"]
 COPY ["/src/HBlog.Contract/*.csproj", "HBlog.Contract/"]
 COPY ["/src/HBlog.Infrastructure/*.csproj", "HBlog.Infrastructure/"]
 COPY ["/src/HBlog.Api/HBlog.Api.csproj", "HBlog.Api/"]
-COPY ["/src/HBlog.Infrastructure/Data/PostSeedData.json", "HBlog.Infrastructure/Data/"]
-COPY ["/src/HBlog.Infrastructure/Data/UserSeedData.json", "HBlog.Infrastructure/Data/"]
+COPY ["/src/HBlog.Infrastructure/Data/PostSeedData.json", "/HBlog.Infrastructure/Data/"]
+COPY ["/src/HBlog.Infrastructure/Data/UserSeedData.json", "/HBlog.Infrastructure/Data/"]
 RUN dotnet restore "/src/HBlog.Api/HBlog.Api.csproj"
 COPY . .
 WORKDIR "/src/src/HBlog.Api/"
