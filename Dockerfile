@@ -11,8 +11,8 @@ COPY ["/src/HBlog.Application/*.csproj", "HBlog.Application/"]
 COPY ["/src/HBlog.Contract/*.csproj", "HBlog.Contract/"]
 COPY ["/src/HBlog.Infrastructure/*.csproj", "HBlog.Infrastructure/"]
 COPY ["/src/HBlog.Api/HBlog.Api.csproj", "HBlog.Api/"]
-COPY ["/src/HBlog.Infrastructure/Data/PostSeedData.json", "/HBlog.Infrastructure/Data/"]
-COPY ["/src/HBlog.Infrastructure/Data/UserSeedData.json", "/HBlog.Infrastructure/Data/"]
+COPY ["/src/HBlog.Infrastructure/Data/PostSeedData.json", "HBlog.Infrastructure/Data/"]
+COPY ["/src/HBlog.Infrastructure/Data/UserSeedData.json", "HBlog.Infrastructure/Data/"]
 RUN dotnet restore "/src/HBlog.Api/HBlog.Api.csproj"
 COPY . .
 WORKDIR "/src/src/HBlog.Api/"
