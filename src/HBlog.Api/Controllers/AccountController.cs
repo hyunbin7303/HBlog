@@ -53,6 +53,7 @@ namespace HBlog.Api.Controllers
             return new UserDto
             {
                 Username = user.UserName,
+                Email = user.Email,
                 Token = await _tokenService.CreateToken(user),
                 PhotoUrl = user.Photos.FirstOrDefault(x => x.IsMain)?.Url,
                 KnownAs = user.KnownAs,
