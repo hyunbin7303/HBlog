@@ -24,6 +24,7 @@ namespace HBlog.Infrastructure.Authentications
             {
                 new Claim(JwtRegisteredClaimNames.NameId, user.Id.ToString()),
                 new Claim(JwtRegisteredClaimNames.UniqueName, user.UserName),
+                new Claim(JwtRegisteredClaimNames.Email, user.Email),
             };
 
             var roles = await _userManager.GetRolesAsync(user);
