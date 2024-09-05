@@ -9,7 +9,7 @@ using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 
-namespace HBlog.IntegrationTests
+namespace HBlog.IntegrationTests.Base
 {
     public class TestAuthHandler : AuthenticationHandler<AuthenticationSchemeOptions>
     {
@@ -25,7 +25,7 @@ namespace HBlog.IntegrationTests
             var ticket = new AuthenticationTicket(principal, "TestScheme");
 
             var result = AuthenticateResult.Success(ticket);
-            return Task.FromResult(result); 
+            return Task.FromResult(result);
         }
     }
 }

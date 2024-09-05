@@ -93,7 +93,6 @@ namespace HBlog.Infrastructure.Data
                 await context.SaveChangesAsync();
             }
         }
-
         public static async Task SeedPostTags(DataContext context)
         {
             if (await context.PostTags.AnyAsync()) return;

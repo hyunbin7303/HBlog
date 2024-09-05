@@ -65,8 +65,8 @@ namespace HBlog.Api.Controllers
         {
             var postDetails = await _postService.GetByIdAsync(id);
             return (await _postService.GetByIdAsync(id)).IsSuccess ? 
-                    (ActionResult<PostDisplayDetailsDto>)Ok(postDetails.Value) : 
-                    (ActionResult<PostDisplayDetailsDto>)NotFound(postDetails.Message);
+                    Ok(postDetails.Value) : 
+                    NotFound(postDetails.Message);
         }
 
         [HttpPut("posts")]

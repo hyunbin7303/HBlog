@@ -2,7 +2,7 @@
 {
     public class PostParams : QueryParams
     {
-        public List<int> TagId { get; set; } = new List<int>();
+        public List<int> TagId { get; set; } = new();
         public int CategoryId { get; set; }
     }
 }

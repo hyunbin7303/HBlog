@@ -8,7 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestPlatform.TestHost;
 using Moq;
 
-namespace HBlog.IntegrationTests
+namespace HBlog.IntegrationTests.Base
 {
     public class MessageAppFactory : WebApplicationFactory<Program>
     {

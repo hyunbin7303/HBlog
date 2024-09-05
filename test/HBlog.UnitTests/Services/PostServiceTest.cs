@@ -83,7 +83,8 @@ namespace HBlog.UnitTests.Services
                 Title = "New Post Create",
                 Desc = "New Post Desc",
                 LinkForPost = "https://github.com/hyunbin7303",
-                Type = "Programming"
+                Type = "Programming",
+                CategoryId = 1
             };
             _userRepositoryMock.Setup(x => x.GetUserByUsernameAsync(userName)).ReturnsAsync(new User { Id = 1, Email = "hyunbin7303@gmail.com", UserName = userName });
 

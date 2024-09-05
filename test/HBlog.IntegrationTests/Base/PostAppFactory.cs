@@ -8,13 +8,17 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestPlatform.TestHost;
 using Moq;
 using System;
-namespace HBlog.IntegrationTests
+using HBlog.Infrastructure.Data;
+using Microsoft.Extensions.Hosting;
+
+namespace HBlog.IntegrationTests.Base
 {
     public class PostAppFactory : WebApplicationFactory<Program>
     {
         public Mock<IPostService> _mockPostService { get; }
         public Mock<IPostRepository> _mockPostRepository { get; }
         public Mock<IUserService> _mockUserService { get; }
+
         public PostAppFactory()
         {
             _mockPostService = new Mock<IPostService>();
@@ -25,9 +29,7 @@ namespace HBlog.IntegrationTests
             builder.ConfigureTestServices(services =>
             {
                 //services.RemoveAll(typeof(DbContextOptions<DataContext>));
-                //services.GetRequiredService<DataContext>();
-                services.AddSingleton(_mockPostService.Object);
-                services.AddSingleton(_mockPostRepository.Object);
+                //services.GetRequired<DataContext>();
             });
         }
 

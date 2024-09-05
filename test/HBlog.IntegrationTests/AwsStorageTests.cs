@@ -1,9 +1,14 @@
 using HBlog.Domain.Repositories;
 using HBlog.Infrastructure.Repositories;
 using HBlog.Infrastructure.Services;
+using HBlog.IntegrationTests.Base;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Moq;
+using NUnit.Framework;
+using Xunit;
+using Assert = NUnit.Framework.Assert;
+
 namespace HBlog.IntegrationTests
 {
 
@@ -36,12 +41,12 @@ namespace HBlog.IntegrationTests
             return result;
         }
 
-        [Fact]
+        [Test]
         public async Task UploadFileAsync_ExistingFile_ReturnTrue()
         {
             var result = await UploadTempFileInS3();
 
-            Assert.True(result);
+            Assert.That(result);
         }
 
         [Fact]
@@ -52,7 +57,7 @@ namespace HBlog.IntegrationTests
 
             var result = await awsStorageService.DeleteAsync(bucketName, "IntegrationTest/TestingFile.txt");
 
-            Assert.True(result);
+            Assert.That(result);
         }
         [Fact]
         public async Task GivenNotAuthorized_WhenIsAuthorized_ThenReturnFalse()
@@ -61,7 +66,7 @@ namespace HBlog.IntegrationTests
 
             var result = await awsStorageService.IsAuthorized(bucketName, 0);
             
-            Assert.False(result);
+            Assert.That(result, Is.False);
         }
 
         [Fact]
@@ -71,7 +76,7 @@ namespace HBlog.IntegrationTests
          
             var result = await awsStorageService.DownloadFileAsync("", fileName);
 
-            Assert.NotNull(result);
+            Assert.That(result, Is.Not.Null);
         }
 
         [Fact]
@@ -81,7 +86,7 @@ namespace HBlog.IntegrationTests
 
             var result = await awsStorageService.IsFileExists(fileName, string.Empty);
 
-            Assert.Equal(true, result);
+            Assert.That(result);
         }
 
         [Fact]
@@ -91,7 +96,7 @@ namespace HBlog.IntegrationTests
 
             var result = await awsStorageService.IsFileExists(fileName, string.Empty);
 
-            Assert.Equal(false, result);
+            Assert.That(result, Is.False);
         }
     }
 }

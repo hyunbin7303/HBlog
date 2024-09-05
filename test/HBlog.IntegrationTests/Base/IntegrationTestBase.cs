@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
-namespace HBlog.IntegrationTests
+namespace HBlog.IntegrationTests.Base
 {
     public abstract class IntegrationTestBase : TestBase
     {

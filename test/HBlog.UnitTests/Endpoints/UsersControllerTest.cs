@@ -64,7 +64,6 @@ namespace HBlog.UnitTests.Controllers
             //Assert.That(okObjectResult.StatusCode, Is.EqualTo(StatusCodes.Status200OK));
         }
 
-
         [Test]
         public async Task GetUser_PassNotExistingUser_NotFound()
         {

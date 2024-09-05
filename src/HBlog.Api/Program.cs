@@ -12,6 +12,7 @@ public class Program
 {
     private static async Task Main(string[] args)
     {
+        Console.WriteLine("Current Env: " + Environment.GetEnvironmentVariable("Environment"));
         var builder = WebApplication.CreateBuilder(args);
         AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true); // TODO Might need to be removed and find solution for UTC TIme set issue..
         builder.Services.AddControllers();
@@ -67,12 +68,15 @@ public class Program
             var context = services.GetRequiredService<DataContext>();
             var userManager = services.GetRequiredService<UserManager<User>>();
             var roleManager = services.GetRequiredService<RoleManager<AppRole>>();
-            await context.Database.MigrateAsync();
-            await Seed.SeedUsers(userManager, roleManager);
-            await Seed.SeedCategories(context);
-            await Seed.SeedPosts(context);
-            await Seed.SeedTags(context);
-            await Seed.SeedPostTags(context);
+            if (Environment.GetEnvironmentVariable("Environment") != "test")
+            {
+                await context.Database.MigrateAsync();
+                await Seed.SeedUsers(userManager, roleManager);
+                await Seed.SeedCategories(context);
+                await Seed.SeedPosts(context);
+                await Seed.SeedTags(context);
+                await Seed.SeedPostTags(context);
+            }
         }
         catch (Exception ex)
         {

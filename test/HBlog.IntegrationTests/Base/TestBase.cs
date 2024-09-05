@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
-namespace HBlog.IntegrationTests
+namespace HBlog.IntegrationTests.Base
 {
     public abstract class TestBase
     {
