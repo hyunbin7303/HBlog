@@ -2,15 +2,18 @@
 
 @if(Post is not null)
 {
-    <div class="mb-3 d-flex justify-content-between">
-        <div class="pr-3">
-            <h2 class="mb-1 h4 font-weight-bold">
+    <div class="mb-3 d-flex card p-2">
+        <div>
+            <h4 class="font-weight-bold bg-body-secondary p-3">
                 <a class="text-dark" href="posts/@Post.Id">@Post.Title</a>
-            </h2>
-            <p>
+            </h4>
+            <p class="p-1">
                 @Post.Desc
             </p>
-            <small class="text-muted small px-4 my-2" >@Post.Created.ToString("MMM dd yyyy")</small>
+            <div class="border-top border-3">
+                <small class="text-muted small">@Post.Created.ToString("MMM dd yyyy")</small>
+
+            </div>
         </div>
     </div>
 }
