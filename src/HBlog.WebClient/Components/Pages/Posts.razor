@@ -44,12 +44,18 @@
 
     <!-- Right Sidebar (Search) -->
     <aside class="right-banner">
-        <div>
-            <InputText type="text"
+        <div class="search-section">
+            <InputText class="form-control"
+                       type="text"
                        id="searchInput"
-                       placeholder="Search for posts.."
-                       title="Search" @bind-Value="@searchText"></InputText>
-            <button type="submit" class="btn btn-success ml-auto" @onclick="SearchSelectedSetup">Search</button>
+                       placeholder="Search for posts..."
+                       title="Search"
+                       @bind-Value="@searchText" />
+            <button type="submit"
+                    class="btn btn-success"
+                    @onclick="SearchSelectedSetup">
+                Search
+            </button>
         </div>
     </aside>
 </div>
@@ -70,9 +76,10 @@
     protected override async Task OnInitializedAsync()
     {
         Categories = await categoryService.GetCategories();
-        posts = await postService.GetPostDisplays();
         tags = (await tagService.GetTags()).ToList();
+        posts = await postService.GetPostDisplays();    
     }
+
     protected override Task OnParametersSetAsync()
     {
         return base.OnParametersSetAsync();
