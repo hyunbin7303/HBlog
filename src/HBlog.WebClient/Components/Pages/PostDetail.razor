@@ -2,7 +2,7 @@
 @using HBlog.WebClient.Services
 @inject IPostService _postService;
 @inject ITagService _tagService;
-@inject NavigationManager navManager; 
+@inject NavigationManager navManager;
 @inject MarkdownService MarkdownService
 
 @if (_postdetailsView is not null)
@@ -14,16 +14,21 @@
         <button class="btn btn-danger" @onclick="() => ConfirmDeleteCategory(_postdetailsView.Id)">Delete</button>
         <ConfirmationModal Title="Confirm Delete" Message="Do you want to delete this blog post?" IsVisible="@_showDeleteConfirmationModal" ConfirmationChanged="OnModalConfirm" />
     }
-
-    <div class="masthead-followup mx-5 px-5 px-md-3">
-    <section class="mt-2 mb-5 pb-md-4 align-items-center p-4 pb-0 pt-lg-5 rounded-3 border shadow-lg">
-            <h2 class="px-5 mt-4">@_postdetailsView.Title</h2>
+    <div class="m-2 m-sm-3">
+        <div class="mb-3 d-flex card p-2">
+            <h2 class="font-weight-bold bg-body-secondary p-3">
+                @_postdetailsView.Title
+            </h2>
             <Entry>@((MarkupString)htmlContent)</Entry>
 
 
-    </section>
+            <div class="border-top border-3">
+                <small class="text-muted small">@_postdetailsView.Created.ToString("MMM dd yyyy")</small>
 
-        @if(_postdetailsView.Tags is not null)
+            </div>
+           
+        </div>
+        @if (_postdetailsView.Tags is not null)
         {
             @foreach (var tag in _postdetailsView.Tags)
             {
@@ -31,6 +36,7 @@
             }
         }
     </div>
+   
 
 }
 else
