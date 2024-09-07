@@ -7,8 +7,7 @@
 @inject ITagService tagService;
 @inject PostDashboardState PostDashboardState;
 <div class="container-xxl py-2 d-flex">
-    <div class="col-xl-3" >
-        <div>
+        <aside>
             <label>Category</label>
             <select @onchange="HandleChangeCategory">
                 <option value="0">Select All</option>
@@ -17,7 +16,6 @@
                     <option value="@category.Id">@category.Title</option>
                 }
             </select>
-            <br>
 
             <div>
                 <button @onclick="@(() => PostDashboardState.ShowConfigureTagSelectDialog())" style="margin: 0.5ch;">Tag Filters</button>
@@ -32,8 +30,7 @@
             <div>
                 <button type="submit" class="btn btn-success ml-auto" @onclick="SearchSelectedSetup" >Search</button>
             </div>
-        </div>
-    </div>
+    </aside>
 
     <div class="h-100 d-flex flex-column justify-content-center">
         @if (posts is not null)
