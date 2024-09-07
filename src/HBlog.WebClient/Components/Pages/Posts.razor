@@ -7,35 +7,31 @@
 @inject ITagService tagService;
 @inject PostDashboardState PostDashboardState;
 <div class="container-xxl py-2 d-flex">
-    <div class="col-xl-3" >
-        <div>
-            <label>Category</label>
-            <select @onchange="HandleChangeCategory">
+    <!-- Left Sidebar -->
+    <aside class="left-banner">
+        <div class="category-section">
+            <label for="categorySelect">Category</label>
+            <InputSelect id="categorySelect" class="form-control"
+                         TValue="int?"
+                         Value="selectCategoryId"
+                         ValueChanged="value => HandleChangeCategory(value)"
+                         ValueExpression="@(() => selectCategoryId)">
                 <option value="0">Select All</option>
                 @foreach (var category in Categories)
                 {
                     <option value="@category.Id">@category.Title</option>
                 }
-            </select>
-            <br>
-
-            <div>
-                <button @onclick="@(() => PostDashboardState.ShowConfigureTagSelectDialog())" style="margin: 0.5ch;">Tag Filters</button>
-            </div>
-            @if (PostDashboardState.SearchTags is not null)
-            {
-                @foreach (TagDto tag in PostDashboardState.SearchTags)
-                {
-                    <button>@tag.Name</button>
-                }
-            }
-            <div>
-                <button type="submit" class="btn btn-success ml-auto" @onclick="SearchSelectedSetup" >Search</button>
-            </div>
+            </InputSelect>
         </div>
-    </div>
+        <div class="tag-filters-section">
+            <button @onclick="@(() => PostDashboardState.ShowConfigureTagSelectDialog())" class="btn btn-primary">
+                Tag Filters
+            </button>
+        </div>
+    </aside>
 
-    <div class="h-100 d-flex flex-column justify-content-center">
+    <!-- Main Content -->
+    <div class="main-content h-100 d-flex flex-column justify-content-center">
         @if (posts is not null)
         {
             <PostList Posts=@posts></PostList>
@@ -45,12 +41,29 @@
             <h4>Loading data...</h4>
         }
     </div>
+
+    <!-- Right Sidebar (Search) -->
+    <aside class="right-banner">
+        <div class="search-section">
+            <InputText class="form-control"
+                       type="text"
+                       id="searchInput"
+                       placeholder="Search for posts..."
+                       title="Search"
+                       @bind-Value="@searchText" />
+            <button type="submit"
+                    class="btn btn-success"
+                    @onclick="SearchSelectedSetup">
+                Search
+            </button>
+        </div>
+    </aside>
 </div>
 
 <TemplateDialog Show="PostDashboardState.ShowingConfigureDialog">
     <ConfigureTagDialog SearchTags="PostDashboardState.SearchTags"
-        OnCancel="PostDashboardState.CancelConfigureTagDialog"
-        OnConfirm="PostDashboardState.ConfirmConfigureTagDialog" />
+                        OnCancel="PostDashboardState.CancelConfigureTagDialog"
+                        OnConfirm="PostDashboardState.ConfirmConfigureTagDialog" />
 </TemplateDialog>
 @code {
 
@@ -58,30 +71,33 @@
     private List<TagDto>? tags = new();
     private int? selectCategoryId = 0;
     private IEnumerable<PostDisplayDto> posts;
+    private string searchText = "";
 
     protected override async Task OnInitializedAsync()
     {
         Categories = await categoryService.GetCategories();
-        posts = await postService.GetPostDisplays();
         tags = (await tagService.GetTags()).ToList();
+        posts = await postService.GetPostDisplays();    
     }
+
     protected override Task OnParametersSetAsync()
     {
         return base.OnParametersSetAsync();
     }
-    protected async Task SearchSelectedSetup(MouseEventArgs e) {
+    protected async Task SearchSelectedSetup(MouseEventArgs e)
+    {
         posts = await postService.GetPostDisplayByFilters(selectCategoryId.Value, PostDashboardState.SearchTags);
     }
 
-    private async Task HandleChangeCategory(ChangeEventArgs e)
+    private async Task HandleChangeCategory(int? value)
     {
-        int num = int.Parse((string?)e.Value);
-        if(num == 0)
+        if (value == 0)
         {
             posts = await postService.GetPostDisplays();
-            return;
         }
-        posts = await postService.GetPostDisplayByFilters(num, PostDashboardState.SearchTags);
+        else
+            posts = await postService.GetPostDisplayByFilters((int)value, PostDashboardState.SearchTags);
+        selectCategoryId = value;
     }
 
 

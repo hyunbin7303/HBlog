@@ -1,0 +1,97 @@
+﻿.container-xxl {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px; /* Optional: Adds space between the sections */
+}
+
+.left-banner {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem; /* Adds space between elements */
+    padding: 1rem;
+    background-color: #f8f9fa; /* Optional: Adds a light background for the sidebar */
+    border-radius: 8px; /* Optional: Rounds the corners of the sidebar */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Optional: Adds a subtle shadow for depth */
+}
+
+.category-section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+    .category-section label {
+        font-weight: bold;
+    }
+
+.tag-filters-section {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.form-control {
+    padding: 0.5rem;
+    border-radius: 4px;
+    border: 1px solid #ced4da;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.btn {
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    border: none;
+    color: white;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+    }
+/* General Styling for the Right Sidebar */
+.right-banner {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem; /* Adds space between elements */
+    padding: 1rem;
+    background-color: #f8f9fa; /* Optional: Light background for the sidebar */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Optional: Subtle shadow */
+    width: 100%; /* Ensures it fits the container */
+}
+
+/* Specific Styling for the Search Section */
+.search-section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem; /* Space between input and button */
+    align-items: flex-start; /* Aligns items to the left */
+}
+
+.main-content {
+    flex: 1; /* Takes up the remaining space */
+}
+
+.right-banner {
+    flex: 0 0 20%; /* Ensures right sidebar stays at 20% width */
+    min-width: 200px; /* Minimum width to avoid shrinking */
+    padding-left: 20px;
+}
+
+
+#searchInput {
+    background-image: url('/css/searchicon.png');
+    background-position: 10px 12px;
+    background-repeat: no-repeat;
+    width: 100%;
+    font-size: 16px;
+    padding: 12px 20px 12px 40px;
+    border: 1px solid #ddd;
+    margin-bottom: 12px;
+}
