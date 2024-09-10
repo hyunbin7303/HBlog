@@ -6,6 +6,7 @@
 @inject IPostService postService;
 @inject ITagService tagService;
 @inject PostDashboardState PostDashboardState;
+
 <div class="container-xxl py-2 d-flex">
     <!-- Left Sidebar -->
     <aside class="left-banner">
@@ -13,9 +14,9 @@
             <label for="categorySelect">Category</label>
             <InputSelect id="categorySelect" class="form-control"
                          TValue="int?"
-                         Value="selectCategoryId"
+                         Value="PostDashboardState.selectCategoryId"
                          ValueChanged="value => HandleChangeCategory(value)"
-                         ValueExpression="@(() => selectCategoryId)">
+                         ValueExpression="@(() => PostDashboardState.selectCategoryId)">
                 <option value="0">Select All</option>
                 @foreach (var category in Categories)
                 {
@@ -32,9 +33,9 @@
 
     <!-- Main Content -->
     <div class="main-content h-100 d-flex flex-column justify-content-center">
-        @if (posts is not null)
+        @if (PostDashboardState?.Posts is not null)
         {
-            <PostList Posts=@posts></PostList>
+            <PostList Posts=@PostDashboardState?.Posts></PostList>
         }
         else
         {
@@ -66,18 +67,15 @@
                         OnConfirm="PostDashboardState.ConfirmConfigureTagDialog" />
 </TemplateDialog>
 @code {
-
     private IEnumerable<Category> Categories { get; set; } = new List<Category>();
     private List<TagDto>? tags = new();
-    private int? selectCategoryId = 0;
-    private IEnumerable<PostDisplayDto> posts;
     private string searchText = "";
 
     protected override async Task OnInitializedAsync()
     {
         Categories = await categoryService.GetCategories();
         tags = (await tagService.GetTags()).ToList();
-        posts = await postService.GetPostDisplays();    
+        PostDashboardState.Posts = await postService.GetPostDisplays();
     }
 
     protected override Task OnParametersSetAsync()
@@ -86,18 +84,18 @@
     }
     protected async Task SearchSelectedSetup(MouseEventArgs e)
     {
-        posts = await postService.GetPostDisplayByFilters(selectCategoryId.Value, PostDashboardState.SearchTags);
+        PostDashboardState.Posts = await postService.GetPostDisplayByFilters((int)PostDashboardState.selectCategoryId, PostDashboardState.SearchTags);
     }
 
     private async Task HandleChangeCategory(int? value)
     {
         if (value == 0)
         {
-            posts = await postService.GetPostDisplays();
+            PostDashboardState.Posts = await postService.GetPostDisplays();
         }
         else
-            posts = await postService.GetPostDisplayByFilters((int)value, PostDashboardState.SearchTags);
-        selectCategoryId = value;
+            PostDashboardState.Posts = await postService.GetPostDisplayByFilters((int)value, PostDashboardState.SearchTags);
+        PostDashboardState.selectCategoryId = (int)value;
     }
 
 

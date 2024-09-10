@@ -168,3 +168,23 @@ code {
     transition: 0.7s;
 }
 
+.hp-badge {
+    padding: 4px 8px;
+    text-align: center;
+    border-radius: 8px;
+}
+
+.hp-badge-red {
+    background-color: red;
+    color: white;
+}
+
+.hp-badge-grey {
+    background-color: grey;
+    color: white;
+}
+
+.hp-badge-blue {
+    background-color: darkblue;
+    color: white;
+}

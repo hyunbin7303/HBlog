@@ -10,9 +10,18 @@
             <p class="p-1">
                 @Post.Desc
             </p>
-            <div class="border-top border-3">
+            <div class="border-top border-3 d-flex justify-content-between">
                 <small class="text-muted small">@Post.Created.ToString("MMM dd yyyy")</small>
-
+                <div class="tag-list">
+                    @if (Post.Tags is not null)
+                    {
+                        foreach (var tag in Post.Tags)
+                        {
+                            <small class="small hp-badge hp-badge-grey">@tag.Name</small>
+                        }
+                    }
+                </div>
+              
             </div>
         </div>
     </div>
