@@ -2,6 +2,7 @@ using HBlog.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HBlog.Infrastructure.Data
 {
@@ -51,6 +52,14 @@ namespace HBlog.Infrastructure.Data
 
             modelBuilder.Entity<FileStorage>()
                 .HasMany(fileStorage => fileStorage.SharedUsers);
+
+            modelBuilder.Entity<Post>(p =>
+            {
+                p.HasKey(post => post.Id);
+                p.Property(post => post.Id).ValueGeneratedOnAdd();
+                p.Property(post => post.Id).UseIdentityAlwaysColumn();
+            });
+
 
             modelBuilder.Entity<PostTags>()
                 .HasKey(k => new { k.PostId, k.TagId });

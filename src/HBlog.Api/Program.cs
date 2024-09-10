@@ -76,6 +76,8 @@ public class Program
                 await Seed.SeedPosts(context);
                 await Seed.SeedTags(context);
                 await Seed.SeedPostTags(context);
+                await context.Database.EnsureCreatedAsync();
+
             }
         }
         catch (Exception ex)
