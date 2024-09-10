@@ -24,6 +24,7 @@ namespace HBlog.Infrastructure.Repositories
         public async Task<IEnumerable<Post>> GetPostsAsync(int limit, int offset)
         {
             return await _dbContext.Posts.Include(p => p.PostTags)
+                .ThenInclude(pt=> pt.Tag)
                 .AsNoTracking()
                 .OrderByDescending(p => p.Created)
                 .Skip(offset).Take(limit).ToListAsync();

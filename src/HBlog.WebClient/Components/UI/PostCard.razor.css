@@ -1,0 +1,3 @@
+﻿.tag-list small:not(:last-child) {
+    margin-right: 0.2rem; /* Adjust the margin as needed */
+}

@@ -86,7 +86,7 @@ namespace HBlog.WebClient.Services
             
             string url = QueryHelper.BuildUrlWithQueryStringUsingUriBuilder($"{_httpClient.BaseAddress}posts", query);
             if (tags is not null)
-                url +=  "&" + QueryHelper.ArrayToQueryString("tagid", tags.Select(x => x.Name).ToArray());
+                url +=  "&" + QueryHelper.ArrayToQueryString("tagid", tags.Select(x => x.TagId.ToString()).ToArray());
 
             await Console.Out.WriteLineAsync(url);
             var result = await _httpClient.GetFromJsonAsync<ApiResponse<IEnumerable<PostDisplayDto>>>(url);
