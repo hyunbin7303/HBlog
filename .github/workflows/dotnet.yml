@@ -19,6 +19,6 @@ jobs:
         dotnet-version: 8.0.x
     - name: Restore dependencies
       run: dotnet restore
-      working-directory: src/KevBlog.WebClient
+      working-directory: src/HBlog.WebClient
     - name: Build
-      run: dotnet build src/KevBlog.sln
+      run: dotnet build src/HBlog.sln

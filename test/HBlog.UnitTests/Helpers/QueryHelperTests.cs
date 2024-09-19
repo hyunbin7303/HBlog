@@ -1,7 +1,5 @@
 ﻿using HBlog.WebClient.Helpers;
 using NUnit.Framework;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
-using System.Net.Http;
 
 namespace HBlog.UnitTests.Helpers
 {

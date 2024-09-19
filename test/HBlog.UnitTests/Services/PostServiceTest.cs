@@ -61,7 +61,6 @@ namespace HBlog.UnitTests.Services
             var postDetails = await _postService.GetByIdAsync(1);
 
             Assert.That(postDetails.IsSuccess, Is.True);
-            //Assert.That(postDetails.Value, Is.InstanceOf(Type.));
             _mockPostRepo.Verify(x => x.GetById(postId));
         }
 

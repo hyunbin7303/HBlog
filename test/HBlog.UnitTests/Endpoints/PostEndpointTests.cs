@@ -13,13 +13,12 @@ namespace HBlog.UnitTests.Endpoints
 {
     //https://github.com/hassanhabib/SchoolEM/blob/master/SchoolEM.Acceptance.Tests/Brokers/ApiTestCollection.cs
     //https://andrewlock.net/exploring-dotnet-6-part-6-supporting-integration-tests-with-webapplicationfactory-in-dotnet-6/
-
-    public class PostControllerTests : IDisposable
+    public class PostEndpointTests : IDisposable
     {
         private PostAppFactory _factory;
         private HttpClient _client;
 
-        public PostControllerTests()
+        public PostEndpointTests()
         {
             _factory = new PostAppFactory();
             _client = _factory.CreateClient();
@@ -37,20 +36,15 @@ namespace HBlog.UnitTests.Endpoints
             var response = await _client.GetAsync("/api/posts");
             Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
 
-            var options = new JsonSerializerOptions
+            var data = JsonSerializer.Deserialize<ApiResponse<IEnumerable<PostDisplayDto>>>(await response.Content.ReadAsStringAsync(), new JsonSerializerOptions
             {
                 WriteIndented = true,
                 PropertyNameCaseInsensitive = true
-            };
-
-
-            var data = JsonSerializer.Deserialize<ApiResponse<IEnumerable<PostDisplayDto>>>(await response.Content.ReadAsStringAsync(), options);
+            });
             IEnumerable<PostDisplayDto> resultPosts = data.Data;
 
             CollectionAssert.AllItemsAreNotNull(resultPosts);
-            //CollectionAssert.AreEqual(posts, resultPosts);
         }
-
 
         [Test]
         public async Task GivenValidPostId_WhenGetByIdCalled_ThenReturnServiceResult()

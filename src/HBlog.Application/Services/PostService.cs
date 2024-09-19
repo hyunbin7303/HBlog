@@ -125,6 +125,7 @@ public class PostService : BaseService, IPostService
         post.Content = updateDto.Content;
         post.Type = updateDto.Type;
         post.LinkForPost = updateDto.LinkForPost;
+        post.CategoryId = updateDto.CategoryId;
         post.LastUpdated = DateTime.UtcNow;
 
         await _postRepository.UpdateAsync(post);

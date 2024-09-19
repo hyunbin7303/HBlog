@@ -17,14 +17,20 @@ This project is for building my own blog using Asp.net Web API and Blazor WebAss
 
 ## Backend(ASP.NET Web API) Side
 * SOLID Principle
-* Service layer  -> maybe will be replaced to CQRS.
+* A RESTful API design
+* Service layer for business logic
 * Repository Pattern for persisting data
 * Authentication via JWT
-* DDD (InProgress)
-* Pagination for retrieving data.
+* Pagination for handling large data
 * Infrastructure layer(Extensions, Helpers, Data migrations/seed)
 * AutoMapper for Domain-DTO mapping.
 * Unit Testing / Integration testing (InProgress)
+
+## Getting started
+1. Clone the git repository
+2. Turn on Docker desktop
+3. Within the Hblog folder, create containers for Postgres and Web API. `docker compose up -d`
+4. Access to `http://localhost:8090/swagger/index.html` to check swagger page.
 
 ## Contribution
 

@@ -6,7 +6,7 @@ Please note that this project is released with a Code of conduct. By participati
 I would be really appreciate for any kind of PRs. Since this is not a huge project, one~two issues for single PR would be great start. If you think it needs to be changed a lot, please create a ticket with `discussion` or `question` tags. We can discuss it further.
 
 # How to Submit a PR
-1. Fork and cloe the repository.
+1. Fork and clone the repository.
 2. run `dotnet build` and `dotnet run`
 3. Create a new Branch: `git checkout -b issue-or-feature-branch-name`
 4. Change the code and add unit tests.
