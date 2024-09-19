@@ -111,6 +111,7 @@
                     Desc = postView.Desc,
                     Content = postView.Content,
                     Type = postView.Type,
+                    CategoryId = postView.CategoryId,
                     LinkForPost = postView.LinkForPost ?? string.Empty,
                 };
             var result = await postService.UpdatePost(postUpdateDto);
