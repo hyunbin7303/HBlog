@@ -1,4 +1,3 @@
-using HBlog.Api.CustomMiddleware;
 using HBlog.Application.Automapper;
 using HBlog.Domain.Entities;
 using HBlog.Infrastructure.Data;
