@@ -41,10 +41,10 @@
             <div class="form-group">
 
                 <InputSelect class="form-select" style="width:200px"
-                             ValueExpression="@(() => newSelectedTag)"
-                             Value="@newSelectedTag"
-                             ValueChanged="((TagDto value) => HandleAddingTag(value))">
-
+                             ValueExpression="(() => newSelectedTag)"
+                             Value="newSelectedTag"
+                             ValueChanged="HandleAddingTag"
+                             TValue="int?">
                     @foreach (var tag in tags)
                     {
                         <option value="@tag.TagId">@tag.Name</option>
@@ -84,8 +84,7 @@
     [CascadingParameter]
     private Task<AuthenticationState> AuthState { get; set; }
 
-    public int tagNumber;
-    private TagDto newSelectedTag;
+    private int? newSelectedTag { get; set; }
     private bool isVisible { get; set; }
     private IEnumerable<Category> Categories = new List<Category>();
     private IEnumerable<TagDto> tags = new List<TagDto>();
@@ -114,23 +113,20 @@
                     LinkForPost = postView.LinkForPost ?? string.Empty,
                 };
             var result = await postService.UpdatePost(postUpdateDto);
-            result = await postService.AddTagInPost(PostId.Value, tagNumber);
             if (result)
                 navManager.NavigateTo($"/posts/{postUpdateDto.Id}");
         }
 
     }
 
-    public async Task HandleAddingTag(TagDto tag)
+    public async Task HandleAddingTag(int? tagId)
     {
-        if (editTags?.Find(t => t.TagId == tag.TagId) is null)
-        {
+        var tag = tags.First(t => t.TagId == tagId);
+        if (editTags?.Find(t => t.TagId == tagId) is null)
+        {           
             editTags?.Add(tag);
         }
-        // if (editTags.Where(pt => pt.TagId == tagId).Count() == 0)
-        // {
-        //     postView = await postService.GetPostDetails(PostId.Value);
-        // }
+        newSelectedTag = tagId;
     }
     private void RemoveTag(TagDto tag)
     {
