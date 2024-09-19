@@ -60,8 +60,6 @@ public class Program
         app.UseAuthentication();
         app.UseAuthorization();
 
-        app.UseMiddleware<ExceptionMiddleware>();
-
         app.MapControllers();
 
         using var scope = app.Services.CreateScope();
