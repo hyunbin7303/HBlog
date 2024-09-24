@@ -89,6 +89,7 @@ else
             if (_postdetailsView != null)
             {
                 await _postService.DeletePost(PostId!.Value);
+                navManager.NavigateTo("/posts");
             }
         }
     }
