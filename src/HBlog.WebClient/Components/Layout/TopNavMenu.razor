@@ -22,18 +22,7 @@
                                 Posts
                             </NavLink>
                         </li>
-                        <li class="nav-item">
-                            <NavLink class="nav-link" href="/users/login" Match="NavLinkMatch.All">
-                                <i class="bi bi-home"></i>
-                                Login
-                            </NavLink>
-                        </li>
-                        <li class="nav-item">
-                            <NavLink class="nav-link" href="/users/register" Match="NavLinkMatch.All">
-                                <i class="bi bi-home"></i>
-                                Register
-                            </NavLink>
-                        </li>
+
                     </NotAuthorized>
                     <Authorized>
                         <li class="nav-item">
@@ -60,6 +49,26 @@
                                 Create new post
                             </NavLink>
                         </li>
+                    </Authorized>
+                </AuthorizeView>
+            </ul>
+            <ul class="navbar-nav">
+                <AuthorizeView>
+                    <NotAuthorized>
+                        <li class="nav-item">
+                            <NavLink class="nav-link" href="/users/login" Match="NavLinkMatch.All">
+                                <i class="bi bi-home"></i>
+                                Login
+                            </NavLink>
+                        </li>
+                        <li class="nav-item">
+                            <NavLink class="nav-link" href="/users/register" Match="NavLinkMatch.All">
+                                <i class="bi bi-home"></i>
+                                Register
+                            </NavLink>
+                        </li>
+                    </NotAuthorized>
+                    <Authorized>
                         <li class="nav-item">
                             <NavLink class="nav-link" href="/users/logout" Match="NavLinkMatch.All">
                                 <i class="bi bi-home"></i>
