@@ -26,6 +26,7 @@
             <div class="form-group">
                 <label for="description">Category</label>
                 <InputSelect class="select-element" @bind-Value="newPostDto.CategoryId">
+                    <option value="0">Select Category</option>
                     @foreach (var category in Categories)
                     {
                         <option value="@category.Id">@category.Title</option>
