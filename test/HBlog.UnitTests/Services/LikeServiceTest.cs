@@ -3,6 +3,7 @@ using HBlog.Domain.Entities;
 using HBlog.Domain.Params;
 using HBlog.Domain.Repositories;
 using HBlog.Infrastructure.Helpers;
+using HBlog.TestUtilities;
 using Moq;
 
 namespace HBlog.UnitTests.Services

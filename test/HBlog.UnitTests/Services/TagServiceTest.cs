@@ -2,6 +2,7 @@
 using HBlog.Contract.DTOs;
 using HBlog.Domain.Entities;
 using HBlog.Domain.Repositories;
+using HBlog.TestUtilities;
 using Moq;
 using NUnit.Framework;
 

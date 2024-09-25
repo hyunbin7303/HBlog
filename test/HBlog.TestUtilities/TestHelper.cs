@@ -1,5 +1,5 @@
 ﻿
-namespace HBlog.UnitTests
+namespace HBlog.TestUtilities
 {
     public static class TestHelper 
     {

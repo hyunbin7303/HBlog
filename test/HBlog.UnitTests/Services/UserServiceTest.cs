@@ -2,6 +2,7 @@
 using HBlog.Domain.Entities;
 using HBlog.Domain.Params;
 using HBlog.Domain.Repositories;
+using HBlog.TestUtilities;
 using HBlog.UnitTests.Mocks.Repositories;
 using Moq;
 using NUnit.Framework;

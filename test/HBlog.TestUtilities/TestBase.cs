@@ -1,17 +1,21 @@
-﻿using AutoMapper;
+﻿using System.Resources;
+using AutoMapper;
 using HBlog.Application.Automapper;
 using HBlog.Domain.Entities;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Security.Claims;
-namespace HBlog.UnitTests
+using Microsoft.AspNetCore.Http;
+
+namespace HBlog.TestUtilities
 {
     public abstract class TestBase
     {
         protected readonly IMapper _mapper;
         private IConfiguration _configuration;
         private static readonly ServiceProvider _serviceProvider;
+        private static readonly ResourceManager _resourceManager;
+
         public TestBase() 
         {
             if (_mapper == null)
@@ -32,7 +36,13 @@ namespace HBlog.UnitTests
 
             _configuration = new ConfigurationBuilder().AddInMemoryCollection(inMemorySettings).Build();
 
-        } 
+        }
+
+        protected static T GetService<T>()
+        {
+            return _serviceProvider.GetRequiredService<T>();
+        }
+
         public DefaultHttpContext UserSetup()
         {
             var context = new DefaultHttpContext();
@@ -46,16 +56,6 @@ namespace HBlog.UnitTests
             var claimsPrincipal = new ClaimsPrincipal(identity);
             context.User = claimsPrincipal;
             return context;
-        }
-        protected User GetUserFake(int fakeUserId)
-        {
-            return new User()
-            {
-                Id = fakeUserId,
-                UserName = "kevin" + fakeUserId,
-                KnownAs = "kevin",
-                City = "Kitchener"
-            };
         }
     }
 }

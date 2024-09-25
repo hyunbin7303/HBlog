@@ -1,5 +1,6 @@
 ﻿using HBlog.Domain.Entities;
 using HBlog.Domain.Repositories;
+using HBlog.TestUtilities;
 using Moq;
 
 namespace HBlog.UnitTests.Mocks.Repositories

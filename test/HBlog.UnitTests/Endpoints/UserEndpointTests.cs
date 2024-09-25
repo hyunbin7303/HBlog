@@ -1,20 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
+﻿using System.Net;
 using System.Net.Http.Headers;
-using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
-using AutoMapper.Execution;
 using HBlog.Contract.Common;
 using HBlog.Contract.DTOs;
-using HBlog.Domain.Common;
 using HBlog.Domain.Entities;
-using HBlog.Domain.Params;
+using HBlog.UnitTests.Mocks.Repositories;
+using Microsoft.AspNetCore.Mvc;
 using Moq;
 using NUnit.Framework;
-using NUnit.Framework.Legacy;
 
 namespace HBlog.UnitTests.Endpoints
 {
@@ -31,7 +24,7 @@ namespace HBlog.UnitTests.Endpoints
         }
 
         [Test]
-        public async Task GivenExistingUser_WhenGetUserByUserName_ThenReturnUser()
+        public async Task GivenExistingUser_WhenGetUserByUserName_ThenHttpStatusOkWithUser()
         {
             var searchUser = new MemberDto()
             {
@@ -53,11 +46,16 @@ namespace HBlog.UnitTests.Endpoints
                 Value = searchUser
             };
             _factory._mockUserService.Setup(o => o.GetMembersByUsernameAsync(It.IsAny<string>())).ReturnsAsync(result);
-            _factory._mockUserRepository.Setup(o => o.GetUserByIdAsync(1)).ReturnsAsync(new User() { Id = 1, UserName = "test" });
+            _factory._mockUserRepository.Setup(o => o.GetUserByIdAsync(1))
+                .ReturnsAsync(new User() { Id = 1, UserName = "test" });
+            
+
             var response = await _client.GetAsync("/api/users/test");
 
+
             Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
-            var data = JsonSerializer.Deserialize<ServiceResult<MemberDto>>(await response.Content.ReadAsStringAsync(), new JsonSerializerOptions
+            var data = JsonSerializer.Deserialize<ServiceResult<MemberDto>>(await response.Content.ReadAsStringAsync()
+                , new JsonSerializerOptions
             {
                 WriteIndented = true,
                 PropertyNameCaseInsensitive = true
@@ -67,6 +65,17 @@ namespace HBlog.UnitTests.Endpoints
             Assert.That(member.UserName, Is.EqualTo(searchUser.UserName));
             Assert.That(member.Age, Is.EqualTo(searchUser.Age));
             Assert.That(member.KnownAs, Is.EqualTo(searchUser.KnownAs));
+        }
+
+        [Test]
+        public async Task GivenNotExistingUser_WhenGetUserByUsername_ThenNotFound()
+        {
+            _factory._mockUserRepository.Setup(o => o.GetUserByIdAsync(1))
+                .ReturnsAsync(new User() { Id = 1, UserName = "test" });
+
+            var response = await _client.GetAsync("/api/users/test");
+
+            Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.NotFound));
         }
 
 

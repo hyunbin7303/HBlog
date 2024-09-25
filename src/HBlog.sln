@@ -21,6 +21,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HBlog.UnitTests", "..\test\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HBlog.IntegrationTests", "..\test\HBlog.IntegrationTests\HBlog.IntegrationTests.csproj", "{3A45EA49-A253-48EC-9D21-1D883073730D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HBlog.TestUtilities", "..\test\HBlog.TestUtilities\HBlog.TestUtilities.csproj", "{30FEDB08-FE09-4623-8AD3-A1AE45FE5C77}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -59,6 +61,10 @@ Global
 		{3A45EA49-A253-48EC-9D21-1D883073730D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3A45EA49-A253-48EC-9D21-1D883073730D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3A45EA49-A253-48EC-9D21-1D883073730D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{30FEDB08-FE09-4623-8AD3-A1AE45FE5C77}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{30FEDB08-FE09-4623-8AD3-A1AE45FE5C77}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{30FEDB08-FE09-4623-8AD3-A1AE45FE5C77}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{30FEDB08-FE09-4623-8AD3-A1AE45FE5C77}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -66,6 +72,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{50876376-ABB8-46A1-B577-C3C7BE4EDF91} = {58A17033-D1A2-48F3-BDD4-213EA9A9EC51}
 		{3A45EA49-A253-48EC-9D21-1D883073730D} = {58A17033-D1A2-48F3-BDD4-213EA9A9EC51}
+		{30FEDB08-FE09-4623-8AD3-A1AE45FE5C77} = {58A17033-D1A2-48F3-BDD4-213EA9A9EC51}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {57E4A6D6-4519-406A-A32D-865437EC2269}
