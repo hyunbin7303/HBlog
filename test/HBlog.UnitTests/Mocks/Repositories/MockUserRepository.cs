@@ -23,7 +23,7 @@ namespace HBlog.UnitTests.Mocks.Repositories
         public static IEnumerable<User> SampleValidUserData(int howMany)
         {
             List<User> users = new();
-            for (int i = 0; i < howMany; i++)
+            for (int i = 1; i <= howMany; i++)
             {
                 User user = new()
                 {
