@@ -65,8 +65,6 @@ public class PostService : BaseService, IPostService
         if (category is null)
             return ServiceResult.NotFound(msg: "Cannot find category.");
 
-
-
         var user = await _userRepository.GetUserByUsernameAsync(userName);
         var post = _mapper.Map<Post>(createDto);
         post.User = user;
@@ -74,15 +72,10 @@ public class PostService : BaseService, IPostService
         post.Status = PostStatus.Active;
         if (createDto.TagIds.Length > 0)
         {
-            List<Tag> tags = new List<Tag>();
-            foreach (var tagId in createDto.TagIds)
-                tags.Add(await _tagRepository.GetById(tagId));
-
             post.PostTags = new List<PostTags>();
-            foreach (var tag in tags)
-                post.PostTags.Add(new PostTags { Post = post, Tag = tag });
+            foreach (var tagId in createDto.TagIds)
+                post.PostTags.Add(new PostTags { Post = post, TagId = tagId });
         }
-
         _postRepository.Add(post);
         await _postRepository.SaveChangesAsync();
         return ServiceResult.Success(msg: $"Post Id:{post.Id}");
@@ -129,7 +122,7 @@ public class PostService : BaseService, IPostService
 
     public async Task<ServiceResult> UpdatePost(PostUpdateDto updateDto)
     {
-        Post post = await _postRepository.GetById(updateDto.Id);
+        Post post = await _postRepository.GetPostDetails(updateDto.Id);
         if (post == null || post.Status == PostStatus.Removed)
             return ServiceResult.Fail(msg: "Post does not exist.");
 
@@ -140,6 +133,9 @@ public class PostService : BaseService, IPostService
         post.LinkForPost = updateDto.LinkForPost;
         post.CategoryId = updateDto.CategoryId;
         post.LastUpdated = DateTime.UtcNow;
+        post.PostTags.Clear();
+        foreach (var tagId in updateDto.TagIds)
+            post.PostTags.Add(new PostTags { Post = post, TagId = tagId });
 
         await _postRepository.UpdateAsync(post);
         return ServiceResult.Success();
