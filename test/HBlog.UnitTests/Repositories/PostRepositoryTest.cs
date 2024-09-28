@@ -2,6 +2,7 @@ using HBlog.Domain.Entities;
 using HBlog.Domain.Repositories;
 using HBlog.Infrastructure.Data;
 using HBlog.Infrastructure.Repositories;
+using HBlog.TestUtilities;
 using HBlog.UnitTests.Mocks.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -11,7 +12,7 @@ using NUnit.Framework;
 
 namespace HBlog.UnitTests.Repositories
 {
-    public class PostRepositoryTest
+    public class PostRepositoryTest : TestBase
     {
         private IPostRepository _repository;       
         private readonly Mock<DataContext> dataContextMock;

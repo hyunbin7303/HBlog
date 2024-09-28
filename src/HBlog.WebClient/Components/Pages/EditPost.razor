@@ -6,7 +6,6 @@
 @inject ICategoryService categoryService
 @inject ITagService tagService
 @inject NavigationManager navManager
-@inject AuthenticationStateProvider AuthenticationStateProvider
 
 @attribute [Authorize]
 <div class="container-xxl py-5">
@@ -41,7 +40,7 @@
             <div class="form-group">
 
                 <InputSelect class="form-select" style="width:200px"
-                             ValueExpression="(() => newSelectedTag)"
+                             ValueExpression="() => newSelectedTag"
                              Value="newSelectedTag"
                              ValueChanged="HandleAddingTag"
                              TValue="int?">
@@ -53,9 +52,9 @@
             </div>
             <br />
             <div>
-                @if (editTags is not null)
+                @if (selectedTags is not null)
                 {
-                    @foreach (var tag in editTags)
+                    @foreach (var tag in selectedTags)
                     {
                         <button @onclick="@(() => RemoveTag(tag))">@tag.Name</button>
                     }
@@ -88,12 +87,12 @@
     private bool isVisible { get; set; }
     private IEnumerable<Category> Categories = new List<Category>();
     private IEnumerable<TagDto> tags = new List<TagDto>();
-    private List<TagDto> editTags = new();
+    private List<TagDto> selectedTags = new();
 
     protected override async Task OnInitializedAsync()
     {
         postView = await postService.GetPostDetails(PostId.Value);
-        editTags = postView.Tags.ToList();
+        selectedTags = postView.Tags.ToList();
         Categories = await categoryService.GetCategories();
         tags = await tagService.GetTags();
     }
@@ -111,7 +110,8 @@
                     Content = postView.Content,
                     Type = postView.Type,
                     CategoryId = postView.CategoryId,
-                    LinkForPost = postView.LinkForPost ?? string.Empty,
+                    LinkForPost = postView.LinkForPost,
+                    TagIds = selectedTags.Select(o => o.TagId).ToArray()
                 };
             var result = await postService.UpdatePost(postUpdateDto);
             if (result)
@@ -123,14 +123,14 @@
     public async Task HandleAddingTag(int? tagId)
     {
         var tag = tags.First(t => t.TagId == tagId);
-        if (editTags?.Find(t => t.TagId == tagId) is null)
+        if (selectedTags.Find(t => t.TagId == tagId) is null)
         {           
-            editTags?.Add(tag);
+            selectedTags.Add(tag);
         }
         newSelectedTag = tagId;
     }
     private void RemoveTag(TagDto tag)
     {
-        editTags?.RemoveAll(t => t == tag);
+        selectedTags?.RemoveAll(t => t == tag);
     }
 }

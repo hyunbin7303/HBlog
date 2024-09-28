@@ -1,6 +1,7 @@
 ﻿@page "/posts/create"
 @inject IPostService postService
 @inject ICategoryService categoryService
+@inject ITagService tagService
 @inject NavigationManager navManager
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @using HBlog.Domain.Entities
@@ -41,6 +42,17 @@
                 <label for="Content">Content</label>
                 <InputTextArea class="form-control" @bind-Value="newPostDto.Content" />
             </div>
+            
+            <div class="form-group">
+                <InputSelect class="form-select" style="width:200px" ValueExpression="() => newSelectedTag" Value="newSelectedTag" ValueChanged="HandleAddingTag" TValue="int?">
+                    @foreach (var tag in tags)
+                    {
+                        <option value="@tag.TagId">@tag.Name</option>
+                    }
+                </InputSelect>
+            </div>
+            
+
 
             <button type="submit" class="btn btn-primary btn-block">Create</button>
         </EditForm>
@@ -50,18 +62,30 @@
 
 
 @code {
-    PostCreateDto newPostDto = new PostCreateDto();
+    PostCreateDto newPostDto = new();
     [CascadingParameter]
     private Task<AuthenticationState> AuthState { get; set; }
 
     public System.Security.Claims.ClaimsPrincipal CurrentUser { get; set; }
-
+    private int? newSelectedTag { get; set; }
     private IEnumerable<Category> Categories { get; set; } = new List<Category>();
+    private IEnumerable<TagDto> tags = new List<TagDto>();
+    private List<TagDto> selectedTags = new();
+
     protected override async Task OnInitializedAsync()
     {
         Categories = await categoryService.GetCategories();
+        tags = await tagService.GetTags();
     }
-
+    public async Task HandleAddingTag(int? tagId)
+    {
+        var tag = tags.First(t => t.TagId == tagId);
+        if (selectedTags.Find(t => t.TagId == tagId) is null)
+        {           
+            selectedTags.Add(tag);
+        }
+        newSelectedTag = tagId;
+    }
     private async Task CreateNewPost()
     {
         var id = newPostDto.CategoryId;
