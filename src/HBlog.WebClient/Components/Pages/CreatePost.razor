@@ -51,7 +51,16 @@
                     }
                 </InputSelect>
             </div>
-            
+            <br />
+            <div>
+                @if (selectedTags is not null)
+                {
+                    @foreach (var tag in selectedTags)
+                    {
+                        <button @onclick="@(() => RemoveTag(tag))">@tag.Name</button>
+                    }
+                }
+            </div>
 
 
             <button type="submit" class="btn btn-primary btn-block">Create</button>
@@ -88,15 +97,20 @@
     }
     private async Task CreateNewPost()
     {
-        var id = newPostDto.CategoryId;
         var authState = await AuthState;
         var user = authState.User;
-        if (user.Identity.IsAuthenticated)
+        newPostDto.TagIds = selectedTags.Select(o => o.TagId).ToArray();
+        if (user.Identity!.IsAuthenticated)
         {
             var result = await postService.CreatePost(newPostDto);
             if (result)
                 navManager.NavigateTo("/posts");
 
         }
+    }
+
+    private void RemoveTag(TagDto tag)
+    {
+        selectedTags?.RemoveAll(t => t == tag);
     }
 }
