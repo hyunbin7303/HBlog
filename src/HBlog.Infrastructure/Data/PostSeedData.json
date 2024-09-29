@@ -7,6 +7,7 @@
     "Status":  "active",
     "UserId": 1,
     "CategoryId": 1,
+    "LinkForPost": "",
     "Created": "2020-01-05"
   },
   {
@@ -17,6 +18,7 @@
     "Status": "active",
     "UserId": 1,
     "CategoryId": 2,
+    "LinkForPost": "",
     "Created": "2022-07-05"
   },
   {
@@ -27,6 +29,7 @@
     "Status": "active",
     "UserId": 1,
     "CategoryId": 3,
+    "LinkForPost": "",
     "Created": "2021-01-20"
   },
   {
@@ -37,6 +40,7 @@
     "Status": "active",
     "UserId": 1,
     "CategoryId": 3,
+    "LinkForPost": "",
     "Created": "2019-05-06"
   },
   {
@@ -47,6 +51,7 @@
     "Status": "active",
     "UserId": 2,
     "CategoryId": 3,
+    "LinkForPost": "",
     "Created": "2020-01-05"
   },
   {
@@ -57,6 +62,7 @@
     "Status": "active",
     "UserId": 1,
     "CategoryId": 3,
+    "LinkForPost": "",
     "Created": "2024-03-10"
   }
 ]
