@@ -5,6 +5,7 @@ namespace HBlog.Application.Services;
 public interface IPostService
 {
     Task<IEnumerable<PostDisplayDto>> GetPosts(PostParams query);
+    Task<ServiceResult<IEnumerable<PostDisplayDto>>> GetPostsTitleContains(string title);
     Task<ServiceResult<IEnumerable<PostDisplayDto>>> GetPostsByTagSlug(string tagSlug); // (string tagName, int pageIndex, int pageSize, bool showHidden = false)etc...
     Task<ServiceResult<IEnumerable<PostDisplayDto>>> GetPostsByTagId(int tagId);
     Task<ServiceResult<IEnumerable<PostDisplayDto>>> GetPostsByUsername(string userName);  

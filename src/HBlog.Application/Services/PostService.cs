@@ -107,6 +107,13 @@ public class PostService : BaseService, IPostService
         return _mapper.Map<IEnumerable<PostDisplayDto>>(posts);
     }
 
+    public async Task<ServiceResult<IEnumerable<PostDisplayDto>>> GetPostsTitleContains(string title)
+    {
+        
+        var posts = await _postRepository.GetPostsTitleContainsAsync(title.ToLower());
+        return ServiceResult.Success(_mapper.Map<IEnumerable<PostDisplayDto>>(posts));
+    }
+
     public async Task<ServiceResult<IEnumerable<PostDisplayDto>>> GetPostsByTagSlug(string tagSlug)
     {
         var tags = await _tagRepository.FindbySlug(tagSlug);

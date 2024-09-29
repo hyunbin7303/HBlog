@@ -21,6 +21,12 @@ namespace HBlog.Infrastructure.Repositories
         {
             return await _dbContext.Posts.AsNoTracking().Include(u => u.User).ToListAsync();
         }
+
+        public async Task<IEnumerable<Post>> GetPostsTitleContainsAsync(string searchTitle)
+        {
+            return await _dbContext.Posts.Where(p => p.Title.ToLower().Contains(searchTitle)).ToListAsync();
+        }
+
         public async Task<IEnumerable<Post>> GetPostsAsync(int limit, int offset)
         {
             return await _dbContext.Posts.Include(p => p.PostTags)
