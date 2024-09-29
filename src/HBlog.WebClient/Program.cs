@@ -1,4 +1,5 @@
 using Blazored.LocalStorage;
+using Blazored.Toast;
 using HBlog.WebClient;
 using HBlog.WebClient.Extensions;
 using HBlog.WebClient.Providers;
@@ -13,8 +14,9 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 
 
 builder.Services.AddBlazoredLocalStorage();
+builder.Services.AddBlazoredToast(); 
 
-builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://localhost:6001/api/") }); // Replace builder.HostEnvironment.BaseAddress
+builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("http://localhost:8090/api/") }); // Replace builder.HostEnvironment.BaseAddress
 builder.Services.RegisterClientServices();
 
 builder.Services.AddScoped<ApiAuthStateProvider>();
