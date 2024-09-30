@@ -60,6 +60,12 @@ namespace HBlog.Infrastructure.Data
                 p.Property(post => post.Id).UseIdentityAlwaysColumn();
             });
 
+            modelBuilder.Entity<Tag>(p =>
+            {
+                p.HasKey(tag => tag.Id);
+                p.Property(tag => tag.Id).ValueGeneratedOnAdd();
+                p.Property(tag => tag.Id).UseIdentityAlwaysColumn();
+            });
 
             modelBuilder.Entity<PostTags>()
                 .HasKey(k => new { k.PostId, k.TagId });
