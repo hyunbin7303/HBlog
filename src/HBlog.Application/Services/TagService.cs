@@ -32,12 +32,13 @@ namespace HBlog.Application.Services
             return ServiceResult.Success($"Successfully created the tag name : {tag.Name}");
         }
 
-        public ServiceResult CreateTag(TagCreateDto tag)
+        public async Task<ServiceResult> CreateTag(TagCreateDto tag)
         {
-            if (tag.Name == null)
+            if (string.IsNullOrEmpty(tag.Name))
                 return ServiceResult.Fail(msg: "Tag Title is empty.");
 
             _tagRepository.Add(new Tag { Name = tag.Name, Slug = tag.Slug, Desc = tag.Desc });
+            await _tagRepository.SaveChangesAsync();
             return ServiceResult.Success($"Successfully created the tag name : {tag.Name}");
         }
 

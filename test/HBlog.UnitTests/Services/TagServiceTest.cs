@@ -38,7 +38,7 @@ namespace HBlog.UnitTests.Services
         [Test]
         public async Task GivenTitleEmpty_WhenCreateTagcalled_ThenReturnMessage()
         {
-            var result = _tagService.CreateTag(new TagCreateDto { });
+            var result = await _tagService.CreateTag(new TagCreateDto { });
 
             Assert.That(result.IsSuccess, Is.False);
             Assert.That(result.Message, Is.EqualTo("Tag Title is empty."));
@@ -50,7 +50,7 @@ namespace HBlog.UnitTests.Services
             TagCreateDto tagDto = new TagCreateDto { Desc = "test", Name = "Tagname", Slug = "TestingSlug" };
             _tagRepositoryMock.Setup(o => o.Add(It.IsAny<Tag>()));  
 
-            var result = _tagService.CreateTag(tagDto);
+            var result = await _tagService.CreateTag(tagDto);
 
             Assert.That(result.IsSuccess, Is.True);
             Assert.That(result.Message, Is.EqualTo($"Successfully created the tag name : {tagDto.Name}"));

@@ -1,5 +1,5 @@
 namespace HBlog.Contract.DTOs;
-public class MemberUpdateDto
+public class UserUpdateDto
 {
     public string Introduction { get; set; }
     public string LookingFor { get; set; }

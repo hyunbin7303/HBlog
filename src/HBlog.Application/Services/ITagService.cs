@@ -6,7 +6,7 @@ namespace HBlog.Application.Services
     {
         Task<IEnumerable<TagDto>> GetAllTags();
         Task<ServiceResult<IEnumerable<TagDto>>> GetTagsByPostId(int postId);
-        ServiceResult CreateTag(TagCreateDto tag);
+        Task<ServiceResult> CreateTag(TagCreateDto tag);
         Task<ServiceResult> RemoveTag(int tagId);
 
     }

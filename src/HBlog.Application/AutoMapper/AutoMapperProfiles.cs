@@ -23,7 +23,7 @@ namespace HBlog.Application.Automapper
             CreateMap<Post, PostDisplayDetailsDto>()
                 .ForMember(dest => dest.Tags, opt => opt.MapFrom(src => src.PostTags.Select(x => x.Tag)));
 
-            CreateMap<MemberUpdateDto, User>();
+            CreateMap<UserUpdateDto, User>();
             CreateMap<RegisterDto, User>();
             CreateMap<PostUpdateDto, Post>();
             CreateMap<PostCreateDto, Post>();

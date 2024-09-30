@@ -15,13 +15,12 @@ namespace HBlog.UnitTests.Repositories
         public UserRepositoryTest()
         {
             var dbContextOptions = new DbContextOptionsBuilder<DataContext>()
-                .UseInMemoryDatabase(databaseName: "Testing").Options;
+                .UseInMemoryDatabase(databaseName: "TestingUserRepo").Options;
 
             _context = new DataContext(dbContextOptions);
 
             IEnumerable<User> userList = MockUserRepository.SampleValidUserData(3);
             _context.Users.AddRange(userList);
-
             _context.SaveChanges();
             _userRepository = new UserRepository(_context);
         }
@@ -64,7 +63,7 @@ namespace HBlog.UnitTests.Repositories
         [Test]
         public async Task GivenInvalidUserId_WhenGetUserById_ThenReturnNull()
         {
-            var user = await _userRepository.GetUserByIdAsync(1);
+            var user = await _userRepository.GetUserByIdAsync(100000);
 
             Assert.That(user, Is.Null);
         }

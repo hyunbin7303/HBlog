@@ -49,10 +49,10 @@ namespace HBlog.Application.Services
             MemberDto member = _mapper.Map<MemberDto>(user);
             return ServiceResult.Success(member);
         }
-        public async Task<bool> UpdateMemberAsync(MemberUpdateDto user)
+        public async Task<bool> UpdateMemberAsync(UserUpdateDto user)
         {
-            MemberUpdateDto memberUpdateDto = new MemberUpdateDto();
-            _mapper.Map(memberUpdateDto, user);
+            UserUpdateDto userUpdateDto = new UserUpdateDto();
+            _mapper.Map(userUpdateDto, user);
             if (await _userRepository.SaveAllAsync()) return true;
 
             return false;
