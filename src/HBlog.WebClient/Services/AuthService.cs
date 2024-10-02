@@ -9,7 +9,7 @@ namespace HBlog.WebClient.Services
 {
     public interface IAuthService
     {
-        Task<UserDto> AuthenAsync(LoginDto loginDto);
+        Task<AccountDto> AuthenAsync(LoginDto loginDto);
         Task GetBearerToken();
         Task Logout(); 
     }
@@ -25,10 +25,10 @@ namespace HBlog.WebClient.Services
             _authenStateProvider = authenticationStateProvider;
         }
 
-        public async Task<UserDto> AuthenAsync(LoginDto loginDto)
+        public async Task<AccountDto> AuthenAsync(LoginDto loginDto)
         {
             var result = await _httpClient.PostAsJsonAsync($"Account/login", loginDto);
-            var obj = await result.Content.ReadFromJsonAsync<UserDto>();
+            var obj = await result.Content.ReadFromJsonAsync<AccountDto>();
 
             await _localStorageService.SetItemAsync("accessToken", obj!.Token);
 

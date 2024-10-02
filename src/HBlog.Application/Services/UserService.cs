@@ -16,7 +16,7 @@ namespace HBlog.Application.Services
             this._userRepository = userRepository;
         }   
 
-        public async Task<PageList<MemberDto>> GetMembersAsync(UserParams userParams)
+        public async Task<PageList<UserDto>> GetMembersAsync(UserParams userParams)
         {
             User user = await _userRepository.GetUserByUsernameAsync(userParams.CurrentUsername);
             if (string.IsNullOrEmpty(userParams.Gender))
@@ -36,18 +36,18 @@ namespace HBlog.Application.Services
                 _ => usersList.OrderByDescending(x => x.LastActive)
             };
 
-            var members = _mapper.Map<IEnumerable<MemberDto>>(usersList);
-            return PageList<MemberDto>.CreateAsync(members, userParams.PageNumber, userParams.PageSize);
+            var members = _mapper.Map<IEnumerable<UserDto>>(usersList);
+            return PageList<UserDto>.CreateAsync(members, userParams.PageNumber, userParams.PageSize);
         }
 
-        public async Task<ServiceResult<MemberDto>> GetMembersByUsernameAsync(string username)
+        public async Task<ServiceResult<UserDto>> GetMembersByUsernameAsync(string username)
         {
             User user = await _userRepository.GetUserByUsernameAsync(username);
             if (user is null)
-                return ServiceResult.Fail<MemberDto>(msg: "Failed to get user");
+                return ServiceResult.Fail<UserDto>(msg: "Failed to get user");
 
-            MemberDto member = _mapper.Map<MemberDto>(user);
-            return ServiceResult.Success(member);
+            UserDto userDto = _mapper.Map<UserDto>(user);
+            return ServiceResult.Success(userDto);
         }
         public async Task<bool> UpdateMemberAsync(UserUpdateDto user)
         {

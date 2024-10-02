@@ -18,7 +18,7 @@ namespace HBlog.Api.Controllers
         }
 
         [HttpGet("users")]
-        public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsers([FromQuery]UserParams userParams)
+        public async Task<ActionResult<IEnumerable<AccountDto>>> GetUsers([FromQuery]UserParams userParams)
         {
             userParams.CurrentUsername = User.GetUsername();
             var users = await _userService.GetMembersAsync(userParams);
@@ -27,7 +27,7 @@ namespace HBlog.Api.Controllers
         }
 
         [HttpGet("users/{username}")]
-        public async Task<ActionResult<MemberDto>> GetUser(string username)
+        public async Task<ActionResult<AccountDto>> GetUser(string username)
         {
             var user = await _userService.GetMembersByUsernameAsync(username);
             if (user.Value is null)

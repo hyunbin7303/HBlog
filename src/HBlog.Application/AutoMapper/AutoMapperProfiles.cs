@@ -12,7 +12,7 @@ namespace HBlog.Application.Automapper
             CreateMap<Tag, TagDto>()
                 .ForMember(dest => dest.TagId, opt => opt.MapFrom(s => s.Id));
 
-            CreateMap<User, MemberDto>()
+            CreateMap<User, UserDto>()
                 .ForMember(dest => dest.PhotoUrl, opt => opt.MapFrom(src => src.Photos.FirstOrDefault(x => x.IsMain).Url))
                 .ForMember(dest => dest.Age, opt => opt.MapFrom(src => src.DateOfBirth.CalculateAge()));
 

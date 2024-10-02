@@ -7,8 +7,8 @@ namespace HBlog.Application.Services
 {
     public interface IUserService
     {
-        Task<PageList<MemberDto>> GetMembersAsync(UserParams userParams);
+        Task<PageList<UserDto>> GetMembersAsync(UserParams userParams);
         Task<bool> UpdateMemberAsync(UserUpdateDto User);
-        Task<ServiceResult<MemberDto>> GetMembersByUsernameAsync(string username);
+        Task<ServiceResult<UserDto>> GetMembersByUsernameAsync(string username);
     }
 }
