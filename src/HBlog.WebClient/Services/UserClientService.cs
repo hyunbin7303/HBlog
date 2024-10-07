@@ -6,14 +6,16 @@ namespace HBlog.WebClient.Services
 {
     public class UserClientService
     {
-        private HttpClient _httpClient;
-        public UserClientService(HttpClient httpClient)
+        private readonly IHttpClientFactory _httpClientFactory;
+
+        public UserClientService(IHttpClientFactory httpClientFactory)
         {
-            _httpClient = httpClient;
+            _httpClientFactory = httpClientFactory;
         }
         public async Task<(bool, IEnumerable<IdentityError>?)> RegisterNewUser(RegisterDto registerDto)
         {
-            var result = await _httpClient.PostAsJsonAsync($"Account/register", registerDto);
+            var client = _httpClientFactory.CreateClient();
+            var result = await client.PostAsJsonAsync($"Account/register", registerDto);
             if (result.IsSuccessStatusCode)
                 return (true, null);
             
@@ -24,6 +26,32 @@ namespace HBlog.WebClient.Services
             };
             var responseData = JsonSerializer.Deserialize<IEnumerable<IdentityError>>(responseJson, options);
             return (false, responseData);
+        }
+
+        public async ValueTask<MemberDto> GetUserDtoByUsername(string username)
+        {
+            var client = _httpClientFactory.CreateClient("Auth");
+            var result = await client.GetFromJsonAsync<HttpResponseMessage>($"users/{username}");
+            if (result!.IsSuccessStatusCode)
+            {
+               return await result.Content.ReadFromJsonAsync<MemberDto>();
+
+            }
+            return new MemberDto();
+               
+        }
+
+        public async ValueTask<IEnumerable<MemberDto>> GetUsers()
+        {
+            var client = _httpClientFactory.CreateClient("Auth");
+            var result = await client.GetFromJsonAsync<HttpResponseMessage>($"users");
+            if (result!.IsSuccessStatusCode)
+            {
+                return await result.Content.ReadFromJsonAsync<IEnumerable<MemberDto>>();
+
+            }
+            return default;
+
         }
     }
 }

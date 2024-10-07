@@ -1,0 +1,80 @@
+﻿@implements IAsyncDisposable
+@inject IJSRuntime JS
+
+@code {
+    [Parameter] public string Fullname { get; set; } = string.Empty;
+    [Parameter] public EventCallback OnJSLoaded { get; set; }
+
+    private IJSObjectReference? module;
+
+    protected async override Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            try
+            {
+                // Dynamically load the JS module based on Path and Filename
+                module = await JS.InvokeAsync<IJSObjectReference>("import", $"../{Fullname}.razor.js");
+
+                // Notify the parent component that the JS module is loaded
+                if (module != null)
+                {
+                    await OnJSLoaded.InvokeAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine($"Error loading JS module: {ex.Message}");
+            }
+        }
+    }
+
+    public async ValueTask<T> InvokeJsFunction<T>(string functionName, params object[] args) where T : class
+    {
+        if (module != null)
+        {
+            try
+            {
+                // Dynamically invoke the specified function in the JS module
+                return await module.InvokeAsync<T>(functionName, args);
+            }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine($"Error invoking JS function '{functionName}': {ex.Message}");
+            }
+        }
+        else
+        {
+            Console.Error.WriteLine("JS module is not declarded yet.");
+        }
+        return await Task.FromResult<T>(default);
+    }
+
+    public async Task InvokeJsFunction(string functionName, params object[] args)
+    {
+        if (module != null)
+        {
+            try
+            {
+                // Dynamically invoke the specified function in the JS module
+                await module.InvokeVoidAsync(functionName, args);
+            }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine($"Error invoking JS function '{functionName}': {ex.Message}");
+            }
+        }
+        else
+        {
+            Console.Error.WriteLine("JS module is not declarded yet.");
+        }
+    }
+
+    async ValueTask IAsyncDisposable.DisposeAsync()
+    {
+        if (module is not null)
+        {
+            await module.DisposeAsync();
+        }
+    }
+}

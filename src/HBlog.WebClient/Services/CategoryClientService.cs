@@ -6,12 +6,10 @@ namespace HBlog.WebClient.Services
     {
         Task<IEnumerable<Category>> GetCategories();
     }
-    public class CategoryClientService : ICategoryService
+    public class CategoryClientService:BaseService,ICategoryService
     {
-        private HttpClient _httpClient;
-        public CategoryClientService(HttpClient httpClient)
+        public CategoryClientService(HttpClient httpClient,ILogger<CategoryClientService> logger): base(httpClient,logger)
         {
-            _httpClient = httpClient;
         }
 
         public async Task<IEnumerable<Category>> GetCategories() => await _httpClient.GetFromJsonAsync<IEnumerable<Category>>($"Categories");

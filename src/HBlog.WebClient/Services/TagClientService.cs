@@ -9,12 +9,10 @@ namespace HBlog.WebClient.Services
         Task<IEnumerable<TagDto>> GetTagsByPostId(int postId);
         Task<IEnumerable<TagDto>> GetTags();
     }
-    public class TagClientService : ITagService
+    public class TagClientService : BaseService, ITagService
     {
-        private HttpClient _httpClient;
-        public TagClientService(HttpClient httpClient)
+        public TagClientService(HttpClient httpClient,ILogger<TagClientService> logger) : base(httpClient,logger)
         {
-            _httpClient = httpClient;
         }
 
         public async Task<IEnumerable<TagDto>> GetTags()
