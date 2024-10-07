@@ -28,26 +28,25 @@ namespace HBlog.WebClient.Services
             return (false, responseData);
         }
 
-        public async ValueTask<MemberDto> GetUserDtoByUsername(string username)
+        public async ValueTask<UserDto> GetUserDtoByUsername(string username)
         {
             var client = _httpClientFactory.CreateClient("Auth");
             var result = await client.GetFromJsonAsync<HttpResponseMessage>($"users/{username}");
             if (result!.IsSuccessStatusCode)
             {
-               return await result.Content.ReadFromJsonAsync<MemberDto>();
-
+               return await result.Content.ReadFromJsonAsync<UserDto>();
             }
-            return new MemberDto();
+            return new UserDto();
                
         }
 
-        public async ValueTask<IEnumerable<MemberDto>> GetUsers()
+        public async ValueTask<IEnumerable<UserDto>> GetUsers()
         {
             var client = _httpClientFactory.CreateClient("Auth");
             var result = await client.GetFromJsonAsync<HttpResponseMessage>($"users");
             if (result!.IsSuccessStatusCode)
             {
-                return await result.Content.ReadFromJsonAsync<IEnumerable<MemberDto>>();
+                return await result.Content.ReadFromJsonAsync<IEnumerable<UserDto>>();
 
             }
             return default;
