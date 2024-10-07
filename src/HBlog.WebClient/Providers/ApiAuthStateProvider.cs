@@ -1,4 +1,5 @@
 ﻿using Blazored.LocalStorage;
+using HBlog.Contract.Common;
 using Microsoft.AspNetCore.Components.Authorization;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -18,7 +19,7 @@ namespace HBlog.WebClient.Providers
         public override async Task<AuthenticationState> GetAuthenticationStateAsync()
         {
             var user = new ClaimsPrincipal(new ClaimsIdentity());
-            var saveToken = await _localStorageService.GetItemAsync<string>("accessToken");
+            var saveToken = await _localStorageService.GetItemAsync<string>(Constants.AccessToken);
             if (saveToken == null)
             {
                 return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity()));
@@ -37,7 +38,7 @@ namespace HBlog.WebClient.Providers
 
         public async Task LoggedIn()
         {
-            var savedToken = await _localStorageService.GetItemAsync<string>("accessToken");
+            var savedToken = await _localStorageService.GetItemAsync<string>(Constants.AccessToken);
             var tokenContent = _jwtSecurityTokenHandler.ReadJwtToken(savedToken);
             var claims = tokenContent.Claims.ToList();
             //claims.Add(new Claim(ClaimTypes.Name, tokenContent.Subject));
@@ -48,7 +49,7 @@ namespace HBlog.WebClient.Providers
 
         public async Task LoggedOut()
         {
-            await _localStorageService.RemoveItemAsync("accessToken");
+            await _localStorageService.RemoveItemAsync(Constants.AccessToken);
             var nobody = new ClaimsPrincipal(new ClaimsIdentity());
             var authState = Task.FromResult(new AuthenticationState(nobody));
             NotifyAuthenticationStateChanged(authState);

@@ -1,6 +1,41 @@
 ﻿@page "/AboutMe"
+@using HBlog.WebClient.Services
+@inject UserClientService userService
+@inject AuthenticationStateProvider AuthenticationStateProvider
 
+<div class="row row-cols-1 row-cols-md-2 g-4">
+     @foreach(var member in Users)
+    {
+        <div class="col">        
+            <div class="card">
+                <img src="..." class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">@member.KnownAs</h5>
+                    <p class="card-text">Last Active @member.LastActive</p>
+                </div>
+            </div>
+        </div>
+    }
+</div>
 
 @code {
 
+    private UserDto Me { get; set; }
+    private IEnumerable<UserDto> Users { get; set; }
+
+    protected async override Task OnInitializedAsync()
+    {
+        var user = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+
+        foreach(var claim in user.User.Claims)
+        {
+            if(claim.Type == "email")
+            {
+                Me = await userService.GetUserDtoByUsername(claim.Value);
+                return;
+            }
+        }
+
+        Users = await userService.GetUsers();
+    }
 }

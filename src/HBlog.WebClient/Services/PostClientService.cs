@@ -17,20 +17,15 @@ namespace HBlog.WebClient.Services
         public Task<bool> DeletePost(int id);   
         public Task<bool> AddTagInPost(int postId, int tagId);
     }
-    public class PostClientService : IPostService
+    public class PostClientService : BaseService, IPostService
     {
-        private HttpClient _httpClient;
-        private IAuthService _authService;
-        public PostClientService(HttpClient httpClient, IAuthService authService)
+        public PostClientService(HttpClient httpClient,ILogger<PostClientService> logger) : base(httpClient,logger)
         {
-            _httpClient = httpClient;
-            _authService = authService;
         }
         public async Task<bool> CreatePost(PostCreateDto postCreateDto)
         {
             try
             {
-                await _authService.GetBearerToken();
                 var result = await _httpClient.PostAsJsonAsync($"Posts", postCreateDto);
                 return result.IsSuccessStatusCode;
             }
@@ -44,7 +39,6 @@ namespace HBlog.WebClient.Services
         {
             try
             {
-                await _authService.GetBearerToken();
                 var result = await _httpClient.PutAsJsonAsync($"Posts", postUpdateDto);
                 return result.IsSuccessStatusCode;
             }
@@ -56,7 +50,6 @@ namespace HBlog.WebClient.Services
         }
         public async Task<bool> DeletePost(int id)
         {
-            await _authService.GetBearerToken();
             var result = await _httpClient.DeleteAsync($"Posts/{id}");
             return result.IsSuccessStatusCode;
         }
@@ -94,7 +87,6 @@ namespace HBlog.WebClient.Services
         }
         public async Task<bool> AddTagInPost(int postId, int tagId)
         {
-            await _authService.GetBearerToken();
             var result = await _httpClient.PutAsJsonAsync($"posts/{postId}/Tags", tagId);
             return result.IsSuccessStatusCode;
         }

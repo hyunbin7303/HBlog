@@ -6,7 +6,7 @@ namespace HBlog.WebClient.States
     public class PostDashboardState
     {
         IPostService _postService;
-        public PostDashboardState(IPostService postService) 
+        public PostDashboardState(IPostService postService)
         {
             _postService = postService;
         }
