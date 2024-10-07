@@ -19,6 +19,8 @@ builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://localhost:6001/api/") }); // Replace builder.HostEnvironment.BaseAddress
 builder.Services.RegisterClientServices();
 
+
+builder.Services.AddHttpClient("Annoy",(configure)=>configure.BaseAddress = new Uri("https://localhost:6001/api/"));
 builder.Services.AddTransient<TokenHandler>();
 builder.Services.AddHttpClient<HttpServiceProvider>(
     "Auth",

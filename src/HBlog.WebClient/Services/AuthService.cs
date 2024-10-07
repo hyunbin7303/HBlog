@@ -28,7 +28,7 @@ namespace HBlog.WebClient.Services
 
         public async Task<UserDto> AuthenAsync(LoginDto loginDto)
         {
-            var _httpClient = _httpClientFactory.CreateClient();
+            var _httpClient = _httpClientFactory.CreateClient("Annoy");
             var result = await _httpClient.PostAsJsonAsync($"Account/login", loginDto);
             var obj = await result.Content.ReadFromJsonAsync<UserDto>();
 
