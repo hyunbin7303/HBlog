@@ -32,12 +32,12 @@ namespace HBlog.UnitTests.Controllers
             //_userRepository.Setup(repo => repo.GetUsersAsync()).Returns(Task.FromResult(userList));
             //var test = await _userRepository.Object.GetUsersAsync();
 
-            MemberUpdateDto memberUpdateDto = new MemberUpdateDto();
-            memberUpdateDto.Introduction = "Member Update Dto";
-            memberUpdateDto.LookingFor = "";
-            memberUpdateDto.Interests = "Programming";
+            UserUpdateDto userUpdateDto = new UserUpdateDto();
+            userUpdateDto.Introduction = "Member Update Dto";
+            userUpdateDto.LookingFor = "";
+            userUpdateDto.Interests = "Programming";
 
-            var result = await _controller.Update(memberUpdateDto);
+            var result = await _controller.Update(userUpdateDto);
             var obj = result as ObjectResult;
         }
     }

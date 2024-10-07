@@ -26,7 +26,7 @@ namespace HBlog.UnitTests.Endpoints
         [Test]
         public async Task GivenExistingUser_WhenGetUserByUserName_ThenHttpStatusOkWithUser()
         {
-            var searchUser = new MemberDto()
+            var searchUser = new UserDto()
             {
                 Id = 1,
                 UserName = "test",
@@ -37,9 +37,8 @@ namespace HBlog.UnitTests.Endpoints
                 Created = DateTime.Now,
                 LastActive = DateTime.Now,
                 PhotoUrl = "checkout@source.com/1",
-                Posts = new()
             };
-            ServiceResult<MemberDto> result = new()
+            ServiceResult<UserDto> result = new()
             {
                 IsSuccess = true,
                 Message = "hi",
@@ -54,7 +53,7 @@ namespace HBlog.UnitTests.Endpoints
 
 
             Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
-            var data = JsonSerializer.Deserialize<ServiceResult<MemberDto>>(await response.Content.ReadAsStringAsync()
+            var data = JsonSerializer.Deserialize<ServiceResult<UserDto>>(await response.Content.ReadAsStringAsync()
                 , new JsonSerializerOptions
             {
                 WriteIndented = true,
@@ -73,9 +72,16 @@ namespace HBlog.UnitTests.Endpoints
             _factory._mockUserRepository.Setup(o => o.GetUserByIdAsync(1))
                 .ReturnsAsync(new User() { Id = 1, UserName = "test" });
 
-            var response = await _client.GetAsync("/api/users/test");
+            var response = await _client.GetAsync("/api/users/random");
 
             Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.NotFound));
+        }
+
+        [Test]
+        public async Task Given_WhenUpdateUser_ThenSuccess()
+        {
+            var response = await _client.GetAsync("/api/users/random");
+
         }
 
 

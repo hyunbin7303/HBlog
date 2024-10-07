@@ -7,6 +7,7 @@ namespace HBlog.Domain.Repositories
         Task UpdateAsync(Post post);
         Task<IEnumerable<Post>> GetPostsAsync();
         Task<Post> GetPostDetails(int id); 
+        Task<IEnumerable<Post>> GetPostsTitleContainsAsync(string searchTitle);
         Task<IEnumerable<Post>> GetPostsAsync(int limit, int offset);   
         Task<IEnumerable<Post>> GetPostsByUserName(string userName);
     }

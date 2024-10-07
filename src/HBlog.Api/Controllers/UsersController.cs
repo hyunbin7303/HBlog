@@ -18,7 +18,7 @@ namespace HBlog.Api.Controllers
         }
 
         [HttpGet("users")]
-        public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsers([FromQuery]UserParams userParams)
+        public async Task<ActionResult<IEnumerable<AccountDto>>> GetUsers([FromQuery]UserParams userParams)
         {
             userParams.CurrentUsername = User.GetUsername();
             var users = await _userService.GetMembersAsync(userParams);
@@ -27,7 +27,7 @@ namespace HBlog.Api.Controllers
         }
 
         [HttpGet("users/{username}")]
-        public async Task<ActionResult<MemberDto>> GetUser(string username)
+        public async Task<ActionResult<AccountDto>> GetUser(string username)
         {
             var user = await _userService.GetMembersByUsernameAsync(username);
             if (user.Value is null)
@@ -37,15 +37,15 @@ namespace HBlog.Api.Controllers
         }
         
         [HttpPut("users")]
-        public async Task<IActionResult> Update(MemberUpdateDto memberUpdateDto)
+        public async Task<IActionResult> Update(UserUpdateDto userUpdateDto)
         {
-            if (memberUpdateDto is null)
+            if (userUpdateDto is null)
                 return BadRequest("Member Update Properties are Empty.");
 
             var user = await _userService.GetMembersByUsernameAsync(User.GetUsername());
             if (user.Value is null) return NotFound();
 
-            var result = await _userService.UpdateMemberAsync(memberUpdateDto);
+            var result = await _userService.UpdateMemberAsync(userUpdateDto);
 
             return BadRequest("Failed to update user");
         }

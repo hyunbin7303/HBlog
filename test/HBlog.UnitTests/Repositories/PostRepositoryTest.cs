@@ -12,24 +12,27 @@ using NUnit.Framework;
 
 namespace HBlog.UnitTests.Repositories
 {
-    public class PostRepositoryTest : TestBase
+    public class PostRepositoryTest : IDisposable
     {
+        private readonly DataContext _context;
         private IPostRepository _repository;       
-        private readonly Mock<DataContext> dataContextMock;
         public PostRepositoryTest()
         {
-            dataContextMock = new();
-            _repository = new PostRepository(dataContextMock.Object);
+            var dbContextOptions = new DbContextOptionsBuilder<DataContext>()
+                .UseInMemoryDatabase(databaseName: "TestingPostRepo").Options;
+
+            _context = new DataContext(dbContextOptions);
+            _repository = new PostRepository(_context);
+
+            IEnumerable<Post> posts = MockPostRepository.GenerateData(5);
+            _context.Posts.AddRange(posts);
+            _context.SaveChanges();
         }
 
 
         [Test]  
         public async Task GetPostsAsync_Retrieve_Success()
         {
-            int postTotal = 5;
-            var mock = MockPostRepository.GenerateData(postTotal).BuildMock().BuildMockDbSet();
-            dataContextMock.Setup(x => x.Posts).Returns(mock.Object);
-
             var posts = await _repository.GetPostsAsync();
 
             Assert.That(posts, Is.Not.Null);
@@ -39,9 +42,6 @@ namespace HBlog.UnitTests.Repositories
         [Test]
         public async Task GetPostById_FindExistingOne_Success()
         {
-            var mock = MockPostRepository.GenerateData(5).BuildMock().BuildMockDbSet();
-            dataContextMock.Setup(x => x.Posts).Returns(mock.Object);
-
             var post = await _repository.GetById(1);
 
             Assert.That(post, Is.Not.Null);
@@ -49,22 +49,16 @@ namespace HBlog.UnitTests.Repositories
         }
 
         [Test]
-        public async Task GetPostById_NotExistingId_ReturnNull()
+        public async Task GivenInvalidId_WhenGetById_ReturnNull()
         {
-            var mock = MockPostRepository.GenerateData(5).BuildMock().BuildMockDbSet();
-            dataContextMock.Setup(x => x.Posts).Returns(mock.Object);
-
             var post = await _repository.GetById(100);
 
-            Assert.That(post, Is.Not.Null);
+            Assert.That(post, Is.Null);
         }
 
         [Test]
         public async Task GetPostsByUserName_ExistingUser_ReturnPosts()
         {
-            var mock = MockPostRepository.GenerateData(5).BuildMock().BuildMockDbSet();
-            dataContextMock.Setup(x => x.Posts).Returns(mock.Object);
-
             var posts = await _repository.GetPostsByUserName("test");
 
             Assert.That(posts, Is.Not.Null);
@@ -72,59 +66,25 @@ namespace HBlog.UnitTests.Repositories
         }
 
         [Test]
-        public async Task GetPostsByUserName_NotExistingUser_ReturnNull()
+        public async Task GetPostsByUserName_NotExistingUser_ReturnEmpty()
         {
-            var mock = MockPostRepository.GenerateData(5).BuildMock().BuildMockDbSet();
-            dataContextMock.Setup(x => x.Posts).Returns(mock.Object);
-
             var posts = await _repository.GetPostsByUserName("NotExisting");
 
-            Assert.That(posts, Is.Not.Null);
-        }
-
-        [Test]
-        public async Task GivenValidObjects_WhenInsertData_AddAndSaveChangesCalledOnce()
-        {
-            var mockSet = new Mock<DbSet<Post>>();
-            dataContextMock.Setup(m => m.Posts).Returns(mockSet.Object);   
-            var repository = new PostRepository(dataContextMock.Object);
-
-            repository.Add(new Post { Id = 1, Title = "Post Title" });
-            await repository.SaveChangesAsync();
-
-            mockSet.Verify(m => m.Add(It.IsAny<Post>()), Times.Once);
-            dataContextMock.Verify(m => m.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once());
+            Assert.That(posts, Is.Empty);
         }
 
         [Test]
         public async Task GetPostsAsync_LimitFour_ReturnFourObjectsInOrderByCreatedTime()
         {
-            var mock = MockPostRepository.GenerateData(5).BuildMock().BuildMockDbSet();
-            dataContextMock.Setup(x => x.Posts).Returns(mock.Object);
-
             var result = await _repository.GetPostsAsync(4,0);
 
             Assert.That(result, Is.Not.Null);
             Assert.That(result.Count(), Is.EqualTo(4));
         }
 
-        [Test]
-        public async Task VerifyingMockWorking()
+        public void Dispose()
         {
-            var testObject = MockPostRepository.GenerateData(5)[0];
-
-            var context = new Mock<DataContext>();
-            var mock = MockPostRepository.GenerateData(5).BuildMock().BuildMockDbSet();
-            mock.Setup(x => x.Find(It.IsAny<int>())).Returns(testObject);
-            context.Setup(x => x.Set<Post>()).Returns(mock.Object);
-
-            // Act
-            var repository = new PostRepository(context.Object);
-            var result = await repository.GetPostsAsync();
-
-            // Assert
-            context.Verify(x => x.Set<Post>());
-            mock.Verify(x => x.Find(It.IsAny<int>()));
+            _context.Dispose();
         }
     }
 }

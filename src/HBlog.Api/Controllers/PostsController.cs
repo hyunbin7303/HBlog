@@ -69,6 +69,17 @@ namespace HBlog.Api.Controllers
                     NotFound(postDetails.Message);
         }
 
+        [AllowAnonymous]
+        [HttpGet("posts/title-contains")]
+        public async Task<ActionResult<PostDisplayDto>> GetPostsByTitleContains(string title)
+        {
+            if (string.IsNullOrWhiteSpace(title)) return BadRequest("Search title string cannot be empty.");
+            var posts =  await _postService.GetPostsTitleContains(title);
+            return posts.IsSuccess
+                ? Ok(posts.Value)
+                : NotFound(posts.Message);
+        }
+
         [HttpPut("posts")]
         public async Task<IActionResult> Put(PostUpdateDto postUpdateDto)
         {

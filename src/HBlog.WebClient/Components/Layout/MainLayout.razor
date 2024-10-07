@@ -1,5 +1,15 @@
-﻿@inherits LayoutComponentBase
+﻿@using Blazored.Toast.Configuration
+@inherits LayoutComponentBase
 
+<BlazoredToasts Position="ToastPosition.TopRight" 
+                Timeout="3"
+                IconType="IconType.FontAwesome"
+                SuccessClass="success-toast-override"
+                SuccessIcon="fa fa-thumbs-up"
+                ErrorIcon="fa fa-bug"
+                WarningIcon="fa fa-warning"
+                InfoIcon="faw fa-info-circle"
+                />
 <div class="d-flex flex-column h-100">
     <TopNavMenu />
     <main class="flex-grow-1">

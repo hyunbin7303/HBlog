@@ -40,11 +40,11 @@ namespace HBlog.UnitTests.Mocks.Repositories
             DateTime endDate = new DateTime(2024, 3, 15);
 
             var posts = new List<Post>();
-            for (int i = 0; i < count; i++)
+            for (int i = 1; i <= count; i++)
             {
                 var post = new Post 
                 { 
-                    Id = i + 1, 
+                    Id = i, 
                     UserId = 1, 
                     Created = TestHelper.GenerateRandomDateTime(startDate, endDate), 
                     Desc = "Desc" + i, 
@@ -55,7 +55,7 @@ namespace HBlog.UnitTests.Mocks.Repositories
                     LinkForPost = "https://github.com/hyunbin7303" };
                 post.User = new User
                 {
-                    Id = 1,
+                    Id = i,
                     UserName = "test",
                     City = "Kitchener",
                     Gender = "Male",

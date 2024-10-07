@@ -37,8 +37,8 @@
 
     private async Task HandleSignIn()
     {
-        UserDto user = await authService.AuthenAsync(LoginDtoModel);
-        if (string.IsNullOrEmpty(user.Token))
+        AccountDto account = await authService.AuthenAsync(LoginDtoModel);
+        if (string.IsNullOrEmpty(account.Token))
         {
             navManager.NavigateTo("/users/login");
         }

@@ -21,7 +21,7 @@ namespace HBlog.Api.Controllers
         }
 
         [HttpPost("account/register")]
-        public async Task<ActionResult<UserDto>> Register(RegisterDto registerDto)
+        public async Task<ActionResult<AccountDto>> Register(RegisterDto registerDto)
         {
             if (await UserExists(registerDto.UserName)) return BadRequest("Username is taken");
 
@@ -33,7 +33,7 @@ namespace HBlog.Api.Controllers
             var roleResult = await _userManager.AddToRoleAsync(user, "Member");
             if(!roleResult.Succeeded) return BadRequest(roleResult.Errors);
 
-            return new UserDto
+            return new AccountDto
             {
                 Username = user.UserName,
                 Token = await _tokenService.CreateToken(user),
@@ -42,7 +42,7 @@ namespace HBlog.Api.Controllers
         }
 
         [HttpPost("account/login")]
-        public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
+        public async Task<ActionResult<AccountDto>> Login(LoginDto loginDto)
         {
             var user = await _userManager.Users.Include(p=> p.Photos).FirstOrDefaultAsync(x => x.UserName == loginDto.UserName);
             if (user == null) return Unauthorized("Invalid Username");
@@ -50,7 +50,7 @@ namespace HBlog.Api.Controllers
             var result = await _userManager.CheckPasswordAsync(user, loginDto.Password);
             if (!result) return Unauthorized("Invalid password");
 
-            return new UserDto
+            return new AccountDto
             {
                 Username = user.UserName,
                 Email = user.Email,
