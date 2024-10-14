@@ -21,7 +21,7 @@
 @code {
 
     private UserDto Me { get; set; }
-    private IEnumerable<UserDto> Users { get; set; }
+    private IEnumerable<UserDto> Users { get; set; } = new List<UserDto>();
 
     protected async override Task OnInitializedAsync()
     {

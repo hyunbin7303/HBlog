@@ -3,6 +3,7 @@ using HBlog.Contract.Common;
 using HBlog.Contract.DTOs;
 using HBlog.WebClient.Helpers;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Net.Http.Json;
 
 namespace HBlog.WebClient.Services
@@ -19,13 +20,16 @@ namespace HBlog.WebClient.Services
     }
     public class PostClientService : BaseService, IPostService
     {
-        public PostClientService(HttpClient httpClient,ILogger<PostClientService> logger) : base(httpClient,logger)
+        private IAuthService _authService;
+        public PostClientService(HttpClient httpClient, ILogger<PostClientService> logger, IAuthService authService) : base(httpClient, logger)
         {
+            _authService = authService;
         }
         public async Task<bool> CreatePost(PostCreateDto postCreateDto)
         {
             try
             {
+                await _authService.InjectToken();
                 var result = await _httpClient.PostAsJsonAsync($"Posts", postCreateDto);
                 return result.IsSuccessStatusCode;
             }
@@ -39,6 +43,7 @@ namespace HBlog.WebClient.Services
         {
             try
             {
+                await _authService.InjectToken();
                 var result = await _httpClient.PutAsJsonAsync($"Posts", postUpdateDto);
                 return result.IsSuccessStatusCode;
             }
@@ -50,6 +55,7 @@ namespace HBlog.WebClient.Services
         }
         public async Task<bool> DeletePost(int id)
         {
+            await _authService.InjectToken();
             var result = await _httpClient.DeleteAsync($"Posts/{id}");
             return result.IsSuccessStatusCode;
         }
@@ -87,6 +93,7 @@ namespace HBlog.WebClient.Services
         }
         public async Task<bool> AddTagInPost(int postId, int tagId)
         {
+            await _authService.InjectToken();
             var result = await _httpClient.PutAsJsonAsync($"posts/{postId}/Tags", tagId);
             return result.IsSuccessStatusCode;
         }
