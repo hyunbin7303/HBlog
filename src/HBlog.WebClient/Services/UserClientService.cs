@@ -14,7 +14,7 @@ namespace HBlog.WebClient.Services
         }
         public async Task<(bool, IEnumerable<IdentityError>?)> RegisterNewUser(RegisterDto registerDto)
         {
-            var client = _httpClientFactory.CreateClient("Annoy");
+            var client = _httpClientFactory.CreateClient();
             var result = await client.PostAsJsonAsync($"Account/register", registerDto);
             if (result.IsSuccessStatusCode)
                 return (true, null);
