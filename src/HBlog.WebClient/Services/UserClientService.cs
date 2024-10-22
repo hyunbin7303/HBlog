@@ -7,8 +7,6 @@ namespace HBlog.WebClient.Services
     public class UserClientService(HttpClient httpClient, ILogger<UserClientService> logger, IAuthService authService)
         : BaseService(httpClient, logger)
     {
-        private readonly IAuthService _authService = authService;
-
         public async Task<(bool, IEnumerable<IdentityError>?)> RegisterNewUser(RegisterDto registerDto)
         {
             var result = await _httpClient.PostAsJsonAsync($"Account/register", registerDto);
@@ -26,7 +24,7 @@ namespace HBlog.WebClient.Services
 
         public async ValueTask<UserDto> GetUserDtoByUsername(string username)
         {
-            await _authService.InjectToken();
+            await authService.InjectToken();
             var result = await _httpClient.GetFromJsonAsync<HttpResponseMessage>($"users/{username}");
             if (result!.IsSuccessStatusCode)
             {
@@ -36,16 +34,20 @@ namespace HBlog.WebClient.Services
                
         }
 
-        public async ValueTask<IEnumerable<UserDto>> GetUsers()
+        public async Task<IEnumerable<UserDto>?> GetUsers()
         {
-            var result = await _httpClient.GetFromJsonAsync<HttpResponseMessage>($"users");
-            if (result!.IsSuccessStatusCode)
+            try
             {
-                return await result.Content.ReadFromJsonAsync<IEnumerable<UserDto>>();
+                await authService.InjectToken();
+                var result = await _httpClient.GetFromJsonAsync<IEnumerable<UserDto>>("users");
+                return result;
 
             }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+            }
             return default;
-
         }
     }
 }

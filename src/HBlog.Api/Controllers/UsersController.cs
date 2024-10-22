@@ -18,7 +18,7 @@ namespace HBlog.Api.Controllers
         }
 
         [HttpGet("users")]
-        public async Task<ActionResult<IEnumerable<AccountDto>>> GetUsers([FromQuery]UserParams userParams)
+        public async Task<ActionResult<IEnumerable<UserDto>>> GetUsers([FromQuery]UserParams userParams)
         {
             userParams.CurrentUsername = User.GetUsername();
             var users = await _userService.GetMembersAsync(userParams);
