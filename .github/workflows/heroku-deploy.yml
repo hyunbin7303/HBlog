@@ -3,18 +3,16 @@ name: Deploy
 on:
   push:
     branches:
-      - main
+      - master
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v2
-      - uses: CDNievas/heroku-action@v1.0 # This is the action
+      - uses: akhileshns/heroku-deploy@v3.13.15 # This is the action
         with:
-          heroku_email: "hyunbin7303@email.com"
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-          heroku_app_name: "hblog-web-api"
-          useforce: true,
-          dynamicFiles: true,
-          procfile: "worker: npm start"
+          heroku_app_name: ${{secrets.HEROKU_APP_NAME}}
+          heroku_email: ${{secrets.HEROKU_EMAIL}}
+          
