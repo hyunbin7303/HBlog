@@ -5,6 +5,11 @@ on:
     branches:
       - master
 
+env:
+  HEROKU_API_KEY: ${{secrets.HEROKU_API_KEY}}
+  APP_NAME: ${{'hblog-api'}}
+
+
 jobs:
   build:
     runs-on: ubuntu-22.04
@@ -15,4 +20,12 @@ jobs:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: ${{secrets.HEROKU_APP_NAME}}
           heroku_email: ${{secrets.HEROKU_EMAIL}}
-          
+
+      - name: Docker build
+        run: docker login --username_ --password=$HEROKU_API_KEY registry.heroku.com
+
+      - name: Publish
+        run: |
+          heroku container:push web -a $APP_NAME
+          heroku container:release web -a $APP_NAME
+
