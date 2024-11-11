@@ -1,3 +1,4 @@
+using System.Text.RegularExpressions;
 using HBlog.Application.Services;
 using HBlog.Domain.Repositories;
 using HBlog.Infrastructure.Authentications;
@@ -17,7 +18,12 @@ namespace HBlog.Infrastructure.Extensions
         public static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration config){
             services.AddDbContext<DataContext>(opt =>
             {
-                opt.UseNpgsql(config.GetConnectionString("DefaultConnection"));
+                if(Environment.GetEnvironmentVariable("ASPNETCORE_ENVRIONMENT") == "Production"){
+                    var m = Regex.Match(Environment.GetEnvironmentVariable("DATABASE_URL")!, @"postgres://(.*):(.*)@(.*):(.*)/(.*)");
+                    opt.UseNpgsql($"Server={m.Groups[3]};Port={m.Groups[4]};User Id={m.Groups[1]};Password={m.Groups[2]};Database={m.Groups[5]};sslmode=Prefer;Trust Server Certificate=true");
+                }else {
+                    opt.UseNpgsql(config.GetConnectionString("DefaultConnection"));
+                }
             });
             services.AddCors();
 
@@ -50,6 +56,6 @@ namespace HBlog.Infrastructure.Extensions
 
             return services;
         }
-        
+
     }
 }

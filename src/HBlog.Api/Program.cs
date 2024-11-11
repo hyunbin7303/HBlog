@@ -42,7 +42,6 @@ public class Program
         });
 
         builder.Services.Configure<AwsSettings>(builder.Configuration.GetSection("AwsSettings"));
-
         builder.Services.AddApplicationServices(builder.Configuration);
         builder.Services.AddAutoMapper(typeof(AutoMapperProfiles));
         builder.Services.AddIdentityServices(builder.Configuration);
