@@ -8,7 +8,7 @@ on:
 
 env:
   HEROKU_API_KEY: ${{secrets.HEROKU_API_KEY}}
-  APP_NAME: ${{'hblog-api'}}
+  APP_NAME: ${{'hblog-web-api'}}
 
 
 jobs:
@@ -19,7 +19,7 @@ jobs:
       - uses: akhileshns/heroku-deploy@v3.13.15 # This is the action
         with:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-          heroku_app_name: ${{secrets.HEROKU_APP_NAME}}
+          heroku_app_name: $APP_NAME
           heroku_email: ${{secrets.HEROKU_EMAIL}}
           appdir: "./src/Hblog.Api"
 
