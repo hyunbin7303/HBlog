@@ -21,13 +21,13 @@ jobs:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: $APP_NAME
           heroku_email: ${{secrets.HEROKU_EMAIL}}
-          # appdir: "src/HBlog.Api"
+          usedocker: true
 
       - name: Docker build
         run: docker login --username=_ --password=$HEROKU_API_KEY registry.heroku.com
 
-      - name: Publish
-        run: |
-          heroku container:push web -a $APP_NAME
-          heroku container:release web -a $APP_NAME
+      # - name: Publish
+      #   run: |
+      #     heroku container:push web -a $APP_NAME
+      #     heroku container:release web -a $APP_NAME
 
