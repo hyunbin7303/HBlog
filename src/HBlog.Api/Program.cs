@@ -12,7 +12,7 @@ public class Program
 {
     private static async Task Main(string[] args)
     {
-        Console.WriteLine("Current Env: " + Environment.GetEnvironmentVariable("Environment"));
+        Console.WriteLine("Current Env: " + Environment.GetEnvironmentVariable("ASPNETCORE_ENVRIONMENT"));
         var builder = WebApplication.CreateBuilder(args);
         AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true); // TODO Might need to be removed and find solution for UTC TIme set issue..
         builder.Services.AddControllers();
