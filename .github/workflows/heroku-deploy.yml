@@ -1,4 +1,4 @@
-name: Deploy
+name: Deploy HBlog API
 
 on:
   push:
@@ -21,13 +21,15 @@ jobs:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: $APP_NAME
           heroku_email: ${{secrets.HEROKU_EMAIL}}
+          justlogin: true
           usedocker: true
 
-      - name: Docker build
+      - name: Docker Login
         run: docker login --username=_ --password=$HEROKU_API_KEY registry.heroku.com
 
-      # - name: Publish
-      #   run: |
-      #     heroku container:push web -a $APP_NAME
-      #     heroku container:release web -a $APP_NAME
+
+      - name: Publish
+        run: |
+          heroku container:push web -a $APP_NAME
+          heroku container:release web -a $APP_NAME
 
