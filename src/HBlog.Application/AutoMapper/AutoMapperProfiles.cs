@@ -19,9 +19,9 @@ namespace HBlog.Application.Automapper
             CreateMap<Photo, PhotoDto>();
             CreateMap<Post, PostDisplayDto>()
                 .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.User.UserName))
-                .ForMember(dest => dest.Tags, opt => opt.MapFrom(src => src.PostTags.Select(x => x.Tag)));
+                .ForMember(dest => dest.Tags, opt => opt.MapFrom(Post => Post.Tags.Select(x => x)));
             CreateMap<Post, PostDisplayDetailsDto>()
-                .ForMember(dest => dest.Tags, opt => opt.MapFrom(src => src.PostTags.Select(x => x.Tag)));
+                .ForMember(dest => dest.Tags, opt => opt.MapFrom(Post => Post.Tags.Select(x => x)));
 
             CreateMap<UserUpdateDto, User>();
             CreateMap<RegisterDto, User>();

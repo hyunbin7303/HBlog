@@ -24,6 +24,18 @@ namespace HBlog.UnitTests.Endpoints
         }
 
         [Test]
+        public async Task GivenNotExistingUser_WhenGetUserByUsername_ThenNotFound()
+        {
+            _factory._mockUserRepository.Setup(o => o.GetUserByIdAsync(1))
+                .ReturnsAsync(new User() { Id = 1, UserName = "test" });
+
+            var response = await _client.GetAsync("/api/users/random");
+
+            Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.NotFound));
+        }
+
+
+        [Test]
         public async Task GivenExistingUser_WhenGetUserByUserName_ThenHttpStatusOkWithUser()
         {
             var searchUser = new UserDto()
@@ -66,16 +78,7 @@ namespace HBlog.UnitTests.Endpoints
             Assert.That(member.KnownAs, Is.EqualTo(searchUser.KnownAs));
         }
 
-        [Test]
-        public async Task GivenNotExistingUser_WhenGetUserByUsername_ThenNotFound()
-        {
-            _factory._mockUserRepository.Setup(o => o.GetUserByIdAsync(1))
-                .ReturnsAsync(new User() { Id = 1, UserName = "test" });
 
-            var response = await _client.GetAsync("/api/users/random");
-
-            Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.NotFound));
-        }
 
         [Test]
         public async Task Given_WhenUpdateUser_ThenSuccess()

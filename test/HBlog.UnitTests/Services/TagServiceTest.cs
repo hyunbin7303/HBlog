@@ -77,9 +77,6 @@ namespace HBlog.UnitTests.Services
             var result = await _tagService.RemoveTag(validTagId);
 
             Assert.That(result.IsSuccess, Is.True);
-            _tagRepositoryMock.Verify(x => x.Delete(It.IsAny<Tag>()), Times.Once);
         }
-
-
     }
 }

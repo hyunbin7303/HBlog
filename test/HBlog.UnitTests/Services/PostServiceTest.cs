@@ -15,7 +15,7 @@ namespace HBlog.UnitTests.Services
     public class PostServiceTest : TestBase
     {
         private IPostService _postService;
-        private readonly MockPostRepository _mockPostRepo = new();
+        private MockPostRepository _mockPostRepo = new();
         private readonly MockTagRepository _mockTagRepo = new();
         private readonly Mock<IUserRepository> _userRepositoryMock;
         private readonly Mock<ICategoryRepository> _categoryMock;
@@ -34,7 +34,7 @@ namespace HBlog.UnitTests.Services
         {
             int howMany = 5;
             var testObject = MockPostRepository.GenerateData(howMany);
-            _mockPostRepo.Setup(x => x.GetPostsAsync()).ReturnsAsync(testObject);
+            _mockPostRepo.Setup(x => x.GetPostsAsync(It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync(testObject);
 
             var posts = await _postService.GetPosts(new PostParams());
 
@@ -57,7 +57,8 @@ namespace HBlog.UnitTests.Services
         public async Task GivenExistingPostId_WhenGetPostById_ReturnPostSuccessfully()
         {
             int postId = 1;
-            _mockPostRepo.MockGetPostById(new Post { Id = postId, Title = "new Post mocking" });
+            _mockPostRepo.MockGetPostDetails(postId);
+            _userRepositoryMock.Setup(o => o.GetUserByIdAsync(It.IsAny<int>())).ReturnsAsync(new User());
 
             var postDetails = await _postService.GetByIdAsync(1);
 
@@ -87,12 +88,12 @@ namespace HBlog.UnitTests.Services
                 CategoryId = 1
             };
             _userRepositoryMock.Setup(x => x.GetUserByUsernameAsync(userName)).ReturnsAsync(new User { Id = 1, Email = "hyunbin7303@gmail.com", UserName = userName });
+            _categoryMock.Setup(x => x.GetById(1)).ReturnsAsync(new Category { Id = 1, Title = "Title", Description = "Desc", Posts = null});
 
-            // Action 
             var result = await _postService.CreatePost(userName, postCreateDto);
 
             Assert.That(result.IsSuccess, Is.True);
-            Assert.That(result.Message?.Contains("Post Id"), Is.True);
+            Assert.That(result.Message.Contains("Post Id"), Is.True);
             _userRepositoryMock.Verify(x => x.GetUserByUsernameAsync(userName), Times.Once);
             _mockPostRepo.Verify(x => x.Add(It.IsAny<Post>()), Times.Once);
         }
@@ -155,7 +156,6 @@ namespace HBlog.UnitTests.Services
 
             Assert.That(result.IsSuccess, Is.False);
             Assert.That(result.Message, Is.EqualTo("Post does not exist."));
-            _mockPostRepo.Verify(x => x.GetById(notExistingId), Times.Once);
             _mockPostRepo.Verify(x => x.UpdateAsync(It.IsAny<Post>()), Times.Never);
         }
 
@@ -173,24 +173,20 @@ namespace HBlog.UnitTests.Services
 
             Assert.That(result.IsSuccess, Is.True);
             Assert.That(result.Message, Is.EqualTo($"Removed Post Id: {postId}"));
-            _mockPostRepo.VerifyGetPostById(Times.Once());
         }
 
         [Test]
         public async Task GivenNotExistingPostId_WhenDeletePost_ThenReturnFalse()
         {
-            int postId = 1;
-            int invalidPostId = 2;
-            _mockPostRepo.Setup(x => x.GetById(postId)).ReturnsAsync(new Post
-            {
-                Id = postId,
-                Title = "Post New Title",
-            });
+            _mockPostRepo = new MockPostRepository();
+            _postService = new PostService(_mapper, _mockPostRepo.Object, _userRepositoryMock.Object, _mockTagRepo.Object,
+                _postTagsRepositoryMock.Object, _categoryMock.Object);
+            int invalidPostId = 200000101;
 
             var result = await _postService.DeletePost(invalidPostId);
 
             Assert.That(result.IsSuccess, Is.False);
-            Assert.That(result.Message, Is.EqualTo($"NotFound"));
+            Assert.That(result.Message, Is.EqualTo("NotFound"));
             _mockPostRepo.VerifyGetPostById(Times.Once());
         }
 

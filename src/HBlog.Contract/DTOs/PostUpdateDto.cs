@@ -8,5 +8,5 @@ public class PostUpdateDto
     public string LinkForPost { get; set; } = string.Empty;
     public int CategoryId { get; set; } = 0;
     public string Type { get; set; }
-    public int[] TagIds { get; set; }
+    public int[] TagIds { get; set; } = [];
 }

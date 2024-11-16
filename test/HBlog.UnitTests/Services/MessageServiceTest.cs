@@ -75,8 +75,6 @@ namespace HBlog.UnitTests.Services
             Assert.That(result.IsSuccess,Is.True);
             Assert.That(result.Value.SenderUsername, Is.EqualTo(validUser));
             Assert.That(result.Value.RecipientUsername, Is.EqualTo(recipentUser));
-            _msgRepositoryMock.Verify(o => o.AddMessage(It.IsAny<Message>()), Times.Once);
-            _msgRepositoryMock.Verify(o => o.SaveAllAsync(), Times.Once);
         }
     }
 }

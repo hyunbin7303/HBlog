@@ -8,7 +8,8 @@ namespace HBlog.Domain.Entities
         public string Name { get; set; }
         public string Desc { get; set; }
         public string Slug { get; set; }
-        public List<PostTags> PostTags { get; set; }
+        //public List<PostTags> PostTags { get; } = [];
+        public List<Post> Posts{ get; } = [];
 
     }
 }

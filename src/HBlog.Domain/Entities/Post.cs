@@ -17,8 +17,9 @@ namespace HBlog.Domain.Entities
         public DateTime LastUpdated { get; set; } = DateTime.UtcNow;
         public int UserId { get; set; }
         public int CategoryId { get; set; }
-        public List<PostTags> PostTags {get; set; }
         public virtual User User { get; set; }
         public virtual Category Category { get; set; }
+        public List<Tag> Tags { get; set; } = [];
+
     }
 }

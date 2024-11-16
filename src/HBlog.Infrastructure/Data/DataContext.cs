@@ -60,6 +60,15 @@ namespace HBlog.Infrastructure.Data
                 p.Property(post => post.Id).UseIdentityAlwaysColumn();
             });
 
+            modelBuilder.Entity<Post>().HasMany(x => x.Tags)
+                .WithMany(x => x.Posts)
+                .UsingEntity<PostTags>(
+                    x => x.HasOne(x => x.Tag)
+                        .WithMany().HasForeignKey(posttag => posttag.TagId),
+                    x => x.HasOne(x => x.Post)
+                        .WithMany().HasForeignKey(posttag => posttag.PostId));
+
+
             modelBuilder.Entity<Tag>(p =>
             {
                 p.HasKey(tag => tag.Id);
@@ -69,15 +78,6 @@ namespace HBlog.Infrastructure.Data
 
             modelBuilder.Entity<PostTags>()
                 .HasKey(k => new { k.PostId, k.TagId });
-
-            modelBuilder.Entity<PostTags>()
-                .HasOne(pt => pt.Post)
-                .WithMany(p => p.PostTags)
-                .HasForeignKey(pt => pt.PostId);
-            modelBuilder.Entity<PostTags>()
-                .HasOne(pt => pt.Tag)
-                .WithMany(t => t.PostTags)
-                .HasForeignKey(pt => pt.TagId);
 
             modelBuilder.Entity<UserLike>()
                 .HasKey(k => new { k.SourceUserId, k.TargetUserId });

@@ -29,8 +29,7 @@ namespace HBlog.Infrastructure.Repositories
 
         public async Task<IEnumerable<Post>> GetPostsAsync(int limit, int offset)
         {
-            return await _dbContext.Posts.Include(p => p.PostTags)
-                .ThenInclude(pt=> pt.Tag)
+            return await _dbContext.Posts.Include(p => p.Tags)
                 .AsNoTracking()
                 .OrderByDescending(p => p.Created)
                 .Skip(offset).Take(limit).ToListAsync();
@@ -45,9 +44,8 @@ namespace HBlog.Infrastructure.Repositories
         {
             return await _dbContext.Posts
                 .Where(p => p.Id == id)
-                .Include(u => u.User)
-                .Include(t => t.PostTags)
-                .ThenInclude(o => o.Tag)
+                .Include(p => p.User)
+                .Include(t => t.Tags)
                 .FirstOrDefaultAsync();
         }
     }
