@@ -58,7 +58,7 @@ namespace HBlog.UnitTests.Endpoints
             };
             _factory._mockUserService.Setup(o => o.GetMembersByUsernameAsync(It.IsAny<string>())).ReturnsAsync(result);
             _factory._mockUserRepository.Setup(o => o.GetUserByIdAsync(1))
-                .ReturnsAsync(new User() { Id = 1, UserName = "test" });
+                .ReturnsAsync(new User { Id = 1, UserName = "test" });
             
 
             var response = await _client.GetAsync("/api/users/test");

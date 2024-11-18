@@ -23,9 +23,9 @@ namespace HBlog.Infrastructure.Data
 
             var roles = new List<AppRole>
             {
-                new AppRole{ Name =  "Member"},
-                new AppRole{ Name =  "Admin"},
-                new AppRole{ Name =  "Moderator"},
+                new() { Name =  "Member"},
+                new() { Name =  "Admin"},
+                new() { Name =  "Moderator"},
             };
             foreach(var role in roles)
             {
