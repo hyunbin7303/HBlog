@@ -10,3 +10,4 @@ public class PostUpdateDto
     public string Type { get; set; }
     public int[] TagIds { get; set; } = [];
 }
+public record PostChangeStatusDto(string Status);

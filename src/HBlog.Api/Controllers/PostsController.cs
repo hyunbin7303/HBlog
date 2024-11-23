@@ -7,6 +7,7 @@ using HBlog.Contract.DTOs;
 using HBlog.Application.Services;
 using HBlog.Domain.Params;
 using HBlog.Domain.Common.Params;
+using Amazon.S3.Model;
 
 
 namespace HBlog.Api.Controllers
@@ -96,10 +97,23 @@ namespace HBlog.Api.Controllers
             return NoContent();
         }
 
-        [HttpPut("posts/{postId}/Tags")] 
-        public async Task<IActionResult> AddTag(int postId, [FromBody]int tagId)
+        [HttpPut("posts/{postId}/status")]
+        public async Task<IActionResult> ChangeStatus(int postId, [FromBody] PostChangeStatusDto statusDto)
         {
-            if (postId == 0 || tagId == 0)
+            if (postId == 0)
+                return BadRequest("Post Id cannot be null");
+
+            var result = await _postService.UpdateStatus(postId, statusDto);
+            if (!result.IsSuccess)
+                return BadRequest("Failed to update status.");
+
+            return Ok();
+        }
+
+        [HttpPut("posts/{postId}/Tags")] 
+        public async Task<IActionResult> AddTag(int postId, [FromBody]int[] tagId)
+        {
+            if (postId == 0 || tagId.Length == 0)
                 return BadRequest("Post Id or Tag Id cannot be null");
             
             var result = await _postService.AddTagForPost(postId, tagId);

@@ -9,7 +9,7 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceFolder}/HBlog.Api/bin/Debug/net8.0/HBlog.Api.dll",
+            "program": "${workspaceFolder}/HBlog.Api/bin/Debug/net9.0/HBlog.Api.dll",
             "args": [],
             "cwd": "${workspaceFolder}/HBlog.Api",
             "stopAtEntry": false,

@@ -198,7 +198,7 @@ namespace HBlog.UnitTests.Services
             _mockPostRepo.MockGetPostById(new Post { Id = postId, Title = "new Post mocking" });
             _mockTagRepo.MockgetTagById(new Tag { Id = tagId, Name = "Programming" });
 
-            var result = await _postService.AddTagForPost(postId, tagId);
+            var result = await _postService.AddTagForPost(postId, [tagId]);
 
             Assert.That(result.IsSuccess, Is.True);
             _postTagsRepositoryMock.Verify(o => o.SaveChangesAsync(), Times.Once());

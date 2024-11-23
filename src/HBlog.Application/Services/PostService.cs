@@ -23,34 +23,24 @@ public class PostService : BaseService, IPostService
         _categoryRepository = categoryRepository;
     }
 
-    public async Task<ServiceResult> AddTagForPost(int postId, int tagId)
+    public async Task<ServiceResult> AddTagForPost(int postId, int[] tagIds)
     {
         var post = await _postRepository.GetById(postId);
         if(post is null)
             return ServiceResult.NotFound(msg: "Cannot find post.");
 
-        var tag = await _tagRepository.GetById(tagId);
-        if (tag is null)
-            return ServiceResult.NotFound(msg: "Cannot find tag."); 
+        foreach (var tagId in tagIds)
+        {
+            var tag = await _tagRepository.GetById(tagId);
+            if (tag is null)
+                return ServiceResult.NotFound(msg: "Cannot find tag.");
 
-        var postTags = new PostTags { PostId = post.Id, TagId = tag.Id };
-        _postTagRepository.Add(postTags);
+            var postTags = new PostTags { PostId = post.Id, TagId = tag.Id };
+            _postTagRepository.Add(postTags);
+        }
+
         await _postTagRepository.SaveChangesAsync();
-        return ServiceResult.Success($"Success to add Tag ID: {tagId}");
-    }
-
-    public async Task<ServiceResult> AddCategoryForPost(int postId, int categoryId)
-    {
-        var post = await _postRepository.GetById(postId);
-        if (post is null)
-            return ServiceResult.Fail(msg: "Post Id is not valid.");
-
-        var category = await _categoryRepository.GetById(categoryId);
-        if (category is null)
-            return ServiceResult.Fail(msg: "Category Id is not valid.");
-
-        //TODO Update Category?
-        return ServiceResult.Success($"Success to add Category ID: {categoryId}");
+        return ServiceResult.Success($"Success for updating Tag ID.");
     }
 
     public async Task<ServiceResult> CreatePost(string userName, PostCreateDto createDto)
@@ -143,6 +133,18 @@ public class PostService : BaseService, IPostService
         foreach (var tagId in updateDto.TagIds)
             post.Tags.Add(new Tag { Id = tagId });
 
+        await _postRepository.UpdateAsync(post);
+        return ServiceResult.Success();
+    }
+
+    public async Task<ServiceResult> UpdateStatus(int id, PostChangeStatusDto updateStatusDto)
+    {
+        Post post = await _postRepository.GetById(id);
+        if (post == null || post.Status == PostStatus.Removed)
+            return ServiceResult.Fail(msg: "Post does not exist.");
+
+        post.Status = updateStatusDto.Status;
+        post.LastUpdated = DateTime.UtcNow;
         await _postRepository.UpdateAsync(post);
         return ServiceResult.Success();
     }

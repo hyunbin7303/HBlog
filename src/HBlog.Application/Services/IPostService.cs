@@ -13,7 +13,8 @@ public interface IPostService
     Task<ServiceResult<PostDisplayDetailsDto>> GetBySlugAsync(string slug);
     Task<ServiceResult> CreatePost(string userName, PostCreateDto createDto);
     Task<ServiceResult> UpdatePost(PostUpdateDto updateDto);
+    Task<ServiceResult> UpdateStatus(int id, PostChangeStatusDto  updateStatusDto);
     Task<ServiceResult> DeletePost(int id);
-    Task<ServiceResult> AddTagForPost(int postId, int tagId);
+    Task<ServiceResult> AddTagForPost(int postId, int[] tagIds);
     Task<ServiceResult<IEnumerable<PostDisplayDto>>> GetPostsByCategory(int categoryId);
 }
