@@ -12,8 +12,8 @@ public class Program
 {
     private static async Task Main(string[] args)
     {
-        Console.WriteLine("Current Env: " + Environment.GetEnvironmentVariable("ASPNETCORE_ENVRIONMENT"));
         var builder = WebApplication.CreateBuilder(args);
+        Console.WriteLine("ASPNETCORE EMV: " + Environment.GetEnvironmentVariable("ASPNETCORE_ENVRIONMENT") + " or ENV NAME:" + builder.Environment.EnvironmentName);
         AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true); // TODO Might need to be removed and find solution for UTC TIme set issue..
         builder.Services.AddControllers();
         builder.Services.AddEndpointsApiExplorer();
@@ -40,6 +40,7 @@ public class Program
         }
             });
         });
+        builder.Services.AddProblemDetails();
 
         builder.Services.Configure<AwsSettings>(builder.Configuration.GetSection("AwsSettings"));
         builder.Services.AddApplicationServices(builder.Configuration);
@@ -66,17 +67,18 @@ public class Program
             var context = services.GetRequiredService<DataContext>();
             var userManager = services.GetRequiredService<UserManager<User>>();
             var roleManager = services.GetRequiredService<RoleManager<AppRole>>();
-            if (Environment.GetEnvironmentVariable("Environment") != "test")
+            await context.Database.MigrateAsync();
+            if (builder.Environment.EnvironmentName == "test" || builder.Environment.IsDevelopment())
             {
-                await context.Database.MigrateAsync();
+                Seed._seedPostFilePath = "../HBlog.Infrastructure/Data/PostSeedData.json";
+                Seed._seedUserFilePath = "../HBlog.Infrastructure/Data/UserSeedData.json";
                 await Seed.SeedUsers(userManager, roleManager);
                 await Seed.SeedCategories(context);
                 await Seed.SeedPosts(context);
                 await Seed.SeedTags(context);
                 await Seed.SeedPostTags(context);
-                await context.Database.EnsureCreatedAsync();
-
             }
+            await context.Database.EnsureCreatedAsync();
         }
         catch (Exception ex)
         {
