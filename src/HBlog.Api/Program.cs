@@ -68,10 +68,8 @@ public class Program
             var userManager = services.GetRequiredService<UserManager<User>>();
             var roleManager = services.GetRequiredService<RoleManager<AppRole>>();
             await context.Database.MigrateAsync();
-            if (builder.Environment.EnvironmentName == "test" || builder.Environment.IsDevelopment())
+            if (builder.Environment.IsProduction() is false)
             {
-                Seed._seedPostFilePath = "../HBlog.Infrastructure/Data/PostSeedData.json";
-                Seed._seedUserFilePath = "../HBlog.Infrastructure/Data/UserSeedData.json";
                 await Seed.SeedUsers(userManager, roleManager);
                 await Seed.SeedCategories(context);
                 await Seed.SeedPosts(context);

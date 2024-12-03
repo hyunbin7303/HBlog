@@ -8,6 +8,12 @@ services:
             - "8090:8080"
         depends_on:
             - hblog_database
+        environment:
+            ASPNETCORE_ENVRIONMENT: '${ASPNETCORE_ENVRIONMENT:-Development}'
+            DOTNET_ENVIRONMENT: '${DOTNET_ENVIRONMENT:-Development}'
+
+
+
     hblog_database:
         image: postgres:latest
         container_name: hblog_db
