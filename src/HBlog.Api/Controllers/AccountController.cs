@@ -5,6 +5,7 @@ using HBlog.Infrastructure.Authentications;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using HBlog.Contract.DTOs;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.Blazor;
 
 namespace HBlog.Api.Controllers
 {
@@ -33,12 +34,13 @@ namespace HBlog.Api.Controllers
             var roleResult = await _userManager.AddToRoleAsync(user, "Member");
             if(!roleResult.Succeeded) return BadRequest(roleResult.Errors);
 
-            return new AccountDto
-            {
-                Username = user.UserName,
-                Token = await _tokenService.CreateToken(user),
-                KnownAs = user.KnownAs
-            };
+            // new AccountDto
+            // {
+            //     Username = user.UserName,
+            //     Token = await _tokenService.CreateToken(user),
+            //     KnownAs = user.KnownAs
+            // }; // For now we are removing this.
+            return Created();
         }
 
         [HttpPost("account/login")]
