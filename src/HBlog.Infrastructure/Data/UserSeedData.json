@@ -45,14 +45,16 @@
   },
   {
     "UserName": "Macy0103",
+    "FirstName": "Mackenzie",
+    "LastName": "Horvath",
     "Gender": "female",
     "DateOfBirth": "1994-01-03",
     "KnownAs": "Macy",
     "Created": "2013-12-09",
     "LastActive": "2024-01-03",
-    "Introduction": "Nice to meet you \r\n",
-    "LookingFor": "Dolor magna eu reprehenderit nostrud do et. Amet voluptate ut laboris ut officia eiusmod exercitation elit labore anim. In consequat ut ex adipisicing irure. Sit proident sint laboris est proident aute mollit minim et mollit. Cillum in enim velit occaecat aliquip. Voluptate aliquip et culpa est ad proident elit duis.\r\n",
-    "Interests": "Dolor aliquip velit amet aliqua minim labore sit laboris non aliquip cillum.",
+    "Introduction": "I don't share foods. \r\n",
+    "LookingFor": "Fooooooood.\r\n",
+    "Interests": "Ass kicker!",
     "City": "Kitchener",
     "Country": "Canada",
     "Photos": [
@@ -63,7 +65,9 @@
     ]
   },
   {
-    "UserName": "Margo",
+    "UserName": "Margo1234",
+    "FirstName": "margo",
+    "LastName": "Check",
     "Gender": "female",
     "DateOfBirth": "1959-01-24",
     "KnownAs": "Margo",
@@ -115,101 +119,6 @@
     "Photos": [
       {
         "Url": "https://randomuser.me/api/portraits/women/84.jpg",
-        "IsMain": true
-      }
-    ]
-  },
-  {
-    "UserName": "Todd",
-    "Gender": "male",
-    "DateOfBirth": "1950-02-07",
-    "KnownAs": "Todd",
-    "Created": "2019-04-29",
-    "LastActive": "2020-05-16",
-    "Introduction": "Mollit elit cillum dolore ea laboris consequat excepteur eiusmod eiusmod qui magna mollit occaecat. Sint qui ut veniam non. Est non veniam magna in consectetur ullamco eiusmod in elit aute ea ipsum aliquip. Duis nisi do dolore ad. Consectetur incididunt quis exercitation aliquip officia. Ex anim pariatur veniam fugiat aute consequat quis nisi in quis.\r\n",
-    "LookingFor": "Magna ex non ullamco ipsum commodo minim cupidatat sit. Sint dolor enim amet cupidatat. Anim et ea officia ea officia veniam adipisicing tempor. Labore consequat in duis deserunt tempor aliqua. Eu incididunt id deserunt proident ullamco aliqua culpa officia anim deserunt fugiat amet voluptate qui. In id non sint sint aliqua commodo reprehenderit excepteur cillum Lorem minim.\r\n",
-    "Interests": "Esse cillum deserunt fugiat deserunt irure ea esse deserunt quis exercitation velit do nisi reprehenderit.",
-    "City": "Cliff",
-    "Country": "British Indian Ocean Territory",
-    "Photos": [
-      {
-        "Url": "https://randomuser.me/api/portraits/men/90.jpg",
-        "IsMain": true
-      }
-    ]
-  },
-  {
-    "UserName": "Porter",
-    "Gender": "male",
-    "DateOfBirth": "1967-04-09",
-    "KnownAs": "Porter",
-    "Created": "2020-04-05",
-    "LastActive": "2020-06-23",
-    "Introduction": "Qui adipisicing enim mollit magna fugiat. Quis laborum sit adipisicing Lorem veniam magna. Aliqua ex occaecat id duis aute excepteur quis eu eiusmod. Cillum consectetur dolore officia consequat veniam nulla qui occaecat ullamco ipsum sit incididunt aute ullamco.\r\n",
-    "LookingFor": "Officia id adipisicing duis culpa aute voluptate Lorem quis aliquip qui. Cupidatat aliquip amet reprehenderit excepteur amet et est dolore est. Veniam pariatur elit non ullamco labore quis do. Ad non cillum nisi non. Non cupidatat nisi fugiat officia tempor officia sunt qui duis.\r\n",
-    "Interests": "Aliquip proident pariatur excepteur incididunt irure et.",
-    "City": "Welda",
-    "Country": "Christmas Island",
-    "Photos": [
-      {
-        "Url": "https://randomuser.me/api/portraits/men/87.jpg",
-        "IsMain": true
-      }
-    ]
-  },
-  {
-    "UserName": "Mayo",
-    "Gender": "male",
-    "DateOfBirth": "1990-03-23",
-    "KnownAs": "Mayo",
-    "Created": "2020-03-14",
-    "LastActive": "2020-05-17",
-    "Introduction": "Aliquip labore nisi veniam exercitation sit laborum nisi pariatur dolore tempor irure. Ad officia et eu cupidatat qui irure pariatur qui excepteur dolor ut eiusmod. Exercitation qui cillum elit elit officia elit culpa eu consequat cupidatat velit esse.\r\n",
-    "LookingFor": "Duis tempor amet officia irure amet do ipsum est dolore culpa id Lorem exercitation labore. Cupidatat minim duis nulla occaecat excepteur anim laboris id culpa ullamco culpa. Ullamco mollit labore mollit esse labore eiusmod elit enim voluptate laborum irure amet eu in. Pariatur consectetur Lorem velit incididunt excepteur. Magna proident nulla ex laboris veniam tempor proident nisi elit. Ex tempor excepteur eiusmod et occaecat laboris ad ex veniam voluptate. Ipsum mollit voluptate nulla eiusmod nostrud sit anim anim qui est aute pariatur sint.\r\n",
-    "Interests": "Duis consectetur proident labore velit minim irure proident incididunt officia duis.",
-    "City": "Clarence",
-    "Country": "Burkina Faso",
-    "Photos": [
-      {
-        "Url": "https://randomuser.me/api/portraits/men/57.jpg",
-        "IsMain": true
-      }
-    ]
-  },
-  {
-    "UserName": "Skinner",
-    "Gender": "male",
-    "DateOfBirth": "1952-12-01",
-    "KnownAs": "Skinner",
-    "Created": "2019-01-28",
-    "LastActive": "2020-06-07",
-    "Introduction": "Cupidatat dolor irure officia qui consequat ea laborum excepteur esse. Esse qui cupidatat minim laborum velit occaecat officia. Nulla consectetur nisi laborum in eu fugiat ipsum magna. Ipsum sunt consectetur reprehenderit ea consectetur fugiat anim enim nostrud. Ut fugiat cupidatat aliquip ipsum laborum adipisicing sint tempor. Eu deserunt aute Lorem duis exercitation aute aute commodo ut eu elit elit commodo officia.\r\n",
-    "LookingFor": "Sunt est cillum nisi officia cupidatat sit ullamco. Labore aliquip pariatur amet velit labore cillum irure dolor. Anim ut cupidatat qui pariatur veniam eu. Eu est cillum non amet consectetur deserunt eiusmod ea sint nostrud quis ipsum cillum. Irure id et minim do nostrud consectetur quis ex duis nostrud dolor. Veniam enim sint proident officia sint enim eiusmod occaecat adipisicing do ad proident.\r\n",
-    "Interests": "Pariatur qui ut commodo laboris officia.",
-    "City": "Herald",
-    "Country": "Poland",
-    "Photos": [
-      {
-        "Url": "https://randomuser.me/api/portraits/men/11.jpg",
-        "IsMain": true
-      }
-    ]
-  },
-  {
-    "UserName": "Davis",
-    "Gender": "male",
-    "DateOfBirth": "1978-03-20",
-    "KnownAs": "Davis",
-    "Created": "2020-02-25",
-    "LastActive": "2020-06-11",
-    "Introduction": "Voluptate sunt adipisicing ea nisi ex ullamco veniam dolor. Dolor do et exercitation in. Aute enim pariatur amet commodo. Deserunt consectetur quis culpa aliqua voluptate ipsum exercitation exercitation exercitation ea aliqua sunt.\r\n",
-    "LookingFor": "Do do minim est incididunt minim qui aliqua nulla pariatur culpa pariatur culpa non. Aliquip esse quis ullamco sint voluptate. Eiusmod reprehenderit nostrud elit eu. Sit est incididunt elit excepteur eu non. Non tempor labore nisi consequat excepteur magna non velit. Nostrud labore ex nostrud magna adipisicing aute exercitation ad in incididunt pariatur anim. Officia dolor proident nulla laboris quis.\r\n",
-    "Interests": "Labore consectetur labore ut nulla voluptate nulla quis labore tempor dolor laborum.",
-    "City": "Lupton",
-    "Country": "Luxembourg",
-    "Photos": [
-      {
-        "Url": "https://randomuser.me/api/portraits/men/93.jpg",
         "IsMain": true
       }
     ]

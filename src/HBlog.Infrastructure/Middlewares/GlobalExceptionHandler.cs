@@ -23,11 +23,21 @@ namespace HBlog.Infrastructure.Middlewares
             (int statusCode, string errorMsg) = exception switch
             {
                 //=> (403, null),
+                ArgumentException argumentException => (400, argumentException.Message),
                 BadHttpRequestException badrequestException => (400, badrequestException.Message),
                 _ => (500, "Internal server error.")
             };
+
+            var problemDetails = new ProblemDetails
+            {
+                Status = statusCode,
+                Title = errorMsg,
+                Type = exception.GetType().Name,
+                Detail = exception.Message
+            };
+
             _logger.LogError(exception, exception.Message);
-            await httpContext.Response.WriteAsJsonAsync(errorMsg);
+            await httpContext.Response.WriteAsJsonAsync(problemDetails, cancellationToken: cancellationToken);
             return true;
 
         }
