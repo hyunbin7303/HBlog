@@ -19,8 +19,5 @@ jobs:
       - uses: akhileshns/heroku-deploy@v3.13.15 # This is the action
         with:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-          heroku_app_name: $APP_NAME
+          heroku_app_name: hblog
           heroku_email: ${{secrets.HEROKU_EMAIL}}
-
-      - name: Docker Login
-        run: docker login --username=_ --password=$HEROKU_API_KEY registry.heroku.com
