@@ -25,6 +25,7 @@ namespace HBlog.Api.Controllers
         public async Task<ActionResult<AccountDto>> Register(RegisterDto registerDto)
         {
             if (await UserExists(registerDto.UserName)) return BadRequest("Username is taken");
+            if (await EmailExists(registerDto.Email)) return BadRequest("Email is taken");
 
             var user = _mapper.Map<User>(registerDto);
 
@@ -39,7 +40,7 @@ namespace HBlog.Api.Controllers
             //     Username = user.UserName,
             //     Token = await _tokenService.CreateToken(user),
             //     KnownAs = user.KnownAs
-            // }; // For now we are removing this.
+            // };
             return Created();
         }
 
@@ -118,6 +119,10 @@ namespace HBlog.Api.Controllers
         private async Task<bool> UserExists(string username)
         {
             return await _userManager.Users.AnyAsync(x => x.UserName == username.ToLower());
+        }
+        private async Task<bool> EmailExists(string email)
+        {
+            return await _userManager.Users.AnyAsync(x => x.Email == email.ToLower());
         }
     }
 }
