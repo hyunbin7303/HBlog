@@ -55,12 +55,9 @@ namespace HBlog.Api.Controllers
 
             return new AccountDto
             {
-                Username = user.UserName,
+                Username = user.UserName!,
                 Email = user.Email,
                 Token = await _tokenService.CreateToken(user),
-                PhotoUrl = user.Photos.FirstOrDefault(x => x.IsMain)?.Url,
-                KnownAs = user.KnownAs,
-                Gender = user.Gender
             };
         }
 
@@ -71,8 +68,6 @@ namespace HBlog.Api.Controllers
             {
                 return BadRequest();
             }
-
-            //_context.Entry(appUser).State = EntityState.Modified;
 
             try
             {
@@ -91,14 +86,6 @@ namespace HBlog.Api.Controllers
             }
 
             return NoContent();
-        }
-
-        [HttpPost("account")]
-        public ActionResult<User> PostAppUser(User appUser)
-        {
-            //var result = _userManager.Users.Add(appUser);
-            //await _context.SaveChangesAsync();
-            return CreatedAtAction("GetAppUser", new { id = appUser.Id }, appUser);
         }
 
         [HttpDelete("account/{id}")]

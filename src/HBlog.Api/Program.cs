@@ -52,7 +52,9 @@ public class Program
         app.UseDeveloperExceptionPage();
         app.UseSwagger();
         app.UseSwaggerUI();
-        app.UseExceptionHandler("/Error");
+        if(!app.Environment.IsDevelopment())
+            app.UseExceptionHandler("/Error");
+
         //app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:4200"));
         app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:7183", "http://localhost:5050"));
         app.UseAuthentication();

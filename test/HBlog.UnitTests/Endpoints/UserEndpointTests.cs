@@ -4,8 +4,6 @@ using System.Text.Json;
 using HBlog.Contract.Common;
 using HBlog.Contract.DTOs;
 using HBlog.Domain.Entities;
-using HBlog.UnitTests.Mocks.Repositories;
-using Microsoft.AspNetCore.Mvc;
 using Moq;
 using NUnit.Framework;
 
@@ -44,7 +42,6 @@ namespace HBlog.UnitTests.Endpoints
                 UserName = "test",
                 Introduction = "Testing",
                 KnownAs = "Kevin",
-                Gender = "male",
                 Age = 30,
                 Created = DateTime.Now,
                 LastActive = DateTime.Now,
