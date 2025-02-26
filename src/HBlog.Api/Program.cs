@@ -1,3 +1,4 @@
+using HBlog.Api.Extensions;
 using HBlog.Application.Automapper;
 using HBlog.Domain.Entities;
 using HBlog.Infrastructure.Data;
@@ -6,7 +7,6 @@ using HBlog.Infrastructure.Middlewares;
 using HBlog.Infrastructure.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.OpenApi.Models;
 
 public class Program
 {
@@ -17,34 +17,13 @@ public class Program
         AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true); // TODO Might need to be removed and find solution for UTC TIme set issue..
         builder.Services.AddControllers();
         builder.Services.AddEndpointsApiExplorer();
-        builder.Services.AddSwaggerGen(c =>
-        {
-            c.AddSecurityDefinition("auth", new OpenApiSecurityScheme
-            {
-                Name = "auth",
-                In = ParameterLocation.Header,
-                Type = SecuritySchemeType.Http,
-                Scheme = "Bearer",
-                Description = "A one time token. "
-            });
-            c.AddSecurityRequirement(new OpenApiSecurityRequirement {
-        {
-            new OpenApiSecurityScheme
-            {
-                Reference = new OpenApiReference
-                {
-                    Id = "auth",
-                    Type = ReferenceType.SecurityScheme
-                }
-            }, new List<string>()
-        }
-            });
-        });
+
         builder.Services.AddProblemDetails();
 
         builder.Services.Configure<AwsSettings>(builder.Configuration.GetSection("AwsSettings"));
         builder.Services.AddApplicationServices(builder.Configuration);
         builder.Services.AddAutoMapper(o => o.AddProfile(typeof(AutoMapperProfiles)));
+        builder.Services.AddSwaggerDocumentation();
         builder.Services.AddIdentityServices(builder.Configuration);
         builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 
