@@ -5,7 +5,7 @@ using HBlog.Infrastructure.Authentications;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using HBlog.Contract.DTOs;
-using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.Blazor;
+using System.Net;
 
 namespace HBlog.Api.Controllers
 {
@@ -35,23 +35,18 @@ namespace HBlog.Api.Controllers
             var roleResult = await _userManager.AddToRoleAsync(user, "Member");
             if(!roleResult.Succeeded) return BadRequest(roleResult.Errors);
 
-            // new AccountDto
-            // {
-            //     Username = user.UserName,
-            //     Token = await _tokenService.CreateToken(user),
-            //     KnownAs = user.KnownAs
-            // };
             return Created();
         }
 
         [HttpPost("account/login")]
         public async Task<ActionResult<AccountDto>> Login(LoginDto loginDto)
         {
-            var user = await _userManager.Users.Include(p=> p.Photos).FirstOrDefaultAsync(x => x.UserName == loginDto.UserName);
-            if (user == null) return Unauthorized("Invalid Username");
+            var user = await _userManager.FindByNameAsync(loginDto.UserName);
+            if (user == null) return Unauthorized(new ProblemDetails { Status = (int)HttpStatusCode.Unauthorized, Title = "Unauthorized", Detail = "Invalid username" });
 
             var result = await _userManager.CheckPasswordAsync(user, loginDto.Password);
-            if (!result) return Unauthorized("Invalid password");
+            if (!result)
+                return Unauthorized(new ProblemDetails { Status = (int)HttpStatusCode.Unauthorized, Title = "Unauthorized", Detail = "Invalid password" });
 
             return new AccountDto
             {
@@ -68,7 +63,6 @@ namespace HBlog.Api.Controllers
             {
                 return BadRequest();
             }
-
             try
             {
                 //await _context.SaveChangesAsync();
@@ -88,17 +82,6 @@ namespace HBlog.Api.Controllers
             return NoContent();
         }
 
-        [HttpDelete("account/{id}")]
-        public IActionResult DeleteAppUser(int id)
-        {
-            //var appUser = await _userManager.Users.(id);
-            //if (appUser == null)
-            //{
-            //    return NotFound();
-            //}
-            //_userManager.Users.Remove(appUser);
-            return NoContent();
-        }
         private bool AppUserExists(int id)
         {
             return _userManager.Users.Any(e => e.Id == id);

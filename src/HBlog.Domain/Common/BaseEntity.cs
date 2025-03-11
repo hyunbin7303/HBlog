@@ -1,7 +1,7 @@
 ﻿namespace HBlog.Domain.Common
 {
-    public abstract class BaseEntity
+    public abstract class BaseEntity<T>
     {
-        public int Id { get; set; }
+        public T Id { get; set; }
     }
 }

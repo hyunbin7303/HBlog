@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace HBlog.Domain.Entities
 {
     [Table("Posts")]
-    public class Post : BaseEntity 
+    public class Post : BaseEntity<int>
     {
         public string Title { get; set; }
         public string Slug { get; set; }

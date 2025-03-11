@@ -18,7 +18,7 @@ builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddBlazoredToast(); 
 builder.Services.RegisterClientServices();
 builder.Services.AddTransient<TokenHandler>();
-builder.Services.AddScoped(_ => new HttpClient { BaseAddress = new Uri("http://localhost:8090/api/") });
+builder.Services.AddScoped(_ => new HttpClient { BaseAddress = new Uri("https://localhost:6001/api/") });
 
 
 builder.Services.AddScoped<ApiAuthStateProvider>();

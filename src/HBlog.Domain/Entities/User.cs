@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace HBlog.Domain.Entities
 {
-    public class User : IdentityUser<int>
+    public class User : IdentityUser<Guid>
     {
         public DateTime DateOfBirth { get; set; }
         public string KnownAs { get; set; }

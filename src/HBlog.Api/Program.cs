@@ -1,3 +1,5 @@
+#nullable enable
+using System.Diagnostics;
 using HBlog.Api.Extensions;
 using HBlog.Application.Automapper;
 using HBlog.Domain.Entities;
@@ -5,6 +7,7 @@ using HBlog.Infrastructure.Data;
 using HBlog.Infrastructure.Extensions;
 using HBlog.Infrastructure.Middlewares;
 using HBlog.Infrastructure.Services;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,7 +21,17 @@ public class Program
         builder.Services.AddControllers();
         builder.Services.AddEndpointsApiExplorer();
 
-        builder.Services.AddProblemDetails();
+        builder.Services.AddProblemDetails(options =>
+        {
+            options.CustomizeProblemDetails = (context) =>
+            {
+                context.ProblemDetails.Instance =
+                    $"{context.HttpContext.Request.Method} {context.HttpContext.Request.Path}";
+                context.ProblemDetails.Extensions.TryAdd("requestId", context.HttpContext.TraceIdentifier);
+                Activity? activity = context.HttpContext.Features.Get<IHttpActivityFeature>()?.Activity;
+                context.ProblemDetails.Extensions.TryAdd("traceId", activity?.Id);
+            };
+        });
 
         builder.Services.Configure<AwsSettings>(builder.Configuration.GetSection("AwsSettings"));
         builder.Services.AddApplicationServices(builder.Configuration);

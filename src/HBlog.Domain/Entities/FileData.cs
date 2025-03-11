@@ -2,7 +2,7 @@
 
 namespace HBlog.Domain.Entities
 {
-    public class FileData : BaseEntity
+    public class FileData : BaseEntity<int>
     {
         public int FileStorageId { get; set; }
         public string FileName { get; set; }

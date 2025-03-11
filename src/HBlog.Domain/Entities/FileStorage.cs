@@ -1,7 +1,7 @@
 ﻿using HBlog.Domain.Common;
 namespace HBlog.Domain.Entities
 {
-    public class FileStorage : BaseEntity
+    public class FileStorage : BaseEntity<int>
     {
         public string BucketName { get; set; }
         public string StorageType { get; set; }
