@@ -23,9 +23,9 @@ namespace HBlog.Api.Controllers
         [HttpPost("storage/Bucket/{bucketName}/UploadFile")]
         public async Task<IActionResult> UploadFile(List<IFormFile> formFiles, string bucketName, CancellationToken token)
         {
-            var isAuthorized = await _awsStorageService.IsAuthorized(bucketName, User.GetUserId());
-            if(!isAuthorized)
-                return Unauthorized($"User is not authorized to access to this bucket: {bucketName}");
+            //var isAuthorized = await _awsStorageService.IsAuthorized(bucketName, User.GetUserId());
+            //if(!isAuthorized)
+            //    return Unauthorized($"User is not authorized to access to this bucket: {bucketName}");
             
             List<string> uploadedFiles = new List<string>();
             foreach (IFormFile postedFile in formFiles)

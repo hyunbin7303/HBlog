@@ -19,7 +19,7 @@ namespace HBlog.Application.Services
             _userRepository = userRepository;
         }
 
-        public async Task<ServiceResult> AddLike(int sourceUserId, string username)
+        public async Task<ServiceResult> AddLike(Guid sourceUserId, string username)
         {
             var likedUser = await _userRepository.GetUserByUsernameAsync(username);
             var sourceUser = await _likesRepository.GetUserWithLikes(sourceUserId);

@@ -3,8 +3,8 @@ namespace HBlog.Domain.Repositories
 {
     public interface ILikesRepository
     {
-        Task<UserLike> GetUserLike(int srcUserId, int targetUserId);
-        Task<User> GetUserWithLikes(int userId);
+        Task<UserLike> GetUserLike(Guid srcUserId, Guid targetUserId);
+        Task<User> GetUserWithLikes(Guid userId);
          
     }
 }

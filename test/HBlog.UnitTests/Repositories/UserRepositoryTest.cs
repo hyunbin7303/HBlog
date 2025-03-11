@@ -54,16 +54,18 @@ namespace HBlog.UnitTests.Repositories
         [Test]
         public async Task GivenValidUserId_WhenGetUserById_ThenReturnUser()
         {
-            var user = await _userRepository.GetUserByIdAsync(1);
+            var userId = Guid.CreateVersion7();
+
+            var user = await _userRepository.GetUserByIdAsync(userId);
 
             Assert.That(user, Is.Not.Null);
-            Assert.That(user.Id, Is.EqualTo(1));
+            Assert.That(user.Id, Is.EqualTo(userId));
         }
 
         [Test]
         public async Task GivenInvalidUserId_WhenGetUserById_ThenReturnNull()
         {
-            var user = await _userRepository.GetUserByIdAsync(100000);
+            var user = await _userRepository.GetUserByIdAsync(Guid.CreateVersion7());
 
             Assert.That(user, Is.Null);
         }

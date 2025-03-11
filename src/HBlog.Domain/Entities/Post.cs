@@ -15,7 +15,7 @@ namespace HBlog.Domain.Entities
         public int Upvotes { get; set; }
         public DateTime Created { get; set; } = DateTime.UtcNow;
         public DateTime LastUpdated { get; set; } = DateTime.UtcNow;
-        public int UserId { get; set; }
+        public Guid UserId { get; set; }
         public int CategoryId { get; set; }
         public virtual User User { get; set; }
         public virtual Category Category { get; set; }

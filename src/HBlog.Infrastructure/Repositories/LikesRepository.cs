@@ -13,12 +13,12 @@ namespace HBlog.Infrastructure.Repositories
         {
             this._dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
         }
-        public async Task<UserLike> GetUserLike(int srcUserId, int targetUserId)
+        public async Task<UserLike> GetUserLike(Guid srcUserId, Guid targetUserId)
         {
             return await _dbContext.Likes.FindAsync(srcUserId, targetUserId);
         }
 
-        public async Task<User> GetUserWithLikes(int userId)
+        public async Task<User> GetUserWithLikes(Guid userId)
         {
             return await _dbContext.Users.Include(x=> x.LikedUsers).FirstOrDefaultAsync(x=> x.Id == userId);
         }

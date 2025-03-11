@@ -130,7 +130,7 @@ namespace HBlog.Infrastructure.Services
             }
         }
 
-        public async Task<bool> CreateBucketAsync(string bucketName, int userId)
+        public async Task<bool> CreateBucketAsync(string bucketName, Guid userId)
         {
             if(bucketName == null) throw new ArgumentNullException(nameof(bucketName));
 
@@ -154,10 +154,6 @@ namespace HBlog.Infrastructure.Services
                 Console.WriteLine($"Error creating bucket: '{ex.Message}'");
                 return false;
             }
-        }
-        public Task<bool> IsAuthorized(string bucketName, int userId)
-        {
-            throw new NotImplementedException();
         }
     }
 }

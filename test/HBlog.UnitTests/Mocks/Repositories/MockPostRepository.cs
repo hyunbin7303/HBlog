@@ -79,7 +79,7 @@ namespace HBlog.UnitTests.Mocks.Repositories
                 var post = new Post 
                 { 
                     Id = i, 
-                    UserId = 1, 
+                    UserId = Guid.CreateVersion7(), 
                     Created = TestHelper.GenerateRandomDateTime(startDate, endDate), 
                     Desc = "Desc" + i, 
                     Content = "Content1", 
@@ -89,7 +89,7 @@ namespace HBlog.UnitTests.Mocks.Repositories
                     LinkForPost = "https://github.com/hyunbin7303" };
                 post.User = new User
                 {
-                    Id = i,
+                    Id = Guid.CreateVersion7(),
                     UserName = "test",
                     City = "Kitchener",
                     Gender = "Male",

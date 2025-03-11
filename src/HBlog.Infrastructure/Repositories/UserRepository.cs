@@ -11,7 +11,7 @@ namespace HBlog.Infrastructure.Repositories
         {
             _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
         }
-        public async Task<User> GetUserByIdAsync(int id)
+        public async Task<User> GetUserByIdAsync(Guid id)
         {
             return await _dbContext.Users.FindAsync(id);
         }
@@ -34,7 +34,7 @@ namespace HBlog.Infrastructure.Repositories
             _dbContext.Entry(user).State = EntityState.Modified;
         }
 
-        public IQueryable<User> GetUserLikesQuery(string predicate, int userId)
+        public IQueryable<User> GetUserLikesQuery(string predicate, Guid userId)
         {
             var users = _dbContext.Users.OrderBy(x => x.UserName).AsQueryable();
             var likes = _dbContext.Likes.AsQueryable();

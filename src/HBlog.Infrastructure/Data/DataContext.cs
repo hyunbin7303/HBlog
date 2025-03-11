@@ -6,9 +6,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HBlog.Infrastructure.Data
 {
-    public class DataContext : IdentityDbContext<User, AppRole, int,
-                               IdentityUserClaim<int>, AppUserRole, IdentityUserLogin<int>, 
-                               IdentityRoleClaim<int>,IdentityUserToken<int>>
+    public class DataContext : IdentityDbContext<User, AppRole, Guid,
+                               IdentityUserClaim<Guid>, AppUserRole, IdentityUserLogin<Guid>, 
+                               IdentityRoleClaim<Guid>,IdentityUserToken<Guid>>
     {
         public DataContext()
         {

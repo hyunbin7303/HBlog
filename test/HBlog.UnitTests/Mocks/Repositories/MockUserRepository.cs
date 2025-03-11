@@ -27,7 +27,7 @@ namespace HBlog.UnitTests.Mocks.Repositories
             {
                 User user = new()
                 {
-                    Id = i,
+                    Id = Guid.CreateVersion7(),
                     UserName = "kevin" + i,
                     KnownAs = "knownas" + i,
                     Gender = "Male",

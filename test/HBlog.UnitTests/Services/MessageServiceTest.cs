@@ -38,7 +38,7 @@ namespace HBlog.UnitTests.Services
         public async Task GivenUserExist_AndNoRecipient_WhenCreateMessage_ThenResultFail()
         {
             string validUser = "validUser01";
-            _userRepositoryMock.Setup(o => o.GetUserByUsernameAsync(validUser)).ReturnsAsync(new User { Id =1, UserName = validUser, });
+            _userRepositoryMock.Setup(o => o.GetUserByUsernameAsync(validUser)).ReturnsAsync(new User { Id =Guid.CreateVersion7(), UserName = validUser, });
           
             var result = await _msgService.CreateMessage(validUser, new MessageCreateDto { Content = "YOYOYO", RecipientUsername = "Recipient01" });
 
@@ -51,8 +51,8 @@ namespace HBlog.UnitTests.Services
         {
             string validUser = "validUser01";
             string recipentUser = "validRecipentUser01";
-            _userRepositoryMock.Setup(o => o.GetUserByUsernameAsync(validUser)).ReturnsAsync(new User { Id = 1, UserName = validUser, Email = "validUser01@gmail.com" });
-            _userRepositoryMock.Setup(o => o.GetUserByUsernameAsync(recipentUser)).ReturnsAsync(new User { Id = 1, UserName = recipentUser, Email = "Recipient@gmail.com" });
+            _userRepositoryMock.Setup(o => o.GetUserByUsernameAsync(validUser)).ReturnsAsync(new User { Id = Guid.CreateVersion7(), UserName = validUser, Email = "validUser01@gmail.com" });
+            _userRepositoryMock.Setup(o => o.GetUserByUsernameAsync(recipentUser)).ReturnsAsync(new User { Id = Guid.CreateVersion7(), UserName = recipentUser, Email = "Recipient@gmail.com" });
             _msgRepositoryMock.Setup(o => o.SaveAllAsync()).ReturnsAsync(false);    
 
             var result = await _msgService.CreateMessage(validUser, new MessageCreateDto { Content = "YOYOYO", RecipientUsername = recipentUser });
@@ -66,8 +66,8 @@ namespace HBlog.UnitTests.Services
         {
             string validUser = "validUser01";
             string recipentUser = "validRecipentUser01";
-            _userRepositoryMock.Setup(o => o.GetUserByUsernameAsync(validUser)).ReturnsAsync(new User { Id = 1, UserName = validUser, Email = "validUser01@gmail.com" });
-            _userRepositoryMock.Setup(o => o.GetUserByUsernameAsync(recipentUser)).ReturnsAsync(new User { Id = 1, UserName = recipentUser, Email = "Recipient@gmail.com" });
+            _userRepositoryMock.Setup(o => o.GetUserByUsernameAsync(validUser)).ReturnsAsync(new User { Id = Guid.CreateVersion7(), UserName = validUser, Email = "validUser01@gmail.com" });
+            _userRepositoryMock.Setup(o => o.GetUserByUsernameAsync(recipentUser)).ReturnsAsync(new User { Id = Guid.CreateVersion7(), UserName = recipentUser, Email = "Recipient@gmail.com" });
             _msgRepositoryMock.Setup(o => o.SaveAllAsync()).ReturnsAsync(true);    
 
             var result = await _msgService.CreateMessage(validUser, new MessageCreateDto { Content = "YOYOYO", RecipientUsername = recipentUser });

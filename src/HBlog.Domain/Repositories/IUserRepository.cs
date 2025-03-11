@@ -6,8 +6,8 @@ namespace HBlog.Domain.Repositories
         void Update(User user);
         Task<bool> SaveAllAsync();
         Task<IEnumerable<User>> GetUsersAsync();
-        Task<User> GetUserByIdAsync(int id);
+        Task<User> GetUserByIdAsync(Guid id);
         Task<User> GetUserByUsernameAsync(string username);
-        IQueryable<User> GetUserLikesQuery(string predicate, int userId);
+        IQueryable<User> GetUserLikesQuery(string predicate, Guid userId);
     }
 }

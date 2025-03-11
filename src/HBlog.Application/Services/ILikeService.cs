@@ -8,6 +8,6 @@ namespace HBlog.Application.Services
     public interface ILikeService
     {
         Task<PageList<LikeDto>> GetUserLikePageList(LikesParams likesParam);
-        Task<ServiceResult> AddLike(int sourceUserId, string username);
+        Task<ServiceResult> AddLike(Guid sourceUserId, string username);
     }
 }

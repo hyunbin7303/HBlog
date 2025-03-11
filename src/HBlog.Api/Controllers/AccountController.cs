@@ -57,7 +57,7 @@ namespace HBlog.Api.Controllers
         }
 
         [HttpPut("account/{id}")]
-        public async Task<IActionResult> PutAppUser(int id, User appUser)
+        public async Task<IActionResult> PutAppUser(Guid id, User appUser)
         {
             if (id != appUser.Id)
             {
@@ -82,7 +82,7 @@ namespace HBlog.Api.Controllers
             return NoContent();
         }
 
-        private bool AppUserExists(int id)
+        private bool AppUserExists(Guid id)
         {
             return _userManager.Users.Any(e => e.Id == id);
         }

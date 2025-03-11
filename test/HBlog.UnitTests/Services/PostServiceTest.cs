@@ -58,7 +58,7 @@ namespace HBlog.UnitTests.Services
         {
             int postId = 1;
             _mockPostRepo.MockGetPostDetails(postId);
-            _userRepositoryMock.Setup(o => o.GetUserByIdAsync(It.IsAny<int>())).ReturnsAsync(new User());
+            _userRepositoryMock.Setup(o => o.GetUserByIdAsync(It.IsAny<Guid>())).ReturnsAsync(new User());
 
             var postDetails = await _postService.GetByIdAsync(1);
 
@@ -87,7 +87,7 @@ namespace HBlog.UnitTests.Services
                 Type = "Programming",
                 CategoryId = 1
             };
-            _userRepositoryMock.Setup(x => x.GetUserByUsernameAsync(userName)).ReturnsAsync(new User { Id = 1, Email = "hyunbin7303@gmail.com", UserName = userName });
+            _userRepositoryMock.Setup(x => x.GetUserByUsernameAsync(userName)).ReturnsAsync(new User { Id = Guid.CreateVersion7(), Email = "hyunbin7303@gmail.com", UserName = userName });
             _categoryMock.Setup(x => x.GetById(1)).ReturnsAsync(new Category { Id = 1, Title = "Title", Description = "Desc", Posts = null});
 
             var result = await _postService.CreatePost(userName, postCreateDto);
@@ -102,7 +102,7 @@ namespace HBlog.UnitTests.Services
         public async Task GivenValidPostAndExistingUser_WhenCreatePost_ThenIsSuccessFalseAndErrorMessage()
         {
             string userName = "kevin0";
-            _userRepositoryMock.Setup(x => x.GetUserByUsernameAsync(userName)).ReturnsAsync(new User { Id = 1, Email = "hyunbin7303@gmail.com", });
+            _userRepositoryMock.Setup(x => x.GetUserByUsernameAsync(userName)).ReturnsAsync(new User { Id = Guid.CreateVersion7(), Email = "hyunbin7303@gmail.com", });
 
             var result = await _postService.CreatePost(userName, new PostCreateDto { Title = null });
 

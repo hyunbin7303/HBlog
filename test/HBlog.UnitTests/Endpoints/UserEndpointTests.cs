@@ -24,8 +24,8 @@ namespace HBlog.UnitTests.Endpoints
         [Test]
         public async Task GivenNotExistingUser_WhenGetUserByUsername_ThenNotFound()
         {
-            _factory._mockUserRepository.Setup(o => o.GetUserByIdAsync(1))
-                .ReturnsAsync(new User() { Id = 1, UserName = "test" });
+            _factory._mockUserRepository.Setup(o => o.GetUserByIdAsync(Guid.CreateVersion7()))
+                .ReturnsAsync(new User { Id = Guid.CreateVersion7(), UserName = "test" });
 
             var response = await _client.GetAsync("/api/users/random");
 
@@ -38,7 +38,7 @@ namespace HBlog.UnitTests.Endpoints
         {
             var searchUser = new UserDto()
             {
-                Id = 1,
+                Id = Guid.CreateVersion7(),
                 UserName = "test",
                 Introduction = "Testing",
                 KnownAs = "Kevin",
@@ -54,8 +54,8 @@ namespace HBlog.UnitTests.Endpoints
                 Value = searchUser
             };
             _factory._mockUserService.Setup(o => o.GetMembersByUsernameAsync(It.IsAny<string>())).ReturnsAsync(result);
-            _factory._mockUserRepository.Setup(o => o.GetUserByIdAsync(1))
-                .ReturnsAsync(new User { Id = 1, UserName = "test" });
+            _factory._mockUserRepository.Setup(o => o.GetUserByIdAsync(searchUser.Id))
+                .ReturnsAsync(new User { Id = searchUser.Id, UserName = "test" });
             
 
             var response = await _client.GetAsync("/api/users/test");

@@ -35,20 +35,21 @@ namespace HBlog.UnitTests.Services
         public async Task GetMembersByUsernameAsync_ExistingUser_ReturnMemberDto()
         {
             string username = "kevin0";
-            _userRepositoryMock.Setup(x => x.GetUserByUsernameAsync(username)).ReturnsAsync(new User { Id = 1, UserName = username });
+            Guid userId = Guid.CreateVersion7();
+            _userRepositoryMock.Setup(x => x.GetUserByUsernameAsync(username)).ReturnsAsync(new User { Id = userId, UserName = username });
 
             var result = await _userService.GetMembersByUsernameAsync(username);
 
             Assert.That(result.IsSuccess, Is.True);
             Assert.That(result.Value.UserName, Is.EqualTo(username));
-            Assert.That(result.Value.Id, Is.EqualTo(1));
+            Assert.That(result.Value.Id, Is.EqualTo(userId));
         }
 
         [Test]
         public async Task GetMembersByUsernameAsync_NotExistingUser_ResultFailure()
         {
             string username = "NonExisting";
-            _userRepositoryMock.Setup(x => x.GetUserByUsernameAsync("kevin0")).ReturnsAsync(new User { Id = 1, UserName = "kevin0" });
+            _userRepositoryMock.Setup(x => x.GetUserByUsernameAsync("kevin0")).ReturnsAsync(new User { Id = Guid.CreateVersion7(), UserName = "kevin0" });
 
             var result = await _userService.GetMembersByUsernameAsync(username);
 
