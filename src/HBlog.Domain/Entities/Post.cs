@@ -11,7 +11,7 @@ namespace HBlog.Domain.Entities
         public string Status { get; set; }
         public string Content { get; set; }
         public string LinkForPost {get ; set; }
-        public string Type { get; set; } 
+        public string Type { get; set; }
         public int Upvotes { get; set; }
         public DateTime Created { get; set; } = DateTime.UtcNow;
         public DateTime LastUpdated { get; set; } = DateTime.UtcNow;
