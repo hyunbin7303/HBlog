@@ -67,6 +67,7 @@
   },
   {
     "UserName": "testing1",
+    "Email": "testing1@gmail.com",
     "FirstName": "test",
     "LastName": "check",
     "Gender": "female",
@@ -88,6 +89,7 @@
   },
   {
     "UserName": "teesting2",
+    "Email":"testing2@gmail.com",
     "FirstName": "test",
     "LastName": "check",
     "Gender": "female",
