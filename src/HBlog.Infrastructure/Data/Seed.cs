@@ -31,20 +31,17 @@ namespace HBlog.Infrastructure.Data
             {
                 await roleManager.CreateAsync(role);
             }
-
             foreach(var user in users){
                 user.UserName = user.UserName.ToLower();
                 await userManager.CreateAsync(user, "Testing#1234!");
                 await userManager.AddToRoleAsync(user, "Member");
             }
-
-            var admin = new User
-            {
-                UserName = "admin"
-            };
-
-            await userManager.CreateAsync(admin, "Pa$$w0rd");
-            await userManager.AddToRolesAsync(admin, new[] {"Admin", "Moderator" });
+            // var admin = new User
+            // {
+            //     UserName = "admin",
+            // };
+            // await userManager.CreateAsync(admin, "Pa$$w0rd");
+            // await userManager.AddToRolesAsync(admin, ["Admin", "Moderator"]);
         }
         public static async Task SeedPosts(DataContext context) {
             if(await context.Posts.AnyAsync()) return;
