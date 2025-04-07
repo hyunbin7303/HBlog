@@ -13,14 +13,7 @@ namespace HBlog.Infrastructure.Data
     {
         public static string _seedUserFilePath = "Data/UserSeedData.json";
         public static string _seedPostFilePath = "Data/PostSeedData.json";
-        public static async Task SeedUsers(UserManager<User> userManager, RoleManager<AppRole> roleManager)
-        {
-            if(await userManager.Users.AnyAsync()) return;
-
-            var userData = await File.ReadAllTextAsync(_seedUserFilePath);
-            var options =  new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
-            var users = JsonSerializer.Deserialize<List<User>>(userData);
-
+        public static async Task SeedRoles(RoleManager<AppRole> roleManager) {
             var roles = new List<AppRole>
             {
                 new() { Name =  "Member"},
@@ -31,6 +24,14 @@ namespace HBlog.Infrastructure.Data
             {
                 await roleManager.CreateAsync(role);
             }
+        }
+        public static async Task SeedUsers(UserManager<User> userManager)
+        {
+            if(await userManager.Users.AnyAsync()) return;
+
+            var userData = await File.ReadAllTextAsync(_seedUserFilePath);
+            var options =  new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+            var users = JsonSerializer.Deserialize<List<User>>(userData);
             foreach(var user in users){
                 user.UserName = user.UserName.ToLower();
                 await userManager.CreateAsync(user, "Testing#1234!");

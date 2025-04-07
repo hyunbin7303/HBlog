@@ -15,7 +15,7 @@ namespace HBlog.WebClient.Services
         public Task<PostDisplayDetailsDto> GetPostDetails(int id);
         public Task<bool> CreatePost(PostCreateDto postCreateDto);
         public Task<bool> UpdatePost(PostUpdateDto postUpdateDto);
-        public Task<bool> DeletePost(int id);   
+        public Task<bool> DeletePost(int id);
         public Task<bool> AddTagInPost(int postId, int tagId);
     }
     public class PostClientService : BaseService, IPostService
@@ -73,7 +73,7 @@ namespace HBlog.WebClient.Services
             var url = QueryHelper.BuildUrlWithQueryStringUsingUriBuilder($"{_httpClient.BaseAddress}posts", query);
 
             var result = await _httpClient.GetFromJsonAsync<ApiResponse<IEnumerable<PostDisplayDto>>>(url);
-            return result.Data!;
+            return result?.Data!;
         }
 
         public async Task<IEnumerable<PostDisplayDto>> GetPostDisplayByFilters(int categoryId, List<TagDto>? tags = null)
@@ -82,7 +82,7 @@ namespace HBlog.WebClient.Services
             {
                 { "categoryId", categoryId.ToString() },
             };
-            
+
             string url = QueryHelper.BuildUrlWithQueryStringUsingUriBuilder($"{_httpClient.BaseAddress}posts", query);
             if (tags is not null)
                 url +=  "&" + QueryHelper.ArrayToQueryString("tagid", tags.Select(x => x.TagId.ToString()).ToArray());
