@@ -15,10 +15,11 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 
 
 builder.Services.AddBlazoredLocalStorage();
-builder.Services.AddBlazoredToast(); 
+builder.Services.AddBlazoredToast();
 builder.Services.RegisterClientServices();
 builder.Services.AddTransient<TokenHandler>();
-builder.Services.AddScoped(_ => new HttpClient { BaseAddress = new Uri("https://localhost:6001/api/") });
+string serverlessBaseURI = builder.Configuration["ApiBaseUrl"]!;
+builder.Services.AddScoped(_ => new HttpClient { BaseAddress = new Uri(serverlessBaseURI) });
 
 
 builder.Services.AddScoped<ApiAuthStateProvider>();

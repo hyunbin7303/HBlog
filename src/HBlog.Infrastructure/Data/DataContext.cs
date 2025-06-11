@@ -2,24 +2,22 @@ using HBlog.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HBlog.Infrastructure.Data
 {
     public class DataContext : IdentityDbContext<User, AppRole, Guid,
-                               IdentityUserClaim<Guid>, AppUserRole, IdentityUserLogin<Guid>, 
-                               IdentityRoleClaim<Guid>,IdentityUserToken<Guid>>
+    IdentityUserClaim<Guid>, AppUserRole, IdentityUserLogin<Guid>,
+    IdentityRoleClaim<Guid>, IdentityUserToken<Guid>>
     {
         public DataContext()
         {
         }
         public DataContext(DbContextOptions options) : base(options)
         {
-            
+
         }
         public virtual DbSet<UserLike> Likes {get; set; }
-        public virtual DbSet<Domain.Entities.Application> Applications { get; set; }
-        public virtual DbSet<Post> Posts { get; set; } 
+        public virtual DbSet<Post> Posts { get; set; }
         public virtual DbSet<PostTags> PostTags { get; set; }
         public virtual DbSet<Tag> Tags { get; set; }
         public virtual DbSet<Category> Categories { get; set; }
@@ -32,23 +30,25 @@ namespace HBlog.Infrastructure.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<User>()
-                .HasMany(userRole => userRole.UserRoles)
+            modelBuilder.Entity<User>(b =>
+            {
+                b.HasMany(userRole => userRole.UserRoles)
                 .WithOne(user => user.User)
-                .HasForeignKey(userRole => userRole.UserId)
-                .IsRequired();
-            //modelBuilder.Entity<User>()
-            //        .Property(e => e.LastActive)
-            //        .HasConversion
-            //        (
-            //            src => src.Kind == DateTimeKind.Utc ? src : DateTime.SpecifyKind(src, DateTimeKind.Utc),
-            //            dst => dst.Kind == DateTimeKind.Utc ? dst : DateTime.SpecifyKind(dst, DateTimeKind.Utc)
-            //        );
-            modelBuilder.Entity<AppRole>()
-                .HasMany(userRole => userRole.UserRoles)
+                .HasForeignKey(userRole => userRole.UserId).IsRequired();
+                b.ToTable("User");
+            });
+
+            modelBuilder.Entity<AppRole>(b => {
+                b.HasMany(userRole => userRole.UserRoles)
                 .WithOne(user => user.Role)
-                .HasForeignKey(userRole => userRole.RoleId)
-                .IsRequired();
+                .HasForeignKey(userRole => userRole.RoleId).IsRequired();
+                b.ToTable("Role");
+            });
+            modelBuilder.Entity<AppUserRole>().ToTable("UserRole");
+            modelBuilder.Entity<IdentityUserClaim<Guid>>().ToTable("UserClaim");
+            modelBuilder.Entity<IdentityRoleClaim<Guid>>().ToTable("RoleClaim");
+            modelBuilder.Entity<IdentityUserToken<Guid>>().ToTable("UserToken");
+            modelBuilder.Entity<IdentityUserLogin<Guid>>().ToTable("UserLogin");
 
             modelBuilder.Entity<FileStorage>()
                 .HasMany(fileStorage => fileStorage.SharedUsers);

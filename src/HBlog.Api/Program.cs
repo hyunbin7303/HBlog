@@ -62,9 +62,11 @@ public class Program
             var userManager = services.GetRequiredService<UserManager<User>>();
             var roleManager = services.GetRequiredService<RoleManager<AppRole>>();
             await context.Database.MigrateAsync();
+
+            await Seed.SeedRoles(roleManager);
             if (builder.Environment.IsProduction() is false)
             {
-                await Seed.SeedUsers(userManager, roleManager);
+                await Seed.SeedUsers(userManager);
                 await Seed.SeedCategories(context);
                 await Seed.SeedPosts(context);
                 await Seed.SeedTags(context);
