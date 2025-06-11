@@ -1,4 +1,5 @@
 ﻿using HBlog.Domain.Entities;
+using HBlog.Infrastructure.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -15,7 +16,7 @@ namespace HBlog.Api.Controllers
             this._userManager = userManager;
         }
 
-        [Authorize(Policy ="RequireAdminRole")]
+        [Authorize(Policy = HBlogPolicy.RequireAdminRole)]
         [HttpGet("admin/users-with-roles")]
         public async Task<ActionResult> GetUsersWithRoles()
         {
@@ -31,7 +32,7 @@ namespace HBlog.Api.Controllers
 
             return Ok(users);
         }
-        [Authorize(Policy = "RequireAdminRole")]
+        [Authorize(Policy = HBlogPolicy.RequireAdminRole)]
         [HttpPost("admin/edit-roles/{username}")]
         public async Task<ActionResult> EditRoles(string username, [FromQuery]string roles)
         {
@@ -48,7 +49,7 @@ namespace HBlog.Api.Controllers
             return Ok(await _userManager.GetRolesAsync(user));
         }
 
-        [Authorize(Policy ="ModeratePhotoRole")]
+        [Authorize(Policy = HBlogPolicy.AdminModeratorRole)]
         [HttpGet("admin/photos-to-moderate")]
         public ActionResult GetPhotosForModeration()
         {

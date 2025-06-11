@@ -8,6 +8,12 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 namespace HBlog.Infrastructure.Extensions
 {
+    public static class HBlogPolicy
+    {
+        public const string RequireAdminRole = "HBlog.RequireAdminRole";
+        public const string AdminModeratorRole = "HBlog.AdminModeratorRole";
+    }
+
     public static class IdentityServiceExtensions
     {
         public static IServiceCollection AddIdentityServices(this IServiceCollection services,IConfiguration config)
@@ -51,8 +57,8 @@ namespace HBlog.Infrastructure.Extensions
 
             services.AddAuthorization(opt =>
             {
-                opt.AddPolicy("RequireAdminRole", policy => policy.RequireRole("Admin"));
-                opt.AddPolicy("ModeratePhotoRole", policy => policy.RequireRole("Admin", "Moderator"));
+                opt.AddPolicy(HBlogPolicy.RequireAdminRole, policy => policy.RequireRole("Admin"));
+                opt.AddPolicy(HBlogPolicy.AdminModeratorRole, policy => policy.RequireRole("Admin", "Moderator"));
             });
 
             return services;
