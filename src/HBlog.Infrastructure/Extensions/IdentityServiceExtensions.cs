@@ -1,4 +1,5 @@
 using HBlog.Domain.Entities;
+using HBlog.Infrastructure.Authentications;
 using HBlog.Infrastructure.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -16,8 +17,10 @@ namespace HBlog.Infrastructure.Extensions
 
     public static class IdentityServiceExtensions
     {
-        public static IServiceCollection AddIdentityServices(this IServiceCollection services,IConfiguration config)
+        public static IServiceCollection AddIdentityServices(this IServiceCollection services, string token)
         {
+
+            services.AddScoped<ITokenService>(x => new TokenService(x.GetRequiredService<UserManager<User>>(), token));
             services.AddIdentityCore<User>(opt =>
             {
                 opt.Password.RequireNonAlphanumeric = false;
@@ -28,11 +31,11 @@ namespace HBlog.Infrastructure.Extensions
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(opt =>
-                {
+                {   
                     opt.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["TokenKey"])),
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(token)),
                         ValidateIssuer = false,
                         ValidateAudience = false
                     };
@@ -53,14 +56,11 @@ namespace HBlog.Infrastructure.Extensions
                 
             );
 
-
-
             services.AddAuthorization(opt =>
             {
                 opt.AddPolicy(HBlogPolicy.RequireAdminRole, policy => policy.RequireRole("Admin"));
                 opt.AddPolicy(HBlogPolicy.AdminModeratorRole, policy => policy.RequireRole("Admin", "Moderator"));
             });
-
             return services;
         }
         

@@ -13,18 +13,18 @@ namespace HBlog.Infrastructure.Authentications
         private readonly SymmetricSecurityKey _key;
         private readonly UserManager<User> _userManager;
 
-        public TokenService(IConfiguration config, UserManager<User> userManager)
+        public TokenService(UserManager<User> userManager, string tokenKey)
         {
-            _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["TokenKey"]));
-            this._userManager = userManager;
+            _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenKey));
+            _userManager = userManager;
         }
         public async Task<string> CreateToken(User user)
         {
             var claims = new List<Claim>
             {
-                new Claim(JwtRegisteredClaimNames.NameId, user.Id.ToString()),
-                new Claim(JwtRegisteredClaimNames.UniqueName, user.UserName),
-                new Claim(JwtRegisteredClaimNames.Email, user.Email),
+                new(JwtRegisteredClaimNames.NameId, user.Id.ToString()),
+                new(JwtRegisteredClaimNames.UniqueName, user.UserName),
+                new(JwtRegisteredClaimNames.Email, user.Email),
             };
 
             var roles = await _userManager.GetRolesAsync(user);

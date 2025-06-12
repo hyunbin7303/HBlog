@@ -15,22 +15,10 @@ namespace HBlog.Infrastructure.Extensions
 {
     public static class ApplicationServiceExtensions
     {
-        public static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration config){
+        public static IServiceCollection AddApplicationServices(this IServiceCollection services, string connStr){
             services.AddDbContext<DataContext>(opt =>
             {
-                if(Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Production"){
-                    Console.WriteLine(Environment.GetEnvironmentVariable("DATABASE_URL"));
-                    var m = Regex.Match(Environment.GetEnvironmentVariable("DATABASE_URL")!, @"postgres://(.*):(.*)@(.*):(.*)/(.*)");
-                    opt.UseNpgsql($"Server={m.Groups[3]};Port={m.Groups[4]};User Id={m.Groups[1]};Password={m.Groups[2]};Database={m.Groups[5]};sslmode=Prefer;Trust Server Certificate=true");
-                }
-                else {
-                    Console.WriteLine("Connection String:" + config.GetConnectionString("DefaultConnection"));
-                    if (Environment.GetEnvironmentVariable("ENVIRONMENT") == "Test")
-                    {
-
-                    }
-                    opt.UseNpgsql(config.GetConnectionString("DefaultConnection"));
-                }
+                opt.UseNpgsql(connStr);
             });
             services.AddCors();
 
@@ -47,7 +35,6 @@ namespace HBlog.Infrastructure.Extensions
             services.AddScoped<IFileStorageRepository, FileStorageRepository>();
 
             // Application Service Layer DI
-            services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IPostService, PostService>();
             services.AddScoped<IMessageService, MessageService>();
