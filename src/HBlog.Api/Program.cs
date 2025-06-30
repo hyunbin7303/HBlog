@@ -17,8 +17,8 @@ public class Program
     private static async Task Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
-        string? token = string.Empty;
-        string? connStr = string.Empty;
+        string? token;
+        string? connStr;
         Console.WriteLine("ASPNETCORE EMV: " + Environment.GetEnvironmentVariable("ASPNETCORE_ENVRIONMENT"));
         if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development")
         {
@@ -36,7 +36,6 @@ public class Program
         AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
         builder.Services.AddControllers();
         builder.Services.AddEndpointsApiExplorer();
-
         builder.Services.AddProblemDetails(options =>
         {
             options.CustomizeProblemDetails = (context) =>
@@ -50,11 +49,14 @@ public class Program
         });
 
         builder.Services.Configure<AwsSettings>(builder.Configuration.GetSection("AwsSettings"));
-        builder.Services.AddApplicationServices(connStr);
+        builder.Services.AddDbContext<DataContext>(opt => { opt.UseNpgsql(connStr); });
+        builder.Services.AddCors();
+        builder.Services.AddApplicationServices();
         builder.Services.AddIdentityServices(token);
         builder.Services.AddAutoMapper(o => o.AddProfile(typeof(AutoMapperProfiles)));
         builder.Services.AddSwaggerDocumentation();
         builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+
 
         var app = builder.Build();
         app.UseDeveloperExceptionPage();
@@ -67,7 +69,6 @@ public class Program
         app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:7183", "http://localhost:5050"));
         app.UseAuthentication();
         app.UseAuthorization();
-
         app.MapControllers();
 
         using var scope = app.Services.CreateScope();
