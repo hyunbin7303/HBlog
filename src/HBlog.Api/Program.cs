@@ -14,30 +14,39 @@ using System.Text.RegularExpressions;
 
 public class Program
 {
-    private static async Task Main(string[] args)
+    private static string token = string.Empty;
+    private static string connStr = string.Empty;
+    private static IConfiguration _config;
+    private static void GetCredentials(string env)
     {
-        var builder = WebApplication.CreateBuilder(args);
-        string? token;
-        string? connStr;
-        Console.WriteLine("ASPNETCORE EMV: " + Environment.GetEnvironmentVariable("ASPNETCORE_ENVRIONMENT"));
-        if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development")
+        if (env == "Development")
         {
-            token = builder.Configuration["TokenKey"];
-            connStr = builder.Configuration.GetConnectionString("DefaultConnection");
+            token = _config["TokenKey"];
+            connStr = _config.GetConnectionString("DefaultConnection");
         }
         else
         {
             token = Environment.GetEnvironmentVariable("TOKEN_KEY");
+            Console.WriteLine("Checking value Token:" + token);
             var m = Regex.Match(Environment.GetEnvironmentVariable("DATABASE_URL")!, @"postgres://(.*):(.*)@(.*):(.*)/(.*)");
             connStr =
                 $"Server={m.Groups[3]};Port={m.Groups[4]};User Id={m.Groups[1]};Password={m.Groups[2]};Database={m.Groups[5]};sslmode=Prefer;Trust Server Certificate=true";
+            Console.WriteLine("Checking value ConnectionString:" + connStr);
         }
+    }
+
+    private static async Task Main(string[] args)
+    {
+        var builder = WebApplication.CreateBuilder(args);
+        _config = builder.Configuration;
+        GetCredentials(Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")!);
 
         AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
         builder.Services.AddControllers();
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddProblemDetails(options =>
         {
+            
             options.CustomizeProblemDetails = (context) =>
             {
                 context.ProblemDetails.Instance =
@@ -57,7 +66,6 @@ public class Program
         builder.Services.AddSwaggerDocumentation();
         builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 
-
         var app = builder.Build();
         app.UseDeveloperExceptionPage();
         app.UseSwagger();
@@ -70,6 +78,7 @@ public class Program
         app.UseAuthentication();
         app.UseAuthorization();
         app.MapControllers();
+        //app.UseProblemDetails();
 
         using var scope = app.Services.CreateScope();
         var services = scope.ServiceProvider;

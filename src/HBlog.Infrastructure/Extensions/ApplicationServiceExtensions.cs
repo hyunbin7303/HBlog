@@ -15,13 +15,7 @@ namespace HBlog.Infrastructure.Extensions
 {
     public static class ApplicationServiceExtensions
     {
-        public static IServiceCollection AddApplicationServices(this IServiceCollection services, string connStr){
-            services.AddDbContext<DataContext>(opt =>
-            {
-                opt.UseNpgsql(connStr);
-            });
-            services.AddCors();
-
+        public static IServiceCollection AddApplicationServices(this IServiceCollection services){
             // Repository Layer DI
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped<IUserRepository, UserRepository>();
