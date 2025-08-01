@@ -1,5 +1,6 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 using HBlog.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
@@ -18,6 +19,7 @@ namespace HBlog.Infrastructure.Authentications
             _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenKey));
             _userManager = userManager;
         }
+
         public async Task<string> CreateToken(User user)
         {
             var claims = new List<Claim>
@@ -30,9 +32,9 @@ namespace HBlog.Infrastructure.Authentications
             var roles = await _userManager.GetRolesAsync(user);
             claims.AddRange(roles.Select(r => new Claim(ClaimTypes.Role, r)));
 
-
             var creds = new SigningCredentials(_key, SecurityAlgorithms.HmacSha512Signature);
-            var tokenDescriptor = new SecurityTokenDescriptor{
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
                 Subject = new ClaimsIdentity(claims),
                 Expires = DateTime.Now.AddDays(7),
                 SigningCredentials = creds
@@ -41,6 +43,14 @@ namespace HBlog.Infrastructure.Authentications
             var tokenHandler = new JwtSecurityTokenHandler();
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
+        }
+
+        public string CreateRefreshToken()
+        {
+            var randomNumber = new byte[32];
+            using var rng = RandomNumberGenerator.Create();
+            rng.GetBytes(randomNumber);
+            return Convert.ToBase64String(randomNumber);
         }
     }
 }

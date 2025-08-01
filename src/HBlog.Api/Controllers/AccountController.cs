@@ -53,10 +53,11 @@ namespace HBlog.Api.Controllers
                 Username = user.UserName!,
                 Email = user.Email,
                 Token = await _tokenService.CreateToken(user),
+                RefreshToken = _tokenService.CreateRefreshToken(),
             };
         }
 
-        [HttpPut("account/{id}")]
+        [HttpPut("account/{id}" )]
         public async Task<IActionResult> PutAppUser(Guid id, User appUser)
         {
             if (id != appUser.Id)
