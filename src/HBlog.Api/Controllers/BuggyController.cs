@@ -30,9 +30,7 @@ namespace HBlog.Api.Controllers
         [HttpGet("buggy/server-error")]
         public ActionResult<string> GetServerError()
         {
-            var thing = _dbContext.Users.Find(-1);
-            var thingToReturn = thing.ToString();
-            return thingToReturn;
+            return _dbContext.Users.Find(-1)?.ToString();
         }
         [HttpGet("buggy/bad-request")]
         public ActionResult<string> GetBadRequest()

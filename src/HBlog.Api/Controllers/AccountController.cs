@@ -1,10 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
+using HBlog.Contract.DTOs;
 using HBlog.Domain.Entities;
 using HBlog.Infrastructure.Authentications;
-using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using HBlog.Contract.DTOs;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Net;
 
 namespace HBlog.Api.Controllers
@@ -56,6 +57,42 @@ namespace HBlog.Api.Controllers
                 RefreshToken = _tokenService.CreateRefreshToken(),
             };
         }
+
+        [HttpPost("account/refresh")]
+        public async Task<ActionResult<AccountDto>> RefreshToken(RefreshTokenDto refreshTokenDto)
+        {
+            if(refreshTokenDto is null) return BadRequest(new ProblemDetails { Status = (int)HttpStatusCode.BadRequest, Title = "Bad Request", Detail = "Refresh token cannot be null" });
+
+            var principal = _tokenService.GetPrincipalFromExpiredToken(refreshTokenDto.AccessToken);
+            var username = principal.Identity?.Name;
+
+            var user = await _userManager.FindByNameAsync(username);
+            if (user is null || user.RefreshToken != refreshTokenDto.RefreshToken || user.RefreshTokenExpiryTime <= DateTime.Now)
+                return BadRequest("Invalid client request");
+
+            user.RefreshToken = _tokenService.CreateRefreshToken();
+            await _userManager.UpdateAsync(user);
+            return new AccountDto
+            {
+                Username = user.UserName!,
+                Email = user.Email,
+                Token = await _tokenService.CreateToken(user),
+                RefreshToken = user.RefreshToken!,
+            };
+        }
+
+        [HttpPost, Authorize]
+        [Route("account/revoke")]
+        public async Task<IActionResult> Revoke()
+        {
+            var username = User.Identity.Name;
+            var user = await _userManager.FindByNameAsync(username);
+            if (user == null) return BadRequest("User not exist");
+            user.RefreshToken = null;
+            await _userManager.UpdateAsync(user);
+            return NoContent();
+        }
+
 
         [HttpPut("account/{id}" )]
         public async Task<IActionResult> PutAppUser(Guid id, User appUser)

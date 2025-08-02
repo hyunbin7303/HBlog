@@ -78,7 +78,6 @@ public class Program
         app.UseAuthentication();
         app.UseAuthorization();
         app.MapControllers();
-        //app.UseProblemDetails();
 
         using var scope = app.Services.CreateScope();
         var services = scope.ServiceProvider;
@@ -103,10 +102,10 @@ public class Program
         catch (Exception ex)
         {
             var logger = services.GetService<ILogger<Program>>();
-            logger.LogError(ex, "An error occured during migration");
+            logger?.LogError(ex, "An error occured during migration");
         }
 
 
-        app.Run();
+        await app.RunAsync();
     }
 }
