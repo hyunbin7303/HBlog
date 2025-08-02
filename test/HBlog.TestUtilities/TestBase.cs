@@ -23,7 +23,7 @@ namespace HBlog.TestUtilities
                 var mappingConfig = new MapperConfiguration(mc =>
                 {
                     mc.AddProfile(new AutoMapperProfiles());
-                });
+                }, null);
                 IMapper mapper = mappingConfig.CreateMapper();
                 _mapper = mapper;
             }
