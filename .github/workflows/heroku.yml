@@ -43,7 +43,6 @@ jobs:
           heroku_app_name: hblog-web-api
           heroku_email: ${{ secrets.HEROKU_EMAIL }}
           branch: main
-          usedocker: true
           delay: 2
 
 
