@@ -7,17 +7,32 @@ on:
     branches: [ "main" ]
 
 env:
-  HEROKU_API_KEY: ${{secrets.HEROKU_API_KEY}}
-  APP_NAME: ${{'hblog-web-api'}}
-
+  HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+  APP_NAME: 'hblog-web-api'
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: akhileshns/heroku-deploy@v3.13.15 # This is the action
+      - uses: actions/checkout@v4
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
         with:
-          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-          heroku_app_name: hblog
-          heroku_email: ${{secrets.HEROKU_EMAIL}}
+          dotnet-version: '8.0.x'
+      
+      - name: Restore dependencies
+        run: dotnet restore
+      
+      - name: Build
+        run: dotnet build --no-restore
+      
+      - name: Test
+        run: dotnet test --no-build --verbosity normal
+      
+      - name: Deploy to Heroku
+        uses: akhileshns/heroku-deploy@v3.13.15
+        with:
+          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+          heroku_app_name: hblog-web-api
+          heroku_email: ${{ secrets.HEROKU_EMAIL }}
+          usedocker: true
