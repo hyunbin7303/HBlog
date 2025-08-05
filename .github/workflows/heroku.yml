@@ -21,13 +21,16 @@ jobs:
           dotnet-version: '9.0.x'
 
       - name: Restore dependencies
-        run: dotnet restore
+        run: dotnet restore src/HBlog.Api
+
 
       - name: Build
-        run: dotnet build --no-restore
+        run: dotnet build --no-restore src/HBlog.Api
 
       - name: Test
         run: dotnet test --no-build --verbosity normal
+        working-directory: src/HBlog.Api
+
 
       - name: Deploy to Heroku
         uses: akhileshns/heroku-deploy@v3.13.15
