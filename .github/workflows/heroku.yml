@@ -21,11 +21,11 @@ jobs:
           dotnet-version: '9.0.x'
 
       - name: Restore dependencies
-        run: dotnet restore src/HBlog.Api
+        run: dotnet restore src/
 
 
       - name: Build
-        run: dotnet build --no-restore src/HBlog.Api
+        run: dotnet build --no-restore src/
 
       - name: Test
         run: dotnet test --no-build --verbosity normal
