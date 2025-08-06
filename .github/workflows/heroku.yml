@@ -45,7 +45,7 @@ jobs:
           heroku_email: ${{ secrets.HEROKU_EMAIL }}
           branch: main
           delay: 2
-          appdir: src/HBlog.Api
+          # appdir: src/HBlog.Api
 
 
 
