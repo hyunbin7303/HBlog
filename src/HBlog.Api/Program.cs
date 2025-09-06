@@ -14,32 +14,34 @@ using System.Text.RegularExpressions;
 
 public class Program
 {
-    private static string token = string.Empty;
-    private static string connStr = string.Empty;
+    private static string? token = string.Empty;
+    private static string? connStr = string.Empty;
     private static IConfiguration _config;
-    private static void GetCredentials(string env)
+    private static void SetCredentials(string env)
     {
-        if (env == "Development")
+        if (env == "Development" || string.IsNullOrEmpty(env))
         {
             token = _config["TokenKey"];
             connStr = _config.GetConnectionString("DefaultConnection");
         }
         else
         {
+            Console.WriteLine("Environment testing" +env);
             token = Environment.GetEnvironmentVariable("TOKEN_KEY");
-            Console.WriteLine("Checking value Token:" + token);
             var m = Regex.Match(Environment.GetEnvironmentVariable("DATABASE_URL")!, @"postgres://(.*):(.*)@(.*):(.*)/(.*)");
             connStr =
                 $"Server={m.Groups[3]};Port={m.Groups[4]};User Id={m.Groups[1]};Password={m.Groups[2]};Database={m.Groups[5]};sslmode=Prefer;Trust Server Certificate=true";
-            Console.WriteLine("Checking value ConnectionString:" + connStr);
         }
+        Console.WriteLine("Token:" + token);
+        Console.WriteLine("ConnectionString:" + connStr);
     }
 
     private static async Task Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
         _config = builder.Configuration;
-        GetCredentials(Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")!);
+        Console.WriteLine("Env:" +Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT"));
+        SetCredentials(Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")!);
 
         AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
         builder.Services.AddControllers();

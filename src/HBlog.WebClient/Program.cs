@@ -13,14 +13,15 @@ var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
-
 builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddBlazoredToast();
 builder.Services.RegisterClientServices();
 builder.Services.AddTransient<TokenHandler>();
-string serverlessBaseURI = builder.Configuration["ApiBaseUrl"]!;
-builder.Services.AddScoped(_ => new HttpClient { BaseAddress = new Uri(serverlessBaseURI) });
+builder.Configuration.AddJsonFile($"appsettings.json", optional: false, reloadOnChange: true);
 
+string? apiBaseUrl = builder.Configuration["ApiBaseUrl"];
+Console.WriteLine($"ApiBaseUrl value: '{apiBaseUrl}'");
+builder.Services.AddScoped(_ => new HttpClient { BaseAddress = new Uri(apiBaseUrl) });
 
 builder.Services.AddScoped<ApiAuthStateProvider>();
 builder.Services.AddScoped<AuthenticationStateProvider>(p => p.GetRequiredService<ApiAuthStateProvider>());

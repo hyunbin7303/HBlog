@@ -85,10 +85,5 @@ namespace HBlog.Infrastructure.SignalR
             group.Connections.Add(connection);
             return await _messageRepository.SaveAllAsync(); 
         }
-
-        private async Task RemoveFromMessageGroup()
-        {
-
-        }
     }
 }

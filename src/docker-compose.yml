@@ -1,0 +1,28 @@
+services:
+    hblog_api:
+        build:
+          context: .
+          dockerfile: Dockerfile
+        container_name: hblog_api
+        ports:
+            - "8090:8080"
+        depends_on:
+            - hblog_database
+        environment:
+            ASPNETCORE_ENVIRONMENT: '${ASPNETCORE_ENVIRONMENT:-Development}'
+            DOTNET_ENVIRONMENT: '${DOTNET_ENVIRONMENT:-Development}'
+
+    hblog_database:
+        image: postgres:latest
+        container_name: hblog_db
+        environment:
+          - POSTGRES_USER=postgres
+          - POSTGRES_PASSWORD=postgres
+
+        ports:
+          - "8091:5432"
+        healthcheck:
+          test: ["CMD-SHELL", "pg_isready -U postgres"]
+          interval: 10s
+          timeout: 5s
+          retries: 5

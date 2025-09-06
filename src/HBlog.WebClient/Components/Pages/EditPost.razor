@@ -120,7 +120,7 @@
 
     }
 
-    public async Task HandleAddingTag(int? tagId)
+    public void HandleAddingTag(int? tagId)
     {
         var tag = tags.First(t => t.TagId == tagId);
         if (selectedTags.Find(t => t.TagId == tagId) is null)
