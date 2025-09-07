@@ -13,13 +13,11 @@ namespace HBlog.UnitTests.Services
         private IMessageService _msgService;
         private readonly Mock<IMessageRepository> _msgRepositoryMock;
         private readonly Mock<IUserRepository> _userRepositoryMock;
-        private readonly Mock<IGroupRepository> _groupRepositoryMock;
         public MessageServiceTest()
         {
             _msgRepositoryMock = new();
             _userRepositoryMock = new();
-            _groupRepositoryMock = new();
-            _msgService = new MessageService(_mapper, _msgRepositoryMock.Object, _userRepositoryMock.Object, _groupRepositoryMock.Object);
+            _msgService = new MessageService(_mapper, _msgRepositoryMock.Object, _userRepositoryMock.Object);
         }
 
         [Test]

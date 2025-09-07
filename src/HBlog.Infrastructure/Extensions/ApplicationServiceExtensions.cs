@@ -24,7 +24,6 @@ namespace HBlog.Infrastructure.Extensions
             services.AddScoped<IMessageRepository, MessageRepository>();
             services.AddScoped<ITagRepository, TagRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
-            services.AddScoped<IGroupRepository, GroupRepository>();
             services.AddScoped<IFileDataRepository, FileDataRepository>();
             services.AddScoped<IFileStorageRepository, FileStorageRepository>();
 

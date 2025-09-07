@@ -22,8 +22,6 @@ namespace HBlog.Infrastructure.Data
         public virtual DbSet<Tag> Tags { get; set; }
         public virtual DbSet<Category> Categories { get; set; }
         public virtual DbSet<Message> Messages { get; set; }
-        public virtual DbSet<Group> Groups { get; set; }
-        public virtual DbSet<Connection> Connections { get; set; }
         public virtual DbSet<FileStorage> FileStorages { get; set; }
         public virtual DbSet<FileData> FileData { get; set; }
 
