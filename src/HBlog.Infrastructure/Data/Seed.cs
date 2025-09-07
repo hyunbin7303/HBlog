@@ -1,18 +1,42 @@
-using System.Security.Cryptography;
-using System.Text;
-using System.Text.Json;
-using HBlog.Contract.DTOs;
 using HBlog.Domain.Entities;
-using HBlog.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using System.Text.Json;
 
 namespace HBlog.Infrastructure.Data
 {
     public class Seed
     {
-        public static string _seedUserFilePath = "Data/UserSeedData.json";
-        public static string _seedPostFilePath = "Data/PostSeedData.json";
+        private const string _seedUserFilePath = "Data/UserSeedData.json";
+        private const string _seedPostFilePath = "Data/PostSeedData.json";
+
+        public static async Task SeedData(IServiceProvider services, bool isProd)
+        {
+            try
+            {
+                var context = services.GetRequiredService<DataContext>();
+                await context.Database.MigrateAsync();
+
+                var roleManager = services.GetRequiredService<RoleManager<AppRole>>();
+                await SeedRoles(roleManager);
+                if (isProd is false)
+                {
+                    var userManager = services.GetRequiredService<UserManager<User>>();
+                    await SeedUsers(userManager);
+                    await SeedCategories(context);
+                    await SeedPosts(context);
+                    await SeedTags(context);
+                    await SeedPostTags(context);
+                }
+                await context.Database.EnsureCreatedAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex + ". An error occured during migration");
+            }
+        }
         public static async Task SeedRoles(RoleManager<AppRole> roleManager) {
             var roles = new List<AppRole>
             {

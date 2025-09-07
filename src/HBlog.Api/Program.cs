@@ -19,14 +19,13 @@ public class Program
     private static IConfiguration _config;
     private static void SetCredentials(string env)
     {
-        if (env == "Development" || string.IsNullOrEmpty(env))
+        if (env == "dev"|| env == "Development" || string.IsNullOrEmpty(env))
         {
             token = _config["TokenKey"];
             connStr = _config.GetConnectionString("DefaultConnection");
         }
         else
         {
-            Console.WriteLine("Environment testing" +env);
             token = Environment.GetEnvironmentVariable("TOKEN_KEY");
             var m = Regex.Match(Environment.GetEnvironmentVariable("DATABASE_URL")!, @"postgres://(.*):(.*)@(.*):(.*)/(.*)");
             connStr =
@@ -42,6 +41,7 @@ public class Program
         _config = builder.Configuration;
         Console.WriteLine("Env:" +Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT"));
         SetCredentials(Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")!);
+        var isProd = builder.Environment.IsProduction();
 
         AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
         builder.Services.AddControllers();
@@ -72,7 +72,7 @@ public class Program
         app.UseDeveloperExceptionPage();
         app.UseSwagger();
         app.UseSwaggerUI();
-        if(!app.Environment.IsDevelopment())
+        if(isProd)
             app.UseExceptionHandler("/Error");
 
         //app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:4200"));
@@ -83,31 +83,8 @@ public class Program
 
         using var scope = app.Services.CreateScope();
         var services = scope.ServiceProvider;
-        try
-        {
-            var context = services.GetRequiredService<DataContext>();
-            var userManager = services.GetRequiredService<UserManager<User>>();
-            var roleManager = services.GetRequiredService<RoleManager<AppRole>>();
-            await context.Database.MigrateAsync();
 
-            await Seed.SeedRoles(roleManager);
-            if (builder.Environment.IsProduction() is false)
-            {
-                await Seed.SeedUsers(userManager);
-                await Seed.SeedCategories(context);
-                await Seed.SeedPosts(context);
-                await Seed.SeedTags(context);
-                await Seed.SeedPostTags(context);
-            }
-            await context.Database.EnsureCreatedAsync();
-        }
-        catch (Exception ex)
-        {
-            var logger = services.GetService<ILogger<Program>>();
-            logger?.LogError(ex, "An error occured during migration");
-        }
-
-
+        await Seed.SeedData(services, isProd);
         await app.RunAsync();
     }
 }
