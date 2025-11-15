@@ -2,13 +2,10 @@ using HBlog.Domain.Entities;
 using HBlog.Domain.Repositories;
 using HBlog.Infrastructure.Data;
 using HBlog.Infrastructure.Repositories;
-using HBlog.TestUtilities;
 using HBlog.UnitTests.Mocks.Repositories;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using MockQueryable.Moq;
-using Moq;
 using NUnit.Framework;
+using Assert = NUnit.Framework.Assert;
 
 namespace HBlog.UnitTests.Repositories
 {

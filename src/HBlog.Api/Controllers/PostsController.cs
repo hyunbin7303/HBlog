@@ -5,9 +5,7 @@ using HBlog.Domain.Repositories;
 using HBlog.Infrastructure.Extensions;
 using HBlog.Contract.DTOs;
 using HBlog.Application.Services;
-using HBlog.Domain.Params;
 using HBlog.Domain.Common.Params;
-using Amazon.S3.Model;
 
 
 namespace HBlog.Api.Controllers

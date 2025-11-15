@@ -1,14 +1,8 @@
-using System.Text.RegularExpressions;
 using HBlog.Application.Services;
 using HBlog.Domain.Repositories;
-using HBlog.Infrastructure.Authentications;
-using HBlog.Infrastructure.Data;
 using HBlog.Infrastructure.Helpers;
 using HBlog.Infrastructure.Repositories;
-using HBlog.Infrastructure.Services;
 using HBlog.Infrastructure.SignalR;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace HBlog.Infrastructure.Extensions
@@ -31,7 +25,6 @@ namespace HBlog.Infrastructure.Extensions
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IPostService, PostService>();
             services.AddScoped<IMessageService, MessageService>();
-            services.AddScoped<IAwsStorageService, AwsStorageService>();
             services.AddScoped<ILikeService, LikeService>();
             services.AddScoped<ITagService, TagService>();
 

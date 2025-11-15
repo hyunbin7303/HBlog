@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Net;
 using NUnit.Framework;
+using Assert = NUnit.Framework.Assert;
 
 namespace HBlog.IntegrationTests
 {

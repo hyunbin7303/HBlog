@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Net;
+using Microsoft.AspNetCore.Mvc;
+
 namespace HBlog.Infrastructure.Middlewares
 {
     public class GlobalExceptionHandler : IExceptionHandler

@@ -3,6 +3,7 @@ using HBlog.Domain.Repositories;
 using HBlog.Infrastructure.Repositories;
 using HBlog.IntegrationTests.Base;
 using NUnit.Framework;
+using Assert = NUnit.Framework.Assert;
 
 namespace HBlog.IntegrationTests.Repositories
 {

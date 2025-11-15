@@ -6,6 +6,7 @@ using HBlog.TestUtilities;
 using HBlog.UnitTests.Mocks.Repositories;
 using Moq;
 using NUnit.Framework;
+using Assert = NUnit.Framework.Assert;
 
 namespace HBlog.UnitTests.Services
 {
@@ -35,7 +36,7 @@ namespace HBlog.UnitTests.Services
         public async Task GetMembersByUsernameAsync_ExistingUser_ReturnMemberDto()
         {
             string username = "kevin0";
-            Guid userId = Guid.CreateVersion7();
+            var userId = Guid.CreateVersion7();
             _userRepositoryMock.Setup(x => x.GetUserByUsernameAsync(username)).ReturnsAsync(new User { Id = userId, UserName = username });
 
             var result = await _userService.GetMembersByUsernameAsync(username);

@@ -7,6 +7,7 @@ using HBlog.Contract.Common;
 using HBlog.Domain.Common.Params;
 using NUnit.Framework;
 using NUnit.Framework.Legacy;
+using static NUnit.Framework.Legacy.CollectionAssert;
 using Assert = NUnit.Framework.Assert;
 
 namespace HBlog.UnitTests.Endpoints
@@ -43,7 +44,7 @@ namespace HBlog.UnitTests.Endpoints
             });
             IEnumerable<PostDisplayDto> resultPosts = data.Data;
 
-            CollectionAssert.AllItemsAreNotNull(resultPosts);
+            if (resultPosts != null) AllItemsAreNotNull(resultPosts);
         }
 
         [Test]

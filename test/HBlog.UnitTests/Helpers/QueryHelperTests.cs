@@ -1,5 +1,6 @@
 ﻿using HBlog.WebClient.Helpers;
 using NUnit.Framework;
+using Assert = NUnit.Framework.Assert;
 
 namespace HBlog.UnitTests.Helpers
 {

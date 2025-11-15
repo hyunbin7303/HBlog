@@ -5,12 +5,13 @@ using HBlog.Domain.Repositories;
 using HBlog.TestUtilities;
 using Moq;
 using NUnit.Framework;
+using Assert = NUnit.Framework.Assert;
 
 namespace HBlog.UnitTests.Services
 {
     public class TagServiceTest : TestBase
     {
-        private ITagService _tagService;
+        private readonly ITagService _tagService;
         private readonly Mock<ITagRepository> _tagRepositoryMock = new();
         private readonly Mock<IPostRepository> _postRepositoryMock = new();
         public TagServiceTest()
@@ -22,9 +23,9 @@ namespace HBlog.UnitTests.Services
         {
             IEnumerable<Tag> tags = new List<Tag>()
             {
-                new Tag { Id = 1, Name = "Programming", Desc = "Programming Desc", Slug = "SlugTest1"},
-                new Tag { Id = 2, Name = "Shopping", Desc = "", Slug = "SlugTest2"},
-                new Tag { Id = 3, Name = "dotnet", Desc = "", Slug = "SlugTest3"},
+                new() { Id = 1, Name = "Programming", Desc = "Programming Desc", Slug = "SlugTest1"},
+                new() { Id = 2, Name = "Shopping", Desc = "", Slug = "SlugTest2"},
+                new() { Id = 3, Name = "dotnet", Desc = "", Slug = "SlugTest3"},
             };
             _tagRepositoryMock.Setup(o => o.GetAll()).ReturnsAsync(tags);
             var result = await _tagService.GetAllTags();

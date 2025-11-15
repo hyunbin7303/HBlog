@@ -1,13 +1,10 @@
 #nullable enable
 using HBlog.Api.Extensions;
 using HBlog.Application.Automapper;
-using HBlog.Domain.Entities;
 using HBlog.Infrastructure.Data;
 using HBlog.Infrastructure.Extensions;
 using HBlog.Infrastructure.Middlewares;
-using HBlog.Infrastructure.Services;
 using Microsoft.AspNetCore.Http.Features;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
@@ -59,7 +56,6 @@ public class Program
             };
         });
 
-        builder.Services.Configure<AwsSettings>(builder.Configuration.GetSection("AwsSettings"));
         builder.Services.AddDbContext<DataContext>(opt => { opt.UseNpgsql(connStr); });
         builder.Services.AddCors();
         builder.Services.AddApplicationServices();

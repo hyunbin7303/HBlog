@@ -5,6 +5,7 @@ using HBlog.Infrastructure.Repositories;
 using HBlog.UnitTests.Mocks.Repositories;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
+using Assert = NUnit.Framework.Assert;
 
 namespace HBlog.UnitTests.Repositories
 {

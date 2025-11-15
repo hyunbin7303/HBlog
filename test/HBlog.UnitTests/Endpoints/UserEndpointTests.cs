@@ -6,6 +6,7 @@ using HBlog.Contract.DTOs;
 using HBlog.Domain.Entities;
 using Moq;
 using NUnit.Framework;
+using Assert = NUnit.Framework.Assert;
 
 namespace HBlog.UnitTests.Endpoints
 {

@@ -5,6 +5,7 @@ using HBlog.Domain.Repositories;
 using HBlog.TestUtilities;
 using Moq;
 using NUnit.Framework;
+using Assert = NUnit.Framework.Assert;
 
 namespace HBlog.UnitTests.Services
 {

@@ -1,5 +1,4 @@
-﻿using HBlog.Application;
-using HBlog.Application.Services;
+﻿using HBlog.Application.Services;
 using HBlog.Contract.DTOs;
 using HBlog.Domain.Common.Params;
 using HBlog.Domain.Entities;
@@ -8,7 +7,7 @@ using HBlog.TestUtilities;
 using HBlog.UnitTests.Mocks.Repositories;
 using Moq;
 using NUnit.Framework;
-
+using Assert = NUnit.Framework.Assert;
 
 namespace HBlog.UnitTests.Services
 {
