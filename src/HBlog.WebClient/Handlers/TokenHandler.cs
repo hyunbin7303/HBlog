@@ -1,8 +1,6 @@
 ﻿using Blazored.LocalStorage;
-using HBlog.Contract.Common;
-using Microsoft.AspNetCore.Components.WebAssembly.Http;
-using System.Net.Http;
 using System.Net.Http.Headers;
+using HBlog.WebClient.Commons;
 
 namespace HBlog.WebClient.Handlers;
 

@@ -1,8 +1,8 @@
 ﻿using Blazored.LocalStorage;
-using HBlog.Contract.Common;
 using Microsoft.AspNetCore.Components.Authorization;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using HBlog.WebClient.Commons;
 
 namespace HBlog.WebClient.Providers
 {

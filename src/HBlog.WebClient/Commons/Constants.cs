@@ -1,5 +1,5 @@
 ﻿
-namespace HBlog.Contract.Common;
+namespace HBlog.WebClient.Commons;
 
 public static class Constants
 {

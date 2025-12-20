@@ -15,13 +15,11 @@ namespace HBlog.UnitTests.Endpoints
 {
     public class PostAppFactory : WebApplicationFactory<Program>
     {
-        public Mock<IPostService> _mockPostService { get; }
         public Mock<IPostRepository> _mockPostRepository { get; }
         public Mock<IUserService> _mockUserService { get; }
 
         public PostAppFactory()
         {
-            _mockPostService = new Mock<IPostService>();
             _mockPostRepository = new Mock<IPostRepository>();
             _mockUserService = new Mock<IUserService>();
         }
@@ -31,7 +29,6 @@ namespace HBlog.UnitTests.Endpoints
             builder.UseContentRoot(".");
             builder.ConfigureTestServices(services =>
             {
-                services.AddSingleton(_mockPostService.Object);
                 services.AddSingleton(_mockPostRepository.Object);
                 services.AddSingleton(_mockUserService.Object);
             });

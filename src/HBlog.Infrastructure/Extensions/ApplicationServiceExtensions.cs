@@ -23,7 +23,6 @@ namespace HBlog.Infrastructure.Extensions
 
             // Application Service Layer DI
             services.AddScoped<IUserService, UserService>();
-            services.AddScoped<IPostService, PostService>();
             services.AddScoped<IMessageService, MessageService>();
             services.AddScoped<ILikeService, LikeService>();
             services.AddScoped<ITagService, TagService>();

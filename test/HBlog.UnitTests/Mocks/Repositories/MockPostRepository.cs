@@ -9,19 +9,21 @@ namespace HBlog.UnitTests.Mocks.Repositories
 {
     public class MockPostRepository : Mock<IPostRepository>
     {
-        private Post validPost = new()
-        {
-            Id = 1, 
-            Desc = "Post Desc",
-            CategoryId = 1,
-            Content = "Content1234",
-            Created = DateTime.Now,
-            LastUpdated = DateTime.Now.AddDays(1),
-            Category = new Category
-            {
-                Id = 1, Title = "Programming", Description = "P", 
-            }
-        };
+        //private Post validPost = new()
+        //{
+        //    Id = 1,
+        //    Desc = "Post Desc",
+        //    CategoryId = 1,
+        //    Content = "Content1234",
+        //    Created = DateTime.Now,
+        //    LastUpdated = DateTime.Now.AddDays(1),
+        //    Category = new Category
+        //    {
+        //        Id = 1,
+        //        Title = "Programming",
+        //        Description = "P",
+        //    }
+        //};
 
 
         public MockPostRepository MockGetPostById(Post result)
@@ -35,16 +37,6 @@ namespace HBlog.UnitTests.Mocks.Repositories
             return this;
         }
 
-        public MockPostRepository MockGetPostDetails(int id)
-        {
-            if (id == 1)
-                Setup(x => x.GetPostDetails(1)).ReturnsAsync(validPost);
-            else
-                Setup(x => x.GetPostDetails(It.IsAny<int>())).Throws(new Exception());
-
-            return this;
-        }
-
         public MockPostRepository MockGetPosts(List<Post> results)
         {
             Setup(x => x.GetPostsAsync()).ReturnsAsync(results);
@@ -55,13 +47,6 @@ namespace HBlog.UnitTests.Mocks.Repositories
             Verify(x => x.GetPostsByUserName(It.IsAny<string>()), times);
             return this;
         }
-        public MockPostRepository VerifyGetPostById(Times times)
-        {
-            Verify(x => x.GetById(It.IsAny<int>()), times);
-            return this;
-        }
-
-
         public static List<Post> GenerateData(int count)
         {
             var fields = typeof(PostStatus).GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy)
@@ -76,25 +61,26 @@ namespace HBlog.UnitTests.Mocks.Repositories
             for (int i = 1; i <= count; i++)
             {
                 var randomField = fields[random.Next(fields.Length)];
-                var post = new Post 
-                { 
-                    Id = i, 
-                    UserId = Guid.CreateVersion7(), 
-                    Created = TestHelper.GenerateRandomDateTime(startDate, endDate), 
-                    Desc = "Desc" + i, 
-                    Content = "Content1", 
-                    LastUpdated = DateTime.Now, 
-                    Status = randomField.GetValue(null).ToString(), 
-                    CategoryId  = 1,
-                    LinkForPost = "https://github.com/hyunbin7303" };
-                post.User = new User
-                {
-                    Id = Guid.CreateVersion7(),
-                    UserName = "test",
-                    City = "Kitchener",
-                    Gender = "Male",
-                };
-                posts.Add(post);
+                //var post = new Post
+                //{
+                //    Id = i,
+                //    UserId = Guid.CreateVersion7(),
+                //    Created = TestHelper.GenerateRandomDateTime(startDate, endDate),
+                //    Desc = "Desc" + i,
+                //    Content = "Content1",
+                //    LastUpdated = DateTime.Now,
+                //    Status = randomField.GetValue(null).ToString(),
+                //    CategoryId = 1,
+                //    LinkForPost = "https://github.com/hyunbin7303"
+                //};
+                //post.User = new User
+                //{
+                //    Id = Guid.CreateVersion7(),
+                //    UserName = "test",
+                //    City = "Kitchener",
+                //    Gender = "Male",
+                //};
+                //posts.Add(post);
             }
             return posts;
         }

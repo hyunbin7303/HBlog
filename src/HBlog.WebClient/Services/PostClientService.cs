@@ -1,10 +1,8 @@
-﻿using Blazored.LocalStorage;
-using HBlog.Contract.Common;
+﻿using HBlog.Contract.Common;
 using HBlog.Contract.DTOs;
 using HBlog.WebClient.Helpers;
-using System.Collections.Generic;
-using System.Net.Http;
 using System.Net.Http.Json;
+using HBlog.WebClient.Commons;
 
 namespace HBlog.WebClient.Services
 {
