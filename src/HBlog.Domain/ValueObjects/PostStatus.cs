@@ -6,10 +6,10 @@ public sealed class PostStatus : IEquatable<PostStatus>
 {
     public string Value { get; }
 
-    public static readonly PostStatus Draft = new("Draft");
-    public static readonly PostStatus Active = new("Active");
-    public static readonly PostStatus Published = new("Published");
-    public static readonly PostStatus Removed = new("Removed");
+    public static readonly PostStatus Draft = new("draft");
+    public static readonly PostStatus Active = new("active");
+    public static readonly PostStatus Published = new("published");
+    public static readonly PostStatus Removed = new("removed");
 
     private PostStatus(string value)
     {
@@ -20,11 +20,11 @@ public sealed class PostStatus : IEquatable<PostStatus>
     {
         return status switch
         {
-            "Draft" => Draft,
-            "Active" => Active,
-            "Published" => Published,
-            "Removed" => Removed,
-            _ => throw new DomainException($"Invalid post status: '{status}'. Valid values: Draft, Active, Published, Removed")
+            "draft" => Draft,
+            "active" => Active,
+            "published" => Published,
+            "removed" => Removed,
+            _ => throw new DomainException($"Invalid post status: '{status}'. Valid values: draft, active, published, removed   ")
         };
     }
 

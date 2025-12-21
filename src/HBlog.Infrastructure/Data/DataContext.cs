@@ -1,7 +1,9 @@
 using HBlog.Domain.Entities;
+using HBlog.Domain.ValueObjects;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace HBlog.Infrastructure.Data
 {
@@ -22,7 +24,6 @@ namespace HBlog.Infrastructure.Data
         public virtual DbSet<Tag> Tags { get; set; }
         public virtual DbSet<Category> Categories { get; set; }
         public virtual DbSet<Message> Messages { get; set; }
-        public virtual DbSet<FileStorage> FileStorages { get; set; }
         public virtual DbSet<FileData> FileData { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -66,6 +67,63 @@ namespace HBlog.Infrastructure.Data
                     x => x.HasOne(x => x.Post)
                         .WithMany().HasForeignKey(posttag => posttag.PostId));
 
+            var postStatusComparer = new ValueComparer<PostStatus>(
+                (p1, p2) => ReferenceEquals(p1, p2) || (p1 != null && p1.Equals(p2)),
+                p => p == null ? 0 : p.GetHashCode(),
+                p => p == null ? null! : PostStatus.FromString(p.ToString())
+            );
+
+            modelBuilder.Entity<Post>(b =>
+            {
+                b.Property(p => p.Status)
+                    .HasConversion(
+                        v => v.ToString(),
+                        v => PostStatus.FromString(v)
+                    )
+                    .HasMaxLength(50)
+                    .HasColumnName("Status");
+
+                b.Property(p => p.Status).Metadata.SetValueComparer(postStatusComparer);
+            });
+
+            //var postTypeComparer = new ValueComparer<PostType>(
+	           // (p1, p2) => ReferenceEquals(p1, p2) || (p1 != null && p1.Equals(p2)),
+	           // p => p == null ? 0 : p.GetHashCode(),
+	           // p => p == null ? null! : PostType.FromString(p.ToString())
+            //);
+
+            modelBuilder.Entity<Post>(b =>
+            {
+	            b.Property(p => p.Type)
+		            .HasConversion(
+			            v => v.ToString(),
+			            v => PostType.FromString(v)
+		            )
+		            .HasMaxLength(50)
+		            .HasColumnName("Type");
+
+	            //b.Property(p => p.Type).Metadata.SetValueComparer(postTypeComparer);
+            });
+			// ValueConverter + ValueComparer for Slug value object
+			var slugComparer = new ValueComparer<Slug>(
+                (s1, s2) => ReferenceEquals(s1, s2) || (s1 != null && s1.Equals(s2)),
+                s => s == null ? 0 : s.GetHashCode(),
+                s => s == null ? null! : Slug.FromValue(s.Value)
+            );
+
+            modelBuilder.Entity<Post>(b =>
+            {
+                b.Property(p => p.Slug)
+                    .HasConversion(
+                        v => v.Value,
+                        v => Slug.FromValue(v)
+                    )
+                    .HasMaxLength(200)
+                    .HasColumnName("Slug")
+                    .IsRequired();
+
+                b.Property(p => p.Slug).Metadata.SetValueComparer(slugComparer);
+            });
 
             modelBuilder.Entity<Tag>(p =>
             {

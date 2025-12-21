@@ -8,7 +8,7 @@ namespace HBlog.Domain.Entities
     [Table("Posts")]
     public class Post : BaseEntity<int>
     {
-        public PostTitle Title { get; private set; }
+        public string Title { get; private set; }
         public Slug Slug { get; private set; }
         public string Desc { get; private set; }
         public PostStatus Status { get; private set; }
@@ -47,8 +47,8 @@ namespace HBlog.Domain.Entities
 
             var post = new Post
             {
-                Title = PostTitle.Create(title), // Can throw
-                Slug = Slug.FromString(title),    // Can throw
+                Title = title,
+                Slug = Slug.FromString(title),    
                 Desc = description ?? string.Empty,
                 Content = content ?? string.Empty,
                 Status = PostStatus.Draft,
@@ -126,7 +126,7 @@ namespace HBlog.Domain.Entities
             if (categoryId <= 0)
                 throw new DomainException("Category ID must be greater than 0");
 
-            Title = PostTitle.Create(title); // Can throw
+            Title = title;
             Desc = description ?? string.Empty;
             Content = content ?? string.Empty;
             CategoryId = categoryId;

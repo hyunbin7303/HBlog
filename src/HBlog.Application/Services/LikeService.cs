@@ -50,7 +50,6 @@ namespace HBlog.Application.Services
                 KnownAs = u.KnownAs,
                 Age = u.DateOfBirth.CalculateAge(),
                 PhotoUrl = u.Photos.FirstOrDefault(x => x.IsMain).Url,
-                City = u.City,
                 Id = u.Id
             });
             return await PageList<LikeDto>.CreateAsync(likeDto, likesParam.PageNumber, likesParam.PageSize);

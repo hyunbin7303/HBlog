@@ -11,18 +11,13 @@ namespace HBlog.Domain.Entities
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public DateTime Created { get; set; } = DateTime.UtcNow;
-        public DateTimeOffset LastActive { get; set; } = DateTime.Now;
+        public DateTimeOffset LastActive { get; set; } = DateTime.UtcNow;
         public string Gender { get; set; }
         public string Email { get; set; }
-        public string Introduction { get; set; }
-        public string Interests { get; set; }
-        public string LookingFor { get; set; }
-        public string City { get; set; }
-        public string Country { get; set; }
         public string? RefreshToken { get; set; }
         public DateTime RefreshTokenExpiryTime { get; set; }
-        public List<Photo> Photos { get; set; } = new List<Photo>();
-        public List<Post> Posts { get; set; } = new List<Post>();
+        public List<Photo> Photos { get; set; } = new();
+        public List<Post> Posts { get; set; } = new();
         public List<UserLike> LikedByUsers {get; set;}
         public List<UserLike> LikedUsers {get; set; }
         public List<Message> MessagesSent { get; set; }

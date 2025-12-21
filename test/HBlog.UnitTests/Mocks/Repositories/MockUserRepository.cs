@@ -31,7 +31,6 @@ namespace HBlog.UnitTests.Mocks.Repositories
                     UserName = "kevin" + i,
                     KnownAs = "knownas" + i,
                     Gender = "Male",
-                    City = "Kitchener",
                     DateOfBirth = new DateTime(1993, 7, 3),
                     Email = "hyunbin7303@gmail.com",
                 };
