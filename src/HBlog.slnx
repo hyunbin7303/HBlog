@@ -1,0 +1,17 @@
+<Solution>
+  <Folder Name="/Publish/" />
+  <Folder Name="/Solution Items/">
+    <File Path="../docker-compose.yml" />
+  </Folder>
+  <Folder Name="/Tests/">
+    <Project Path="../test/HBlog.IntegrationTests/HBlog.IntegrationTests.csproj" />
+    <Project Path="../test/HBlog.TestUtilities/HBlog.TestUtilities.csproj" />
+    <Project Path="../test/HBlog.UnitTests/HBlog.UnitTests.csproj" />
+  </Folder>
+  <Project Path="HBlog.Api/HBlog.Api.csproj" />
+  <Project Path="HBlog.Application/HBlog.Application.csproj" />
+  <Project Path="HBlog.Contract/HBlog.Contract.csproj" />
+  <Project Path="HBlog.Domain/HBlog.Domain.csproj" />
+  <Project Path="HBlog.Infrastructure/HBlog.Infrastructure.csproj" />
+  <Project Path="HBlog.WebClient/HBlog.WebClient.csproj" />
+</Solution>
