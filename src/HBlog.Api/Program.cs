@@ -6,6 +6,7 @@ using HBlog.Infrastructure.Extensions;
 using HBlog.Infrastructure.Middlewares;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.EntityFrameworkCore;
+using Scalar.AspNetCore;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
 
@@ -55,6 +56,7 @@ public class Program
                 context.ProblemDetails.Extensions.TryAdd("traceId", activity?.Id);
             };
         });
+        builder.Services.AddOpenApi();
 
         builder.Services.AddDbContext<DataContext>(opt => { opt.UseNpgsql(connStr); });
         builder.Services.AddCors();
@@ -70,6 +72,14 @@ public class Program
         app.UseSwaggerUI();
         if(isProd)
             app.UseExceptionHandler("/Error");
+
+        // Add Scalar for OpenApi
+        app.MapOpenApi();
+        app.MapScalarApiReference(options =>
+        {
+            options.EnabledClients = [ScalarClient.Curl, ScalarClient.HttpClient, ScalarClient.Axios, ScalarClient.Fetch, ScalarClient.Wget, ScalarClient.WebRequest, ScalarClient.RestMethod];
+            options.EnabledTargets = [ScalarTarget.Node, ScalarTarget.CSharp, ScalarTarget.Shell, ScalarTarget.PowerShell];
+        });
 
         //app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:4200"));
         app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:7183", "http://localhost:5050"));
