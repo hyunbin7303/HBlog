@@ -4,7 +4,7 @@ var postgres = builder.AddPostgres("postgres");
 var postgresdb = postgres.AddDatabase("postgresdb");
 
 var hblogApi = builder
-        .AddProject<Projects.HBlog_Api>("chatapi")
+        .AddProject<Projects.HBlog_Api>("hblogapi")
         .WithReference(postgresdb).WaitFor(postgresdb)
         .WithOtlpExporter()
         .WithExternalHttpEndpoints();
