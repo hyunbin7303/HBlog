@@ -27,9 +27,11 @@
             }
         },
         {
-            "name": ".NET Core Attach",
+            "name": "HBlog Api Attach",
             "type": "coreclr",
-            "request": "attach"
-        }
+            "request": "attach",
+            "processName": "HBlog.Api",
+            "justMyCode": false
+        },
     ]
 }

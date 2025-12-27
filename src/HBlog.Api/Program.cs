@@ -6,6 +6,7 @@ using HBlog.Infrastructure.Extensions;
 using HBlog.Infrastructure.Middlewares;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.EntityFrameworkCore;
+using Scalar.AspNetCore;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
 
@@ -16,7 +17,7 @@ public class Program
     private static IConfiguration _config;
     private static void SetCredentials(string env)
     {
-        if (env == "dev"|| env == "Development" || string.IsNullOrEmpty(env))
+        if (env == "dev" || env == "Development" || string.IsNullOrEmpty(env))
         {
             token = _config["TokenKey"];
             connStr = _config.GetConnectionString("DefaultConnection");
@@ -36,7 +37,7 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
         _config = builder.Configuration;
-        Console.WriteLine("Env:" +Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT"));
+        Console.WriteLine("Env:" + Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT"));
         SetCredentials(Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")!);
         var isProd = builder.Environment.IsProduction();
 
@@ -45,7 +46,7 @@ public class Program
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddProblemDetails(options =>
         {
-            
+
             options.CustomizeProblemDetails = (context) =>
             {
                 context.ProblemDetails.Instance =
@@ -55,8 +56,17 @@ public class Program
                 context.ProblemDetails.Extensions.TryAdd("traceId", activity?.Id);
             };
         });
+        builder.Services.AddOpenApi();
 
-        builder.Services.AddDbContext<DataContext>(opt => { opt.UseNpgsql(connStr); });
+        builder.Services.AddDbContext<DataContext>((IServiceProvider serviceProvider, DbContextOptionsBuilder opt) =>
+        {
+            opt.UseNpgsql(connStr, config =>
+            {
+                config.CommandTimeout(30);
+                config.MigrationsHistoryTable("__EFMigrationHistory");
+                config.MigrationsAssembly(typeof(DataContext).Assembly);
+            });
+        });
         builder.Services.AddCors();
         builder.Services.AddApplicationServices();
         builder.Services.AddIdentityServices(token);
@@ -68,8 +78,16 @@ public class Program
         app.UseDeveloperExceptionPage();
         app.UseSwagger();
         app.UseSwaggerUI();
-        if(isProd)
+        if (isProd)
             app.UseExceptionHandler("/Error");
+
+        // Add Scalar for OpenApi
+        app.MapOpenApi();
+        app.MapScalarApiReference(options =>
+        {
+            options.EnabledClients = [ScalarClient.Curl, ScalarClient.HttpClient, ScalarClient.Axios, ScalarClient.Fetch, ScalarClient.Wget, ScalarClient.WebRequest, ScalarClient.RestMethod];
+            options.EnabledTargets = [ScalarTarget.Node, ScalarTarget.CSharp, ScalarTarget.Shell, ScalarTarget.PowerShell];
+        });
 
         //app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:4200"));
         app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:7183", "http://localhost:5050"));
