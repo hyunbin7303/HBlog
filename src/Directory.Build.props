@@ -1,0 +1,132 @@
+<Project>
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <LangVersion>14.0</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningsAsErrors />
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+  </PropertyGroup>
+
+  <!-- Common package versions -->
+  <PropertyGroup>
+    <!-- ASP.NET Core & Extensions -->
+    <AspNetCoreVersion>10.0.0</AspNetCoreVersion>
+    <AspNetCoreAuthenticationVersion>2.3.0</AspNetCoreAuthenticationVersion>
+    <AspNetCoreDiagnosticsVersion>2.3.0</AspNetCoreDiagnosticsVersion>
+    <AspNetCoreHttpAbstractionsVersion>2.3.0</AspNetCoreHttpAbstractionsVersion>
+    <AspNetCoreOpenApiVersion>10.0.1</AspNetCoreOpenApiVersion>
+    
+    <!-- Entity Framework -->
+    <EntityFrameworkVersion>10.0.0</EntityFrameworkVersion>
+    <NpgsqlEntityFrameworkVersion>10.0.0</NpgsqlEntityFrameworkVersion>
+    
+    <!-- Identity & JWT -->
+    <IdentityTokensVersion>8.15.0</IdentityTokensVersion>
+    
+    <!-- AutoMapper & MediatR -->
+    <AutoMapperVersion>16.0.0</AutoMapperVersion>
+    <MediatRVersion>14.0.0</MediatRVersion>
+    <MediatRContractsVersion>2.0.1</MediatRContractsVersion>
+    
+    <!-- Blazor & Client Libraries -->
+    <BlazoredLocalStorageVersion>4.5.0</BlazoredLocalStorageVersion>
+    <BlazoredToastVersion>4.2.1</BlazoredToastVersion>
+    <MarkdigVersion>0.44.0</MarkdigVersion>
+    
+    <!-- API Documentation -->
+    <ScalarVersion>2.11.10</ScalarVersion>
+    <SwashbuckleVersion>10.0.1</SwashbuckleVersion>
+    
+    <!-- Testing -->
+    <TestSdkVersion>18.0.1</TestSdkVersion>
+    <NUnitVersion>4.4.0</NUnitVersion>
+    <NUnitAnalyzersVersion>4.11.2</NUnitAnalyzersVersion>
+    <NUnit3TestAdapterVersion>6.0.0</NUnit3TestAdapterVersion>
+    <MoqVersion>4.20.72</MoqVersion>
+    <MSTestAdapterVersion>4.0.2</MSTestAdapterVersion>
+    <CoverletCollectorVersion>6.0.4</CoverletCollectorVersion>
+    <VerifyMoqVersion>2.2.0</VerifyMoqVersion>
+    <TestcontainersPostgreSqlVersion>4.9.0</TestcontainersPostgreSqlVersion>
+    
+    <!-- Aspire -->
+    <AspireVersion>13.1.0</AspireVersion>
+  </PropertyGroup>
+
+  <!-- Centralized Package Management -->
+  <ItemGroup>
+    <!-- ASP.NET Core -->
+    <PackageVersion Include="Microsoft.AspNetCore.Authentication" Version="$(AspNetCoreAuthenticationVersion)" />
+    <PackageVersion Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="$(AspNetCoreVersion)" />
+    <PackageVersion Include="Microsoft.AspNetCore.Authorization" Version="$(AspNetCoreVersion)" />
+    <PackageVersion Include="Microsoft.AspNetCore.Components.Authorization" Version="$(AspNetCoreVersion)" />
+    <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly" Version="$(AspNetCoreVersion)" />
+    <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="$(AspNetCoreVersion)" />
+    <PackageVersion Include="Microsoft.AspNetCore.Diagnostics" Version="$(AspNetCoreDiagnosticsVersion)" />
+    <PackageVersion Include="Microsoft.AspNetCore.Http.Abstractions" Version="$(AspNetCoreHttpAbstractionsVersion)" />
+    <PackageVersion Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="$(AspNetCoreVersion)" />
+    <PackageVersion Include="Microsoft.AspNetCore.Mvc.Testing" Version="$(AspNetCoreVersion)" />
+    <PackageVersion Include="Microsoft.AspNetCore.OpenApi" Version="$(AspNetCoreOpenApiVersion)" />
+    <PackageVersion Include="Microsoft.AspNetCore.SignalR.Common" Version="$(AspNetCoreVersion)" />
+    <PackageVersion Include="Microsoft.AspNetCore.TestHost" Version="$(AspNetCoreVersion)" />
+    
+    <!-- Entity Framework Core -->
+    <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="$(EntityFrameworkVersion)" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="$(EntityFrameworkVersion)" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.InMemory" Version="$(EntityFrameworkVersion)" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Tools" Version="$(EntityFrameworkVersion)" />
+    <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="$(NpgsqlEntityFrameworkVersion)" />
+    
+    <!-- Microsoft Extensions -->
+    <PackageVersion Include="Microsoft.Extensions.Configuration" Version="$(AspNetCoreVersion)" />
+    <PackageVersion Include="Microsoft.Extensions.Configuration.Abstractions" Version="$(AspNetCoreVersion)" />
+    <PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="$(AspNetCoreVersion)" />
+    <PackageVersion Include="Microsoft.Extensions.Hosting.Abstractions" Version="$(AspNetCoreVersion)" />
+    <PackageVersion Include="Microsoft.Extensions.Http" Version="$(AspNetCoreVersion)" />
+    <PackageVersion Include="Microsoft.Extensions.Logging" Version="$(AspNetCoreVersion)" />
+    <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="$(AspNetCoreVersion)" />
+    
+    <!-- Identity & Security -->
+    <PackageVersion Include="System.IdentityModel.Tokens.Jwt" Version="$(IdentityTokensVersion)" />
+    
+    <!-- AutoMapper & MediatR -->
+    <PackageVersion Include="AutoMapper" Version="$(AutoMapperVersion)" />
+    <PackageVersion Include="MediatR" Version="$(MediatRVersion)" />
+    <PackageVersion Include="MediatR.Contracts" Version="$(MediatRContractsVersion)" />
+    
+    <!-- Blazor Client Libraries -->
+    <PackageVersion Include="Blazored.LocalStorage" Version="$(BlazoredLocalStorageVersion)" />
+    <PackageVersion Include="Blazored.Toast" Version="$(BlazoredToastVersion)" />
+    <PackageVersion Include="Markdig" Version="$(MarkdigVersion)" />
+    
+    <!-- API Documentation -->
+    <PackageVersion Include="Scalar.AspNetCore" Version="$(ScalarVersion)" />
+    <PackageVersion Include="Swashbuckle.AspNetCore" Version="$(SwashbuckleVersion)" />
+    
+    <!-- Testing -->
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="$(TestSdkVersion)" />
+    <PackageVersion Include="NUnit" Version="$(NUnitVersion)" />
+    <PackageVersion Include="NUnit.Analyzers" Version="$(NUnitAnalyzersVersion)" />
+    <PackageVersion Include="NUnit3TestAdapter" Version="$(NUnit3TestAdapterVersion)" />
+    <PackageVersion Include="Moq" Version="$(MoqVersion)" />
+    <PackageVersion Include="MSTest.TestAdapter" Version="$(MSTestAdapterVersion)" />
+    <PackageVersion Include="coverlet.collector" Version="$(CoverletCollectorVersion)" />
+    <PackageVersion Include="Verify.Moq" Version="$(VerifyMoqVersion)" />
+    <PackageVersion Include="Testcontainers.PostgreSql" Version="$(TestcontainersPostgreSqlVersion)" />
+    
+    <!-- Aspire -->
+    <PackageVersion Include="Aspire.Hosting.AppHost" Version="$(AspireVersion)" />
+    <PackageVersion Include="Aspire.Hosting.PostgreSQL" Version="$(AspireVersion)" />
+  </ItemGroup>
+
+  <!-- Blazor WebAssembly specific -->
+  <PropertyGroup Condition="'$(UsingMicrosoftNETSdkBlazorWebAssembly)' == 'true'">
+    <RunAOTCompilation>false</RunAOTCompilation>
+  </PropertyGroup>
+
+  <!-- Domain/Core layer settings -->
+  <PropertyGroup Condition="$(MSBuildProjectName.EndsWith('.Domain'))">
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
+</Project>
