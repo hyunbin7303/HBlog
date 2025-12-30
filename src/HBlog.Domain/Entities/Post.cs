@@ -20,6 +20,8 @@ namespace HBlog.Domain.Entities
         public DateTime LastUpdated { get; private set; }
         public Guid UserId { get; private set; }
         public int CategoryId { get; private set; }
+
+        //private HashSet<Comment> _comments; //https://www.thereformedprogrammer.net/wp-content/uploads/2019/06/Using-Domain-Driven-Design-with-Entity-Framework-Core-Jon-P-Smith.pdf
         
         public virtual User User { get; private set; }
         public virtual Category Category { get; private set; }

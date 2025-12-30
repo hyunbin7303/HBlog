@@ -12,25 +12,25 @@ using System.Text.RegularExpressions;
 
 public class Program
 {
-    private static string? token = string.Empty;
-    private static string? connStr = string.Empty;
+    private static string? _token = string.Empty;
+    private static string? _connStr = string.Empty;
     private static IConfiguration _config;
     private static void SetCredentials(string env)
     {
         if (env == "dev" || env == "Development" || string.IsNullOrEmpty(env))
         {
-            token = _config["TokenKey"];
-            connStr = _config.GetConnectionString("DefaultConnection");
+            _token = _config["TokenKey"];
+            _connStr = _config.GetConnectionString("DefaultConnection");
         }
         else
         {
-            token = Environment.GetEnvironmentVariable("TOKEN_KEY");
+            _token = Environment.GetEnvironmentVariable("TOKEN_KEY");
             var m = Regex.Match(Environment.GetEnvironmentVariable("DATABASE_URL")!, @"postgres://(.*):(.*)@(.*):(.*)/(.*)");
-            connStr =
+            _connStr =
                 $"Server={m.Groups[3]};Port={m.Groups[4]};User Id={m.Groups[1]};Password={m.Groups[2]};Database={m.Groups[5]};sslmode=Prefer;Trust Server Certificate=true";
         }
-        Console.WriteLine("Token:" + token);
-        Console.WriteLine("ConnectionString:" + connStr);
+        Console.WriteLine("Token:" + _token);
+        Console.WriteLine("ConnectionString:" + _connStr);
     }
 
     private static async Task Main(string[] args)
@@ -58,9 +58,9 @@ public class Program
         });
         builder.Services.AddOpenApi();
 
-        builder.Services.AddDbContext<DataContext>((IServiceProvider serviceProvider, DbContextOptionsBuilder opt) =>
+        builder.Services.AddDbContext<DataContext>((serviceProvider, opt) =>
         {
-            opt.UseNpgsql(connStr, config =>
+            opt.UseNpgsql(_connStr, config =>
             {
                 config.CommandTimeout(30);
                 config.MigrationsHistoryTable("__EFMigrationHistory");
@@ -69,7 +69,7 @@ public class Program
         });
         builder.Services.AddCors();
         builder.Services.AddApplicationServices();
-        builder.Services.AddIdentityServices(token);
+        builder.Services.AddIdentityServices(_token);
         builder.Services.AddAutoMapper(o => o.AddProfile(typeof(AutoMapperProfiles)));
         builder.Services.AddSwaggerDocumentation();
         builder.Services.AddExceptionHandler<GlobalExceptionHandler>();

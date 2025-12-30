@@ -19,7 +19,6 @@ namespace HBlog.Infrastructure.Extensions
             services.AddScoped<ITagRepository, TagRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<IFileDataRepository, FileDataRepository>();
-            services.AddScoped<IFileStorageRepository, FileStorageRepository>();
 
             // Application Service Layer DI
             services.AddScoped<IUserService, UserService>();

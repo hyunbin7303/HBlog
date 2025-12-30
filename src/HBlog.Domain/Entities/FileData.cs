@@ -9,6 +9,5 @@ namespace HBlog.Domain.Entities
         public string FilePath { get; set; }
         public DateTime Created { get; set; } = DateTime.UtcNow;
         public DateTime LastUpdated { get; set; } = DateTime.UtcNow;
-        public virtual FileStorage FileStorage { get; set; }
     }
 }

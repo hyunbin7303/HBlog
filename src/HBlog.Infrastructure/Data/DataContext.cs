@@ -24,7 +24,6 @@ namespace HBlog.Infrastructure.Data
         public virtual DbSet<Tag> Tags { get; set; }
         public virtual DbSet<Category> Categories { get; set; }
         public virtual DbSet<Message> Messages { get; set; }
-        public virtual DbSet<FileData> FileData { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -48,9 +47,6 @@ namespace HBlog.Infrastructure.Data
             modelBuilder.Entity<IdentityRoleClaim<Guid>>().ToTable("RoleClaim");
             modelBuilder.Entity<IdentityUserToken<Guid>>().ToTable("UserToken");
             modelBuilder.Entity<IdentityUserLogin<Guid>>().ToTable("UserLogin");
-
-            modelBuilder.Entity<FileStorage>()
-                .HasMany(fileStorage => fileStorage.SharedUsers);
 
             modelBuilder.Entity<Post>(p =>
             {
