@@ -1,5 +1,4 @@
 using HBlog.Domain.Common;
-using System.ComponentModel.DataAnnotations.Schema;
 namespace HBlog.Domain.Entities
 {
     public class Tag : BaseEntity<int>
