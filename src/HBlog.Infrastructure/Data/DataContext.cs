@@ -1,9 +1,7 @@
 using HBlog.Domain.Entities;
-using HBlog.Domain.ValueObjects;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace HBlog.Infrastructure.Data
 {
@@ -28,7 +26,10 @@ namespace HBlog.Infrastructure.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<User>(b =>
+            
+            modelBuilder.ApplyConfiguration(new PostConfiguration());
+
+			modelBuilder.Entity<User>(b =>
             {
                 b.HasMany(userRole => userRole.UserRoles)
                 .WithOne(user => user.User)
@@ -48,78 +49,6 @@ namespace HBlog.Infrastructure.Data
             modelBuilder.Entity<IdentityUserToken<Guid>>().ToTable("UserToken");
             modelBuilder.Entity<IdentityUserLogin<Guid>>().ToTable("UserLogin");
 
-            modelBuilder.Entity<Post>(p =>
-            {
-                p.HasKey(post => post.Id);
-                p.Property(post => post.Id).ValueGeneratedOnAdd();
-                p.Property(post => post.Id).UseIdentityAlwaysColumn();
-            });
-
-            modelBuilder.Entity<Post>().HasMany(x => x.Tags)
-                .WithMany(x => x.Posts)
-                .UsingEntity<PostTags>(
-                    x => x.HasOne(x => x.Tag)
-                        .WithMany().HasForeignKey(posttag => posttag.TagId),
-                    x => x.HasOne(x => x.Post)
-                        .WithMany().HasForeignKey(posttag => posttag.PostId));
-
-            var postStatusComparer = new ValueComparer<PostStatus>(
-                (p1, p2) => ReferenceEquals(p1, p2) || (p1 != null && p1.Equals(p2)),
-                p => p == null ? 0 : p.GetHashCode(),
-                p => p == null ? null! : PostStatus.FromString(p.ToString())
-            );
-
-            modelBuilder.Entity<Post>(b =>
-            {
-                b.Property(p => p.Status)
-                    .HasConversion(
-                        v => v.ToString(),
-                        v => PostStatus.FromString(v)
-                    )
-                    .HasMaxLength(50)
-                    .HasColumnName("Status");
-
-                b.Property(p => p.Status).Metadata.SetValueComparer(postStatusComparer);
-            });
-
-            //var postTypeComparer = new ValueComparer<PostType>(
-	           // (p1, p2) => ReferenceEquals(p1, p2) || (p1 != null && p1.Equals(p2)),
-	           // p => p == null ? 0 : p.GetHashCode(),
-	           // p => p == null ? null! : PostType.FromString(p.ToString())
-            //);
-
-            modelBuilder.Entity<Post>(b =>
-            {
-	            b.Property(p => p.Type)
-		            .HasConversion(
-			            v => v.ToString(),
-			            v => PostType.FromString(v)
-		            )
-		            .HasMaxLength(50)
-		            .HasColumnName("Type");
-
-	            //b.Property(p => p.Type).Metadata.SetValueComparer(postTypeComparer);
-            });
-			// ValueConverter + ValueComparer for Slug value object
-			var slugComparer = new ValueComparer<Slug>(
-                (s1, s2) => ReferenceEquals(s1, s2) || (s1 != null && s1.Equals(s2)),
-                s => s == null ? 0 : s.GetHashCode(),
-                s => s == null ? null! : Slug.FromValue(s.Value)
-            );
-
-            modelBuilder.Entity<Post>(b =>
-            {
-                b.Property(p => p.Slug)
-                    .HasConversion(
-                        v => v.Value,
-                        v => Slug.FromValue(v)
-                    )
-                    .HasMaxLength(200)
-                    .HasColumnName("Slug")
-                    .IsRequired();
-
-                b.Property(p => p.Slug).Metadata.SetValueComparer(slugComparer);
-            });
 
             modelBuilder.Entity<Tag>(p =>
             {
