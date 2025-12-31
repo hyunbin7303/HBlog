@@ -21,8 +21,6 @@ namespace HBlog.Infrastructure.Data
         public virtual DbSet<PostTags> PostTags { get; set; }
         public virtual DbSet<Tag> Tags { get; set; }
         public virtual DbSet<Category> Categories { get; set; }
-        public virtual DbSet<Message> Messages { get; set; }
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -74,17 +72,6 @@ namespace HBlog.Infrastructure.Data
                 .WithMany(l => l.LikedByUsers)
                 .HasForeignKey(s => s.TargetUserId)
                 .OnDelete(DeleteBehavior.NoAction);
-
-            modelBuilder.Entity<Message>()
-                .HasOne(u => u.Recipient)
-                .WithMany(m => m.MessagesReceived)
-                .OnDelete(DeleteBehavior.NoAction);
-
-            modelBuilder.Entity<Message>()
-                .HasOne(u => u.Sender)
-                .WithMany(m => m.MessagesSent)
-                .OnDelete(DeleteBehavior.NoAction);
-
         }
     }
 }

@@ -6,6 +6,8 @@ EXPOSE 8081
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
+COPY ["Directory.Build.props", "./"]
+COPY ["Directory.Packages.props", "./"]
 COPY ["/src/HBlog.Domain/*.csproj", "HBlog.Domain/"]
 COPY ["/src/HBlog.Application/*.csproj", "HBlog.Application/"]
 COPY ["/src/HBlog.Contract/*.csproj", "HBlog.Contract/"]

@@ -8,5 +8,5 @@ namespace HBlog.Api.Controllers
     public class BaseApiController : ControllerBase
     {
     }
-    public record ApiResponse<T>(T Data, bool Success = true, string ErrorMessage = null);
+    public record ApiResponse<T>(T Data, bool Success = true, string? ErrorMessage = null);
 }

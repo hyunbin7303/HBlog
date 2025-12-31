@@ -10,19 +10,15 @@ namespace HBlog.Infrastructure.Extensions
     public static class ApplicationServiceExtensions
     {
         public static IServiceCollection AddApplicationServices(this IServiceCollection services){
-            // Repository Layer DI
+
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IPostRepository, PostRepository>();
             services.AddScoped<ILikesRepository, LikesRepository>();
-            services.AddScoped<IMessageRepository, MessageRepository>();
             services.AddScoped<ITagRepository, TagRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
-            services.AddScoped<IFileDataRepository, FileDataRepository>();
 
-            // Application Service Layer DI
             services.AddScoped<IUserService, UserService>();
-            services.AddScoped<IMessageService, MessageService>();
             services.AddScoped<ILikeService, LikeService>();
             services.AddScoped<ITagService, TagService>();
 

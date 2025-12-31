@@ -23,15 +23,11 @@ namespace HBlog.Domain.Entities
 
         //private HashSet<Comment> _comments; //https://www.thereformedprogrammer.net/wp-content/uploads/2019/06/Using-Domain-Driven-Design-with-Entity-Framework-Core-Jon-P-Smith.pdf
         
-        public virtual User User { get; private set; }
-        public virtual Category Category { get; private set; }
+        public virtual User User => null;
+        public virtual Category Category => null;
         private readonly List<Tag> _tags = new();
         public IReadOnlyCollection<Tag> Tags => _tags.AsReadOnly();
-
-        // EF Core requires parameterless constructor
         private Post() { }
-
-        // Factory method
         public static Post Create(
             string title, 
             string description, 
