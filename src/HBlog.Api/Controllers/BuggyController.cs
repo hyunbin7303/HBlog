@@ -7,10 +7,10 @@ namespace HBlog.Api.Controllers
 {
     public class BuggyController : BaseApiController
     {
-        private readonly DataContext _dbContext;
-        public BuggyController(DataContext dbContext)
+        private readonly IdentityContext _identityContext;
+		public BuggyController(IdentityContext dbContext)
         {
-            _dbContext = dbContext;
+	        _identityContext = dbContext;
         }
         [Authorize]
         [HttpGet("buggy/auth")]
@@ -22,7 +22,7 @@ namespace HBlog.Api.Controllers
         [HttpGet("buggy/not-found")]
         public ActionResult<User> GetNotFound()
         {
-            var thing = _dbContext.Users.Find(-1);
+            var thing = _identityContext.Users.Find(-1);
             if (thing == null) return NotFound();
             return thing;
         }
@@ -30,7 +30,7 @@ namespace HBlog.Api.Controllers
         [HttpGet("buggy/server-error")]
         public ActionResult<string> GetServerError()
         {
-            return _dbContext.Users.Find(-1)?.ToString();
+            return _identityContext.Users.Find(-1)!.ToString();
         }
         [HttpGet("buggy/bad-request")]
         public ActionResult<string> GetBadRequest()

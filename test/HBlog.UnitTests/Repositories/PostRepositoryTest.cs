@@ -11,14 +11,14 @@ namespace HBlog.UnitTests.Repositories
 {
     public class PostRepositoryTest : IDisposable
     {
-        private readonly DataContext _context;
+	    private readonly BlogContext _context;
         private IPostRepository _repository;       
         public PostRepositoryTest()
         {
-            var dbContextOptions = new DbContextOptionsBuilder<DataContext>()
+            var dbContextOptions = new DbContextOptionsBuilder<BlogContext>()
                 .UseInMemoryDatabase(databaseName: "TestingPostRepo").Options;
 
-            _context = new DataContext(dbContextOptions);
+            _context = new BlogContext(dbContextOptions);
             _repository = new PostRepository(_context);
 
             IEnumerable<Post> posts = MockPostRepository.GenerateData(5);

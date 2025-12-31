@@ -58,15 +58,26 @@ public class Program
         });
         builder.Services.AddOpenApi();
 
-        builder.Services.AddDbContext<DataContext>((serviceProvider, opt) =>
+        builder.Services.AddDbContext<IdentityContext>((serviceProvider, opt) =>
         {
             opt.UseNpgsql(_connStr, config =>
             {
                 config.CommandTimeout(30);
-                config.MigrationsHistoryTable("__EFMigrationHistory");
-                config.MigrationsAssembly(typeof(DataContext).Assembly);
+                config.MigrationsHistoryTable("__EFMigrationHistory_Identity");
+                config.MigrationsAssembly(typeof(IdentityContext).Assembly);
             });
         });
+
+        builder.Services.AddDbContext<BlogContext>((serviceProvider, opt) =>
+        {
+            opt.UseNpgsql(_connStr, config =>
+            {
+                config.CommandTimeout(30);
+                config.MigrationsHistoryTable("__EFMigrationHistory_Blog");
+                config.MigrationsAssembly(typeof(BlogContext).Assembly);
+            });
+        });
+        
         builder.Services.AddCors();
         builder.Services.AddApplicationServices();
         builder.Services.AddIdentityServices(_token);

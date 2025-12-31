@@ -16,7 +16,6 @@ namespace HBlog.Infrastructure.Data
         {
 
         }
-        public virtual DbSet<UserLike> Likes {get; set; }
         public virtual DbSet<Post> Posts { get; set; }
         public virtual DbSet<PostTags> PostTags { get; set; }
         public virtual DbSet<Tag> Tags { get; set; }
@@ -57,21 +56,6 @@ namespace HBlog.Infrastructure.Data
 
             modelBuilder.Entity<PostTags>()
                 .HasKey(k => new { k.PostId, k.TagId });
-
-            modelBuilder.Entity<UserLike>()
-                .HasKey(k => new { k.SourceUserId, k.TargetUserId });
-
-            modelBuilder.Entity<UserLike>()
-                .HasOne(s => s.SourceUser)
-                .WithMany(l => l.LikedUsers)
-                .HasForeignKey(s => s.SourceUserId)
-                .OnDelete(DeleteBehavior.NoAction);
-
-            modelBuilder.Entity<UserLike>()
-                .HasOne(s => s.TargetUser)
-                .WithMany(l => l.LikedByUsers)
-                .HasForeignKey(s => s.TargetUserId)
-                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

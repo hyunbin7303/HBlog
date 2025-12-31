@@ -18,22 +18,36 @@ namespace HBlog.IntegrationTests
             builder.UseEnvironment("test");
             builder.ConfigureServices(services =>
             {
-                var context = services.FirstOrDefault(descriptor => descriptor.ServiceType == typeof(DataContext));
-                if (context != null)
+                // Remove IdentityContext
+                var identityContext = services.FirstOrDefault(descriptor => descriptor.ServiceType == typeof(IdentityContext));
+                if (identityContext != null)
                 {
-                    services.Remove(context);
-                    var options = services.Where(r => r.ServiceType == typeof(DbContextOptions)
-                                                      || r.ServiceType.IsGenericType && r.ServiceType.GetGenericTypeDefinition() == typeof(DbContextOptions<>)).ToArray();
-                    foreach (var option in options)
-                    {
-                        services.Remove(option);
-                    }
+                    services.Remove(identityContext);
+                }
+                
+                // Remove BlogContext
+                var blogContext = services.FirstOrDefault(descriptor => descriptor.ServiceType == typeof(BlogContext));
+                if (blogContext != null)
+                {
+                    services.Remove(blogContext);
+                }
+                
+                // Remove DbContextOptions
+                var options = services.Where(r => r.ServiceType == typeof(DbContextOptions)
+                                              || r.ServiceType.IsGenericType && r.ServiceType.GetGenericTypeDefinition() == typeof(DbContextOptions<>)).ToArray();
+                foreach (var option in options)
+                {
+                    services.Remove(option);
                 }
 
-                // Add a new registration for ApplicationDbContext with an in-memory database
-                services.AddDbContext<DataContext>(options =>
+                // Add in-memory databases for both contexts
+                services.AddDbContext<IdentityContext>(options =>
                 {
-                    // Provide a unique name for your in-memory database
+                    options.UseInMemoryDatabase("HBlogIdentityInMemory");
+                });
+                
+                services.AddDbContext<BlogContext>(options =>
+                {
                     options.UseInMemoryDatabase("HBlogInMemory");
                 });
             });

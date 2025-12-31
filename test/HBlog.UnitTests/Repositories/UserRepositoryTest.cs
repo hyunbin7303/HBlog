@@ -11,14 +11,14 @@ namespace HBlog.UnitTests.Repositories
 {
     public class UserRepositoryTest : IDisposable
     {
-        private readonly DataContext _context;
+        private readonly IdentityContext _context;
         private readonly IUserRepository _userRepository;
         public UserRepositoryTest()
         {
-            var dbContextOptions = new DbContextOptionsBuilder<DataContext>()
+            var dbContextOptions = new DbContextOptionsBuilder<IdentityContext>()
                 .UseInMemoryDatabase(databaseName: "TestingUserRepo").Options;
 
-            _context = new DataContext(dbContextOptions);
+            _context = new IdentityContext(dbContextOptions);
 
             IEnumerable<User> userList = MockUserRepository.SampleValidUserData(3);
             _context.Users.AddRange(userList);

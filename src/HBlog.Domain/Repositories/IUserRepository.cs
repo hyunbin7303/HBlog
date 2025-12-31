@@ -8,6 +8,5 @@ namespace HBlog.Domain.Repositories
         Task<IEnumerable<User>> GetUsersAsync();
         Task<User> GetUserByIdAsync(Guid id);
         Task<User> GetUserByUsernameAsync(string username);
-        IQueryable<User> GetUserLikesQuery(string predicate, Guid userId);
     }
 }

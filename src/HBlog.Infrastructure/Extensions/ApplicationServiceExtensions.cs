@@ -14,12 +14,10 @@ namespace HBlog.Infrastructure.Extensions
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IPostRepository, PostRepository>();
-            services.AddScoped<ILikesRepository, LikesRepository>();
             services.AddScoped<ITagRepository, TagRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
 
             services.AddScoped<IUserService, UserService>();
-            services.AddScoped<ILikeService, LikeService>();
             services.AddScoped<ITagService, TagService>();
 
 
