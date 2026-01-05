@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
+using HBlog.Api.Middlewares;
 
 public class Program
 {
@@ -58,7 +59,7 @@ public class Program
         });
         builder.Services.AddOpenApi();
 
-        builder.Services.AddDbContext<IdentityContext>((serviceProvider, opt) =>
+        builder.Services.AddDbContext<IdentityContext>((_, opt) =>
         {
             opt.UseNpgsql(_connStr, config =>
             {
@@ -68,7 +69,7 @@ public class Program
             });
         });
 
-        builder.Services.AddDbContext<BlogContext>((serviceProvider, opt) =>
+        builder.Services.AddDbContext<BlogContext>((_, opt) =>
         {
             opt.UseNpgsql(_connStr, config =>
             {
@@ -104,7 +105,8 @@ public class Program
         app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:7183", "http://localhost:5050"));
         app.UseAuthentication();
         app.UseAuthorization();
-        app.MapControllers();
+        app.UseMiddleware<CorrelationMiddleware>();
+		app.MapControllers();
 
         using var scope = app.Services.CreateScope();
         var services = scope.ServiceProvider;

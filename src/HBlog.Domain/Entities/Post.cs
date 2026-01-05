@@ -40,9 +40,6 @@ namespace HBlog.Domain.Entities
             if (userId == Guid.Empty)
                 throw new DomainException("User ID cannot be empty");
 
-            if (categoryId <= 0)
-                throw new DomainException("Category ID must be greater than 0");
-
             var post = new Post
             {
                 Title = title,
