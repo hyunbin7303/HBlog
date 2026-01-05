@@ -10,24 +10,35 @@ namespace HBlog.Api.Controllers
     public class MigrationController() : BaseApiController
     {
         [HttpPost("/migration")]
-        public async Task<Results<Ok<MigrationDto>,InternalServerError,BadRequest>> Migration([FromServices] DataContext context, CancellationToken cancellationToken)
+        public async Task<Results<Ok<MigrationDto>,InternalServerError,BadRequest>> Migration(
+            [FromServices] IdentityContext identityContext,
+            [FromServices] BlogContext blogContext,
+            CancellationToken cancellationToken)
         {
-            IEnumerable<string> applied = context.Database.GetAppliedMigrations();
-            IEnumerable<string> pending = context.Database.GetPendingMigrations();
+            var identityApplied = identityContext.Database.GetAppliedMigrations();
+            var identityPending = identityContext.Database.GetPendingMigrations();
+            var blogApplied = blogContext.Database.GetAppliedMigrations();
+            var blogPending = blogContext.Database.GetPendingMigrations();
+            
             try
             {
-                await context.Database.MigrateAsync(cancellationToken); 
+                await identityContext.Database.MigrateAsync(cancellationToken);
+                await blogContext.Database.MigrateAsync(cancellationToken);
+                
+                var allApplied = identityApplied.Concat(blogApplied);
+                var allPending = identityPending.Concat(blogPending);
+                
                 return TypedResults.Ok(new MigrationDto
                 {
                     AppliedMigration = new MigrationDetail
                     {
-                        Count = applied.Count(),
-                        MigrationNames = applied
+                        Count = allApplied.Count(),
+                        MigrationNames = allApplied
                     },
                     PendingMigration = new MigrationDetail
                     {
-                        Count = pending.Count(),
-                        MigrationNames = pending
+                        Count = allPending.Count(),
+                        MigrationNames = allPending
                     }
                 }); 
             }
