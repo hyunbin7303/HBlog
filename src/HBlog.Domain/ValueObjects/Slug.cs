@@ -1,5 +1,6 @@
 using System.Text.RegularExpressions;
 using HBlog.Domain.Common;
+using HBlog.Domain.Common.Exceptions;
 
 namespace HBlog.Domain.ValueObjects;
 

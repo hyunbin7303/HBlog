@@ -1,4 +1,3 @@
-using AutoMapper;
 using HBlog.Contract.Common;
 using HBlog.Contract.DTOs;
 using HBlog.Domain.Entities;
@@ -34,9 +33,6 @@ public class CreatePostCommandHandler : IRequestHandler<CreatePostCommand, Servi
         if (string.IsNullOrEmpty(request.CreateDto.Title))
             return ServiceResult.Fail(msg: "Title cannot be empty.");
 
-        if (request.CreateDto.CategoryId == 0)
-            return ServiceResult.Fail(msg: "Category needs to be setup.");
-
         var category = await _categoryRepository.GetById(request.CreateDto.CategoryId);
         if (category is null)
             return ServiceResult.NotFound(msg: "Cannot find category.");
@@ -45,7 +41,6 @@ public class CreatePostCommandHandler : IRequestHandler<CreatePostCommand, Servi
         if (user is null)
             return ServiceResult.NotFound(msg: "Cannot find user.");
 
-        // Use the factory method to create the post
         var postType = string.IsNullOrEmpty(request.CreateDto.Type) 
             ? PostType.Normal 
             : PostType.FromString(request.CreateDto.Type);
@@ -59,7 +54,6 @@ public class CreatePostCommandHandler : IRequestHandler<CreatePostCommand, Servi
             type: postType
         );
 
-        // Publish or activate the post based on requirements
         post.Activate(); // or post.Publish() if you want it published immediately
         
         // Add tags if provided

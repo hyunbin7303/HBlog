@@ -1,3 +1,4 @@
+using HBlog.Application.Automapper;
 using HBlog.Application.Services;
 using HBlog.Domain.Repositories;
 using HBlog.Infrastructure.Helpers;
@@ -26,7 +27,8 @@ namespace HBlog.Infrastructure.Extensions
 
             services.AddSingleton<PresenceTracker>();
 
-            return services;
+            services.AddAutoMapper(o => o.AddProfile(typeof(AutoMapperProfiles)));
+			return services;
         }
 
     }

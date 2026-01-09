@@ -1,6 +1,5 @@
 #nullable enable
 using HBlog.Api.Extensions;
-using HBlog.Application.Automapper;
 using HBlog.Infrastructure.Data;
 using HBlog.Infrastructure.Extensions;
 using HBlog.Infrastructure.Middlewares;
@@ -10,6 +9,8 @@ using Scalar.AspNetCore;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
 using HBlog.Api.Middlewares;
+using HBlog.Api.ProblemDetails;
+using HBlog.Domain.Common.Exceptions;
 
 public class Program
 {
@@ -45,9 +46,11 @@ public class Program
         AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
         builder.Services.AddControllers();
         builder.Services.AddEndpointsApiExplorer();
-        builder.Services.AddProblemDetails(options =>
-        {
 
+
+		builder.Services.AddProblemDetails(options =>
+        {
+            
             options.CustomizeProblemDetails = (context) =>
             {
                 context.ProblemDetails.Instance =
@@ -82,7 +85,6 @@ public class Program
         builder.Services.AddCors();
         builder.Services.AddApplicationServices();
         builder.Services.AddIdentityServices(_token);
-        builder.Services.AddAutoMapper(o => o.AddProfile(typeof(AutoMapperProfiles)));
         builder.Services.AddSwaggerDocumentation();
         builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 

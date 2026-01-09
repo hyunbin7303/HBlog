@@ -1,4 +1,4 @@
-namespace HBlog.Domain.Common;
+namespace HBlog.Domain.Common.Exceptions;
 
 public class EntityNotFoundException<T> : Exception
 {

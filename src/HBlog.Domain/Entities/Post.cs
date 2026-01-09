@@ -2,6 +2,7 @@ using HBlog.Domain.Common;
 using HBlog.Domain.ValueObjects;
 using HBlog.Domain.Events;
 using System.ComponentModel.DataAnnotations.Schema;
+using HBlog.Domain.Common.Exceptions;
 
 namespace HBlog.Domain.Entities
 {

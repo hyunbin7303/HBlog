@@ -1,4 +1,4 @@
-namespace HBlog.Domain.Common;
+namespace HBlog.Domain.Common.Exceptions;
 
 /// <summary>
 /// Exception thrown when domain rules are violated

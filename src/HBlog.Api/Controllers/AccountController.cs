@@ -43,11 +43,11 @@ namespace HBlog.Api.Controllers
         public async Task<ActionResult<AccountDto>> Login(LoginDto loginDto)
         {
             var user = await _userManager.FindByNameAsync(loginDto.UserName);
-            if (user == null) return Unauthorized(new ProblemDetails { Status = (int)HttpStatusCode.Unauthorized, Title = "Unauthorized", Detail = "Invalid username" });
+            if (user == null) return Unauthorized(new Microsoft.AspNetCore.Mvc.ProblemDetails { Status = (int)HttpStatusCode.Unauthorized, Title = "Unauthorized", Detail = "Invalid username" });
 
             var result = await _userManager.CheckPasswordAsync(user, loginDto.Password);
             if (!result)
-                return Unauthorized(new ProblemDetails { Status = (int)HttpStatusCode.Unauthorized, Title = "Unauthorized", Detail = "Invalid password" });
+                return Unauthorized(new Microsoft.AspNetCore.Mvc.ProblemDetails { Status = (int)HttpStatusCode.Unauthorized, Title = "Unauthorized", Detail = "Invalid password" });
 
             return new AccountDto
             {
@@ -61,7 +61,7 @@ namespace HBlog.Api.Controllers
         [HttpPost("account/refresh")]
         public async Task<ActionResult<AccountDto>> RefreshToken(RefreshTokenDto refreshTokenDto)
         {
-            if(refreshTokenDto is null) return BadRequest(new ProblemDetails { Status = (int)HttpStatusCode.BadRequest, Title = "Bad Request", Detail = "Refresh token cannot be null" });
+            if(refreshTokenDto is null) return BadRequest(new Microsoft.AspNetCore.Mvc.ProblemDetails { Status = (int)HttpStatusCode.BadRequest, Title = "Bad Request", Detail = "Refresh token cannot be null" });
 
             var principal = _tokenService.GetPrincipalFromExpiredToken(refreshTokenDto.AccessToken);
             var username = principal.Identity?.Name;
