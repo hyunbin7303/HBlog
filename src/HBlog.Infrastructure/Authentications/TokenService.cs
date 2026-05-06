@@ -58,16 +58,16 @@ namespace HBlog.Infrastructure.Authentications
         {
             var tokenValidationParameters = new TokenValidationParameters
             {
-                ValidateAudience = false, 
+                ValidateAudience = false,
                 ValidateIssuer = false,
                 ValidateIssuerSigningKey = true,
                 IssuerSigningKey = _key,
-                ValidateLifetime = false 
+                ValidateLifetime = false
             };
             var tokenHandler = new JwtSecurityTokenHandler();
             var principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out var securityToken);
             var jwtSecurityToken = securityToken as JwtSecurityToken;
-            if (jwtSecurityToken == null || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
+            if (jwtSecurityToken == null || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha512, StringComparison.InvariantCultureIgnoreCase))
                 throw new SecurityTokenException("Invalid token");
             return principal;
         }

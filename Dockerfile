@@ -18,11 +18,11 @@ COPY ["/src/HBlog.Api/HBlog.Api.csproj", "HBlog.Api/"]
 RUN dotnet restore "./HBlog.Api/HBlog.Api.csproj"
 COPY . .
 
-RUN dotnet build "./src/HBlog.Api/HBlog.Api.csproj" -c %BUILD_CONFIGURATION% -o /app/build
+RUN dotnet build "./src/HBlog.Api/HBlog.Api.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./src/HBlog.Api/HBlog.Api.csproj" -c %BUILD_CONFIGURATION% -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "./src/HBlog.Api/HBlog.Api.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
