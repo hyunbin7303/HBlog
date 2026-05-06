@@ -49,12 +49,16 @@ namespace HBlog.Api.Controllers
             if (!result)
                 return Unauthorized(new Microsoft.AspNetCore.Mvc.ProblemDetails { Status = (int)HttpStatusCode.Unauthorized, Title = "Unauthorized", Detail = "Invalid password" });
 
+            user.RefreshToken = _tokenService.CreateRefreshToken();
+            user.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(7);
+            await _userManager.UpdateAsync(user);
+
             return new AccountDto
             {
                 Username = user.UserName!,
                 Email = user.Email,
                 Token = await _tokenService.CreateToken(user),
-                RefreshToken = _tokenService.CreateRefreshToken(),
+                RefreshToken = user.RefreshToken,
             };
         }
 
@@ -63,11 +67,11 @@ namespace HBlog.Api.Controllers
         {
             if(refreshTokenDto is null) return BadRequest(new Microsoft.AspNetCore.Mvc.ProblemDetails { Status = (int)HttpStatusCode.BadRequest, Title = "Bad Request", Detail = "Refresh token cannot be null" });
 
-            var principal = _tokenService.GetPrincipalFromExpiredToken(refreshTokenDto.AccessToken);
+            var principal = _tokenService.GetPrincipalFromExpiredToken(refreshTokenDto?.Token);
             var username = principal.Identity?.Name;
 
             var user = await _userManager.FindByNameAsync(username);
-            if (user is null || user.RefreshToken != refreshTokenDto.RefreshToken || user.RefreshTokenExpiryTime <= DateTime.Now)
+            if (user is null || user.RefreshToken != refreshTokenDto.RefreshToken || user.RefreshTokenExpiryTime <= DateTime.UtcNow)
                 return BadRequest("Invalid client request");
 
             user.RefreshToken = _tokenService.CreateRefreshToken();
