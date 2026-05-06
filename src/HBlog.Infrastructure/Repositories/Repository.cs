@@ -8,9 +8,9 @@ namespace HBlog.Infrastructure.Repositories
 {
     public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
     {
-        protected readonly DataContext _dataContext;
+        protected readonly BlogContext _dataContext;
         protected readonly DbSet<TEntity> _dbSet;
-        public Repository(DataContext context)
+        public Repository(BlogContext context)
         {
             _dataContext = context;
             _dbSet = _dataContext.Set<TEntity>();

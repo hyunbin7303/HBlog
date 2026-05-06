@@ -6,8 +6,8 @@ namespace HBlog.Infrastructure.Repositories
 {
     public class UserRepository : IUserRepository
     {
-        private readonly DataContext _dbContext;
-        public UserRepository(DataContext dbContext)
+        private readonly IdentityContext _dbContext;
+        public UserRepository(IdentityContext dbContext)
         {
             _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
         }
@@ -33,25 +33,5 @@ namespace HBlog.Infrastructure.Repositories
         {
             _dbContext.Entry(user).State = EntityState.Modified;
         }
-
-        public IQueryable<User> GetUserLikesQuery(string predicate, Guid userId)
-        {
-            var users = _dbContext.Users.OrderBy(x => x.UserName).AsQueryable();
-            var likes = _dbContext.Likes.AsQueryable();
-
-            if (predicate == "liked")
-            {
-                likes = likes.Where(l => l.SourceUserId == userId);
-                users = likes.Select(l => l.TargetUser);
-            }
-            if (predicate == "likedBy")
-            {
-                likes = likes.Where(l => l.TargetUserId == userId);
-                users = likes.Select(l => l.SourceUser);
-            }
-            return users;
-        }
-
-
     }
 }

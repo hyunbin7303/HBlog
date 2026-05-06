@@ -12,8 +12,8 @@ namespace HBlog.Infrastructure.Repositories
 {
     public class TagRepository : Repository<Tag>, ITagRepository
     {
-        private readonly DataContext _dbContext;
-        public TagRepository(DataContext dbContext) : base(dbContext)
+        private readonly BlogContext _dbContext;
+        public TagRepository(BlogContext dbContext) : base(dbContext)
         {
             _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
         }

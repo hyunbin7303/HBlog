@@ -17,12 +17,6 @@ namespace HBlog.Domain.Entities
         public string? RefreshToken { get; set; }
         public DateTime RefreshTokenExpiryTime { get; set; }
         public List<Photo> Photos { get; set; } = new();
-        public List<Post> Posts { get; set; } = new();
-        public List<UserLike> LikedByUsers {get; set;}
-        public List<UserLike> LikedUsers {get; set; }
-        public List<Message> MessagesSent { get; set; }
-        public List<Message> MessagesReceived { get; set; }
         public ICollection<AppUserRole> UserRoles { get; set; }
-
     }
 }

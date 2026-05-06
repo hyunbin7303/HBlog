@@ -43,31 +43,35 @@ namespace HBlog.Api.Controllers
         public async Task<ActionResult<AccountDto>> Login(LoginDto loginDto)
         {
             var user = await _userManager.FindByNameAsync(loginDto.UserName);
-            if (user == null) return Unauthorized(new ProblemDetails { Status = (int)HttpStatusCode.Unauthorized, Title = "Unauthorized", Detail = "Invalid username" });
+            if (user == null) return Unauthorized(new Microsoft.AspNetCore.Mvc.ProblemDetails { Status = (int)HttpStatusCode.Unauthorized, Title = "Unauthorized", Detail = "Invalid username" });
 
             var result = await _userManager.CheckPasswordAsync(user, loginDto.Password);
             if (!result)
-                return Unauthorized(new ProblemDetails { Status = (int)HttpStatusCode.Unauthorized, Title = "Unauthorized", Detail = "Invalid password" });
+                return Unauthorized(new Microsoft.AspNetCore.Mvc.ProblemDetails { Status = (int)HttpStatusCode.Unauthorized, Title = "Unauthorized", Detail = "Invalid password" });
+
+            user.RefreshToken = _tokenService.CreateRefreshToken();
+            user.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(7);
+            await _userManager.UpdateAsync(user);
 
             return new AccountDto
             {
                 Username = user.UserName!,
                 Email = user.Email,
                 Token = await _tokenService.CreateToken(user),
-                RefreshToken = _tokenService.CreateRefreshToken(),
+                RefreshToken = user.RefreshToken,
             };
         }
 
         [HttpPost("account/refresh")]
         public async Task<ActionResult<AccountDto>> RefreshToken(RefreshTokenDto refreshTokenDto)
         {
-            if(refreshTokenDto is null) return BadRequest(new ProblemDetails { Status = (int)HttpStatusCode.BadRequest, Title = "Bad Request", Detail = "Refresh token cannot be null" });
+            if(refreshTokenDto is null) return BadRequest(new Microsoft.AspNetCore.Mvc.ProblemDetails { Status = (int)HttpStatusCode.BadRequest, Title = "Bad Request", Detail = "Refresh token cannot be null" });
 
-            var principal = _tokenService.GetPrincipalFromExpiredToken(refreshTokenDto.AccessToken);
+            var principal = _tokenService.GetPrincipalFromExpiredToken(refreshTokenDto?.Token);
             var username = principal.Identity?.Name;
 
             var user = await _userManager.FindByNameAsync(username);
-            if (user is null || user.RefreshToken != refreshTokenDto.RefreshToken || user.RefreshTokenExpiryTime <= DateTime.Now)
+            if (user is null || user.RefreshToken != refreshTokenDto.RefreshToken || user.RefreshTokenExpiryTime <= DateTime.UtcNow)
                 return BadRequest("Invalid client request");
 
             user.RefreshToken = _tokenService.CreateRefreshToken();

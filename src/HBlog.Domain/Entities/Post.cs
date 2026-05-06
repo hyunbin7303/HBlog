@@ -2,6 +2,7 @@ using HBlog.Domain.Common;
 using HBlog.Domain.ValueObjects;
 using HBlog.Domain.Events;
 using System.ComponentModel.DataAnnotations.Schema;
+using HBlog.Domain.Common.Exceptions;
 
 namespace HBlog.Domain.Entities
 {
@@ -20,16 +21,14 @@ namespace HBlog.Domain.Entities
         public DateTime LastUpdated { get; private set; }
         public Guid UserId { get; private set; }
         public int CategoryId { get; private set; }
+
+        //private HashSet<Comment> _comments; //https://www.thereformedprogrammer.net/wp-content/uploads/2019/06/Using-Domain-Driven-Design-with-Entity-Framework-Core-Jon-P-Smith.pdf
         
-        public virtual User User { get; private set; }
-        public virtual Category Category { get; private set; }
+        public virtual User User => null;
+        public virtual Category Category => null;
         private readonly List<Tag> _tags = new();
         public IReadOnlyCollection<Tag> Tags => _tags.AsReadOnly();
-
-        // EF Core requires parameterless constructor
         private Post() { }
-
-        // Factory method
         public static Post Create(
             string title, 
             string description, 
@@ -41,9 +40,6 @@ namespace HBlog.Domain.Entities
             // Validate business rules (throws DomainException if invalid)
             if (userId == Guid.Empty)
                 throw new DomainException("User ID cannot be empty");
-
-            if (categoryId <= 0)
-                throw new DomainException("Category ID must be greater than 0");
 
             var post = new Post
             {

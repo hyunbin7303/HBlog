@@ -36,6 +36,20 @@
                 "${workspaceFolder}/src/KevBlog.Api/KevBlog.Api.csproj"
             ],
             "problemMatcher": "$msCompile"
-        }
+        },
+        {
+			"label": "build_solution",
+			"command": "dotnet",
+			"type": "process",
+			"args": [
+				"build",
+				"${workspaceFolder}/src/HBlog.slnx",
+				"--configuration",
+				"Debug",
+				"/property:GenerateFullPaths=true",
+				"/consoleloggerparameters:NoSummary"
+			],
+			"problemMatcher": "$msCompile"
+		}
     ]
 }

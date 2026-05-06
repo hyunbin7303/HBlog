@@ -6,8 +6,8 @@ namespace HBlog.Infrastructure.Repositories
 {
     public class CategoryRepository : Repository<Category>, ICategoryRepository
     {
-        private readonly DataContext _dbContext;
-        public CategoryRepository(DataContext dbContext) : base(dbContext)
+        private readonly BlogContext _dbContext;
+        public CategoryRepository(BlogContext dbContext) : base(dbContext)
         {
             _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
         }

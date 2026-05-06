@@ -27,9 +27,6 @@ namespace HBlog.Application.Automapper
             CreateMap<RegisterDto, User>();
             CreateMap<PostUpdateDto, Post>();
             CreateMap<PostCreateDto, Post>();
-            CreateMap<Message, MessageDto>()
-                .ForMember(dest => dest.SenderPhotoUrl, opt => opt.MapFrom(s => s.Sender.Photos.FirstOrDefault(x => x.IsMain).Url))
-                .ForMember(dest => dest.RecipientPhotoUrl, opt => opt.MapFrom(s => s.Recipient.Photos.FirstOrDefault(x => x.IsMain).Url));
         }
     }
 }

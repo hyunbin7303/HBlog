@@ -12,7 +12,8 @@ namespace HBlog.IntegrationTests.Base
     public abstract class DatabaseIntegrationTestBase
     {
         protected PostgreSqlContainer _postgresContainer;
-        protected DataContext _dbContext;
+        protected IdentityContext _identityContext;
+        protected BlogContext _blogContext;
         protected UserManager<User> _userManager;
         protected RoleManager<AppRole> _roleManager;
         protected ServiceProvider _serviceProvider;
@@ -36,22 +37,27 @@ namespace HBlog.IntegrationTests.Base
         public async Task SetUp()
         {
             var services = new ServiceCollection();
-            services.AddDbContext<DataContext>(options =>
+            services.AddDbContext<IdentityContext>(options =>
+                options.UseNpgsql(_postgresContainer.GetConnectionString()));
+            
+            services.AddDbContext<BlogContext>(options =>
                 options.UseNpgsql(_postgresContainer.GetConnectionString()));
 
             services.AddIdentity<User, AppRole>()
-                .AddEntityFrameworkStores<DataContext>()
+                .AddEntityFrameworkStores<IdentityContext>()
                 .AddDefaultTokenProviders();
 
             services.AddLogging(builder => builder.AddConsole());
 
             _serviceProvider = services.BuildServiceProvider();
-            _dbContext = _serviceProvider.GetRequiredService<DataContext>();
+            _identityContext = _serviceProvider.GetRequiredService<IdentityContext>();
+            _blogContext = _serviceProvider.GetRequiredService<BlogContext>();
             _userManager = _serviceProvider.GetRequiredService<UserManager<User>>();
             _roleManager = _serviceProvider.GetRequiredService<RoleManager<AppRole>>();
 
-            // Ensure database is created and migrations are applied
-            await _dbContext.Database.EnsureCreatedAsync();
+            // Ensure databases are created and migrations are applied
+            await _identityContext.Database.EnsureCreatedAsync();
+            await _blogContext.Database.EnsureCreatedAsync();
             
             // Seed basic test data
             await SeedTestData();
@@ -61,8 +67,10 @@ namespace HBlog.IntegrationTests.Base
         public async Task TearDown()
         {
             // Clean up after each test
-            await _dbContext.Database.EnsureDeletedAsync();
-            await _dbContext.DisposeAsync();
+            await _identityContext.Database.EnsureDeletedAsync();
+            await _blogContext.Database.EnsureDeletedAsync();
+            await _identityContext.DisposeAsync();
+            await _blogContext.DisposeAsync();
             _serviceProvider?.DisposeAsync();
         }
 
@@ -116,7 +124,7 @@ namespace HBlog.IntegrationTests.Base
                 new() { Title = "Programming" }
             };
             
-            _dbContext.Categories.AddRange(categories);
+            _blogContext.Categories.AddRange(categories);
 
             // Create test tags
             var tags = new List<Tag>
@@ -126,8 +134,8 @@ namespace HBlog.IntegrationTests.Base
                 new() { Name = "ASP.NET" }
             };
             
-            _dbContext.Tags.AddRange(tags);
-            await _dbContext.SaveChangesAsync();
+            _blogContext.Tags.AddRange(tags);
+            await _blogContext.SaveChangesAsync();
         }
 
         protected async Task<User> GetTestUserAsync(string username = "testuser1")
@@ -137,12 +145,12 @@ namespace HBlog.IntegrationTests.Base
 
         protected async Task<Category> GetTestCategoryAsync(string title = "Technology")
         {
-            return await _dbContext.Categories.FirstOrDefaultAsync(c => c.Title == title);
+            return await _blogContext.Categories.FirstOrDefaultAsync(c => c.Title == title);
         }
 
         protected async Task<Tag> GetTestTagAsync(string name = "C#")
         {
-            return await _dbContext.Tags.FirstOrDefaultAsync(t => t.Name == name);
+            return await _blogContext.Tags.FirstOrDefaultAsync(t => t.Name == name);
         }
     }
 }

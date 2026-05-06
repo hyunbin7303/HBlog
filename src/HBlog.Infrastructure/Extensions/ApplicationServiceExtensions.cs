@@ -1,3 +1,4 @@
+using HBlog.Application.Automapper;
 using HBlog.Application.Services;
 using HBlog.Domain.Repositories;
 using HBlog.Infrastructure.Helpers;
@@ -10,21 +11,14 @@ namespace HBlog.Infrastructure.Extensions
     public static class ApplicationServiceExtensions
     {
         public static IServiceCollection AddApplicationServices(this IServiceCollection services){
-            // Repository Layer DI
+
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IPostRepository, PostRepository>();
-            services.AddScoped<ILikesRepository, LikesRepository>();
-            services.AddScoped<IMessageRepository, MessageRepository>();
             services.AddScoped<ITagRepository, TagRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
-            services.AddScoped<IFileDataRepository, FileDataRepository>();
-            services.AddScoped<IFileStorageRepository, FileStorageRepository>();
 
-            // Application Service Layer DI
             services.AddScoped<IUserService, UserService>();
-            services.AddScoped<IMessageService, MessageService>();
-            services.AddScoped<ILikeService, LikeService>();
             services.AddScoped<ITagService, TagService>();
 
 
@@ -33,7 +27,8 @@ namespace HBlog.Infrastructure.Extensions
 
             services.AddSingleton<PresenceTracker>();
 
-            return services;
+            services.AddAutoMapper(o => o.AddProfile(typeof(AutoMapperProfiles)));
+			return services;
         }
 
     }

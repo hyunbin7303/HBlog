@@ -16,8 +16,11 @@ namespace HBlog.Infrastructure.Data
         {
             try
             {
-                var context = services.GetRequiredService<DataContext>();
-                await context.Database.MigrateAsync();
+                var identityContext = services.GetRequiredService<IdentityContext>();
+                await identityContext.Database.MigrateAsync();
+                
+                var blogContext = services.GetRequiredService<BlogContext>();
+                await blogContext.Database.MigrateAsync();
 
                 var roleManager = services.GetRequiredService<RoleManager<AppRole>>();
                 await SeedRoles(roleManager);
@@ -25,12 +28,13 @@ namespace HBlog.Infrastructure.Data
                 {
                     var userManager = services.GetRequiredService<UserManager<User>>();
                     await SeedUsers(userManager);
-                    await SeedCategories(context);
-                    await SeedPosts(context);
-                    await SeedTags(context);
-                    await SeedPostTags(context);
+                    await SeedCategories(blogContext);
+                    await SeedPosts(blogContext);
+                    await SeedTags(blogContext);
+                    await SeedPostTags(blogContext);
                 }
-                await context.Database.EnsureCreatedAsync();
+                await identityContext.Database.EnsureCreatedAsync();
+                await blogContext.Database.EnsureCreatedAsync();
             }
             catch (Exception ex)
             {
@@ -68,7 +72,7 @@ namespace HBlog.Infrastructure.Data
             // await userManager.CreateAsync(admin, "Pa$$w0rd");
             // await userManager.AddToRolesAsync(admin, ["Admin", "Moderator"]);
         }
-        public static async Task SeedPosts(DataContext context) {
+        public static async Task SeedPosts(BlogContext context) {
             if(await context.Posts.AnyAsync()) return;
 
             var postData = await File.ReadAllTextAsync(_seedPostFilePath);
@@ -80,7 +84,7 @@ namespace HBlog.Infrastructure.Data
                 await context.SaveChangesAsync();
             }
         }
-        public static async Task SeedCategories(DataContext context)
+        public static async Task SeedCategories(BlogContext context)
         {
             if (await context.Categories.AnyAsync()) return;
 
@@ -94,7 +98,7 @@ namespace HBlog.Infrastructure.Data
                 await context.SaveChangesAsync();
             }
         }
-        public static async Task SeedTags(DataContext context)
+        public static async Task SeedTags(BlogContext context)
         {
             if (await context.Tags.AnyAsync()) return;
 
@@ -115,7 +119,7 @@ namespace HBlog.Infrastructure.Data
                 await context.SaveChangesAsync();
             }
         }
-        public static async Task SeedPostTags(DataContext context)
+        public static async Task SeedPostTags(BlogContext context)
         {
             if (await context.PostTags.AnyAsync()) return;
 

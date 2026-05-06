@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using System.Net;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 namespace HBlog.Infrastructure.Middlewares
 {
@@ -19,24 +21,26 @@ namespace HBlog.Infrastructure.Middlewares
         {
             httpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
             httpContext.Response.ContentType = "application/json";
-
-            (int statusCode, string errorMsg) = exception switch
+            _logger.LogError(exception, "Unhandled exception. TraceId: {TraceId}", httpContext.TraceIdentifier);
+			
+            (int statusCode, string title) = exception switch
             {
-                //=> (403, null),
-                ArgumentException argumentException => (400, argumentException.Message),
-                BadHttpRequestException badrequestException => (400, badrequestException.Message),
-                _ => (500, "Internal server error.")
+                ArgumentException => (StatusCodes.Status400BadRequest, "Argument Invalid Request"),
+                BadHttpRequestException => (StatusCodes.Status400BadRequest, "Bad Request"),
+                _ => (StatusCodes.Status500InternalServerError, "Internal server error.")
             };
 
             var problemDetails = new ProblemDetails
             {
                 Status = statusCode,
-                Title = errorMsg,
+                Title = title,
                 Type = exception.GetType().Name,
-                Detail = exception.Message
-            };
-
-            _logger.LogError(exception, exception.Message);
+                Detail = httpContext.RequestServices
+	                .GetRequiredService<IHostEnvironment>()
+	                .IsDevelopment() ? exception.Message : null,
+                Instance = httpContext.Request.Path
+			};
+            problemDetails.Extensions["traceId"] = httpContext.TraceIdentifier;
             await httpContext.Response.WriteAsJsonAsync(problemDetails, cancellationToken: cancellationToken);
             return true;
 
