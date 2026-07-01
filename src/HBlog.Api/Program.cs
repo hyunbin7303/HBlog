@@ -84,7 +84,7 @@ public class Program
         
         builder.Services.AddCors();
         builder.Services.AddApplicationServices();
-        builder.Services.AddIdentityServices(_token);
+        builder.Services.AddIdentityServices(_token, builder.Configuration);
         builder.Services.AddSwaggerDocumentation();
         builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 
