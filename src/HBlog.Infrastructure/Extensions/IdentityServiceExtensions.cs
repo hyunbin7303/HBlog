@@ -1,8 +1,11 @@
 using HBlog.Domain.Entities;
 using HBlog.Infrastructure.Authentications;
+using HBlog.Infrastructure.Authentications.OAuth;
+using HBlog.Infrastructure.Authentications.OAuth.Options;
 using HBlog.Infrastructure.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -16,10 +19,24 @@ namespace HBlog.Infrastructure.Extensions
 
     public static class IdentityServiceExtensions
     {
-        public static IServiceCollection AddIdentityServices(this IServiceCollection services, string token)
+        public static IServiceCollection AddIdentityServices(this IServiceCollection services, string token, IConfiguration config)
         {
 
             services.AddScoped<ITokenService>(x => new TokenService(x.GetRequiredService<UserManager<User>>(), token));
+
+            services.Configure<GoogleAuthOptions>(config.GetSection(GoogleAuthOptions.SectionName));
+            services.Configure<AppleAuthOptions>(config.GetSection(AppleAuthOptions.SectionName));
+            services.Configure<OAuthTicketOptions>(opt =>
+            {
+                config.GetSection(OAuthTicketOptions.SectionName).Bind(opt);
+                var envKey = Environment.GetEnvironmentVariable("OAUTH_TICKET_SIGNING_KEY");
+                if (!string.IsNullOrEmpty(envKey)) opt.SigningKey = envKey;
+            });
+            services.AddSingleton<IOAuthTicketService, OAuthTicketService>();
+            services.AddSingleton<IExternalIdentityProvider, GoogleIdentityProvider>();
+            services.AddSingleton<IExternalIdentityProvider, AppleIdentityProvider>();
+            services.AddSingleton<IExternalIdentityProviderRegistry, ExternalIdentityProviderRegistry>();
+
             services.AddIdentityCore<User>(opt =>
             {
                 opt.Password.RequireNonAlphanumeric = false;

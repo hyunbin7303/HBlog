@@ -4,6 +4,7 @@ using HBlog.Application.Automapper;
 using HBlog.Domain.Entities;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging.Abstractions;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
 
@@ -23,7 +24,7 @@ namespace HBlog.TestUtilities
                 var mappingConfig = new MapperConfiguration(mc =>
                 {
                     mc.AddProfile(new AutoMapperProfiles());
-                }, null);
+                }, NullLoggerFactory.Instance);
                 IMapper mapper = mappingConfig.CreateMapper();
                 _mapper = mapper;
             }

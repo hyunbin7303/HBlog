@@ -13,15 +13,16 @@ namespace HBlog.UnitTests.Repositories
     {
         private readonly IdentityContext _context;
         private readonly IUserRepository _userRepository;
+        private readonly List<User> _seededUsers;
         public UserRepositoryTest()
         {
             var dbContextOptions = new DbContextOptionsBuilder<IdentityContext>()
-                .UseInMemoryDatabase(databaseName: "TestingUserRepo").Options;
+                .UseInMemoryDatabase(databaseName: $"TestingUserRepo_{Guid.NewGuid()}").Options;
 
             _context = new IdentityContext(dbContextOptions);
 
-            IEnumerable<User> userList = MockUserRepository.SampleValidUserData(3);
-            _context.Users.AddRange(userList);
+            _seededUsers = MockUserRepository.SampleValidUserData(3).ToList();
+            _context.Users.AddRange(_seededUsers);
             _context.SaveChanges();
             _userRepository = new UserRepository(_context);
         }
@@ -55,12 +56,12 @@ namespace HBlog.UnitTests.Repositories
         [Test]
         public async Task GivenValidUserId_WhenGetUserById_ThenReturnUser()
         {
-            var userId = Guid.CreateVersion7();
+            var seeded = _seededUsers[0];
 
-            var user = await _userRepository.GetUserByIdAsync(userId);
+            var user = await _userRepository.GetUserByIdAsync(seeded.Id);
 
             Assert.That(user, Is.Not.Null);
-            Assert.That(user.Id, Is.EqualTo(userId));
+            Assert.That(user.Id, Is.EqualTo(seeded.Id));
         }
 
         [Test]
