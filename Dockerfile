@@ -27,4 +27,4 @@ RUN dotnet publish "./src/HBlog.Api/HBlog.Api.csproj" -c $BUILD_CONFIGURATION -o
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "HBlog.Api.dll"]
+CMD exec dotnet HBlog.Api.dll --urls "http://+:${PORT:-8080}"
