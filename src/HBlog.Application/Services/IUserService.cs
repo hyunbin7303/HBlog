@@ -10,5 +10,7 @@ namespace HBlog.Application.Services
         Task<PageList<UserDto>> GetMembersAsync(UserParams userParams);
         Task<bool> UpdateMemberAsync(UserUpdateDto User);
         Task<ServiceResult<UserDto>> GetMembersByUsernameAsync(string username);
+        Task<ServiceResult<UserDto>> GetMemberByEmailAsync(string email);
+        Task<ServiceResult> DeleteMemberAsync(Guid id);
     }
 }

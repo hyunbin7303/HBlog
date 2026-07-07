@@ -8,5 +8,7 @@ namespace HBlog.Domain.Repositories
         Task<IEnumerable<User>> GetUsersAsync();
         Task<User> GetUserByIdAsync(Guid id);
         Task<User> GetUserByUsernameAsync(string username);
+        Task<User> GetUserByEmailAsync(string email);
+        Task<bool> SoftDeleteAsync(User user);
     }
 }
