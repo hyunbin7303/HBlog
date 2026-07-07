@@ -16,6 +16,8 @@ namespace HBlog.Domain.Entities
         public string Email { get; set; }
         public string? RefreshToken { get; set; }
         public DateTime RefreshTokenExpiryTime { get; set; }
+        public bool IsDeleted { get; set; }
+        public DateTime? DeletedAtUtc { get; set; }
         public List<Photo> Photos { get; set; } = new();
         public ICollection<AppUserRole> UserRoles { get; set; }
     }

@@ -35,7 +35,29 @@ namespace HBlog.Api.Controllers
 
             return Ok(user);
         }
-        
+
+        [HttpGet("users/by-email")]
+        [Authorize(Roles = "Admin")]
+        public async Task<ActionResult<UserDto>> GetUserByEmail([FromQuery] string email)
+        {
+            if (string.IsNullOrWhiteSpace(email))
+                return BadRequest("email query parameter is required.");
+
+            var result = await _userService.GetMemberByEmailAsync(email);
+            if (result.Value is null)
+                return NotFound($"No user found for email: {email}");
+
+            return Ok(result.Value);
+        }
+
+        [HttpDelete("users/{id:guid}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> DeleteUser(Guid id)
+        {
+            await _userService.DeleteMemberAsync(id);
+            return NoContent();
+        }
+
         [HttpPut("users")]
         public async Task<IActionResult> Update(UserUpdateDto userUpdateDto)
         {
