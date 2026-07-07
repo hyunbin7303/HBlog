@@ -49,6 +49,28 @@ namespace HBlog.Application.Services
             UserDto userDto = _mapper.Map<UserDto>(user);
             return ServiceResult.Success(userDto);
         }
+        public async Task<ServiceResult<UserDto>> GetMemberByEmailAsync(string email)
+        {
+            if (string.IsNullOrWhiteSpace(email))
+                return ServiceResult.Fail<UserDto>(msg: "Email is required");
+
+            User user = await _userRepository.GetUserByEmailAsync(email);
+            if (user is null || user.IsDeleted)
+                return ServiceResult.Fail<UserDto>(msg: "User not found");
+
+            return ServiceResult.Success(_mapper.Map<UserDto>(user));
+        }
+
+        public async Task<ServiceResult> DeleteMemberAsync(Guid id)
+        {
+            User user = await _userRepository.GetUserByIdAsync(id);
+            if (user is null)
+                return ServiceResult.Success(msg: "User not found (already deleted)");
+
+            await _userRepository.SoftDeleteAsync(user);
+            return ServiceResult.Success(msg: "User deleted");
+        }
+
         public async Task<bool> UpdateMemberAsync(UserUpdateDto user)
         {
             UserUpdateDto userUpdateDto = new UserUpdateDto();
