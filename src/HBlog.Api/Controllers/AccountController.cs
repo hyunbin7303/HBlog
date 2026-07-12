@@ -36,7 +36,6 @@ namespace HBlog.Api.Controllers
         [HttpPost("account/register")]
         public async Task<ActionResult<AccountDto>> Register(RegisterDto registerDto)
         {
-            if (await UserExists(registerDto.UserName)) return BadRequest("Username is taken");
             if (await EmailExists(registerDto.Email)) return BadRequest("Email is taken");
 
             var user = _mapper.Map<User>(registerDto);
@@ -53,8 +52,8 @@ namespace HBlog.Api.Controllers
         [HttpPost("account/login")]
         public async Task<ActionResult<AccountDto>> Login(LoginDto loginDto)
         {
-            var user = await _userManager.FindByNameAsync(loginDto.UserName);
-            if (user == null) return Unauthorized(new Microsoft.AspNetCore.Mvc.ProblemDetails { Status = (int)HttpStatusCode.Unauthorized, Title = "Unauthorized", Detail = "Invalid username" });
+            var user = await _userManager.FindByEmailAsync(loginDto.Email);
+            if (user == null) return Unauthorized(new Microsoft.AspNetCore.Mvc.ProblemDetails { Status = (int)HttpStatusCode.Unauthorized, Title = "Unauthorized", Detail = "Invalid email" });
 
             var result = await _userManager.CheckPasswordAsync(user, loginDto.Password);
             if (!result)
@@ -79,9 +78,9 @@ namespace HBlog.Api.Controllers
             if(refreshTokenDto is null) return BadRequest(new Microsoft.AspNetCore.Mvc.ProblemDetails { Status = (int)HttpStatusCode.BadRequest, Title = "Bad Request", Detail = "Refresh token cannot be null" });
 
             var principal = _tokenService.GetPrincipalFromExpiredToken(refreshTokenDto?.Token);
-            var username = principal.Identity?.Name;
+            var userId = principal.FindFirst(System.IdentityModel.Tokens.Jwt.JwtRegisteredClaimNames.NameId)?.Value;
 
-            var user = await _userManager.FindByNameAsync(username);
+            var user = userId is null ? null : await _userManager.FindByIdAsync(userId);
             if (user is null || user.RefreshToken != refreshTokenDto.RefreshToken || user.RefreshTokenExpiryTime <= DateTime.UtcNow)
                 return BadRequest("Invalid client request");
 
@@ -100,8 +99,8 @@ namespace HBlog.Api.Controllers
         [Route("account/revoke")]
         public async Task<IActionResult> Revoke()
         {
-            var username = User.Identity.Name;
-            var user = await _userManager.FindByNameAsync(username);
+            var userId = User.FindFirst(System.IdentityModel.Tokens.Jwt.JwtRegisteredClaimNames.NameId)?.Value;
+            var user = userId is null ? null : await _userManager.FindByIdAsync(userId);
             if (user == null) return BadRequest("User not exist");
             user.RefreshToken = null;
             await _userManager.UpdateAsync(user);
@@ -151,7 +150,6 @@ namespace HBlog.Api.Controllers
 
             var email = !string.IsNullOrEmpty(identity.Email) ? identity.Email : dto.Email;
 
-            if (await UserExists(dto.UserName)) return Conflict("Username is taken");
             if (await EmailExists(email)) return Conflict("Email is taken");
 
             var user = new User
@@ -244,10 +242,6 @@ namespace HBlog.Api.Controllers
         private bool AppUserExists(Guid id)
         {
             return _userManager.Users.Any(e => e.Id == id);
-        }
-        private async Task<bool> UserExists(string username)
-        {
-            return await _userManager.Users.AnyAsync(x => x.UserName == username.ToLower());
         }
         private async Task<bool> EmailExists(string email)
         {

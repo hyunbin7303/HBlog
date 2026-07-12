@@ -61,7 +61,7 @@
         if (result.Item1)
         {
             errorMessages = new();
-            await authService.AuthenAsync(new LoginDto { UserName = RegisterDtoModel.UserName, Password = RegisterDtoModel.Password });
+            await authService.AuthenAsync(new LoginDto { Email = RegisterDtoModel.Email, Password = RegisterDtoModel.Password });
             navManager.NavigateTo("/");
         }
         if(result.Item2 != null)

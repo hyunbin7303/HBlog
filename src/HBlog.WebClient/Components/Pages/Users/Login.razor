@@ -9,9 +9,9 @@
             <DataAnnotationsValidator />
             <ValidationSummary />
             <div class="form-group">
-                <label for="email">UserName</label>
-                <InputText class="form-control" @bind-Value="LoginDtoModel.UserName" />
-                <ValidationMessage For="@(() => LoginDtoModel.UserName)" />
+                <label for="email">Email</label>
+                <InputText class="form-control" @bind-Value="LoginDtoModel.Email" />
+                <ValidationMessage For="@(() => LoginDtoModel.Email)" />
             </div>
             <div class="form-group">
                 <label for="text">Password</label>
