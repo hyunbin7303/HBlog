@@ -13,7 +13,6 @@ namespace HBlog.Domain.Entities
         public DateTime Created { get; set; } = DateTime.UtcNow;
         public DateTimeOffset LastActive { get; set; } = DateTime.UtcNow;
         public string Gender { get; set; }
-        public string Email { get; set; }
         public string? RefreshToken { get; set; }
         public DateTime RefreshTokenExpiryTime { get; set; }
         public bool IsDeleted { get; set; }
