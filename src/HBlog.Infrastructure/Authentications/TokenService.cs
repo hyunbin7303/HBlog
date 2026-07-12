@@ -30,6 +30,11 @@ namespace HBlog.Infrastructure.Authentications
                 new(JwtRegisteredClaimNames.Email, user.Email),
             };
 
+            if (!string.IsNullOrEmpty(user.FirstName))
+                claims.Add(new Claim(JwtRegisteredClaimNames.GivenName, user.FirstName));
+            if (!string.IsNullOrEmpty(user.LastName))
+                claims.Add(new Claim(JwtRegisteredClaimNames.FamilyName, user.LastName));
+
             var roles = await _userManager.GetRolesAsync(user);
             claims.AddRange(roles.Select(r => new Claim(ClaimTypes.Role, r)));
 
