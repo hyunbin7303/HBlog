@@ -22,8 +22,7 @@ namespace HBlog.IntegrationTests.Base
         public async Task OneTimeSetUp()
         {
             // Create and start PostgreSQL container
-            _postgresContainer = new PostgreSqlBuilder()
-                .WithImage("postgres:15")
+            _postgresContainer = new PostgreSqlBuilder("postgres:15")
                 .WithDatabase("hblog_test")
                 .WithUsername("test_user")
                 .WithPassword("test_password")
