@@ -129,13 +129,35 @@ namespace HBlog.Api.Controllers
             var existingLink = await _userManager.FindByLoginAsync(identity.Provider, identity.Subject);
             if (existingLink is not null) return await IssueTokensAsync(existingLink);
 
-            if (await UserExists(dto.UserName)) return BadRequest("Username is taken");
-            if (await EmailExists(dto.Email)) return BadRequest("Email is taken");
+            if (!string.IsNullOrEmpty(identity.Email))
+            {
+                var existingByEmail = await _userManager.FindByEmailAsync(identity.Email);
+                if (existingByEmail is not null)
+                {
+                    if (!identity.EmailVerified)
+                        return StatusCode((int)HttpStatusCode.Forbidden, new Microsoft.AspNetCore.Mvc.ProblemDetails
+                        {
+                            Status = (int)HttpStatusCode.Forbidden,
+                            Title = "Forbidden",
+                            Detail = "Email not verified by provider. Sign in with password instead.",
+                        });
+
+                    var linkResult = await _userManager.AddLoginAsync(existingByEmail,
+                        new UserLoginInfo(identity.Provider, identity.Subject, identity.Provider));
+                    if (!linkResult.Succeeded) return BadRequest(linkResult.Errors);
+                    return await IssueTokensAsync(existingByEmail);
+                }
+            }
+
+            var email = !string.IsNullOrEmpty(identity.Email) ? identity.Email : dto.Email;
+
+            if (await UserExists(dto.UserName)) return Conflict("Username is taken");
+            if (await EmailExists(email)) return Conflict("Email is taken");
 
             var user = new User
             {
                 UserName = dto.UserName,
-                Email = dto.Email,
+                Email = email,
                 FirstName = string.IsNullOrWhiteSpace(dto.FirstName) ? (identity.GivenName ?? string.Empty) : dto.FirstName,
                 LastName = string.IsNullOrWhiteSpace(dto.LastName) ? (identity.FamilyName ?? string.Empty) : dto.LastName,
                 KnownAs = dto.UserName,
